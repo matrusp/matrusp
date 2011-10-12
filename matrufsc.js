@@ -979,7 +979,7 @@ window.onload = function() {
     lista.adicionar("MTM5183");
     lista.adicionar("MTM5512");
     lista.adicionar("QMC5106");
-    } else if (1) {
+    } else if (0) {
     //2a fase
     lista.adicionar("EEL7020");
     lista.adicionar("EEL7021");
