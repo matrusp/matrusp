@@ -71,7 +71,7 @@ int main()
 
     for (i = 0; i < l && j < 10; i++) {
         if (strstr(fetch[i][0], o0) || strstr(fetch[i][1], o0)) {
-            printf("%s\t%s\n", fetch[i][0], full[equiv[i]][2]);
+            printf("%s %s\n", fetch[i][0], full[equiv[i]][2]);
             j++;
         }
     }

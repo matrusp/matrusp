@@ -73,7 +73,7 @@ function Combobox(input, suggestions, logger, lista)
             li.onmousedown = function() { return false; };
             li.onmouseup   = function() {
                 deselect_item();
-                self.input.value = this.innerHTML.split("\t")[0];
+                self.input.value = this.innerHTML.split(" ")[0];
                 self.lista.adicionar(self.input.value);
                 self.suggestions.style.display = "none";
                 self.input.focus();
@@ -112,7 +112,7 @@ function Combobox(input, suggestions, logger, lista)
             self.suggestions.style.display = "none";
         } else if (c == 13 /* enter */) {
             if (self.selected_item != -1) {
-                self.input.value = self.item_array[self.selected_item].innerHTML.split("\t")[0];
+                self.input.value = self.item_array[self.selected_item].innerHTML.split(" ")[0];
                 deselect_item();
                 self.suggestions.style.display = "none";
             }
