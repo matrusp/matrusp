@@ -39,7 +39,9 @@ int main()
 
     sleep(1);
 
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/html\n"
+           "Expires: -1\n"
+           "\n");
 
     p = getenv("QUERY_STRING");
     if (!p)

@@ -40,7 +40,9 @@ int main()
     char *p;
     int i;
 
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/html\n"
+           "Expires: -1\n"
+           "\n");
 
     p = getenv("QUERY_STRING");
     if (!p)
