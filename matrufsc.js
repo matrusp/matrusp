@@ -355,7 +355,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         self.turmas_table = document.createElement("table");
         self.turmas_tbody = document.createElement("tbody");
         self.turmas_table.className = "materias";
-        self.turmas_table.style.width="100%";
+        self.turmas_table.style.width="330px";
 
         for (var i in materia.horarios) {
             var horario = materia.horarios[i];
@@ -408,6 +408,10 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
 
         self.turmas_table.appendChild(self.turmas_tbody);
         self.turmas_list.appendChild(self.turmas_table);
+
+        /* TODO determine scrollbar width */
+        if (self.turmas_table.offsetHeight >= self.turmas_list.offsetHeight)
+            self.turmas_table.style.width="310px";
 
         self.selected_materia = materia;
     }
@@ -682,6 +686,10 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         self.materias[codigo].row.parentNode.removeChild(self.materias[codigo].row);
         delete self.materias[codigo];
 
+        /* TODO determine scrollbar width */
+        if (self.materias_table.offsetHeight < self.materias_list.offsetHeight)
+            self.materias_table.style.width="770px";
+
         gerar_combinacoes();
 
         display_combinacao(0);
@@ -749,7 +757,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
             self.materias_table = document.createElement("table");
             self.materias_tbody = document.createElement("tbody");
             self.materias_table.className = "materias";
-            self.materias_table.style.width="100%";
+            self.materias_table.style.width="770px";
             self.materias_table.appendChild(self.materias_tbody);
             self.materias_list.appendChild(self.materias_table);
         }
@@ -779,6 +787,10 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         data.style.textAlign = "center";
         row.appendChild(data);
         self.materias_tbody.appendChild(row);
+
+        /* TODO determine scrollbar width */
+        if (self.materias_table.offsetHeight >= self.materias_list.offsetHeight)
+            self.materias_table.style.width="750px";
 
         self.materias[materia.codigo].row = row;
 
@@ -820,14 +832,14 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
     self.materias_list = document.getElementById(materias_list);
 
     self.materias_list.style.border = "1px solid black";
-    self.materias_list.style.width  = "100%";
+    self.materias_list.style.width  = "770px";
     self.materias_list.style.maxHeight = "110px"; // certinho 6 matérias
     self.materias_list.style.minHeight = "20px";
 
     self.turmas_list   = document.getElementById(turmas_list);
 
     self.turmas_list.style.border = "1px solid black";
-    self.turmas_list.style.width  = "100%";
+    self.turmas_list.style.width  = "330px";
     self.turmas_list.style.height    = (self.horario.horario.offsetHeight-2) + "px";
     self.turmas_list.style.maxHeight = (self.horario.horario.offsetHeight-2) + "px";
 
