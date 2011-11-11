@@ -241,8 +241,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
     {
         var c       = self.combinacoes[self.combinacao_atual];
         var materia = self.selected_materia;
-        var turmas  = this.getElementsByTagName("td")[1].innerHTML.split("<br>");
-        var turma   = materia.turmas[turmas[0]];
+        var turma   = this.turma;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
         if (turma == self.displaying_turma)
@@ -285,8 +284,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
     {
         var c       = self.combinacoes[self.combinacao_atual];
         var materia = self.selected_materia;
-        var turmas  = this.getElementsByTagName("td")[1].innerHTML.split("<br>");
-        var turma   = materia.turmas[turmas[0]];
+        var turma   = this.turma;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
         if (!c) {
@@ -377,6 +375,8 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
             for (var j in horario.turmas) {
                 var turma = horario.turmas[j];
                 innerHTML += turma.turma + "<br>";
+                if (!row.turma)
+                    row.turma = turma;
             }
             data.innerHTML = innerHTML;
             data.style.backgroundColor = materia.cor;
