@@ -40,6 +40,7 @@ function Combobox(input, suggestions, logger, lista)
     }
     function deselect_item()
     {
+        self.mouseisdown = false;
         if (self.selected_item != -1) {
             self.item_array[self.selected_item].style.backgroundColor = self.color_0;
             self.selected_item = -1;
@@ -53,6 +54,7 @@ function Combobox(input, suggestions, logger, lista)
     self.suggestions = document.getElementById(suggestions);
     self.logger      = logger;
     self.suggestions.className = "combobox";
+    self.mouseisdown = false;
 
     self.create_suggestions_table = function(str) {
         var ul = document.createElement("ul");
@@ -70,13 +72,14 @@ function Combobox(input, suggestions, logger, lista)
             li.innerHTML   = array[i];
             li.onmouseover = function() { select_item(self.item_index[this.innerHTML.split(" ")[0]]); };
             li.onmouseout  = function() { deselect_item(); };
-            li.onmousedown = function() { return false; };
+            li.onclick     = function() { deselect_item(); };
+            li.onmousedown = function() { self.mouseisdown = true; };
             li.onmouseup   = function() {
                 deselect_item();
                 self.input.value = this.innerHTML.split(" ")[0];
                 self.lista.adicionar(self.input.value);
                 self.suggestions.style.display = "none";
-                self.input.focus();
+                self.input.blur();
             };
             self.item_index[codigo] = i;
 
@@ -99,7 +102,13 @@ function Combobox(input, suggestions, logger, lista)
     self.suggestions.style.fontSize   = "11px";
     self.suggestions.style.display = "none";
 
-    self.input.onblur    = function() { self.suggestions.style.display = "none"; };
+    self.input.onblur    = function() {
+        if (self.mouseisdown) {
+            self.input.onfocus();
+        } else {
+            self.suggestions.style.display = "none";
+        }
+    };
     self.input.onfocus   = function() { if (self.item_array[0]) self.suggestions.style.display = ""; };
     self.input.onkeydown = function(e) {
         var c = (e) ? e.keyCode : event.keyCode;
