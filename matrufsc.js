@@ -254,12 +254,13 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
             var hora = turma.aulas[i].hora;
             var n    = turma.aulas[i].n;
             for (var j = 0; j < n; j++) {
-                self.horario.array[dia][hora+j].innerHTML = materia.codigo;
                 if (c && c[dia][hora+j] && c[dia][hora+j].horario.materia != materia) {
                     self.logger.set_text("choque de horario", "lightcoral");
+                    self.horario.array[dia][hora+j].innerHTML = "<strong>" + materia.codigo + "</strong>";
                     self.horario.array[dia][hora+j].style.backgroundColor = "black";
                     self.horario.array[dia][hora+j].style.color = "red";
                 } else {
+                    self.horario.array[dia][hora+j].innerHTML = materia.codigo;
                     self.horario.array[dia][hora+j].style.backgroundColor = "black";
                     self.horario.array[dia][hora+j].style.color = "white";
                 }
