@@ -27,13 +27,8 @@ table.materias {
     background-color:black;
 }
 
-table.materias tbody td {
-    background-color:#eeeeee;
-}
-
 table.materias tbody tr:hover td {
     cursor:pointer;
-    background-color:#eeeeee;
 }
 
 .horario {
