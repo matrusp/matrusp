@@ -53,7 +53,8 @@ function Combobox(input, suggestions, logger, lista)
             li.onmouseover = function() { select_item(self.item_index[this.innerHTML.split(" ")[0]]); };
             li.onmouseout  = function() { deselect_item(); };
             li.onclick     = function() { deselect_item(); };
-            li.onmousedown = function() { self.mouseisdown = true; };
+            li.onmousedown = function() { self.mouseisdown = true; return false; };
+            li.onselectstart=function() { return false; }
             li.onmouseup   = function() {
                 deselect_item();
                 self.input.value = this.innerHTML.split(" ")[0];
