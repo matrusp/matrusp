@@ -226,12 +226,13 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         turma.selected = this.checked;
         gerar_combinacoes();
         display_combinacao(0);
+        undisplay_turma(turma);
+        display_turma(turma);
     }
-    function turma_onmouseover()
+    function display_turma(turma)
     {
         var c       = self.combinacoes[self.combinacao_atual];
         var materia = self.selected_materia;
-        var turma   = this.turma;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
         if (turma == self.displaying_turma)
@@ -243,38 +244,38 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
                 var hora = current_turma.aulas[i].hora;
                 var n    = current_turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
-                    self.horario.array[dia][hora+j].innerHTML = materia.codigo;
-                    self.horario.array[dia][hora+j].style.backgroundColor = "black";
-                    self.horario.array[dia][hora+j].style.color = "white";
+                    clear_cell(c[dia][hora+j], self.horario.array[dia][hora+j]);
                 }
             }
         }
-        if (turma != current_turma) {
-            for (var i = 0; i < turma.aulas.length; i++) {
-                var dia  = turma.aulas[i].dia;
-                var hora = turma.aulas[i].hora;
-                var n    = turma.aulas[i].n;
-                for (var j = 0; j < n; j++) {
-                    self.horario.array[dia][hora+j].innerHTML = materia.codigo;
-                    if (c && c[dia][hora+j] && c[dia][hora+j].horario.materia != materia) {
-                        self.logger.set_text("choque de horario", "lightcoral");
-                        self.horario.array[dia][hora+j].style.backgroundColor = "red";
-                        self.horario.array[dia][hora+j].style.color = "black";
-                    } else {
-                        self.horario.array[dia][hora+j].style.backgroundColor = materia.cor;
-                        self.horario.array[dia][hora+j].style.color = "black";
-                    }
+
+        for (var i = 0; i < turma.aulas.length; i++) {
+            var dia  = turma.aulas[i].dia;
+            var hora = turma.aulas[i].hora;
+            var n    = turma.aulas[i].n;
+            for (var j = 0; j < n; j++) {
+                self.horario.array[dia][hora+j].innerHTML = materia.codigo;
+                if (c && c[dia][hora+j] && c[dia][hora+j].horario.materia != materia) {
+                    self.logger.set_text("choque de horario", "lightcoral");
+                    self.horario.array[dia][hora+j].style.backgroundColor = "black";
+                    self.horario.array[dia][hora+j].style.color = "red";
+                } else {
+                    self.horario.array[dia][hora+j].style.backgroundColor = "black";
+                    self.horario.array[dia][hora+j].style.color = "white";
                 }
             }
         }
 
         self.displaying_turma = turma;
     }
-    function turma_onmouseout()
+    function turma_onmouseover()
+    {
+        display_turma(this.turma);
+    }
+    function undisplay_turma(turma)
     {
         var c       = self.combinacoes[self.combinacao_atual];
         var materia = self.selected_materia;
-        var turma   = this.turma;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
         if (!c) {
@@ -309,6 +310,10 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
 
         self.displaying_turma = "";
     }
+    function turma_onmouseout()
+    {
+        undisplay_turma(this.turma);
+    }
     function turma_onmouseup()
     {
         var checkboxes = this.parentNode.getElementsByTagName("td")[0].getElementsByTagName("input");
@@ -328,6 +333,8 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         }
         gerar_combinacoes();
         display_combinacao(0);
+        undisplay_turma(turma);
+        display_turma(turma);
     }
     function create_turmas_list(materia)
     {
@@ -337,6 +344,8 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         self.turmas_tbody = document.createElement("tbody");
         self.turmas_table.className = "materias";
         self.turmas_table.style.width="330px";
+        self.turmas_table.cellPadding="1";
+        self.turmas_table.cellSpacing="1";
 
         for (var i in materia.horarios) {
             var horario = materia.horarios[i];
@@ -397,6 +406,13 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         self.selected_materia = materia;
     }
 
+    function clear_cell(data, graphic)
+    {
+        graphic.innerHTML = "&nbsp";
+        graphic.style.backgroundColor = "white";
+        graphic.style.border = "1px solid black";
+        graphic.style.color = "black";
+    }
     function display_cell(data, graphic)
     {
         if (data && data.horario) {
@@ -412,10 +428,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
 //if (data.fixed)
 //    graphic.style.border = "2px solid black";
         } else {
-            graphic.innerHTML = "&nbsp";
-            graphic.style.backgroundColor = "white";
-            graphic.style.border = "1px solid black";
-            graphic.style.color = "black";
+            clear_cell(data, graphic);
         }
     }
     function reset()
