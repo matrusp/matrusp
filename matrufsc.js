@@ -168,7 +168,7 @@ function Combobox(input, suggestions, logger, lista)
     self.lista = lista;
 }
 
-function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario)
+function Lista(materias_list, turmas_list, logger, horario)
 {
     var self = this;
 
@@ -756,6 +756,25 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
             self.materias_table.cellSpacing="1";
             self.materias_table.appendChild(self.materias_tbody);
             self.materias_list.appendChild(self.materias_table);
+            var row  = document.createElement("tr");
+            row.style.backgroundColor = "#eeeeee";
+            var data = document.createElement("td");
+            data.style.width = "70px";
+            data.innerHTML = "C\u00f3digo";
+            row.appendChild(data);
+            var data = document.createElement("td");
+            data.style.width = "44px";
+            data.innerHTML = "Turma";
+            row.appendChild(data);
+            var data = document.createElement("td");
+            data.innerHTML = "Sele\u00e7\u00e3o";
+            row.appendChild(data);
+            self.combinacoes_selector = data;
+            data.style.textAlign = "center";
+            var data = document.createElement("td");
+            data.style.width = "15px";
+            row.appendChild(data);
+            self.materias_tbody.appendChild(row);
         }
 
         var row  = document.createElement("tr");
@@ -850,10 +869,6 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
     self.turmas_list.style.width  = "330px";
     self.turmas_list.style.height    = (self.horario.horario.offsetHeight-2) + "px";
     self.turmas_list.style.maxHeight = (self.horario.horario.offsetHeight-2) + "px";
-
-    self.combinacoes_selector = document.getElementById(combinacoes_selector);
-    self.combinacoes_selector.className = "horario";
-    self.combinacoes_selector.style.border = "1px solid black";
 
     self.materias = new Object();
     self.selected_materia = "";
@@ -1022,7 +1037,7 @@ function dprintf(str)
 window.onload = function() {
     var logger  = new Logger("logger");
     var horario = new Horario("horario");
-    var lista   = new Lista("materias_list", "turmas_list", "combinacoes_selector", logger, horario);
+    var lista   = new Lista("materias_list", "turmas_list", logger, horario);
     var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista);
 
     document.onkeypress = function(e) {
