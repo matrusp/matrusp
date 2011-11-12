@@ -351,6 +351,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
             var horario = materia.horarios[i];
 
             var row  = document.createElement("tr");
+            row.style.backgroundColor = materia.cor;
             row.style.cursor="pointer";
             row.onmouseover = turma_onmouseover;
             row.onmouseout  = turma_onmouseout;
@@ -365,7 +366,6 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
                 data.appendChild(input);
                 input.checked  = turma.selected;
             }
-            data.style.backgroundColor = materia.cor;
             data.style.width = "22px";
             row.appendChild(data);
 
@@ -379,7 +379,6 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
                     row.turma = turma;
             }
             data.innerHTML = innerHTML;
-            data.style.backgroundColor = materia.cor;
             data.style.width = "44px";
             row.appendChild(data);
 
@@ -390,7 +389,6 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
                 var turma = horario.turmas[j];
                 innerHTML += turma.professor + /*"(" + turma.xyz + ")" + */ "<br>";
             }
-            data.style.backgroundColor = materia.cor;
             data.innerHTML = innerHTML;
             row.appendChild(data);
 
@@ -760,25 +758,22 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         }
 
         var row  = document.createElement("tr");
+        row.style.backgroundColor = materia.cor;
         row.style.cursor="pointer";
         var data = document.createElement("td");
         data.onclick = materia_onclick;
-        data.style.backgroundColor = materia.cor;
         data.style.width = "70px";
         data.innerHTML = materia.codigo;
         row.appendChild(data);
         var data = document.createElement("td");
         data.onclick = materia_onclick;
-        data.style.backgroundColor = materia.cor;
         data.style.width = "44px";
         row.appendChild(data);
         var data = document.createElement("td");
         data.onclick = materia_onclick;
-        data.style.backgroundColor = materia.cor;
         data.innerHTML = materia.nome;
         row.appendChild(data);
         var data = document.createElement("td");
-        data.style.backgroundColor = materia.cor;
         data.onclick = materia_onclick_remove;
         data.innerHTML = "X";
         data.style.width = "15px";
