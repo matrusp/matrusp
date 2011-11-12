@@ -27,10 +27,6 @@ table.materias {
     background-color:black;
 }
 
-table.materias tbody tr:hover td {
-    cursor:pointer;
-}
-
 .horario {
     font-family:monospace;
     font-size:11px;

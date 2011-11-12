@@ -351,6 +351,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
             var horario = materia.horarios[i];
 
             var row  = document.createElement("tr");
+            row.style.cursor="pointer";
             row.onmouseover = turma_onmouseover;
             row.onmouseout  = turma_onmouseout;
 
@@ -757,6 +758,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
         }
 
         var row  = document.createElement("tr");
+        row.style.cursor="pointer";
         var data = document.createElement("td");
         data.onclick = materia_onclick;
         data.style.backgroundColor = materia.cor;
