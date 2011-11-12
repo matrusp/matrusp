@@ -753,6 +753,8 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
             self.materias_tbody = document.createElement("tbody");
             self.materias_table.className = "materias";
             self.materias_table.style.width="770px";
+            self.materias_table.cellPadding="1";
+            self.materias_table.cellSpacing="1";
             self.materias_table.appendChild(self.materias_tbody);
             self.materias_list.appendChild(self.materias_table);
         }
@@ -843,8 +845,8 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
 
     self.materias_list.style.border = "1px solid black";
     self.materias_list.style.width  = "770px";
-    self.materias_list.style.maxHeight = "110px"; // certinho 6 matérias
-    self.materias_list.style.minHeight = "20px";
+    self.materias_list.style.maxHeight = "103px"; // certinho 6 matérias
+    self.materias_list.style.minHeight = "18px";
 
     self.turmas_list   = document.getElementById(turmas_list);
 
