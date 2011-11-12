@@ -448,7 +448,7 @@ function Lista(materias_list, turmas_list, logger, horario)
         if (self.deselecionadas) {
             for (var i in self.deselecionadas) {
                 var t = self.deselecionadas[i];
-                self.materias[t.codigo].row.getElementsByTagName("td")[1].innerHTML = "xxxx";
+                self.materias[t.codigo].row.getElementsByTagName("td")[1].innerHTML = "<strike>XXXXXX</strike>";
             }
         }
 
