@@ -12,7 +12,6 @@
 #include <errno.h>
 
 #include <stdlib.h>
-#include <unistd.h>
 
 static void decodeURIComponent(char *d, char *s, int l)
 {
@@ -36,8 +35,6 @@ int main()
     int l = sizeof(fetch)/sizeof(fetch[0]);
     iconv_t to_ascii;
     int i, j = 0;
-
-    sleep(1);
 
     printf("Content-type: text/html\n"
            "Expires: -1\n"
