@@ -782,25 +782,39 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
     }
     function list_onreadystatechange()
     {
-        if ((this.readyState == 4) && (this.status == 200)) {
-            var str = this.responseText;
-            if (self.timer) {
-                clearTimeout(self.timer);
-                self.timer = null;
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                var str = this.responseText;
+                if (self.timer) {
+                    clearTimeout(self.timer);
+                    self.timer = null;
+                }
+                if (str.length > 0) {
+                    list_add_item(str);
+                } else {
+                    self.logger.set_text("'" + self.full + "' nao adicionada", "lightcoral");
+                }
             }
-            if (str.length > 0) {
-                list_add_item(str);
-            } else {
-                self.logger.set_text("'" + self.full + "' nao adicionada", "lightcoral");
-            }
+            this.available = true;
         }
+    }
+    var full_requests = new Array();
+    function full_request(materia) {
+        var n = full_requests.length;
+        for (var i = 0; i < n; i++)
+            if (full_requests[i].available)
+                break;
+        if (i == n) {
+            full_requests[i] = new XMLHttpRequest();
+        }
+        full_requests[i].available = false;
+        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(materia), true);
+        full_requests[i].onreadystatechange = list_onreadystatechange;
+        full_requests[i].send(null);
     }
     function adicionar(materia)
     {
-        full_request = new XMLHttpRequest();
-        full_request.onreadystatechange = list_onreadystatechange;
-        full_request.open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(materia), true);
-        full_request.send(null);
+        full_request(materia);
         self.full = materia;
         self.logger.waiting("buscando '" + materia + "'");
     }
