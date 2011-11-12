@@ -3,7 +3,7 @@ all: full.cgi fetch.cgi
 header_gen: header_gen.c
 	gcc -O3 -std=c99 -o header_gen header_gen.c -lz
 
-full.h fetch.h: header_gen
+equiv.h full.h fetch.h: header_gen
 	./header_gen turmas.pdf fetch.h full.h equiv.h
 
 full.cgi: full.c full.h
