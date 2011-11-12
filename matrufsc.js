@@ -350,10 +350,10 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
                 var turma = horario.turmas[j];
                 var input = document.createElement("input");
                 input.type     = "checkbox";
-                input.checked  = turma.selected;
                 input.value    = materia.codigo + " " + turma.turma;
                 input.onchange = turma_changed;
                 data.appendChild(input);
+                input.checked  = turma.selected;
             }
             data.style.backgroundColor = materia.cor;
             data.style.width = "22px";
