@@ -431,7 +431,7 @@ function Lista(materias_list, turmas_list, combinacoes_selector, logger, horario
 //if (data.fixed)
 //    graphic.style.border = "2px solid black";
         } else {
-            graphic.innerHTML = "";
+            graphic.innerHTML = "&nbsp";
             graphic.style.backgroundColor = "white";
             graphic.style.border = "1px solid black";
             graphic.style.color = "black";
@@ -928,6 +928,7 @@ function Horario(horario)
         for (var i = 0; i < dias.length; i++) {
             var data = document.createElement("td");
             data.className = "aula";
+            data.innerHTML = "&nbsp";
             self.array[i][j] = data;
             row.appendChild(data);
         }
