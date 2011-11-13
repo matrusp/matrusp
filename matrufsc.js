@@ -783,12 +783,22 @@ function Lista(materias_list, turmas_list, logger, horario)
                     display_combinacao(this.value - 1);
                 }
             };
-            data.appendChild(document.createTextNode("Combina\u00e7\u00f5es ("));
+            data.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
+            var pp = document.createElement("button");
+            pp.innerHTML = "< ";
+            pp.onclick = self.previous;
+            data.appendChild(pp);
             data.appendChild(self.selecao_atual);
             data.appendChild(document.createTextNode("/"));
             self.numero_selecoes = document.createTextNode("0");
             data.appendChild(self.numero_selecoes);
-            data.appendChild(document.createTextNode(")"));
+            var nn = document.createElement("button");
+            nn.innerHTML = "> ";
+            nn.onclick = self.next;
+            if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
+                nn.ondblclick = self.next;
+            }
+            data.appendChild(nn);
 
             row.appendChild(data);
             data.style.textAlign = "center";
@@ -891,7 +901,7 @@ function Lista(materias_list, turmas_list, logger, horario)
     self.displaying_turma = "";
 
     self.combinacao_atual = -1;
-    self.previous = function(e) {
+    self.previous = function() {
         if (!self.combinacoes || !self.combinacoes.length)
             return;
         var c = self.combinacao_atual - 1;
@@ -899,7 +909,7 @@ function Lista(materias_list, turmas_list, logger, horario)
             c = self.combinacoes.length - 1;
         display_combinacao(c);
     };
-    self.next = function(e) {
+    self.next = function() {
         if (!self.combinacoes || !self.combinacoes.length)
             return;
         var c = self.combinacao_atual + 1;
@@ -1057,7 +1067,38 @@ window.onload = function() {
     var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista);
 
     document.onkeydown = function(e) {
-        var c = (e) ? e.keyCode : event.keyCode;
+        var ev = e ? e : event;
+        var c = ev.keyCode;
+        if (ev.srcElement == combo.input)
+            return;
+        if (ev.srcElement == lista.selecao_atual) {
+            var pos = -1;
+            if (document.selection) {
+                var range = document.selection.createRange();
+                range.moveStart('character', -ev.srcElement.value.length);
+                pos = range.text.length;
+            } else {
+                pos = ev.srcElement.selectionStart;
+            }
+            if (c == 13) {
+                lista.selecao_atual.blur();
+                lista.selecao_atual.focus();
+            } else if (pos == ev.srcElement.value.length && c == 39) {
+                lista.next();
+            } else if (pos == 0 && c == 37) {
+                lista.previous();
+                if (document.selection) {
+                    var range = ev.srcElement.createTextRange();
+                    range.collapse(true);
+                    range.moveStart('character', 0);
+                    range.moveEnd('character', 0);
+                    range.select();
+                } else {
+                    ev.srcElement.selectionStart = 0;
+                }
+            }
+            return;
+        }
         if (c == 39) {
             lista.next();
         } else if (c == 37) {
