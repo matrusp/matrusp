@@ -171,6 +171,8 @@ function Combobox(input, suggestions, logger, lista)
 function Lista(materias_list, turmas_list, logger, horario)
 {
     var self = this;
+    var selecao_atual;
+    var numero_selecoes;
 
     self.logger = logger;
 
@@ -467,7 +469,8 @@ function Lista(materias_list, turmas_list, logger, horario)
             self.materias[t.materia.codigo].row.getElementsByTagName("td")[1].innerHTML = t.turma;
         }
         self.combinacao_atual = cc;
-        self.combinacoes_selector.innerHTML = self.combinacoes.length + " combinacoes (" + cc + ")";
+        self.selecao_atual.value = cc + 1;
+        self.numero_selecoes.nodeValue = self.combinacoes.length;
     }
     function valor_combinacao(c) {
         var sum = 0;
@@ -763,9 +766,29 @@ function Lista(materias_list, turmas_list, logger, horario)
             data.innerHTML = "Turma";
             row.appendChild(data);
             var data = document.createElement("td");
-            data.innerHTML = "Sele\u00e7\u00e3o";
+
+            self.selecao_atual = document.createElement("input");
+            self.selecao_atual.style.fontFamily = "monospace";
+            self.selecao_atual.style.fontSize   = "11px";
+            self.selecao_atual.style.width      = "30px";
+            self.selecao_atual.style.height     = "13px";
+            self.selecao_atual.value = 0;
+            self.selecao_atual.onkeydown = function(e) {
+                var c = (e) ? e.keyCode : event.keyCode;
+                if (c == 39 /* next */) {
+                    self.next();
+                } else if (c == 37 /* previous */) {
+                    self.previous();
+                }
+            };
+            data.appendChild(document.createTextNode("Combina\u00e7\u00f5es ("));
+            data.appendChild(self.selecao_atual);
+            data.appendChild(document.createTextNode("/"));
+            self.numero_selecoes = document.createTextNode("0");
+            data.appendChild(self.numero_selecoes);
+            data.appendChild(document.createTextNode(")"));
+
             row.appendChild(data);
-            self.combinacoes_selector = data;
             data.style.textAlign = "center";
             var data = document.createElement("td");
             data.style.width = "15px";
@@ -1031,14 +1054,6 @@ window.onload = function() {
     var lista   = new Lista("materias_list", "turmas_list", logger, horario);
     var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista);
 
-    document.onkeypress = function(e) {
-        var c = (e) ? e.charCode : event.keyCode;
-        if (c == 46) {
-            lista.next();
-        } else if (c == 44) {
-            lista.previous();
-        }
-    };
     if (0) {
     //1a fase
     lista.adicionar("EEL7010");
