@@ -786,6 +786,8 @@ function Lista(materias_list, turmas_list, logger, horario)
             };
             data.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
             var button = document.createElement("span");
+            button.style.MozUserSelect = "none";
+            button.style.KhtmlUserSelect = "none";
             button.style.border = "1px solid black";
             button.style.backgroundColor = "lightblue";
             button.style.cursor = "pointer";
@@ -803,6 +805,8 @@ function Lista(materias_list, turmas_list, logger, horario)
             data.appendChild(self.numero_selecoes);
             data.appendChild(document.createTextNode(" "));
             var button = document.createElement("span");
+            button.style.MozUserSelect = "none";
+            button.style.KhtmlUserSelect = "none";
             button.style.border = "1px solid black";
             button.style.backgroundColor = "lightblue";
             button.style.cursor = "pointer";
