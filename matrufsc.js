@@ -773,12 +773,14 @@ function Lista(materias_list, turmas_list, logger, horario)
             self.selecao_atual.style.width      = "30px";
             self.selecao_atual.style.height     = "13px";
             self.selecao_atual.value = 0;
-            self.selecao_atual.onkeydown = function(e) {
-                var c = (e) ? e.keyCode : event.keyCode;
-                if (c == 39 /* next */) {
-                    self.next();
-                } else if (c == 37 /* previous */) {
-                    self.previous();
+            self.selecao_atual.onchange = function() {
+                if (!self.combinacoes || !self.combinacoes.length)
+                    return;
+                if (this.value < 1 || this.value > self.combinacoes.length) {
+                    self.logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
+                } else {
+                    self.logger.reset();
+                    display_combinacao(this.value - 1);
                 }
             };
             data.appendChild(document.createTextNode("Combina\u00e7\u00f5es ("));
@@ -1054,6 +1056,14 @@ window.onload = function() {
     var lista   = new Lista("materias_list", "turmas_list", logger, horario);
     var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista);
 
+    document.onkeydown = function(e) {
+        var c = (e) ? e.keyCode : event.keyCode;
+        if (c == 39) {
+            lista.next();
+        } else if (c == 37) {
+            lista.previous();
+        }
+    };
     if (0) {
     //1a fase
     lista.adicionar("EEL7010");
