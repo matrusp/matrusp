@@ -752,89 +752,6 @@ function Lista(materias_list, turmas_list, logger, horario)
         gerar_combinacoes();
 
         /* parte gráfica */
-        if (!self.materias_tbody) {
-            self.materias_table = document.createElement("table");
-            self.materias_tbody = document.createElement("tbody");
-            self.materias_table.className = "materias";
-            self.materias_table.style.width="770px";
-            self.materias_table.cellPadding="1";
-            self.materias_table.cellSpacing="1";
-            self.materias_table.appendChild(self.materias_tbody);
-            self.materias_list.appendChild(self.materias_table);
-            var row  = document.createElement("tr");
-            row.style.backgroundColor = "#eeeeee";
-            var data = document.createElement("td");
-            data.style.width = "70px";
-            data.innerHTML = "C\u00f3digo";
-            row.appendChild(data);
-            var data = document.createElement("td");
-            data.style.width = "44px";
-            data.innerHTML = "Turma";
-            row.appendChild(data);
-            var data = document.createElement("td");
-
-            self.selecao_atual = document.createElement("input");
-            self.selecao_atual.style.fontFamily = "monospace";
-            self.selecao_atual.style.fontSize   = "11px";
-            self.selecao_atual.style.width      = "30px";
-            self.selecao_atual.style.height     = "13px";
-            self.selecao_atual.value = 0;
-            self.selecao_atual.onchange = function() {
-                if (!self.combinacoes || !self.combinacoes.length)
-                    return;
-                if (this.value < 1 || this.value > self.combinacoes.length) {
-                    self.logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
-                } else {
-                    self.logger.reset();
-                    display_combinacao(this.value - 1);
-                }
-            };
-            data.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
-            var button = document.createElement("span");
-            button.style.MozUserSelect = "none";
-            button.style.KhtmlUserSelect = "none";
-            button.style.border = "1px solid black";
-            button.style.backgroundColor = "lightblue";
-            button.style.cursor = "pointer";
-            button.innerHTML = "<strong>&nbsp;<&nbsp;</strong>";
-            button.onselectstart = function () { return false; };
-            button.onclick = function () { self.previous(); return false; };
-            if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
-                button.ondblclick = self.previous;
-            }
-            data.appendChild(button);
-            data.appendChild(document.createTextNode(" "));
-            data.appendChild(self.selecao_atual);
-            data.appendChild(document.createTextNode("/"));
-            self.numero_selecoes = document.createTextNode("0");
-            data.appendChild(self.numero_selecoes);
-            data.appendChild(document.createTextNode(" "));
-            var button = document.createElement("span");
-            button.style.MozUserSelect = "none";
-            button.style.KhtmlUserSelect = "none";
-            button.style.border = "1px solid black";
-            button.style.backgroundColor = "lightblue";
-            button.style.cursor = "pointer";
-            button.innerHTML = "<strong>&nbsp;>&nbsp;</strong>";
-            button.onselectstart = function () { return false; };
-            button.onclick = function () { self.next(); return false; };
-            if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
-                button.ondblclick = self.next;
-            }
-            data.appendChild(button);
-
-            row.appendChild(data);
-            data.style.textAlign = "center";
-            var data = document.createElement("td");
-            data.onclick = materia_onclick_add;
-            data.innerHTML = "<strong>+</strong>";
-            data.style.cursor="pointer";
-            data.style.width = "15px";
-            data.style.textAlign = "center";
-            row.appendChild(data);
-            self.materias_tbody.appendChild(row);
-        }
-
         var row  = document.createElement("tr");
         row.style.backgroundColor = materia.cor;
         row.style.cursor="pointer";
@@ -914,7 +831,89 @@ function Lista(materias_list, turmas_list, logger, horario)
 
     self.materias_list.style.border = "1px solid black";
     self.materias_list.style.width  = "770px";
-    self.materias_list.style.minHeight = "18px";
+
+    {
+        self.materias_table = document.createElement("table");
+        self.materias_tbody = document.createElement("tbody");
+        self.materias_table.className = "materias";
+        self.materias_table.style.width="770px";
+        self.materias_table.cellPadding="1";
+        self.materias_table.cellSpacing="1";
+        self.materias_table.appendChild(self.materias_tbody);
+        self.materias_list.appendChild(self.materias_table);
+        var row  = document.createElement("tr");
+        row.style.backgroundColor = "#eeeeee";
+        var data = document.createElement("td");
+        data.style.width = "70px";
+        data.innerHTML = "C\u00f3digo";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.style.width = "44px";
+        data.innerHTML = "Turma";
+        row.appendChild(data);
+        var data = document.createElement("td");
+
+        self.selecao_atual = document.createElement("input");
+        self.selecao_atual.style.fontFamily = "monospace";
+        self.selecao_atual.style.fontSize   = "11px";
+        self.selecao_atual.style.width      = "30px";
+        self.selecao_atual.style.height     = "13px";
+        self.selecao_atual.value = 0;
+        self.selecao_atual.onchange = function() {
+            if (!self.combinacoes || !self.combinacoes.length)
+                return;
+            if (this.value < 1 || this.value > self.combinacoes.length) {
+                self.logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
+            } else {
+                self.logger.reset();
+                display_combinacao(this.value - 1);
+            }
+        };
+        data.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
+        var button = document.createElement("span");
+        button.style.MozUserSelect = "none";
+        button.style.KhtmlUserSelect = "none";
+        button.style.border = "1px solid black";
+        button.style.backgroundColor = "lightblue";
+        button.style.cursor = "pointer";
+        button.innerHTML = "<strong>&nbsp;<&nbsp;</strong>";
+        button.onselectstart = function () { return false; };
+        button.onclick = function () { self.previous(); return false; };
+        if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
+            button.ondblclick = function () { self.previous(); };
+        }
+        data.appendChild(button);
+        data.appendChild(document.createTextNode(" "));
+        data.appendChild(self.selecao_atual);
+        data.appendChild(document.createTextNode("/"));
+        self.numero_selecoes = document.createTextNode("0");
+        data.appendChild(self.numero_selecoes);
+        data.appendChild(document.createTextNode(" "));
+        var button = document.createElement("span");
+        button.style.MozUserSelect = "none";
+        button.style.KhtmlUserSelect = "none";
+        button.style.border = "1px solid black";
+        button.style.backgroundColor = "lightblue";
+        button.style.cursor = "pointer";
+        button.innerHTML = "<strong>&nbsp;>&nbsp;</strong>";
+        button.onselectstart = function () { return false; };
+        button.onclick = function () { self.next(); return false; };
+        if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
+            button.ondblclick = function () { self.next(); };
+        }
+        data.appendChild(button);
+
+        row.appendChild(data);
+        data.style.textAlign = "center";
+        var data = document.createElement("td");
+        data.onclick = materia_onclick_add;
+        data.innerHTML = "<strong>+</strong>";
+        data.style.cursor="pointer";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
+        row.appendChild(data);
+        self.materias_tbody.appendChild(row);
+    }
 
     self.turmas_list   = document.getElementById(turmas_list);
 
