@@ -107,6 +107,7 @@ function Combobox(input, suggestions, logger, lista)
                 self.suggestions.style.display = "none";
             }
             self.lista.adicionar(self.input.value);
+            self.input.focus();
         }
     };
     function suggestions_onreadystatechange()
@@ -410,7 +411,7 @@ function Lista(materias_list, turmas_list, logger, horario)
 
     function clear_cell(data, graphic)
     {
-        graphic.innerHTML = "&nbsp";
+        graphic.innerHTML = "&nbsp;";
         graphic.style.backgroundColor = "white";
         graphic.style.border = "1px solid black";
         graphic.style.color = "black";
@@ -784,21 +785,34 @@ function Lista(materias_list, turmas_list, logger, horario)
                 }
             };
             data.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
-            var pp = document.createElement("button");
-            pp.innerHTML = "< ";
-            pp.onclick = self.previous;
-            data.appendChild(pp);
+            var button = document.createElement("span");
+            button.style.border = "1px solid black";
+            button.style.backgroundColor = "lightblue";
+            button.style.cursor = "pointer";
+            button.innerHTML = "<strong>&nbsp;<&nbsp;</strong>";
+            button.onselectstart = function () { return false; };
+            button.onclick = function () { self.previous(); return false; };
+            if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
+                button.ondblclick = self.previous;
+            }
+            data.appendChild(button);
+            data.appendChild(document.createTextNode(" "));
             data.appendChild(self.selecao_atual);
             data.appendChild(document.createTextNode("/"));
             self.numero_selecoes = document.createTextNode("0");
             data.appendChild(self.numero_selecoes);
-            var nn = document.createElement("button");
-            nn.innerHTML = "> ";
-            nn.onclick = self.next;
+            data.appendChild(document.createTextNode(" "));
+            var button = document.createElement("span");
+            button.style.border = "1px solid black";
+            button.style.backgroundColor = "lightblue";
+            button.style.cursor = "pointer";
+            button.innerHTML = "<strong>&nbsp;>&nbsp;</strong>";
+            button.onselectstart = function () { return false; };
+            button.onclick = function () { self.next(); return false; };
             if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
-                nn.ondblclick = self.next;
+                button.ondblclick = self.next;
             }
-            data.appendChild(nn);
+            data.appendChild(button);
 
             row.appendChild(data);
             data.style.textAlign = "center";
@@ -977,7 +991,7 @@ function Horario(horario)
         for (var i = 0; i < dias.length; i++) {
             var data = document.createElement("td");
             data.className = "aula";
-            data.innerHTML = "&nbsp";
+            data.innerHTML = "&nbsp;";
             self.array[i][j] = data;
             row.appendChild(data);
         }
