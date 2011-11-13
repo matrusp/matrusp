@@ -675,6 +675,9 @@ function Lista(materias_list, turmas_list, logger, horario)
         });
     })();
 
+    function materia_onclick_add()
+    {
+    }
     function materia_onclick_remove()
     {
         var codigo = this.parentNode.getElementsByTagName("td")[0].innerHTML;
@@ -823,7 +826,11 @@ function Lista(materias_list, turmas_list, logger, horario)
             row.appendChild(data);
             data.style.textAlign = "center";
             var data = document.createElement("td");
+            data.onclick = materia_onclick_add;
+            data.innerHTML = "<strong>+</strong>";
+            data.style.cursor="pointer";
             data.style.width = "15px";
+            data.style.textAlign = "center";
             row.appendChild(data);
             self.materias_tbody.appendChild(row);
         }
