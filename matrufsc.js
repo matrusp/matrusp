@@ -613,10 +613,12 @@ function Lista(materias_list, turmas_list, logger, horario)
                         ok3 = 1;
                     }
                     if (!ok2) {
+                        if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
                         console.log("choque de horario, horario nao pode ser adicionado em nenhuma combinacao");
                     }
                 }
                 if (!ok3) {
+                    if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
                     console.log("choque de horario, materia ", materia.codigo, " nao pode ser adicionado em nenhuma combinacao");
                     deselecionadas[materia.codigo] = materia;
                     /* TODO dar essa informacao ao usuario */
