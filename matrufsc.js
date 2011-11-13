@@ -853,6 +853,14 @@ function Lista(materias_list, turmas_list, logger, horario)
         row.appendChild(data);
         var data = document.createElement("td");
 
+        var t2 = document.createElement("table");
+        t2.cellPadding="0";
+        t2.cellSpacing="0";
+        t2.style.width="100%";
+        var tb2 = document.createElement("tbody");
+        var r2  = document.createElement("tr");
+        var d2 = document.createElement("td");
+        d2.style.textAlign = "center";
         self.selecao_atual = document.createElement("input");
         self.selecao_atual.style.fontFamily = "monospace";
         self.selecao_atual.style.fontSize   = "11px";
@@ -869,7 +877,7 @@ function Lista(materias_list, turmas_list, logger, horario)
                 display_combinacao(this.value - 1);
             }
         };
-        data.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
+        d2.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
         var button = document.createElement("span");
         button.style.MozUserSelect = "none";
         button.style.KhtmlUserSelect = "none";
@@ -882,13 +890,13 @@ function Lista(materias_list, turmas_list, logger, horario)
         if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
             button.ondblclick = function () { self.previous(); };
         }
-        data.appendChild(button);
-        data.appendChild(document.createTextNode(" "));
-        data.appendChild(self.selecao_atual);
-        data.appendChild(document.createTextNode("/"));
+        d2.appendChild(button);
+        d2.appendChild(document.createTextNode(" "));
+        d2.appendChild(self.selecao_atual);
+        d2.appendChild(document.createTextNode("/"));
         self.numero_selecoes = document.createTextNode("0");
-        data.appendChild(self.numero_selecoes);
-        data.appendChild(document.createTextNode(" "));
+        d2.appendChild(self.numero_selecoes);
+        d2.appendChild(document.createTextNode(" "));
         var button = document.createElement("span");
         button.style.MozUserSelect = "none";
         button.style.KhtmlUserSelect = "none";
@@ -901,10 +909,22 @@ function Lista(materias_list, turmas_list, logger, horario)
         if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
             button.ondblclick = function () { self.next(); };
         }
-        data.appendChild(button);
+        d2.appendChild(button);
+
+        r2.appendChild(d2);
+        var d2 = document.createElement("td");
+        d2.style.textAlign = "right";
+        d2.style.width="250px";
+        d2.style.fontFamily = "monospace";
+        d2.style.fontSize = "13px";
+        d2.innerHTML = "crie atividades aqui >>>>";
+
+        r2.appendChild(d2);
+        tb2.appendChild(r2);
+        t2.appendChild(tb2);
+        data.appendChild(t2);
 
         row.appendChild(data);
-        data.style.textAlign = "center";
         var data = document.createElement("td");
         data.onclick = materia_onclick_add;
         data.innerHTML = "<strong>+</strong>";
