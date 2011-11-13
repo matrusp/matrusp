@@ -991,7 +991,6 @@ function Horario(horario)
     self.horario = document.getElementById(horario);
 
     self.horario.style.border = "1px solid black";
-    self.horario.style.width  = "100%";
 
     self.array = new Array();
     for (var i = 0; i < 6; i++) {
