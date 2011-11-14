@@ -420,8 +420,6 @@ function Lista(materias_list, turmas_list, logger, horario)
             graphic.innerHTML = innerHTML;
             graphic.style.backgroundColor = data.horario.materia.cor;
             graphic.style.color = "black";
-//if (data.fixed)
-//    graphic.style.border = "2px solid black";
         } else {
             clear_cell(data, graphic);
         }
