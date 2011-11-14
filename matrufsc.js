@@ -268,33 +268,9 @@ function Lista(materias_list, turmas_list, logger, horario)
 
         self.displaying_turma = turma;
     }
-    function normal_cell(d)
-    {
-        var c = new Object();
-        c.strong  = d.fixed;
-        c.text    = d.horario.materia.codigo;
-        c.bgcolor = d.horario.materia.cor;
-        c.color   = "black";
-        return c;
-    }
-    function red_cell(str)
-    {
-        var c = new Object();
-        c.strong  = true;
-        c.text    = str;
-        c.bgcolor = "red";
-        c.color   = "black";
-        return c;
-    }
-    function black_cell(str)
-    {
-        var c = new Object();
-        c.strong  = false;
-        c.text    = str;
-        c.bgcolor = "black";
-        c.color   = "white";
-        return c;
-    }
+    function normal_cell(d)  { return {strong:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
+    function red_cell(str)   { return {strong:true,text:str,bgcolor:"red",color:"black"}; }
+    function black_cell(str) { return {strong:false,text:str,bgcolor:"black",color:"white"}; }
     function undisplay_turma(turma)
     {
         var c       = self.combinacoes[self.combinacao_atual];
