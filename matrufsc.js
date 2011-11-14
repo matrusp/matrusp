@@ -272,6 +272,15 @@ function Lista(materias_list, turmas_list, logger, horario)
 
         self.displaying_turma = turma;
     }
+    function normal_cell(d)
+    {
+        var c = new Object();
+        c.strong  = d.fixed;
+        c.text    = d.horario.materia.codigo;
+        c.bgcolor = d.horario.materia.cor;
+        c.color   = "black";
+        return c;
+    }
     function undisplay_turma(turma)
     {
         var c       = self.combinacoes[self.combinacao_atual];
@@ -291,7 +300,7 @@ function Lista(materias_list, turmas_list, logger, horario)
                 var n    = turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
                     if (c[dia][hora+j] && c[dia][hora+j].horario)
-                        self.horario.display_cell(dia, hora+j, c[dia][hora+j]);
+                        self.horario.display_cell(dia, hora+j, normal_cell(c[dia][hora+j]));
                     else
                         self.horario.clear_cell(dia, hora+j);
                 }
@@ -304,7 +313,7 @@ function Lista(materias_list, turmas_list, logger, horario)
                 var hora = current_turma.aulas[i].hora;
                 var n    = current_turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
-                    self.horario.display_cell(dia, hora+j, c[dia][hora+j]);
+                    self.horario.display_cell(dia, hora+j, normal_cell(c[dia][hora+j]));
                 }
             }
         }
@@ -420,7 +429,7 @@ function Lista(materias_list, turmas_list, logger, horario)
         for (var dia = 0; dia < 6; dia++) {
             for (var hora = 0; hora < 14; hora++) {
                 if (c[dia][hora] && c[dia][hora].horario)
-                    self.horario.display_cell(dia, hora, c[dia][hora]);
+                    self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
                 else
                     self.horario.clear_cell(dia, hora);
             }

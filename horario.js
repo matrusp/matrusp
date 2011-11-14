@@ -64,14 +64,14 @@ function Horario(horario)
     self.display_cell = function (dia, hora, data) {
         var cell = self.array[dia][hora];
         var innerHTML = new String();
-        if (data.fixed)
+        if (data.strong)
             innerHTML += "<strong>";
-        innerHTML += data.horario.materia.codigo;
-        if (data.fixed)
+        innerHTML += data.text;
+        if (data.strong)
             innerHTML += "</strong>";
         cell.innerHTML = innerHTML;
-        cell.style.backgroundColor = data.horario.materia.cor;
-        cell.style.color = "black";
+        cell.style.backgroundColor = data.bgcolor;
+        cell.style.color = data.color;
     }
     self.height = function () {
         return horario.offsetHeight;
