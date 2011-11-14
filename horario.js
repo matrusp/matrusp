@@ -62,20 +62,16 @@ function Horario(horario)
         cell.style.color = "black";
     }
     self.display_cell = function (dia, hora, data) {
-        if (data && data.horario) {
-            var cell = self.array[dia][hora];
-            var innerHTML = new String();
-            if (data.fixed)
-                innerHTML += "<strong>";
-            innerHTML += data.horario.materia.codigo;
-            if (data.fixed)
-                innerHTML += "</strong>";
-            cell.innerHTML = innerHTML;
-            cell.style.backgroundColor = data.horario.materia.cor;
-            cell.style.color = "black";
-        } else {
-            self.clear_cell(dia, hora);
-        }
+        var cell = self.array[dia][hora];
+        var innerHTML = new String();
+        if (data.fixed)
+            innerHTML += "<strong>";
+        innerHTML += data.horario.materia.codigo;
+        if (data.fixed)
+            innerHTML += "</strong>";
+        cell.innerHTML = innerHTML;
+        cell.style.backgroundColor = data.horario.materia.cor;
+        cell.style.color = "black";
     }
     self.height = function () {
         return horario.offsetHeight;

@@ -290,7 +290,10 @@ function Lista(materias_list, turmas_list, logger, horario)
                 var hora = turma.aulas[i].hora;
                 var n    = turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
-                    self.horario.display_cell(dia, hora+j, c[dia][hora+j]);
+                    if (c[dia][hora+j] && c[dia][hora+j].horario)
+                        self.horario.display_cell(dia, hora+j, c[dia][hora+j]);
+                    else
+                        self.horario.clear_cell(dia, hora+j);
                 }
             }
         }
@@ -416,7 +419,10 @@ function Lista(materias_list, turmas_list, logger, horario)
         }
         for (var dia = 0; dia < 6; dia++) {
             for (var hora = 0; hora < 14; hora++) {
-                self.horario.display_cell(dia, hora, c[dia][hora]);
+                if (c[dia][hora] && c[dia][hora].horario)
+                    self.horario.display_cell(dia, hora, c[dia][hora]);
+                else
+                    self.horario.clear_cell(dia, hora);
             }
         }
         for (var i in c.horarios_combo) {
