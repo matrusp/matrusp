@@ -36,4 +36,6 @@ function Logger(logger)
         self.updatesearch();
         self.logger.style.backgroundColor = "lightyellow";
     }
+
+    self.reset();
 }

@@ -1128,6 +1128,4 @@ window.onload = function() {
     }
 
     dconsole = document.getElementById("dconsole");
-
-    logger.reset();
 }
