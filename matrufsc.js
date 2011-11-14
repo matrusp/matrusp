@@ -722,7 +722,9 @@ window.onload = function() {
     var horario = new Horario("horario");
     var ui_combinacoes = new UI_combinacoes();
     var lista   = new Lista("materias_list", "turmas_list", ui_logger, horario, ui_combinacoes);
-    var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger, lista.adicionar);
+    var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
+
+    combo.adicionar = lista.adicionar;
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;

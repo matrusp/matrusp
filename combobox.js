@@ -1,4 +1,4 @@
-function Combobox(input, suggestions, ui_logger, adicionar)
+function Combobox(input, suggestions, ui_logger)
 {
     var lastfetch  = new String();
 
@@ -57,7 +57,7 @@ function Combobox(input, suggestions, ui_logger, adicionar)
             li.onmouseup   = function() {
                 deselect_item();
                 self.input.value = this.innerHTML.split(" ")[0];
-                adicionar(self.input.value);
+                self.adicionar(self.input.value);
                 self.suggestions.style.display = "none";
                 self.input.blur();
             };
@@ -105,7 +105,7 @@ function Combobox(input, suggestions, ui_logger, adicionar)
                 deselect_item();
                 self.suggestions.style.display = "none";
             }
-            adicionar(self.input.value);
+            self.adicionar(self.input.value);
             self.input.focus();
         }
     };
@@ -164,4 +164,7 @@ function Combobox(input, suggestions, ui_logger, adicionar)
             self.suggestions.style.display = "none";
         }
     };
+
+    /* callbacks */
+    self.adicionar = null;
 }
