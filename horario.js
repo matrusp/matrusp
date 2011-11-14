@@ -9,9 +9,9 @@ function Horario(horario)
 
     horario.style.border = "1px solid black";
 
-    self.array = new Array();
+    array = new Array();
     for (var i = 0; i < 6; i++) {
-        self.array[i] = new Array();
+        array[i] = new Array();
     }
 
     self.table = document.createElement("table");
@@ -40,7 +40,7 @@ function Horario(horario)
             var data = document.createElement("td");
             data.className = "aula";
             data.innerHTML = "&nbsp;";
-            self.array[i][j] = data;
+            array[i][j] = data;
             row.appendChild(data);
         }
         self.tbody.appendChild(row);
@@ -55,14 +55,14 @@ function Horario(horario)
                 self.clear_cell(dia, hora);
     }
     self.clear_cell = function (dia, hora) {
-        var cell = self.array[dia][hora];
+        var cell = array[dia][hora];
         cell.innerHTML = "&nbsp;";
         cell.style.backgroundColor = "white";
         cell.style.border = "1px solid black";
         cell.style.color = "black";
     }
     self.display_cell = function (dia, hora, data) {
-        var cell = self.array[dia][hora];
+        var cell = array[dia][hora];
         var innerHTML = new String();
         if (data.strong)
             innerHTML += "<strong>";
