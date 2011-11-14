@@ -1,11 +1,11 @@
-function Horario(horario)
+function Horario(id)
 {
     var self = this;
     var dias  = [ "Segunda", "Ter\u00e7a", "Quarta", "Quinta", "Sexta", "S\u00e1bado" ];
     var horas = [ "07:30", "08:20", "09:10", "10:10", "11:00",
                   "13:30", "14:20", "15:10", "16:20", "17:10",
                   "18:30", "19:20", "20:20", "21:10"];
-    var horario = document.getElementById(horario);
+    var horario = document.getElementById(id);
 
     horario.style.border = "1px solid black";
 
