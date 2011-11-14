@@ -1,8 +1,6 @@
-function Lista(materias_list, turmas_list, logger, horario)
+function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
 {
     var self = this;
-    var selecao_atual;
-    var numero_selecoes;
 
     self.logger = logger;
 
@@ -246,8 +244,8 @@ function Lista(materias_list, turmas_list, logger, horario)
             self.materias[t.materia.codigo].row.getElementsByTagName("td")[1].innerHTML = t.turma;
         }
         self.combinacao_atual = cc;
-        self.selecao_atual.value = cc + 1;
-        self.numero_selecoes.nodeValue = self.combinacoes.length;
+        ui_combinacoes.set_atual(cc+1);
+        ui_combinacoes.set_total(self.combinacoes.length);
     }
     function valor_combinacao(c) {
         var sum = 0;
@@ -635,59 +633,7 @@ function Lista(materias_list, turmas_list, logger, horario)
         t2.style.width="100%";
         var tb2 = document.createElement("tbody");
         var r2  = document.createElement("tr");
-        var d2 = document.createElement("td");
-        d2.style.textAlign = "center";
-        self.selecao_atual = document.createElement("input");
-        self.selecao_atual.style.fontFamily = "monospace";
-        self.selecao_atual.style.fontSize   = "11px";
-        self.selecao_atual.style.width      = "30px";
-        self.selecao_atual.style.height     = "13px";
-        self.selecao_atual.value = 0;
-        self.selecao_atual.onchange = function() {
-            if (!self.combinacoes || !self.combinacoes.length)
-                return;
-            if (this.value < 1 || this.value > self.combinacoes.length) {
-                self.logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
-            } else {
-                self.logger.reset();
-                display_combinacao(this.value - 1);
-            }
-        };
-        d2.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
-        var button = document.createElement("span");
-        button.style.MozUserSelect = "none";
-        button.style.KhtmlUserSelect = "none";
-        button.style.border = "1px solid black";
-        button.style.backgroundColor = "lightblue";
-        button.style.cursor = "pointer";
-        button.innerHTML = "<strong>&nbsp;<&nbsp;</strong>";
-        button.onselectstart = function () { return false; };
-        button.onclick = function () { self.previous(); return false; };
-        if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
-            button.ondblclick = function () { self.previous(); };
-        }
-        d2.appendChild(button);
-        d2.appendChild(document.createTextNode(" "));
-        d2.appendChild(self.selecao_atual);
-        d2.appendChild(document.createTextNode("/"));
-        self.numero_selecoes = document.createTextNode("0");
-        d2.appendChild(self.numero_selecoes);
-        d2.appendChild(document.createTextNode(" "));
-        var button = document.createElement("span");
-        button.style.MozUserSelect = "none";
-        button.style.KhtmlUserSelect = "none";
-        button.style.border = "1px solid black";
-        button.style.backgroundColor = "lightblue";
-        button.style.cursor = "pointer";
-        button.innerHTML = "<strong>&nbsp;>&nbsp;</strong>";
-        button.onselectstart = function () { return false; };
-        button.onclick = function () { self.next(); return false; };
-        if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
-            button.ondblclick = function () { self.next(); };
-        }
-        d2.appendChild(button);
-
-        r2.appendChild(d2);
+        r2.appendChild(ui_combinacoes.get_td());
         var d2 = document.createElement("td");
         d2.style.textAlign = "right";
         d2.style.width="250px";
@@ -755,13 +701,29 @@ function Lista(materias_list, turmas_list, logger, horario)
         }
         return ret;
     }
+
+    /* UI_combinacoes */
+    ui_combinacoes.changed = function(val) {
+        if (!self.combinacoes || !self.combinacoes.length)
+            return;
+        var int = parseInt(val);
+        if (int.toString() == val && val >= 1 && val <= self.combinacoes.length) {
+            self.logger.reset();
+            display_combinacao(val - 1);
+        } else {
+            self.logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
+        }
+    };
+    ui_combinacoes.previous = self.previous;
+    ui_combinacoes.next = self.next;
 }
 
 window.onload = function() {
     dconsole = new Dconsole("dconsole");
     var logger  = new Logger("logger");
     var horario = new Horario("horario");
-    var lista   = new Lista("materias_list", "turmas_list", logger, horario);
+    var ui_combinacoes = new UI_combinacoes();
+    var lista   = new Lista("materias_list", "turmas_list", logger, horario, ui_combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista.adicionar);
 
     document.onkeydown = function(e) {
