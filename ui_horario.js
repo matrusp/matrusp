@@ -14,8 +14,8 @@ function Horario(horario)
         array[i] = new Array();
     }
 
-    self.table = document.createElement("table");
-    self.thead = document.createElement("thead");
+    var table = document.createElement("table");
+    var thead = document.createElement("thead");
 
     var row = document.createElement("tr");
     row.appendChild(document.createElement("th"));
@@ -25,11 +25,11 @@ function Horario(horario)
         head.innerHTML = dias[i];
         row.appendChild(head);
     }
-    self.thead.appendChild(row);
+    thead.appendChild(row);
 
-    self.table.appendChild(self.thead);
+    table.appendChild(thead);
 
-    self.tbody = document.createElement("tbody");
+    var tbody = document.createElement("tbody");
     for (var j = 0; j < horas.length; j++) {
         var row = document.createElement("tr");
         var hora = document.createElement("td");
@@ -43,12 +43,13 @@ function Horario(horario)
             array[i][j] = data;
             row.appendChild(data);
         }
-        self.tbody.appendChild(row);
+        tbody.appendChild(row);
     }
 
-    self.table.appendChild(self.tbody);
-    horario.appendChild(self.table);
+    table.appendChild(tbody);
+    horario.appendChild(table);
 
+    /* offers */
     self.reset = function () {
         for (var dia = 0; dia < 6; dia++)
             for (var hora = 0; hora < 14; hora++)
