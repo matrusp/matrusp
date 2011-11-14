@@ -1,8 +1,6 @@
-function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
+function Lista(materias_list, turmas_list, ui_logger, horario, ui_combinacoes)
 {
     var self = this;
-
-    self.logger = logger;
 
     function criar_aulas(horarios)
     {
@@ -86,7 +84,7 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
 
         map_turma(turma, c, function(c, dia, hora) {
             if (c && c[dia][hora] && c[dia][hora].horario.materia != materia) {
-                self.logger.set_text("choque de horario", "lightcoral");
+                ui_logger.set_text("choque de horario", "lightcoral");
                 self.horario.display_cell(dia, hora, red_cell(materia.codigo));
             } else {
                 self.horario.display_cell(dia, hora, black_cell(materia.codigo));
@@ -123,7 +121,7 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
                 self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
             });
 
-        self.logger.reset();
+        ui_logger.reset();
 
         self.displaying_turma = "";
     }
@@ -467,7 +465,7 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
 
         display_combinacao(0);
 
-        self.logger.set_text("'" + codigo + "' removida", "lightgreen");
+        ui_logger.set_text("'" + codigo + "' removida", "lightgreen");
     }
     function materia_onclick()
     {
@@ -480,7 +478,7 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
         var split = array[0].split("\t");
 
         if (self.materias[split[0]]) {
-            self.logger.set_text("'" + split[0] + "' ja foi adicionada", "lightcoral");
+            ui_logger.set_text("'" + split[0] + "' ja foi adicionada", "lightcoral");
             return;
         }
 
@@ -554,7 +552,7 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
 
         display_combinacao(0);
 
-        self.logger.set_text("'" + materia.codigo + "' adicionada", "lightgreen");
+        ui_logger.set_text("'" + materia.codigo + "' adicionada", "lightgreen");
 
 //console.log(self.salvar());
     }
@@ -570,7 +568,7 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
                 if (str.length > 0) {
                     list_add_item(str);
                 } else {
-                    self.logger.set_text("'" + self.full + "' nao adicionada", "lightcoral");
+                    ui_logger.set_text("'" + self.full + "' nao adicionada", "lightcoral");
                 }
             }
             this.available = true;
@@ -594,7 +592,7 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
     {
         full_request(materia);
         self.full = materia;
-        self.logger.waiting("buscando '" + materia + "'");
+        ui_logger.waiting("buscando '" + materia + "'");
     }
 
     self.horario = horario;
@@ -708,10 +706,10 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
             return;
         var int = parseInt(val);
         if (int.toString() == val && val >= 1 && val <= self.combinacoes.length) {
-            self.logger.reset();
+            ui_logger.reset();
             display_combinacao(val - 1);
         } else {
-            self.logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
+            ui_logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
         }
     };
     ui_combinacoes.previous = self.previous;
@@ -720,11 +718,11 @@ function Lista(materias_list, turmas_list, logger, horario, ui_combinacoes)
 
 window.onload = function() {
     dconsole = new Dconsole("dconsole");
-    var logger  = new Logger("logger");
+    var ui_logger      = new UI_logger("logger");
     var horario = new Horario("horario");
     var ui_combinacoes = new UI_combinacoes();
-    var lista   = new Lista("materias_list", "turmas_list", logger, horario, ui_combinacoes);
-    var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista.adicionar);
+    var lista   = new Lista("materias_list", "turmas_list", ui_logger, horario, ui_combinacoes);
+    var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger, lista.adicionar);
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;

@@ -1,4 +1,4 @@
-function Combobox(input, suggestions, logger, adicionar)
+function Combobox(input, suggestions, ui_logger, adicionar)
 {
     var lastfetch  = new String();
 
@@ -32,7 +32,6 @@ function Combobox(input, suggestions, logger, adicionar)
     self.color_1 = "#eeeeee";
     self.input       = document.getElementById(input);
     self.suggestions = document.getElementById(suggestions);
-    self.logger      = logger;
     self.suggestions.className = "combobox";
     self.mouseisdown = false;
 
@@ -126,13 +125,13 @@ function Combobox(input, suggestions, logger, adicionar)
                 } else {
                     v = n + " vezes";
                 }
-                self.logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
+                ui_logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
             } else {
                 self.suggestions.innerHTML = "";
                 self.selected_item = -1;
                 self.n_items = 0;
                 self.suggestions.style.display = "none";
-                self.logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
+                ui_logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
             }
         }
     }
@@ -155,7 +154,7 @@ function Combobox(input, suggestions, logger, adicionar)
                 fetch_request.send(null);
                 self.fetch = fetch;
                 self.pontos = new String();
-                self.logger.waiting("procurando '" + fetch + "'");
+                ui_logger.waiting("procurando '" + fetch + "'");
                 lastfetch = fetch;
             }
         } else {

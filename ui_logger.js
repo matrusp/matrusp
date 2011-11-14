@@ -1,10 +1,10 @@
-function Logger(logger)
+function UI_logger(id)
 {
     var self = this;
 
-    self.logger = document.getElementById(logger).parentNode;
-    self.logger.style.fontFamily = "monospace";
-    self.logger.style.fontSize   = "13px";
+    var ui_logger = document.getElementById(id).parentNode;
+    ui_logger.style.fontFamily = "monospace";
+    ui_logger.style.fontSize   = "13px";
     self.stop      = function() {
         if (self.timer) {
             clearTimeout(self.timer);
@@ -13,20 +13,20 @@ function Logger(logger)
     }
     self.reset     = function () {
         self.stop();
-        self.logger.innerHTML = "&lt;&lt;&lt;&lt; adicione materias aqui";
-        self.logger.style.backgroundColor = "#eeeeee";
+        ui_logger.innerHTML = "&lt;&lt;&lt;&lt; adicione materias aqui";
+        ui_logger.style.backgroundColor = "#eeeeee";
     };
     self.set_text  = function(str, color) {
         self.stop();
-        self.logger.innerHTML = str;
-        self.logger.style.backgroundColor = color;
+        ui_logger.innerHTML = str;
+        ui_logger.style.backgroundColor = color;
         self.timer = setTimeout((function(t){return function(){t.reset();}})(self), 5000);
     }
     self.updatesearch = function() {
         self.pontos += ".";
         if (self.pontos == "....")
             self.pontos = ".";
-        self.logger.innerHTML = self.str + self.pontos;
+        ui_logger.innerHTML = self.str + self.pontos;
         self.timer = setTimeout((function(t){return function(){t.updatesearch();}})(self), 200);
     }
     self.waiting = function(str) {
@@ -34,7 +34,7 @@ function Logger(logger)
         self.stop();
         self.pontos = "";
         self.updatesearch();
-        self.logger.style.backgroundColor = "lightyellow";
+        ui_logger.style.backgroundColor = "lightyellow";
     }
 
     self.reset();
