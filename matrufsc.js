@@ -899,8 +899,8 @@ function Lista(materias_list, turmas_list, logger, horario)
 
     self.turmas_list.style.border = "1px solid black";
     self.turmas_list.style.width  = "330px";
-    self.turmas_list.style.height    = (self.horario.horario.offsetHeight-2) + "px";
-    self.turmas_list.style.maxHeight = (self.horario.horario.offsetHeight-2) + "px";
+    self.turmas_list.style.height    = (self.horario.height()-2) + "px";
+    self.turmas_list.style.maxHeight = (self.horario.height()-2) + "px";
 
     self.materias = new Object();
     self.selected_materia = "";
