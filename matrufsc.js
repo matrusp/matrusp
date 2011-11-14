@@ -280,7 +280,7 @@ function Lista(materias_list, turmas_list, logger, horario)
 
         if (!c) {
             self.displaying_turma = "";
-            reset();
+            self.horario.reset();
             return;
         }
 
@@ -424,18 +424,6 @@ function Lista(materias_list, turmas_list, logger, horario)
             clear_cell(data, graphic);
         }
     }
-    function reset()
-    {
-        for (var dia = 0; dia < 6; dia++) {
-            for (var hora = 0; hora < 14; hora++) {
-                var graphic = self.horario.array[dia][hora];
-                graphic.innerHTML = "";
-                graphic.style.backgroundColor = "white";
-                graphic.style.border = "1px solid black";
-                graphic.style.color = "black";
-            }
-        }
-    }
     function display_combinacao(cc)
     {
         if (self.deselecionadas) {
@@ -447,7 +435,7 @@ function Lista(materias_list, turmas_list, logger, horario)
 
         var c = self.combinacoes[cc];
         if (!c) {
-            reset();
+            self.horario.reset();
             return;
         }
         for (var dia = 0; dia < 6; dia++) {
@@ -1021,6 +1009,18 @@ function Horario(horario)
 
     self.table.appendChild(self.tbody);
     self.horario.appendChild(self.table);
+
+    self.reset = function () {
+        for (var dia = 0; dia < 6; dia++) {
+            for (var hora = 0; hora < 14; hora++) {
+                var graphic = self.array[dia][hora];
+                graphic.innerHTML = "";
+                graphic.style.backgroundColor = "white";
+                graphic.style.border = "1px solid black";
+                graphic.style.color = "black";
+            }
+        }
+    }
 }
 
 window.onload = function() {
