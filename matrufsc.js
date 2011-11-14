@@ -259,13 +259,9 @@ function Lista(materias_list, turmas_list, logger, horario)
             for (var j = 0; j < n; j++) {
                 if (c && c[dia][hora+j] && c[dia][hora+j].horario.materia != materia) {
                     self.logger.set_text("choque de horario", "lightcoral");
-                    self.horario.array[dia][hora+j].innerHTML = "<strong>" + materia.codigo + "</strong>";
-                    self.horario.array[dia][hora+j].style.backgroundColor = "black";
-                    self.horario.array[dia][hora+j].style.color = "red";
+                    self.horario.display_cell(dia, hora+j, red_cell(materia.codigo));
                 } else {
-                    self.horario.array[dia][hora+j].innerHTML = materia.codigo;
-                    self.horario.array[dia][hora+j].style.backgroundColor = "black";
-                    self.horario.array[dia][hora+j].style.color = "white";
+                    self.horario.display_cell(dia, hora+j, black_cell(materia.codigo));
                 }
             }
         }
@@ -279,6 +275,24 @@ function Lista(materias_list, turmas_list, logger, horario)
         c.text    = d.horario.materia.codigo;
         c.bgcolor = d.horario.materia.cor;
         c.color   = "black";
+        return c;
+    }
+    function red_cell(str)
+    {
+        var c = new Object();
+        c.strong  = true;
+        c.text    = str;
+        c.bgcolor = "red";
+        c.color   = "black";
+        return c;
+    }
+    function black_cell(str)
+    {
+        var c = new Object();
+        c.strong  = false;
+        c.text    = str;
+        c.bgcolor = "black";
+        c.color   = "white";
         return c;
     }
     function undisplay_turma(turma)
