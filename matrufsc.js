@@ -1025,39 +1025,8 @@ function Horario(horario)
     self.horario.appendChild(self.table);
 }
 
-var dconsoletext = new String();
-var dconsole;
-
-function hexdump(prefix, str)
-{
-    var hexstring = prefix + ": ";
-    for (var i = 0; i < str.length; i++)
-        hexstring += "0x" + str.charCodeAt(i).toString(16) + " ";
-    hexstring += "\n";
-    dprintf(hexstring);
-}
-function dprintf(str)
-{
-    var innerHTML = new String();
-    var newstr = new String();
-    var split = dconsoletext.split("\n");
-    var n = split.length;
-    var offset = n - 10;
-
-    if (offset < 0)
-        offset = 0;
-
-    for (var i = 0; i < 8 && i < n-2; i++) {
-        newstr += split[i+offset] + "\n";
-        innerHTML += split[i+offset] + "<br>";
-    }
-    innerHTML += str + "<br>";
-    newstr += str + "\n";
-    dconsoletext = newstr;
-    dconsole.innerHTML = innerHTML;
-}
-
 window.onload = function() {
+    dconsole = new Dconsole("dconsole");
     var logger  = new Logger("logger");
     var horario = new Horario("horario");
     var lista   = new Lista("materias_list", "turmas_list", logger, horario);
@@ -1126,6 +1095,4 @@ window.onload = function() {
     lista.adicionar("FSC5164");
     lista.adicionar("MTM5185");
     }
-
-    dconsole = document.getElementById("dconsole");
 }
