@@ -247,7 +247,7 @@ function Lista(materias_list, turmas_list, logger, horario)
                 var hora = current_turma.aulas[i].hora;
                 var n    = current_turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
-                    clear_cell(self.horario.array[dia][hora+j]);
+                    self.horario.clear_cell(dia, hora+j);
                 }
             }
         }
@@ -290,7 +290,7 @@ function Lista(materias_list, turmas_list, logger, horario)
                 var hora = turma.aulas[i].hora;
                 var n    = turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
-                    display_cell(c[dia][hora+j], self.horario.array[dia][hora+j]);
+                    self.horario.display_cell(dia, hora+j, c[dia][hora+j]);
                 }
             }
         }
@@ -301,7 +301,7 @@ function Lista(materias_list, turmas_list, logger, horario)
                 var hora = current_turma.aulas[i].hora;
                 var n    = current_turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
-                    display_cell(c[dia][hora+j], self.horario.array[dia][hora+j]);
+                    self.horario.display_cell(dia, hora+j, c[dia][hora+j]);
                 }
             }
         }
@@ -400,30 +400,6 @@ function Lista(materias_list, turmas_list, logger, horario)
 
         self.selected_materia = materia;
     }
-
-    function clear_cell(graphic)
-    {
-        graphic.innerHTML = "&nbsp;";
-        graphic.style.backgroundColor = "white";
-        graphic.style.border = "1px solid black";
-        graphic.style.color = "black";
-    }
-    function display_cell(data, graphic)
-    {
-        if (data && data.horario) {
-            var innerHTML = new String();
-            if (data.fixed)
-                innerHTML += "<strong>";
-            innerHTML += data.horario.materia.codigo;
-            if (data.fixed)
-                innerHTML += "</strong>";
-            graphic.innerHTML = innerHTML;
-            graphic.style.backgroundColor = data.horario.materia.cor;
-            graphic.style.color = "black";
-        } else {
-            clear_cell(graphic);
-        }
-    }
     function display_combinacao(cc)
     {
         if (self.deselecionadas) {
@@ -440,7 +416,7 @@ function Lista(materias_list, turmas_list, logger, horario)
         }
         for (var dia = 0; dia < 6; dia++) {
             for (var hora = 0; hora < 14; hora++) {
-                display_cell(c[dia][hora], self.horario.array[dia][hora]);
+                self.horario.display_cell(dia, hora, c[dia][hora]);
             }
         }
         for (var i in c.horarios_combo) {
@@ -1011,14 +987,31 @@ function Horario(horario)
     self.horario.appendChild(self.table);
 
     self.reset = function () {
-        for (var dia = 0; dia < 6; dia++) {
-            for (var hora = 0; hora < 14; hora++) {
-                var graphic = self.array[dia][hora];
-                graphic.innerHTML = "";
-                graphic.style.backgroundColor = "white";
-                graphic.style.border = "1px solid black";
-                graphic.style.color = "black";
-            }
+        for (var dia = 0; dia < 6; dia++)
+            for (var hora = 0; hora < 14; hora++)
+                self.clear_cell(dia, hora);
+    }
+    self.clear_cell = function (dia, hora) {
+        var cell = self.array[dia][hora];
+        cell.innerHTML = "&nbsp;";
+        cell.style.backgroundColor = "white";
+        cell.style.border = "1px solid black";
+        cell.style.color = "black";
+    }
+    self.display_cell = function (dia, hora, data) {
+        if (data && data.horario) {
+            var cell = self.array[dia][hora];
+            var innerHTML = new String();
+            if (data.fixed)
+                innerHTML += "<strong>";
+            innerHTML += data.horario.materia.codigo;
+            if (data.fixed)
+                innerHTML += "</strong>";
+            cell.innerHTML = innerHTML;
+            cell.style.backgroundColor = data.horario.materia.cor;
+            cell.style.color = "black";
+        } else {
+            self.clear_cell(dia, hora);
         }
     }
 }
