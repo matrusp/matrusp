@@ -1,4 +1,4 @@
-function Combobox(input, suggestions, logger, lista)
+function Combobox(input, suggestions, logger, adicionar)
 {
     var lastfetch  = new String();
 
@@ -58,7 +58,7 @@ function Combobox(input, suggestions, logger, lista)
             li.onmouseup   = function() {
                 deselect_item();
                 self.input.value = this.innerHTML.split(" ")[0];
-                self.lista.adicionar(self.input.value);
+                adicionar(self.input.value);
                 self.suggestions.style.display = "none";
                 self.input.blur();
             };
@@ -106,7 +106,7 @@ function Combobox(input, suggestions, logger, lista)
                 deselect_item();
                 self.suggestions.style.display = "none";
             }
-            self.lista.adicionar(self.input.value);
+            adicionar(self.input.value);
             self.input.focus();
         }
     };
@@ -165,8 +165,6 @@ function Combobox(input, suggestions, logger, lista)
             self.suggestions.style.display = "none";
         }
     };
-
-    self.lista = lista;
 }
 
 function Lista(materias_list, turmas_list, logger, horario)
@@ -933,7 +931,7 @@ window.onload = function() {
     var logger  = new Logger("logger");
     var horario = new Horario("horario");
     var lista   = new Lista("materias_list", "turmas_list", logger, horario);
-    var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista);
+    var combo   = new Combobox("materias_input", "materias_suggestions", logger, lista.adicionar);
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;
