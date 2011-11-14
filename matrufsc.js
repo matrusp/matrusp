@@ -247,7 +247,7 @@ function Lista(materias_list, turmas_list, logger, horario)
                 var hora = current_turma.aulas[i].hora;
                 var n    = current_turma.aulas[i].n;
                 for (var j = 0; j < n; j++) {
-                    clear_cell(c[dia][hora+j], self.horario.array[dia][hora+j]);
+                    clear_cell(self.horario.array[dia][hora+j]);
                 }
             }
         }
@@ -401,7 +401,7 @@ function Lista(materias_list, turmas_list, logger, horario)
         self.selected_materia = materia;
     }
 
-    function clear_cell(data, graphic)
+    function clear_cell(graphic)
     {
         graphic.innerHTML = "&nbsp;";
         graphic.style.backgroundColor = "white";
@@ -421,7 +421,7 @@ function Lista(materias_list, turmas_list, logger, horario)
             graphic.style.backgroundColor = data.horario.materia.cor;
             graphic.style.color = "black";
         } else {
-            clear_cell(data, graphic);
+            clear_cell(graphic);
         }
     }
     function display_combinacao(cc)
