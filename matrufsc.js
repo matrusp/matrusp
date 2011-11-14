@@ -232,6 +232,17 @@ function Lista(materias_list, turmas_list, logger, horario)
         undisplay_turma(turma);
         display_turma(turma);
     }
+    function map_turma(turma, priv, func)
+    {
+        for (var i = 0; i < turma.aulas.length; i++) {
+            var dia  = turma.aulas[i].dia;
+            var hora = turma.aulas[i].hora;
+            var n    = turma.aulas[i].n;
+            for (var j = 0; j < n; j++) {
+                func(priv, dia, hora+j);
+            }
+        }
+    }
     function display_turma(turma)
     {
         var c       = self.combinacoes[self.combinacao_atual];
@@ -241,30 +252,19 @@ function Lista(materias_list, turmas_list, logger, horario)
         if (turma == self.displaying_turma)
             return;
 
-        if (current_turma) {
-            for (var i = 0; i < current_turma.aulas.length; i++) {
-                var dia  = current_turma.aulas[i].dia;
-                var hora = current_turma.aulas[i].hora;
-                var n    = current_turma.aulas[i].n;
-                for (var j = 0; j < n; j++) {
-                    self.horario.clear_cell(dia, hora+j);
-                }
-            }
-        }
+        if (current_turma)
+            map_turma(current_turma, null, function(priv, dia, hora) {
+                self.horario.clear_cell(dia, hora);
+            });
 
-        for (var i = 0; i < turma.aulas.length; i++) {
-            var dia  = turma.aulas[i].dia;
-            var hora = turma.aulas[i].hora;
-            var n    = turma.aulas[i].n;
-            for (var j = 0; j < n; j++) {
-                if (c && c[dia][hora+j] && c[dia][hora+j].horario.materia != materia) {
-                    self.logger.set_text("choque de horario", "lightcoral");
-                    self.horario.display_cell(dia, hora+j, red_cell(materia.codigo));
-                } else {
-                    self.horario.display_cell(dia, hora+j, black_cell(materia.codigo));
-                }
+        map_turma(turma, c, function(c, dia, hora) {
+            if (c && c[dia][hora] && c[dia][hora].horario.materia != materia) {
+                self.logger.set_text("choque de horario", "lightcoral");
+                self.horario.display_cell(dia, hora, red_cell(materia.codigo));
+            } else {
+                self.horario.display_cell(dia, hora, black_cell(materia.codigo));
             }
-        }
+        });
 
         self.displaying_turma = turma;
     }
@@ -283,30 +283,18 @@ function Lista(materias_list, turmas_list, logger, horario)
             return;
         }
 
-        if (turma != current_turma) {
-            for (var i = 0; i < turma.aulas.length; i++) {
-                var dia  = turma.aulas[i].dia;
-                var hora = turma.aulas[i].hora;
-                var n    = turma.aulas[i].n;
-                for (var j = 0; j < n; j++) {
-                    if (c[dia][hora+j] && c[dia][hora+j].horario)
-                        self.horario.display_cell(dia, hora+j, normal_cell(c[dia][hora+j]));
-                    else
-                        self.horario.clear_cell(dia, hora+j);
-                }
-            }
-        }
+        if (turma != current_turma)
+            map_turma(turma, c, function(c, dia, hora) {
+                if (c[dia][hora] && c[dia][hora].horario)
+                    self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                else
+                    self.horario.clear_cell(dia, hora);
+            });
 
-        if (current_turma) {
-            for (var i = 0; i < current_turma.aulas.length; i++) {
-                var dia  = current_turma.aulas[i].dia;
-                var hora = current_turma.aulas[i].hora;
-                var n    = current_turma.aulas[i].n;
-                for (var j = 0; j < n; j++) {
-                    self.horario.display_cell(dia, hora+j, normal_cell(c[dia][hora+j]));
-                }
-            }
-        }
+        if (current_turma)
+            map_turma(current_turma, c, function(c, dia, hora) {
+                self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+            });
 
         self.logger.reset();
 
