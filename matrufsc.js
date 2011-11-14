@@ -272,10 +272,6 @@ function Lista(materias_list, turmas_list, logger, horario)
 
         self.displaying_turma = turma;
     }
-    function turma_onmouseover()
-    {
-        display_turma(this.turma);
-    }
     function undisplay_turma(turma)
     {
         var c       = self.combinacoes[self.combinacao_atual];
@@ -313,10 +309,6 @@ function Lista(materias_list, turmas_list, logger, horario)
         self.logger.reset();
 
         self.displaying_turma = "";
-    }
-    function turma_onmouseout()
-    {
-        undisplay_turma(this.turma);
     }
     function turma_onmouseup()
     {
@@ -357,8 +349,8 @@ function Lista(materias_list, turmas_list, logger, horario)
             var row  = document.createElement("tr");
             row.style.backgroundColor = materia.cor;
             row.style.cursor="pointer";
-            row.onmouseover = turma_onmouseover;
-            row.onmouseout  = turma_onmouseout;
+            row.onmouseover = function () { display_turma(this.turma); };
+            row.onmouseout  = function () { undisplay_turma(this.turma); };
 
             var data = document.createElement("td");
             for (var j in horario.turmas) {
