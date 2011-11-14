@@ -49,20 +49,19 @@ function Horario(horario)
     table.appendChild(tbody);
     horario.appendChild(table);
 
-    /* offers */
-    self.reset = function () {
+    var reset = function() {
         for (var dia = 0; dia < 6; dia++)
             for (var hora = 0; hora < 14; hora++)
-                self.clear_cell(dia, hora);
+                clear_cell(dia, hora);
     }
-    self.clear_cell = function (dia, hora) {
+    var clear_cell = function(dia, hora) {
         var cell = array[dia][hora];
         cell.innerHTML = "&nbsp;";
         cell.style.backgroundColor = "white";
         cell.style.border = "1px solid black";
         cell.style.color = "black";
     }
-    self.display_cell = function (dia, hora, data) {
+    var display_cell = function(dia, hora, data) {
         var cell = array[dia][hora];
         var innerHTML = new String();
         if (data.strong)
@@ -74,7 +73,11 @@ function Horario(horario)
         cell.style.backgroundColor = data.bgcolor;
         cell.style.color = data.color;
     }
-    self.height = function () {
-        return horario.offsetHeight;
-    }
+
+    /* procedures */
+    self.display_cell = display_cell;
+    self.clear_cell   = clear_cell;
+    self.reset        = reset;
+    /* functions */
+    self.height       = function() { return horario.offsetHeight; };
 }

@@ -45,9 +45,10 @@ function UI_combinacoes()
     }
     d2.appendChild(button);
 
-    /* offers */
+    /* procedures */
     self.set_atual = function(n) { selecao_atual.value = n; };
     self.set_total = function(n) { numero_selecoes.nodeValue = n; };
+    /* functions */
     self.get_td    = function()  { return d2; };
     /* callbacks */
     self.previous = null;
