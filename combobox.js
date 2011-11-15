@@ -101,7 +101,7 @@ function Combobox(input, suggestions, ui_logger)
             list_hide();
         }
     };
-    self.input.onfocus   = function() { self.suggestions.style.display = ""; };
+    self.input.onfocus   = function() { if (self.array.length > 1) self.suggestions.style.display = ""; };
     self.input.onkeydown = function(e) {
         var c = (e) ? e.keyCode : event.keyCode;
         if (c == 40 /* down */) {
@@ -141,6 +141,7 @@ function Combobox(input, suggestions, ui_logger)
                 ui_logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
             } else {
                 list_clear();
+                list_hide();
                 ui_logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
             }
         }
