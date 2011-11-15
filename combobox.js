@@ -165,6 +165,41 @@ function Combobox(input, suggestions, ui_logger)
         }
     };
 
+    function list_onreadystatechange()
+    {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                var str = this.responseText;
+                if (self.timer) {
+                    clearTimeout(self.timer);
+                    self.timer = null;
+                }
+                if (str.length > 0) {
+                    self.add_item(str);
+                } else {
+                    ui_logger.set_text("'" + this.materia + "' nao adicionada", "lightcoral");
+                }
+            }
+            this.available = true;
+        }
+    }
+    var full_requests = new Array();
+    self.adicionar = function(materia) {
+        var n = full_requests.length;
+        for (var i = 0; i < n; i++)
+            if (full_requests[i].available)
+                break;
+        if (i == n) {
+            full_requests[i] = new XMLHttpRequest();
+        }
+        full_requests[i].available = false;
+        full_requests[i].materia = materia;
+        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(materia), true);
+        full_requests[i].onreadystatechange = list_onreadystatechange;
+        full_requests[i].send(null);
+        ui_logger.waiting("buscando '" + materia + "'");
+    }
+
     /* callbacks */
-    self.adicionar = null;
+    self.add_item = null;
 }

@@ -163,6 +163,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
         });
     })();
 
+    self.adicionar = list_add_item;
     function list_add_item(str)
     {
         var array = str.split("\n"); /* uma turma por item */
@@ -222,44 +223,8 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
 
 //console.log(self.salvar());
     }
-    function list_onreadystatechange()
-    {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                var str = this.responseText;
-                if (self.timer) {
-                    clearTimeout(self.timer);
-                    self.timer = null;
-                }
-                if (str.length > 0) {
-                    list_add_item(str);
-                } else {
-                    ui_logger.set_text("'" + this.materia + "' nao adicionada", "lightcoral");
-                }
-            }
-            this.available = true;
-        }
-    }
-    var full_requests = new Array();
-    function adicionar(materia) {
-        var n = full_requests.length;
-        for (var i = 0; i < n; i++)
-            if (full_requests[i].available)
-                break;
-        if (i == n) {
-            full_requests[i] = new XMLHttpRequest();
-        }
-        full_requests[i].available = false;
-        full_requests[i].materia = materia;
-        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(materia), true);
-        full_requests[i].onreadystatechange = list_onreadystatechange;
-        full_requests[i].send(null);
-        ui_logger.waiting("buscando '" + materia + "'");
-    }
 
     self.horario = horario;
-
-    self.adicionar = adicionar;
 
     self.materias = new Object();
     self.selected_materia = "";
@@ -395,7 +360,7 @@ window.onload = function() {
     var lista   = new Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
-    combo.adicionar = lista.adicionar;
+    combo.add_item = lista.adicionar;
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;
