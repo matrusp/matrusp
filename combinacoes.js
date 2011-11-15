@@ -202,5 +202,5 @@ function Combinacoes()
     self.get_current = function( ) { if (current_int) return self.get(current_int); };
     self.current     = function( ) { return current_int; };
     self.deselected  = function( ) { return deselected; };
-    self.length      = function( ) { return combinacoes.length; };
+    self.length      = function( ) { return combinacoes ? combinacoes.length : 0; };
 }
