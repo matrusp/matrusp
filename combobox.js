@@ -175,7 +175,7 @@ function Combobox(input, suggestions, ui_logger)
                     self.timer = null;
                 }
                 if (str.length > 0) {
-                    self.add_item(this.codigo, str);
+                    self.cb_add_item(this.codigo, str);
                 } else {
                     ui_logger.set_text("'" + this.codigo + "' nao adicionada", "lightcoral");
                 }
@@ -200,6 +200,8 @@ function Combobox(input, suggestions, ui_logger)
         ui_logger.waiting("buscando '" + codigo + "'");
     }
 
+    /* procedures */
+    self.add_item    = add_item;
     /* callbacks */
-    self.add_item = null;
+    self.cb_add_item = null;
 }

@@ -139,7 +139,7 @@ window.onload = function() {
     var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
-    combo.add_item = main.add_item;
+    combo.cb_add_item = main.add_item;
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;
@@ -182,26 +182,26 @@ window.onload = function() {
     };
     if (0) {
     //1a fase
-    main.add_item("EEL7010");
-    main.add_item("EEL7011");
-    main.add_item("EGR5619");
-    main.add_item("MTM5183");
-    main.add_item("MTM5512");
-    main.add_item("QMC5106");
+    combo.add_item("EEL7010");
+    combo.add_item("EEL7011");
+    combo.add_item("EGR5619");
+    combo.add_item("MTM5183");
+    combo.add_item("MTM5512");
+    combo.add_item("QMC5106");
     } else if (0) {
     //2a fase
-    main.add_item("EEL7020");
-    main.add_item("EEL7021");
-    main.add_item("FSC5161");
-    main.add_item("LLV5603");
-    main.add_item("MTM5184");
-    main.add_item("MTM5247");
-    } else if (0) {
+    combo.add_item("EEL7020");
+    combo.add_item("EEL7021");
+    combo.add_item("FSC5161");
+    combo.add_item("LLV5603");
+    combo.add_item("MTM5184");
+    combo.add_item("MTM5247");
+    } else if (1) {
     //3a fase
-    main.add_item("EEL7030");
-    main.add_item("EEL7031");
-    main.add_item("FSC5162");
-    main.add_item("FSC5164");
-    main.add_item("MTM5185");
+    combo.add_item("EEL7030");
+    combo.add_item("EEL7031");
+    combo.add_item("FSC5162");
+    combo.add_item("FSC5164");
+    combo.add_item("MTM5185");
     }
 }
