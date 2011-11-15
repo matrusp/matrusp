@@ -33,7 +33,9 @@ function UI_materias(id, ui_combinacoes)
     t2.style.width="100%";
     var tb2 = document.createElement("tbody");
     var r2  = document.createElement("tr");
-    r2.appendChild(ui_combinacoes.get_td());
+    var d2  = document.createElement("td");
+    d2.id = "combinacoes";
+    r2.appendChild(d2);
     var d2 = document.createElement("td");
     d2.style.textAlign = "right";
     d2.style.width="250px";

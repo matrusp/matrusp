@@ -1,8 +1,8 @@
-function UI_combinacoes()
+function UI_combinacoes(id)
 {
     var self = this;
 
-    var d2 = document.createElement("td");
+    var d2 = document.getElementById(id);
     d2.style.textAlign = "center";
     self.selecao_atual = document.createElement("input");
     self.selecao_atual.style.fontFamily = "monospace";
@@ -48,8 +48,6 @@ function UI_combinacoes()
     /* procedures */
     self.set_current = function(n) { self.selecao_atual.value = n; };
     self.set_total = function(n) { numero_selecoes.nodeValue = n; };
-    /* functions */
-    self.get_td    = function()  { return d2; };
     /* callbacks */
     self.previous = null;
     self.next     = null;

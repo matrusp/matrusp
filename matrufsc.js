@@ -163,8 +163,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
 }
 
 window.onload = function() {
-    var ui_combinacoes = new UI_combinacoes();
-    var ui_materias    = new UI_materias("materias_list", ui_combinacoes);
+    var ui_materias    = new UI_materias("materias_list");
+    var ui_combinacoes = new UI_combinacoes("combinacoes");
     var ui_horario     = new UI_horario("horario");
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
     var ui_logger      = new UI_logger("logger");
@@ -173,7 +173,7 @@ window.onload = function() {
     var materias = new Materias();
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
-    dconsole = new Dconsole("dconsole");
+    var dconsole = new Dconsole("dconsole");
     var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
