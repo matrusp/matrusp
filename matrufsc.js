@@ -39,6 +39,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         ui_materias.add_item(materia);
         display_combinacao(1);
         ui_turmas.create(materia);
+        materias.set_selected(materia);
         ui_logger.set_text("'" + materia.codigo + "' adicionada", "lightgreen");
     }
     function previous() {
