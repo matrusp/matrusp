@@ -1,4 +1,4 @@
-function Lista(ui_materias, turmas_list, ui_logger, horario, ui_combinacoes)
+function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
 {
     var self = this;
 
@@ -45,17 +45,6 @@ function Lista(ui_materias, turmas_list, ui_logger, horario, ui_combinacoes)
             return r;
         };
         return ret;
-    }
-    function turma_changed()
-    {
-        var split   = this.value.split(" ");
-        var materia = self.materias[split[0]];
-        var turma   = materia.turmas[split[1]];
-        turma.selected = this.checked;
-        gerar_combinacoes();
-        display_combinacao(0);
-        undisplay_turma(turma);
-        display_turma(turma);
     }
     function map_turma(turma, priv, func)
     {
@@ -124,96 +113,6 @@ function Lista(ui_materias, turmas_list, ui_logger, horario, ui_combinacoes)
         ui_logger.reset();
 
         self.displaying_turma = "";
-    }
-    function turma_onmouseup()
-    {
-        var checkboxes = this.parentNode.getElementsByTagName("td")[0].getElementsByTagName("input");
-        var at_least_one_selected = 0;
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                at_least_one_selected = 1;
-                break;
-            }
-        }
-        for (var i = 0; i < checkboxes.length; i++) {
-            var split   = checkboxes[i].value.split(" ");
-            var materia = self.materias[split[0]];
-            var turma   = materia.turmas[split[1]];
-            turma.selected        = !at_least_one_selected;
-            checkboxes[i].checked = !at_least_one_selected;
-        }
-        gerar_combinacoes();
-        display_combinacao(0);
-        undisplay_turma(turma);
-        display_turma(turma);
-    }
-    function create_turmas_list(materia)
-    {
-        self.turmas_list.innerHTML = "";
-
-        self.turmas_table = document.createElement("table");
-        self.turmas_tbody = document.createElement("tbody");
-        self.turmas_table.className = "materias";
-        self.turmas_table.style.width="330px";
-        self.turmas_table.cellPadding="1";
-        self.turmas_table.cellSpacing="1";
-
-        for (var i in materia.horarios) {
-            var horario = materia.horarios[i];
-
-            var row  = document.createElement("tr");
-            row.style.backgroundColor = materia.cor;
-            row.style.cursor="pointer";
-            row.onmouseover = function () { display_turma(this.turma); };
-            row.onmouseout  = function () { undisplay_turma(this.turma); };
-
-            var data = document.createElement("td");
-            for (var j in horario.turmas) {
-                var turma = horario.turmas[j];
-                var input = document.createElement("input");
-                input.type     = "checkbox";
-                input.value    = materia.codigo + " " + turma.turma;
-                input.onchange = turma_changed;
-                data.appendChild(input);
-                input.checked  = turma.selected;
-            }
-            data.style.width = "22px";
-            row.appendChild(data);
-
-            var data = document.createElement("td");
-            data.onmouseup = turma_onmouseup;
-            var innerHTML = new String();
-            for (var j in horario.turmas) {
-                var turma = horario.turmas[j];
-                innerHTML += turma.turma + "<br>";
-                if (!row.turma)
-                    row.turma = turma;
-            }
-            data.innerHTML = innerHTML;
-            data.style.width = "44px";
-            row.appendChild(data);
-
-            var data = document.createElement("td");
-            data.onmouseup = turma_onmouseup;
-            var innerHTML = new String();
-            for (var j in horario.turmas) {
-                var turma = horario.turmas[j];
-                innerHTML += turma.professor + /*"(" + turma.xyz + ")" + */ "<br>";
-            }
-            data.innerHTML = innerHTML;
-            row.appendChild(data);
-
-            self.turmas_tbody.appendChild(row);
-        }
-
-        self.turmas_table.appendChild(self.turmas_tbody);
-        self.turmas_list.appendChild(self.turmas_table);
-
-        /* TODO determine scrollbar width */
-        if (self.turmas_table.offsetHeight >= self.turmas_list.offsetHeight)
-            self.turmas_table.style.width="310px";
-
-        self.selected_materia = materia;
     }
     function display_combinacao(cc)
     {
@@ -549,13 +448,6 @@ function Lista(ui_materias, turmas_list, ui_logger, horario, ui_combinacoes)
 
     self.adicionar = adicionar;
 
-    self.turmas_list   = document.getElementById(turmas_list);
-
-    self.turmas_list.style.border = "1px solid black";
-    self.turmas_list.style.width  = "330px";
-    self.turmas_list.style.height    = (self.horario.height()-2) + "px";
-    self.turmas_list.style.maxHeight = (self.horario.height()-2) + "px";
-
     self.materias = new Object();
     self.selected_materia = "";
     self.displaying_turma = "";
@@ -633,11 +525,50 @@ function Lista(ui_materias, turmas_list, ui_logger, horario, ui_combinacoes)
     function materia_onclick()
     {
         var materia = self.materias[this.parentNode.getElementsByTagName("td")[0].innerHTML];
-        create_turmas_list(materia);
+        ui_turmas.create(materia);
+        self.selected_materia = materia;
     }
     ui_materias.onclick_add = materia_onclick_add;
     ui_materias.materia_onclick_remove = materia_onclick_remove;
     ui_materias.materia_onclick = materia_onclick;
+    /* UI_turmas */
+    function turma_changed()
+    {
+        var split   = this.value.split(" ");
+        var materia = self.materias[split[0]];
+        var turma   = materia.turmas[split[1]];
+        turma.selected = this.checked;
+        gerar_combinacoes();
+        display_combinacao(0);
+        undisplay_turma(turma);
+        display_turma(turma);
+    }
+    function turma_onmouseup()
+    {
+        var checkboxes = this.parentNode.getElementsByTagName("td")[0].getElementsByTagName("input");
+        var at_least_one_selected = 0;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                at_least_one_selected = 1;
+                break;
+            }
+        }
+        for (var i = 0; i < checkboxes.length; i++) {
+            var split   = checkboxes[i].value.split(" ");
+            var materia = self.materias[split[0]];
+            var turma   = materia.turmas[split[1]];
+            turma.selected        = !at_least_one_selected;
+            checkboxes[i].checked = !at_least_one_selected;
+        }
+        gerar_combinacoes();
+        display_combinacao(0);
+        undisplay_turma(turma);
+        display_turma(turma);
+    }
+    ui_turmas.turma_onmouseover = function () { display_turma(this.turma); };
+    ui_turmas.turma_onmouseout = function () { undisplay_turma(this.turma); };
+    ui_turmas.turma_changed = turma_changed;
+    ui_turmas.turma_onmouseup = turma_onmouseup;
 }
 
 window.onload = function() {
@@ -646,7 +577,8 @@ window.onload = function() {
     var horario = new Horario("horario");
     var ui_combinacoes = new UI_combinacoes();
     var ui_materias = new UI_materias("materias_list", ui_combinacoes);
-    var lista   = new Lista(ui_materias, "turmas_list", ui_logger, horario, ui_combinacoes);
+    var ui_turmas   = new UI_turmas("turmas_list", horario.height());
+    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.adicionar = lista.adicionar;
