@@ -124,22 +124,17 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
             }
         }
 
+        ui_horario.reset();
         var c = combinacoes.get(cc);
         if (!c) {
-            ui_horario.reset();
             cc = 0;
         } else {
-            for (var dia = 0; dia < 6; dia++) {
-                for (var hora = 0; hora < 14; hora++) {
-                    if (c[dia][hora] && c[dia][hora].horario)
-                        ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
-                    else
-                        ui_horario.clear_cell(dia, hora);
-                }
-            }
             for (var i in c.horarios_combo) {
                 var t = c.horarios_combo[i].turma_representante;
                 self.materias[t.materia.codigo].row.getElementsByTagName("td")[1].innerHTML = t.turma;
+                map_turma(t, c, function(c, dia, hora) {
+                    ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                });
             }
         }
         combinacoes.set_current(cc);
