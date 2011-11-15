@@ -119,8 +119,8 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
         var deselected = combinacoes.deselected();
         if (deselected) {
             for (var i in deselected) {
-                var t = deselected[i];
-                self.materias[t.codigo].row.getElementsByTagName("td")[1].innerHTML = "<strike>XXXXXX</strike>";
+                var materia = deselected[i];
+                materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
             }
         }
 
@@ -130,9 +130,9 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
             cc = 0;
         } else {
             for (var i in c.horarios_combo) {
-                var t = c.horarios_combo[i].turma_representante;
-                self.materias[t.materia.codigo].row.getElementsByTagName("td")[1].innerHTML = t.turma;
-                map_turma(t, c, function(c, dia, hora) {
+                var turma = c.horarios_combo[i].turma_representante;
+                turma.materia.ui_turma.innerHTML = turma.turma;
+                map_turma(turma, c, function(c, dia, hora) {
                     ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
                 });
             }

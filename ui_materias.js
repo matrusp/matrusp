@@ -69,6 +69,7 @@ function UI_materias(id, ui_combinacoes)
         var data = document.createElement("td");
         data.onclick = self.materia_onclick;
         data.style.width = "44px";
+        materia.ui_turma = data;
         row.appendChild(data);
         var data = document.createElement("td");
         data.onclick = self.materia_onclick;
