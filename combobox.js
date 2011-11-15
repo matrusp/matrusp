@@ -43,6 +43,12 @@ function Combobox(input, suggestions, ui_logger)
         list_add_item("Criar atividade nova");
         self.array[0].style.fontSize = "13px";
         self.array[0].style.fontWeight = "bold";
+        self.array[0].onmouseup = function() {
+            deselect_item();
+            new_item(self.input.value);
+            list_hide();
+            self.input.blur();
+        };
         list_hide();
     }
     function list_add_item(str) {
@@ -111,6 +117,13 @@ function Combobox(input, suggestions, ui_logger)
             deselect_item();
             list_hide();
         } else if (c == 13 /* enter */) {
+            if (self.selected_item == 0) {
+                deselect_item();
+                list_hide();
+                new_item(self.input.value);
+                self.input.focus();
+                return;
+            } else
             if (self.selected_item != -1) {
                 self.input.value = self.array[self.selected_item].codigo;
                 deselect_item();
@@ -206,6 +219,9 @@ function Combobox(input, suggestions, ui_logger)
         full_requests[i].onreadystatechange = list_onreadystatechange;
         full_requests[i].send(null);
         ui_logger.waiting("buscando '" + codigo + "'");
+    }
+    function new_item(nome) {
+        console.log("new_item " + nome);
     }
 
     /* procedures */
