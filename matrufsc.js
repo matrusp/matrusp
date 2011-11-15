@@ -234,14 +234,14 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
                 if (str.length > 0) {
                     list_add_item(str);
                 } else {
-                    ui_logger.set_text("'" + self.full + "' nao adicionada", "lightcoral");
+                    ui_logger.set_text("'" + this.materia + "' nao adicionada", "lightcoral");
                 }
             }
             this.available = true;
         }
     }
     var full_requests = new Array();
-    function full_request(materia) {
+    function adicionar(materia) {
         var n = full_requests.length;
         for (var i = 0; i < n; i++)
             if (full_requests[i].available)
@@ -250,14 +250,10 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
             full_requests[i] = new XMLHttpRequest();
         }
         full_requests[i].available = false;
+        full_requests[i].materia = materia;
         full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(materia), true);
         full_requests[i].onreadystatechange = list_onreadystatechange;
         full_requests[i].send(null);
-    }
-    function adicionar(materia)
-    {
-        full_request(materia);
-        self.full = materia;
         ui_logger.waiting("buscando '" + materia + "'");
     }
 
