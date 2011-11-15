@@ -67,12 +67,12 @@ function Materias()
         var array = str.split("\n"); /* uma turma por item */
         var split = array[0].split("\t");
 
-        if (materias[split[0]])
+        if (materias[codigo])
             return null;
 
         /* parte de dados */
         var materia = new Object();
-        materia.codigo = split[0];
+        materia.codigo = codigo;
         materia.nome   = split[1];
         materia.cor    = get_color();
 

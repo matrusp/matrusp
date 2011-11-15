@@ -106,7 +106,7 @@ function Combobox(input, suggestions, ui_logger)
             list_hide();
         }
     };
-    self.input.onfocus   = function() { if (self.array.length > 1) list_hide(); };
+    self.input.onfocus   = function() { if (self.array.length > 1) list_show(); };
     self.input.onkeydown = function(e) {
         var c = (e) ? e.keyCode : event.keyCode;
         if (c == 40 /* down */) {
@@ -153,6 +153,7 @@ function Combobox(input, suggestions, ui_logger)
                 ui_logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
             } else {
                 list_clear();
+                list_show();
                 ui_logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
             }
         }
@@ -220,8 +221,19 @@ function Combobox(input, suggestions, ui_logger)
         full_requests[i].send(null);
         ui_logger.waiting("buscando '" + codigo + "'");
     }
+    var atividades = 1;
     function new_item(nome) {
-        console.log("new_item " + nome);
+        var str = new String();
+        if (atividades < 1000)
+            str += "0";
+        if (atividades <  100)
+            str += "0";
+        if (atividades <   10)
+            str += "0";
+        str += atividades;
+        atividades++;
+        var codigo = "XXX" + str;
+        self.cb_add_item(codigo, "");
     }
 
     /* procedures */
