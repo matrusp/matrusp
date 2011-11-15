@@ -16,7 +16,7 @@ function Combobox(input, suggestions, ui_logger)
             self.selected_item = item;
         }
         self.array[self.selected_item].style.backgroundColor = self.color_1;
-        self.suggestions.style.display = "";
+        list_show();
     }
     function deselect_item()
     {
@@ -58,7 +58,7 @@ function Combobox(input, suggestions, ui_logger)
             deselect_item();
             self.input.value = this.codigo;
             add_item(self.input.value);
-            self.suggestions.style.display = "none";
+            list_hide();
             self.input.blur();
         };
         li.codigo = str.split(" ")[0];
@@ -92,7 +92,6 @@ function Combobox(input, suggestions, ui_logger)
     self.input.style.fontSize   = "11px";
     self.suggestions.style.fontFamily = "monospace";
     self.suggestions.style.fontSize   = "11px";
-    self.suggestions.style.display = "none";
 
     self.input.onblur    = function() {
         if (self.mouseisdown) {
@@ -101,7 +100,7 @@ function Combobox(input, suggestions, ui_logger)
             list_hide();
         }
     };
-    self.input.onfocus   = function() { if (self.array.length > 1) self.suggestions.style.display = ""; };
+    self.input.onfocus   = function() { if (self.array.length > 1) list_hide(); };
     self.input.onkeydown = function(e) {
         var c = (e) ? e.keyCode : event.keyCode;
         if (c == 40 /* down */) {
@@ -110,12 +109,12 @@ function Combobox(input, suggestions, ui_logger)
             select_item(self.selected_item - 1);
         } else if (c == 27 /* esc */) {
             deselect_item();
-            self.suggestions.style.display = "none";
+            list_hide();
         } else if (c == 13 /* enter */) {
             if (self.selected_item != -1) {
                 self.input.value = self.array[self.selected_item].codigo;
                 deselect_item();
-                self.suggestions.style.display = "none";
+                list_hide();
             }
             add_item(self.input.value);
             self.input.focus();
@@ -141,7 +140,6 @@ function Combobox(input, suggestions, ui_logger)
                 ui_logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
             } else {
                 list_clear();
-                list_hide();
                 ui_logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
             }
         }
