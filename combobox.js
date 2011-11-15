@@ -35,6 +35,33 @@ function Combobox(input, suggestions, ui_logger)
     self.suggestions.className = "combobox";
     self.mouseisdown = false;
 
+    function list_add_item(ul, str) {
+        var li = document.createElement("li");
+        var codigo = str.split(" ")[0];
+
+        li.innerHTML   = str;
+        li.onmouseover = function() { select_item(this.index); };
+        li.onmouseout  = function() { deselect_item(); };
+        li.onclick     = function() { deselect_item(); };
+        li.onmousedown = function() { self.mouseisdown = true; return false; };
+        li.onselectstart=function() { return false; }
+        li.onmouseup   = function() {
+            deselect_item();
+            self.input.value = this.innerHTML.split(" ")[0];
+            add_item(self.input.value);
+            self.suggestions.style.display = "none";
+            self.input.blur();
+        };
+        li.index = self.array.length;
+        self.array.push(li);
+        ul.appendChild(li);
+    };
+    function clear_list() {
+        self.suggestions.innerHTML = "";
+        self.selected_item = -1;
+        self.array = new Array();
+    };
+
     self.create_suggestions_table = function(str) {
         var ul = document.createElement("ul");
         var split = str.split("\n");
@@ -44,25 +71,7 @@ function Combobox(input, suggestions, ui_logger)
         self.array = new Array();
 
         for (var i = 0; i < split.length - 1; i++) {
-            var li = document.createElement("li");
-            var codigo = split[i].split(" ")[0];
-
-            li.innerHTML   = split[i];
-            li.onmouseover = function() { select_item(this.index); };
-            li.onmouseout  = function() { deselect_item(); };
-            li.onclick     = function() { deselect_item(); };
-            li.onmousedown = function() { self.mouseisdown = true; return false; };
-            li.onselectstart=function() { return false; }
-            li.onmouseup   = function() {
-                deselect_item();
-                self.input.value = this.innerHTML.split(" ")[0];
-                add_item(self.input.value);
-                self.suggestions.style.display = "none";
-                self.input.blur();
-            };
-            self.array[i] = li;
-            li.index = i;
-            ul.appendChild(li);
+            list_add_item(ul, split[i]);
         }
         self.suggestions.appendChild(ul);
         self.suggestions.style.display = "";
@@ -122,9 +131,7 @@ function Combobox(input, suggestions, ui_logger)
                 }
                 ui_logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
             } else {
-                self.suggestions.innerHTML = "";
-                self.selected_item = -1;
-                self.array = new Array();
+                clear_list();
                 self.suggestions.style.display = "none";
                 ui_logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
             }
@@ -153,9 +160,7 @@ function Combobox(input, suggestions, ui_logger)
                 lastfetch = fetch;
             }
         } else {
-            self.suggestions.innerHTML = "";
-            self.selected_item = -1;
-            self.array = new Array();
+            clear_list();
             self.suggestions.style.display = "none";
         }
     };
