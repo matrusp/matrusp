@@ -1,4 +1,4 @@
-function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, materias, turmas, combinacoes)
+function Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes)
 {
     var self = this;
 
@@ -12,7 +12,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, ma
             }
         }
 
-        ui_horario.reset();
+        turmas.reset();
         var c = combinacoes.get(cc);
         if (!c) {
             cc = 0;
@@ -129,7 +129,6 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, ma
         turma.selected = this.checked;
         combinacoes.generate(materias.list());
         display_combinacao(1);
-        turmas.undisplay_over(turma);
         turmas.display_over(turma);
     }
     function turma_onmouseup()
@@ -151,7 +150,6 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, ma
         }
         combinacoes.generate(materias.list());
         display_combinacao(1);
-        turmas.undisplay_over(turma);
         turmas.display_over(turma);
     }
     ui_turmas.turma_onmouseover = function () { turmas.display_over(this.turma); };
@@ -172,7 +170,7 @@ window.onload = function() {
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
     dconsole = new Dconsole("dconsole");
-    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, materias, turmas, combinacoes);
+    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.add_item = lista.adicionar;

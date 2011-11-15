@@ -78,6 +78,7 @@ function Turmas(ui_logger, ui_horario, combinacoes)
     }
 
     /* procedures */
+    self.reset = function() { ui_horario.reset(); selected = null; };
     self.set_selected = function(materia) { selected = materia; }
     self.undisplay_over = undisplay_over;
     self.display_over = display_over;
