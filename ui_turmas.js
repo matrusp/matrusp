@@ -9,6 +9,22 @@ function UI_turmas(id, height)
     list.style.height    = (height-2) + "px";
     list.style.maxHeight = (height-2) + "px";
 
+    function onmouseup() {
+        var checkboxes = this.parentNode.getElementsByTagName("td")[0].getElementsByTagName("input");
+        var at_least_one_selected = 0;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                at_least_one_selected = 1;
+                break;
+            }
+        }
+        for (var i = 0; i < checkboxes.length; i++) {
+            var split   = checkboxes[i].value.split(" ");
+            self.set(split[0], split[1], !at_least_one_selected);
+            checkboxes[i].checked = !at_least_one_selected;
+        }
+        self.updated();
+    }
     var create = function(materia) {
         list.innerHTML = "";
 
@@ -25,8 +41,8 @@ function UI_turmas(id, height)
             var row  = document.createElement("tr");
             row.style.backgroundColor = materia.cor;
             row.style.cursor="pointer";
-            row.onmouseover = self.turma_onmouseover;
-            row.onmouseout  = self.turma_onmouseout;
+            row.onmouseover = function() { self.onmouseover(this.turma); }
+            row.onmouseout  = function() { self.onmouseout(this.turma); }
 
             var data = document.createElement("td");
             for (var j in horario.turmas) {
@@ -34,7 +50,11 @@ function UI_turmas(id, height)
                 var input = document.createElement("input");
                 input.type     = "checkbox";
                 input.value    = materia.codigo + " " + turma.turma;
-                input.onchange = self.turma_changed;
+                input.onchange = function() {
+                    var split = this.value.split(" ");
+                    self.set(split[0], split[1], this.checked);
+                    self.updated();
+                };
                 data.appendChild(input);
                 input.checked  = turma.selected;
             }
@@ -42,7 +62,7 @@ function UI_turmas(id, height)
             row.appendChild(data);
 
             var data = document.createElement("td");
-            data.onmouseup = self.turma_onmouseup;
+            data.onmouseup = onmouseup;
             var innerHTML = new String();
             for (var j in horario.turmas) {
                 var turma = horario.turmas[j];
@@ -55,7 +75,7 @@ function UI_turmas(id, height)
             row.appendChild(data);
 
             var data = document.createElement("td");
-            data.onmouseup = self.turma_onmouseup;
+            data.onmouseup = onmouseup;
             var innerHTML = new String();
             for (var j in horario.turmas) {
                 var turma = horario.turmas[j];
@@ -79,8 +99,8 @@ function UI_turmas(id, height)
     self.create = create;
     self.reset = function() { list.innerHTML = ""; };
     /* callbacks */
-    self.turma_changed = null;
-    self.turma_onmouseup = null;
-    self.turma_onmouseover = null;
-    self.turma_onmouseout = null;
+    self.onmouseover  = null;
+    self.onmouseout   = null;
+    self.updated      = null;
+    self.set          = null;
 }

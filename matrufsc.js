@@ -125,41 +125,15 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
     ui_materias.materia_onclick_remove = materia_onclick_remove;
     ui_materias.materia_onclick = materia_onclick;
     /* UI_turmas */
-    function turma_changed()
-    {
-        var split   = this.value.split(" ");
-        var materia = materias.get(split[0]);
-        var turma   = materia.turmas[split[1]];
-        turma.selected = this.checked;
+    ui_turmas.onmouseover = function(turma) { turmas.display_over(turma); };
+    ui_turmas.onmouseout  = function(turma) { turmas.undisplay_over(turma); };
+    ui_turmas.set         = function(codigo, turma, checked) { materias.get(codigo).turmas[turma].selected = checked; };
+    ui_turmas.updated     = function() {
+        var turma = turmas.get_selected();
         combinacoes.generate(materias.list());
         display_combinacao(1);
         turmas.display_over(turma);
-    }
-    function turma_onmouseup()
-    {
-        var checkboxes = this.parentNode.getElementsByTagName("td")[0].getElementsByTagName("input");
-        var at_least_one_selected = 0;
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                at_least_one_selected = 1;
-                break;
-            }
-        }
-        for (var i = 0; i < checkboxes.length; i++) {
-            var split   = checkboxes[i].value.split(" ");
-            var materia = materias.get(split[0]);
-            var turma   = materia.turmas[split[1]];
-            turma.selected        = !at_least_one_selected;
-            checkboxes[i].checked = !at_least_one_selected;
-        }
-        combinacoes.generate(materias.list());
-        display_combinacao(1);
-        turmas.display_over(turma);
-    }
-    ui_turmas.turma_onmouseover = function () { turmas.display_over(this.turma); };
-    ui_turmas.turma_onmouseout = function () { turmas.undisplay_over(this.turma); };
-    ui_turmas.turma_changed = turma_changed;
-    ui_turmas.turma_onmouseup = turma_onmouseup;
+    };
 }
 
 window.onload = function() {
