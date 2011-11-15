@@ -57,7 +57,7 @@ function Combobox(input, suggestions, ui_logger)
             li.onmouseup   = function() {
                 deselect_item();
                 self.input.value = this.innerHTML.split(" ")[0];
-                adicionar(self.input.value);
+                add_item(self.input.value);
                 self.suggestions.style.display = "none";
                 self.input.blur();
             };
@@ -105,7 +105,7 @@ function Combobox(input, suggestions, ui_logger)
                 deselect_item();
                 self.suggestions.style.display = "none";
             }
-            adicionar(self.input.value);
+            add_item(self.input.value);
             self.input.focus();
         }
     };
@@ -184,7 +184,7 @@ function Combobox(input, suggestions, ui_logger)
         }
     }
     var full_requests = new Array();
-    function adicionar(codigo) {
+    function add_item(codigo) {
         var n = full_requests.length;
         for (var i = 0; i < n; i++)
             if (full_requests[i].available)

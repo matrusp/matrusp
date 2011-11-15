@@ -28,7 +28,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         ui_combinacoes.set_total(combinacoes.length());
     }
 
-    function adicionar(codigo, str)
+    function add_item(codigo, str)
     {
         var materia = materias.add_item(codigo, str);
         if (!materia) {
@@ -76,7 +76,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
     }
 
     /* self */
-    self.adicionar = adicionar;
+    self.add_item = add_item;
     self.previous = previous;
     self.next = next;
     self.salvar = salvar;
@@ -177,7 +177,7 @@ window.onload = function() {
     var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
-    combo.add_item = main.adicionar;
+    combo.add_item = main.add_item;
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;
@@ -220,26 +220,26 @@ window.onload = function() {
     };
     if (0) {
     //1a fase
-    main.adicionar("EEL7010");
-    main.adicionar("EEL7011");
-    main.adicionar("EGR5619");
-    main.adicionar("MTM5183");
-    main.adicionar("MTM5512");
-    main.adicionar("QMC5106");
+    main.add_item("EEL7010");
+    main.add_item("EEL7011");
+    main.add_item("EGR5619");
+    main.add_item("MTM5183");
+    main.add_item("MTM5512");
+    main.add_item("QMC5106");
     } else if (0) {
     //2a fase
-    main.adicionar("EEL7020");
-    main.adicionar("EEL7021");
-    main.adicionar("FSC5161");
-    main.adicionar("LLV5603");
-    main.adicionar("MTM5184");
-    main.adicionar("MTM5247");
+    main.add_item("EEL7020");
+    main.add_item("EEL7021");
+    main.add_item("FSC5161");
+    main.add_item("LLV5603");
+    main.add_item("MTM5184");
+    main.add_item("MTM5247");
     } else if (0) {
     //3a fase
-    main.adicionar("EEL7030");
-    main.adicionar("EEL7031");
-    main.adicionar("FSC5162");
-    main.adicionar("FSC5164");
-    main.adicionar("MTM5185");
+    main.add_item("EEL7030");
+    main.add_item("EEL7031");
+    main.add_item("FSC5162");
+    main.add_item("FSC5164");
+    main.add_item("MTM5185");
     }
 }
