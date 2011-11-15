@@ -177,7 +177,6 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
             var split = array[i].split("\t");
             var turma = new Object();
             turma.turma     = split[0];
-            turma.xyz = split[3]; /* HACK */
             turma.aulas     = criar_aulas(split[3]);
             turma.professor = split[4];
             turma.selected  = 1;

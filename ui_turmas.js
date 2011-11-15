@@ -59,7 +59,7 @@ function UI_turmas(id, height)
             var innerHTML = new String();
             for (var j in horario.turmas) {
                 var turma = horario.turmas[j];
-                innerHTML += turma.professor + /*"(" + turma.xyz + ")" + */ "<br>";
+                innerHTML += turma.professor + "<br>";
             }
             data.innerHTML = innerHTML;
             row.appendChild(data);
