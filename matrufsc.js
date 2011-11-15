@@ -117,10 +117,6 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
     function display_combinacao(cc)
     {
         var deselected = combinacoes.deselected();
-        if (cc < 1 || cc > combinacoes.length()) {
-            console.log("invalid combinacao [1," + cc + "," + combinacoes.length() + "]");
-            return;
-        }
         if (deselected) {
             for (var i in deselected) {
                 var t = deselected[i];
@@ -131,19 +127,20 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
         var c = combinacoes.get(cc);
         if (!c) {
             self.horario.reset();
-            return;
-        }
-        for (var dia = 0; dia < 6; dia++) {
-            for (var hora = 0; hora < 14; hora++) {
-                if (c[dia][hora] && c[dia][hora].horario)
-                    self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
-                else
-                    self.horario.clear_cell(dia, hora);
+            cc = 0;
+        } else {
+            for (var dia = 0; dia < 6; dia++) {
+                for (var hora = 0; hora < 14; hora++) {
+                    if (c[dia][hora] && c[dia][hora].horario)
+                        self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                    else
+                        self.horario.clear_cell(dia, hora);
+                }
             }
-        }
-        for (var i in c.horarios_combo) {
-            var t = c.horarios_combo[i].turma_representante;
-            self.materias[t.materia.codigo].row.getElementsByTagName("td")[1].innerHTML = t.turma;
+            for (var i in c.horarios_combo) {
+                var t = c.horarios_combo[i].turma_representante;
+                self.materias[t.materia.codigo].row.getElementsByTagName("td")[1].innerHTML = t.turma;
+            }
         }
         combinacoes.set_current(cc);
         ui_combinacoes.set_current(cc);
@@ -284,24 +281,21 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
     }
     function materia_onclick_remove()
     {
-        var codigo = this.parentNode.getElementsByTagName("td")[0].innerHTML;
+        var materia = this.parentNode.materia;
 
-        if (self.selected_materia.codigo == codigo) {
-            self.turmas_list.innerHTML = "";
-        }
+        if (self.selected_materia.codigo == materia.codigo)
+            ui_turmas.reset();
 
-        self.materias[codigo].row.parentNode.removeChild(self.materias[codigo].row);
-        delete self.materias[codigo];
+        ui_logger.set_text("'" + materia.codigo + "' removida", "lightgreen");
+        materia.row.parentNode.removeChild(materia.row);
+        delete self.materias[materia.codigo];
 
         combinacoes.generate(self.materias);
-
         display_combinacao(1);
-
-        ui_logger.set_text("'" + codigo + "' removida", "lightgreen");
     }
     function materia_onclick()
     {
-        var materia = self.materias[this.parentNode.getElementsByTagName("td")[0].innerHTML];
+        var materia = this.parentNode.materia;
         ui_turmas.create(materia);
         self.selected_materia = materia;
     }

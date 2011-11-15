@@ -77,6 +77,7 @@ function UI_turmas(id, height)
 
     /* procedures */
     self.create = create;
+    self.reset = function() { list.innerHTML = ""; };
     /* callbacks */
     self.turma_changed = null;
     self.turma_onmouseup = null;

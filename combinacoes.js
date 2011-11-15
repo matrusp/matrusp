@@ -198,7 +198,7 @@ function Combinacoes()
     self.generate    = generate;
     self.set_current = function(n) { current_int = n; };
     /* functions */
-    self.get         = function(n) { if (combinacoes) return combinacoes[n-1]; };
+    self.get         = function(n) { if (combinacoes && n >= 1 && n <= combinacoes.length) return combinacoes[n-1]; };
     self.get_current = function( ) { if (current_int) return self.get(current_int); };
     self.current     = function( ) { return current_int; };
     self.deselected  = function( ) { return deselected; };

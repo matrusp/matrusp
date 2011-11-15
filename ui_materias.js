@@ -81,6 +81,7 @@ function UI_materias(id, ui_combinacoes)
         data.style.textAlign = "center";
         row.appendChild(data);
         tbody.appendChild(row);
+        row.materia = materia;
         materia.row = row;
     }
 
