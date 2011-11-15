@@ -4,13 +4,13 @@ function UI_combinacoes()
 
     var d2 = document.createElement("td");
     d2.style.textAlign = "center";
-    var selecao_atual = document.createElement("input");
-    selecao_atual.style.fontFamily = "monospace";
-    selecao_atual.style.fontSize   = "11px";
-    selecao_atual.style.width      = "30px";
-    selecao_atual.style.height     = "13px";
-    selecao_atual.value = 0;
-    selecao_atual.onchange = function () { self.changed(this.value); };
+    self.selecao_atual = document.createElement("input");
+    self.selecao_atual.style.fontFamily = "monospace";
+    self.selecao_atual.style.fontSize   = "11px";
+    self.selecao_atual.style.width      = "30px";
+    self.selecao_atual.style.height     = "13px";
+    self.selecao_atual.value = 0;
+    self.selecao_atual.onchange = function () { self.changed(this.value); };
     d2.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
     var button = document.createElement("span");
     button.style.MozUserSelect = "none";
@@ -26,7 +26,7 @@ function UI_combinacoes()
     }
     d2.appendChild(button);
     d2.appendChild(document.createTextNode(" "));
-    d2.appendChild(selecao_atual);
+    d2.appendChild(self.selecao_atual);
     d2.appendChild(document.createTextNode("/"));
     var numero_selecoes = document.createTextNode("0");
     d2.appendChild(numero_selecoes);
@@ -46,7 +46,7 @@ function UI_combinacoes()
     d2.appendChild(button);
 
     /* procedures */
-    self.set_current = function(n) { selecao_atual.value = n; };
+    self.set_current = function(n) { self.selecao_atual.value = n; };
     self.set_total = function(n) { numero_selecoes.nodeValue = n; };
     /* functions */
     self.get_td    = function()  { return d2; };

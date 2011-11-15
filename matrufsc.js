@@ -184,7 +184,7 @@ window.onload = function() {
         var c = ev.keyCode;
         if (ev.srcElement == combo.input)
             return;
-        if (ev.srcElement == main.selecao_atual) {
+        if (ev.srcElement == ui_combinacoes.selecao_atual) {
             var pos = -1;
             if (document.selection) {
                 var range = document.selection.createRange();
@@ -194,8 +194,8 @@ window.onload = function() {
                 pos = ev.srcElement.selectionStart;
             }
             if (c == 13) {
-                main.selecao_atual.blur();
-                main.selecao_atual.focus();
+                ui_combinacoes.selecao_atual.blur();
+                ui_combinacoes.selecao_atual.focus();
             } else if (pos == ev.srcElement.value.length && c == 39) {
                 main.next();
             } else if (pos == 0 && c == 37) {
