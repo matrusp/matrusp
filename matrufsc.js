@@ -97,7 +97,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         }
     };
     /* UI_materias */
-    ui_materias.onclick_add = function() {};
     ui_materias.onremove    = function(materia) {
         var selected = materias.get_selected();
         if (selected && selected.codigo == materia.codigo)

@@ -29,11 +29,8 @@ function UI_materias(id, ui_combinacoes)
     data.id = "combinacoes";
     row.appendChild(data);
     var data = document.createElement("td");
-//    data.onclick = materia_onclick_add;
-    data.innerHTML = "<strong>+</strong>";
-    data.style.cursor="pointer";
+    data.innerHTML = "";
     data.style.width = "15px";
-    data.style.textAlign = "center";
     row.appendChild(data);
     tbody.appendChild(row);
 
@@ -71,7 +68,6 @@ function UI_materias(id, ui_combinacoes)
     /* functions */
     self.add_item = add_item;
     /* callbacks */
-    self.onadd    = null;
     self.onremove = null;
     self.onclick  = null;
 }
