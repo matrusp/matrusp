@@ -97,33 +97,21 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
     ui_combinacoes.next = self.next;
 
     /* UI_materias */
-    function materia_onclick_add()
-    {
-    }
-    function materia_onclick_remove()
-    {
-        var materia = this.parentNode.materia;
+    ui_materias.onclick_add = function() {};
+    ui_materias.onremove    = function(materia) {
         var selected = materias.get_selected();
-
         if (selected && selected.codigo == materia.codigo)
             ui_turmas.reset();
-
         ui_logger.set_text("'" + materia.codigo + "' removida", "lightgreen");
         materia.row.parentNode.removeChild(materia.row);
         materias.remove_item(materia);
-
         combinacoes.generate(materias.list());
         display_combinacao(1);
-    }
-    function materia_onclick()
-    {
-        var materia = this.parentNode.materia;
+    };
+    ui_materias.onclick     = function(materia) {
         ui_turmas.create(materia);
         materias.set_selected(materia);
     }
-    ui_materias.onclick_add = materia_onclick_add;
-    ui_materias.materia_onclick_remove = materia_onclick_remove;
-    ui_materias.materia_onclick = materia_onclick;
     /* UI_turmas */
     ui_turmas.onmouseover = function(turma) { turmas.display_over(turma); };
     ui_turmas.onmouseout  = function(turma) { turmas.undisplay_over(turma); };

@@ -58,27 +58,28 @@ function UI_materias(id, ui_combinacoes)
     row.appendChild(data);
     tbody.appendChild(row);
 
-    /* functions */
-    self.add_item = function(materia) {
+    function onclick() { self.onclick(this.parentNode.materia); };
+    function onremove() { self.onremove(this.parentNode.materia); };
+    function add_item(materia) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = materia.cor;
         row.style.cursor="pointer";
         var data = document.createElement("td");
-        data.onclick = self.materia_onclick;
+        data.onclick = onclick;
         data.style.width = "70px";
         data.innerHTML = materia.codigo;
         row.appendChild(data);
         var data = document.createElement("td");
-        data.onclick = self.materia_onclick;
+        data.onclick = onclick;
         data.style.width = "44px";
         materia.ui_turma = data;
         row.appendChild(data);
         var data = document.createElement("td");
-        data.onclick = self.materia_onclick;
+        data.onclick = onclick;
         data.innerHTML = materia.nome;
         row.appendChild(data);
         var data = document.createElement("td");
-        data.onclick = self.materia_onclick_remove;
+        data.onclick = onremove;
         data.innerHTML = "X";
         data.style.width = "15px";
         data.style.textAlign = "center";
@@ -88,8 +89,10 @@ function UI_materias(id, ui_combinacoes)
         materia.row = row;
     }
 
+    /* functions */
+    self.add_item = add_item;
     /* callbacks */
-    self.onclick_add            = null;
-    self.materia_onclick_remove = null;
-    self.materia_onclick        = null;
+    self.onadd    = null;
+    self.onremove = null;
+    self.onclick  = null;
 }
