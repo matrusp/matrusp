@@ -196,7 +196,7 @@ window.onload = function() {
     combo.add_item("LLV5603");
     combo.add_item("MTM5184");
     combo.add_item("MTM5247");
-    } else if (1) {
+    } else if (0) {
     //3a fase
     combo.add_item("EEL7030");
     combo.add_item("EEL7031");
