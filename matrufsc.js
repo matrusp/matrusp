@@ -1,4 +1,4 @@
-function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
+function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combinacoes)
 {
     var self = this;
 
@@ -59,7 +59,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
     }
     function display_turma(turma)
     {
-        var c       = self.combinacoes[self.combinacao_atual];
+        var c       = combinacoes.get_current();
         var materia = self.selected_materia;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
@@ -87,7 +87,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
     function black_cell(str) { return {strong:false,text:str,bgcolor:"black",color:"white"}; }
     function undisplay_turma(turma)
     {
-        var c       = self.combinacoes[self.combinacao_atual];
+        var c       = combinacoes.get_current();
         var materia = self.selected_materia;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
@@ -116,14 +116,19 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
     }
     function display_combinacao(cc)
     {
-        if (self.deselecionadas) {
-            for (var i in self.deselecionadas) {
-                var t = self.deselecionadas[i];
+        var deselected = combinacoes.deselected();
+        if (cc < 1 || cc > combinacoes.length()) {
+            console.log("invalid combinacao [1," + cc + "," + combinacoes.length() + "]");
+            return;
+        }
+        if (deselected) {
+            for (var i in deselected) {
+                var t = deselected[i];
                 self.materias[t.codigo].row.getElementsByTagName("td")[1].innerHTML = "<strike>XXXXXX</strike>";
             }
         }
 
-        var c = self.combinacoes[cc];
+        var c = combinacoes.get(cc);
         if (!c) {
             self.horario.reset();
             return;
@@ -140,199 +145,11 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
             var t = c.horarios_combo[i].turma_representante;
             self.materias[t.materia.codigo].row.getElementsByTagName("td")[1].innerHTML = t.turma;
         }
-        self.combinacao_atual = cc;
-        ui_combinacoes.set_atual(cc+1);
-        ui_combinacoes.set_total(self.combinacoes.length);
-    }
-    function valor_combinacao(c) {
-        var sum = 0;
-        for (dia = 0; dia < 6; dia++) {
-            for (hora = 0; hora < 14; hora++) {
-                if (c[dia][hora]) {
-                    sum += hora;
-                }
-            }
-        }
-        return sum;
-    }
-    function comparar_combinacoes(a, b) {
-        var va = valor_combinacao(a);
-        var vb = valor_combinacao(b);
-        return va - vb;
+        combinacoes.set_current(cc);
+        ui_combinacoes.set_current(cc);
+        ui_combinacoes.set_total(combinacoes.length());
     }
 
-    function gerar_combinacoes()
-    {
-/* TODO tentar manter selecao anterior (ou mais semelhante) */
-        var combinacoes = new Array();
-        var deselecionadas = new Array();
-        for (var i in self.materias) {
-            var materia = self.materias[i];
-            var ok = 0;
-
-            /* se nenhuma turma de nenhum horario da materia esta
-             * selecionada, pular materia */
-            for (var j in materia.horarios) {
-                var horario = materia.horarios[j];
-                for (var k in horario.turmas) {
-                    if (horario.turmas[k].selected) {
-                        ok = 1;
-                        break;
-                    }
-                }
-                if (ok)
-                    break;
-            }
-            if (!ok) {
-                deselecionadas[materia.codigo] = materia;
-                continue;
-            }
-
-            if (!combinacoes.length) {
-                for (var j in materia.horarios) {
-                    var horario = materia.horarios[j];
-                    var ok = 0;
-                    for (var k in horario.turmas) {
-                        if (horario.turmas[k].selected) {
-                            ok = 1;
-                            break;
-                        }
-                    }
-                    if (!ok)
-                        continue;
-                    var combinacao = new Array();
-                    for (var i2 = 0; i2 < 6; i2++) {
-                        combinacao[i2] = new Array();
-                    }
-                    for (var k in horario.aulas) {
-                        var aula = horario.aulas[k];
-                        var dia  = aula.dia;
-                        var hora = aula.hora;
-                        var n    = aula.n;
-                        for (var i3 = 0; i3 < n; i3++) {
-                            combinacao[dia][hora+i3] = new Object();
-                            combinacao[dia][hora+i3].horario = horario;
-                        }
-                    }
-                    combinacao[materia.codigo] = horario;
-                    combinacao.horarios_combo = new Array();
-                    combinacao.horarios_combo.push(horario);
-                    combinacoes.push(combinacao);
-                }
-            } else {
-                var ok3 = 0;
-                var combinacoes2 = new Array();
-                for (var c in combinacoes) {
-                    var combinacao = combinacoes[c];
-                    var ok2 = 0;
-
-                    for (var j in materia.horarios) {
-                        var horario = materia.horarios[j];
-                        var ok = 0;
-                        for (var k in horario.turmas) {
-                            if (horario.turmas[k].selected)
-                                ok = 1;
-                        }
-                        if (!ok)
-                            continue;
-                        for (var k in horario.aulas) {
-                            var aula = horario.aulas[k];
-                            var dia  = aula.dia;
-                            var hora = aula.hora;
-                            var n    = aula.n;
-                            for (var i3 = 0; i3 < n; i3++) {
-                                if (combinacao[dia][hora+i3]) {
-                                    ok = 0;
-                                    break;
-                                }
-                            }
-                            if (!ok) {
-                                break;
-                            }
-                        }
-                        if (!ok)
-                            continue;
-                        var c2 = new Array();
-                        for (var i2 = 0; i2 < 6; i2++) {
-                            c2[i2] = new Array();
-                            for (var i3 = 0; i3 < 14; i3++) {
-                                if (combinacao[i2][i3]) {
-                                    c2[i2][i3] = new Object();
-                                    c2[i2][i3].horario = combinacao[i2][i3].horario;
-                                }
-                            }
-                        }
-                        c2[materia.codigo] = horario;
-                        c2.horarios_combo = new Array();
-                        for (var k in combinacao.horarios_combo) {
-                            c2[combinacao.horarios_combo[k].materia.codigo] = combinacao.horarios_combo[k];
-                            c2.horarios_combo.push(combinacao.horarios_combo[k]);
-                        }
-                        for (var k in horario.aulas) {
-                            var aula = horario.aulas[k];
-                            var dia  = aula.dia;
-                            var hora = aula.hora;
-                            var n    = aula.n;
-                            for (var i3 = 0; i3 < n; i3++) {
-                                c2[dia][hora+i3] = new Object();
-                                c2[dia][hora+i3].horario = horario;
-                            }
-                        }
-                        c2.horarios_combo.push(horario);
-                        combinacoes2.push(c2);
-                        ok2 = 1;
-                        ok3 = 1;
-                    }
-                    if (!ok2) {
-                        if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
-                        console.log("choque de horario, horario nao pode ser adicionado em nenhuma combinacao");
-                    }
-                }
-                if (!ok3) {
-                    if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
-                    console.log("choque de horario, materia ", materia.codigo, " nao pode ser adicionado em nenhuma combinacao");
-                    deselecionadas[materia.codigo] = materia;
-                    /* TODO dar essa informacao ao usuario */
-                } else {
-                    combinacoes = combinacoes2;
-                }
-            }
-        }
-        var comum = new Array();
-        for (var i = 0; i < 6; i++) {
-            comum[i] = new Array();
-            for (var j = 0; j < 14; j++) {
-                comum[i][j] = 1;
-            }
-        }
-        for (var cc in combinacoes) {
-            var c = combinacoes[cc];
-            for (dia = 0; dia < 6; dia++) {
-                for (hora = 0; hora < 14; hora++) {
-                    if (comum[dia][hora] == 1 && c[dia][hora]) {
-                        comum[dia][hora] = c[dia][hora];
-                    } else if (!c[dia][hora] || !c[dia][hora].horario || !comum[dia][hora] || !comum[dia][hora].horario) {
-                        comum[dia][hora] = 0;
-                    } else if (c[dia][hora].horario.materia.codigo != comum[dia][hora].horario.materia.codigo) {
-                        comum[dia][hora] = 0;
-                    }
-                }
-            }
-        }
-        for (var cc in combinacoes) {
-            var c = combinacoes[cc];
-            for (dia = 0; dia < 6; dia++) {
-                for (hora = 0; hora < 14; hora++) {
-                    if (comum[dia][hora]) {
-                        c[dia][hora].fixed = 1;
-                    }
-                }
-            }
-        }
-        combinacoes.sort(comparar_combinacoes);
-        self.combinacoes = combinacoes;
-        self.deselecionadas = deselecionadas;
-    }
     var get_color = (function(){
         var cores = [ "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgreen",
                       "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightsteelblue",
@@ -395,11 +212,11 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
 
         self.materias[materia.codigo] = materia;
 
-        gerar_combinacoes();
+        combinacoes.generate(self.materias);
 
         ui_materias.add_item(materia);
 
-        display_combinacao(0);
+        display_combinacao(1);
 
         ui_logger.set_text("'" + materia.codigo + "' adicionada", "lightgreen");
 
@@ -452,21 +269,20 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
     self.selected_materia = "";
     self.displaying_turma = "";
 
-    self.combinacao_atual = -1;
     self.previous = function() {
-        if (!self.combinacoes || !self.combinacoes.length)
+        if (!combinacoes.length())
             return;
-        var c = self.combinacao_atual - 1;
-        if (c < 0)
-            c = self.combinacoes.length - 1;
+        var c = combinacoes.current() - 1;
+        if (c < 1)
+            c = combinacoes.length();
         display_combinacao(c);
     };
     self.next = function() {
-        if (!self.combinacoes || !self.combinacoes.length)
+        if (!combinacoes.length())
             return;
-        var c = self.combinacao_atual + 1;
-        if (c >= self.combinacoes.length)
-            c = 0;
+        var c = combinacoes.current() + 1;
+        if (c > combinacoes.length())
+            c = 1;
         display_combinacao(c);
     };
 
@@ -488,12 +304,12 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
 
     /* UI_combinacoes */
     ui_combinacoes.changed = function(val) {
-        if (!self.combinacoes || !self.combinacoes.length)
+        if (!combinacoes.length())
             return;
         var int = parseInt(val);
-        if (int.toString() == val && val >= 1 && val <= self.combinacoes.length) {
+        if (int.toString() == val && val >= 1 && val <= combinacoes.length()) {
             ui_logger.reset();
-            display_combinacao(val - 1);
+            display_combinacao(val);
         } else {
             ui_logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
         }
@@ -516,9 +332,9 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
         self.materias[codigo].row.parentNode.removeChild(self.materias[codigo].row);
         delete self.materias[codigo];
 
-        gerar_combinacoes();
+        combinacoes.generate(self.materias);
 
-        display_combinacao(0);
+        display_combinacao(1);
 
         ui_logger.set_text("'" + codigo + "' removida", "lightgreen");
     }
@@ -538,7 +354,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
         var materia = self.materias[split[0]];
         var turma   = materia.turmas[split[1]];
         turma.selected = this.checked;
-        gerar_combinacoes();
+        combinacoes.generate(self.materias);
         display_combinacao(0);
         undisplay_turma(turma);
         display_turma(turma);
@@ -560,8 +376,8 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
             turma.selected        = !at_least_one_selected;
             checkboxes[i].checked = !at_least_one_selected;
         }
-        gerar_combinacoes();
-        display_combinacao(0);
+        combinacoes.generate(self.materias);
+        display_combinacao(1);
         undisplay_turma(turma);
         display_turma(turma);
     }
@@ -572,13 +388,15 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes)
 }
 
 window.onload = function() {
+    var combinacoes = new Combinacoes();
+
     dconsole = new Dconsole("dconsole");
     var ui_logger      = new UI_logger("logger");
     var horario = new Horario("horario");
     var ui_combinacoes = new UI_combinacoes();
     var ui_materias = new UI_materias("materias_list", ui_combinacoes);
     var ui_turmas   = new UI_turmas("turmas_list", horario.height());
-    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes);
+    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.adicionar = lista.adicionar;
