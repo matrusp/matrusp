@@ -201,6 +201,6 @@ function Combinacoes()
     self.get         = function(n) { if (combinacoes) return combinacoes[n-1]; };
     self.get_current = function( ) { if (current_int) return self.get(current_int); };
     self.current     = function( ) { return current_int; };
-    self.deselected  = function() { return deselected; };
-    self.length      = function() { return combinacoes.length; };
+    self.deselected  = function( ) { return deselected; };
+    self.length      = function( ) { return combinacoes.length; };
 }
