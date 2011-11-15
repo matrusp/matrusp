@@ -82,7 +82,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
     self.salvar = salvar;
 
     /* UI_combinacoes */
-    ui_combinacoes.changed = function(val) {
+    ui_combinacoes.previous = self.previous;
+    ui_combinacoes.next     = self.next;
+    ui_combinacoes.changed  = function(val) {
         if (!combinacoes.length())
             return;
         var int = parseInt(val);
@@ -93,9 +95,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
             ui_logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
         }
     };
-    ui_combinacoes.previous = self.previous;
-    ui_combinacoes.next = self.next;
-
     /* UI_materias */
     ui_materias.onclick_add = function() {};
     ui_materias.onremove    = function(materia) {
