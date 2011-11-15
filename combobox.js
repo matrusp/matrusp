@@ -40,7 +40,6 @@ function Combobox(input, suggestions, ui_logger)
         var array = str.split("\n");
 
         self.suggestions.innerHTML = "";
-        self.item_index = new Array();
         self.selected_item = -1;
         self.n_items = 0;
 
@@ -49,7 +48,7 @@ function Combobox(input, suggestions, ui_logger)
             var codigo = array[i].split(" ")[0];
 
             li.innerHTML   = array[i];
-            li.onmouseover = function() { select_item(self.item_index[this.innerHTML.split(" ")[0]]); };
+            li.onmouseover = function() { select_item(this.index); };
             li.onmouseout  = function() { deselect_item(); };
             li.onclick     = function() { deselect_item(); };
             li.onmousedown = function() { self.mouseisdown = true; return false; };
@@ -61,9 +60,8 @@ function Combobox(input, suggestions, ui_logger)
                 self.suggestions.style.display = "none";
                 self.input.blur();
             };
-            self.item_index[codigo] = i;
-
             self.item_array[i] = li;
+            li.index = i;
             ul.appendChild(li);
         }
         self.suggestions.appendChild(ul);
