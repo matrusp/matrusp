@@ -316,7 +316,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
         var turma   = materia.turmas[split[1]];
         turma.selected = this.checked;
         combinacoes.generate(self.materias);
-        display_combinacao(0);
+        display_combinacao(1);
         undisplay_turma(turma);
         display_turma(turma);
     }
