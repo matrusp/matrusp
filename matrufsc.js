@@ -1,119 +1,7 @@
-function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, combinacoes)
+function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, materias, turmas, combinacoes)
 {
     var self = this;
 
-    function criar_aulas(horarios)
-    {
-        var horas = new Object();
-        horas["0730"] =  0; horas[ 0] = "0730";
-        horas["0820"] =  1; horas[ 1] = "0820";
-        horas["0910"] =  2; horas[ 2] = "0910";
-        horas["1010"] =  3; horas[ 3] = "1010";
-        horas["1100"] =  4; horas[ 4] = "1100";
-        horas["1330"] =  5; horas[ 5] = "1330";
-        horas["1420"] =  6; horas[ 6] = "1420";
-        horas["1510"] =  7; horas[ 7] = "1510";
-        horas["1620"] =  8; horas[ 8] = "1620";
-        horas["1710"] =  9; horas[ 9] = "1710";
-        horas["1830"] = 10; horas[10] = "1830";
-        horas["1920"] = 11; horas[11] = "1920";
-        horas["2020"] = 12; horas[12] = "2020";
-        horas["2110"] = 13; horas[13] = "2110";
-
-        var split = horarios.replace(/ \/ \S*/ig, "").split(" ");
-        var ret = new Array();
-        for (var i = 0; i < split.length; i++) {
-            ret[i] = new Object();
-            ret[i].dia  = parseInt(split[i].slice(0,1)) - 2;
-            ret[i].hora = horas[split[i].slice(2,6)];
-            ret[i].n    = parseInt(split[i].slice(7));
-        }
-        for (var i = 0; i < ret.length-1; i++) {
-            for (var j = i+1; j < ret.length; j++) {
-                if ((ret[j].dia < ret[i].dia) || ((ret[j].dia == ret[i].dia) && (ret[j].hora < ret[i].hora))) {
-                    var tmp = ret[i];
-                    ret[i] = ret[j];
-                    ret[j] = tmp;
-                }
-            }
-        }
-        ret.index = function() {
-            var r = "";
-            for (var i = 0; i < this.length; i++) {
-                r += (this[i].dia+2) + "." + horas[this[i].hora] + "-" + this[i].n;
-            }
-            return r;
-        };
-        return ret;
-    }
-    function map_turma(turma, priv, func)
-    {
-        for (var i = 0; i < turma.aulas.length; i++) {
-            var dia  = turma.aulas[i].dia;
-            var hora = turma.aulas[i].hora;
-            var n    = turma.aulas[i].n;
-            for (var j = 0; j < n; j++) {
-                func(priv, dia, hora+j);
-            }
-        }
-    }
-    function display_turma(turma)
-    {
-        var c       = combinacoes.get_current();
-        var materia = self.selected_materia;
-        var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
-
-        if (turma == self.displaying_turma)
-            return;
-
-        if (current_turma)
-            map_turma(current_turma, null, function(priv, dia, hora) {
-                ui_horario.clear_cell(dia, hora);
-            });
-
-        map_turma(turma, c, function(c, dia, hora) {
-            if (c && c[dia][hora] && c[dia][hora].horario.materia != materia) {
-                ui_logger.set_text("choque de horario", "lightcoral");
-                ui_horario.display_cell(dia, hora, red_cell(materia.codigo));
-            } else {
-                ui_horario.display_cell(dia, hora, black_cell(materia.codigo));
-            }
-        });
-
-        self.displaying_turma = turma;
-    }
-    function normal_cell(d)  { return {strong:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
-    function red_cell(str)   { return {strong:true,text:str,bgcolor:"red",color:"black"}; }
-    function black_cell(str) { return {strong:false,text:str,bgcolor:"black",color:"white"}; }
-    function undisplay_turma(turma)
-    {
-        var c       = combinacoes.get_current();
-        var materia = self.selected_materia;
-        var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
-
-        if (!c) {
-            self.displaying_turma = "";
-            ui_horario.reset();
-            return;
-        }
-
-        if (turma != current_turma)
-            map_turma(turma, c, function(c, dia, hora) {
-                if (c[dia][hora] && c[dia][hora].horario)
-                    ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
-                else
-                    ui_horario.clear_cell(dia, hora);
-            });
-
-        if (current_turma)
-            map_turma(current_turma, c, function(c, dia, hora) {
-                ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
-            });
-
-        ui_logger.reset();
-
-        self.displaying_turma = "";
-    }
     function display_combinacao(cc)
     {
         var deselected = combinacoes.deselected();
@@ -132,9 +20,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
             for (var i in c.horarios_combo) {
                 var turma = c.horarios_combo[i].turma_representante;
                 turma.materia.ui_turma.innerHTML = turma.turma;
-                map_turma(turma, c, function(c, dia, hora) {
-                    ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
-                });
+                turmas.display(turma, c);
             }
         }
         combinacoes.set_current(cc);
@@ -142,82 +28,19 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
         ui_combinacoes.set_total(combinacoes.length());
     }
 
-    var get_color = (function(){
-        var cores = [ "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgreen",
-                      "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightsteelblue",
-                      "lightyellow" ];
-        var counter = 0;
-        return (function(){
-            var ret = cores[counter++];
-            if (counter >= cores.length)
-                counter = 0;
-            return ret;
-        });
-    })();
-
     self.adicionar = list_add_item;
     function list_add_item(str)
     {
-        var array = str.split("\n"); /* uma turma por item */
-        var split = array[0].split("\t");
-
-        if (self.materias[split[0]]) {
+        var materia = materias.add_item(str);
+        if (!materia) {
             ui_logger.set_text("'" + split[0] + "' ja foi adicionada", "lightcoral");
             return;
         }
-
-        /* parte de dados */
-        var materia = new Object();
-        materia.codigo = split[0];
-        materia.nome   = split[1];
-        materia.cor    = get_color();
-
-        materia.turmas = new Array();
-        for (var i = 1; i < array.length - 1; i++) {
-            var split = array[i].split("\t");
-            var turma = new Object();
-            turma.turma     = split[0];
-            turma.aulas     = criar_aulas(split[3]);
-            turma.professor = split[4];
-            turma.selected  = 1;
-            turma.materia   = materia;
-            materia.turmas[turma.turma] = turma;
-        }
-
-        materia.horarios = new Object();
-        for (var i in materia.turmas) {
-            var turma = materia.turmas[i];
-            var index = turma.aulas.index();
-            if (!materia.horarios[index]) {
-                materia.horarios[index] = new Object();
-            }
-            if (!materia.horarios[index].turmas) {
-                materia.horarios[index].turmas = new Object();
-            }
-            if (!materia.horarios[index].turma_representante) {
-                materia.horarios[index].turma_representante = turma;
-            }
-            materia.horarios[index].turmas[turma.turma] = turma;
-            materia.horarios[index].materia = materia;
-            materia.horarios[index].aulas = turma.aulas;
-        }
-
-        self.materias[materia.codigo] = materia;
-
-        combinacoes.generate(self.materias);
-
+        combinacoes.generate(materias.list());
         ui_materias.add_item(materia);
-
         display_combinacao(1);
-
         ui_logger.set_text("'" + materia.codigo + "' adicionada", "lightgreen");
-
-//console.log(self.salvar());
     }
-
-    self.materias = new Object();
-    self.selected_materia = "";
-    self.displaying_turma = "";
 
     self.previous = function() {
         if (!combinacoes.length())
@@ -237,9 +60,11 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
     };
 
     self.salvar = function() {
+        var list = materias.list();
+        var n = list.length();
         var ret = "";
-        for (var i in self.materias) {
-            var materia = self.materias[i];
+        for (var i = 0; i < n; i++) {
+            var materia = list[i];
             ret += "'" + materia.codigo + "'{"
             for (var j in materia.turmas) {
                 var turma = materia.turmas[j];
@@ -274,22 +99,23 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
     function materia_onclick_remove()
     {
         var materia = this.parentNode.materia;
+        var selected = materias.get_selected();
 
-        if (self.selected_materia.codigo == materia.codigo)
+        if (selected && selected.codigo == materia.codigo)
             ui_turmas.reset();
 
         ui_logger.set_text("'" + materia.codigo + "' removida", "lightgreen");
         materia.row.parentNode.removeChild(materia.row);
-        delete self.materias[materia.codigo];
+        materias.remove_item(materia);
 
-        combinacoes.generate(self.materias);
+        combinacoes.generate(materias.list());
         display_combinacao(1);
     }
     function materia_onclick()
     {
         var materia = this.parentNode.materia;
         ui_turmas.create(materia);
-        self.selected_materia = materia;
+        materias.set_selected(materia);
     }
     ui_materias.onclick_add = materia_onclick_add;
     ui_materias.materia_onclick_remove = materia_onclick_remove;
@@ -298,13 +124,13 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
     function turma_changed()
     {
         var split   = this.value.split(" ");
-        var materia = self.materias[split[0]];
+        var materia = materias.get(split[0]);
         var turma   = materia.turmas[split[1]];
         turma.selected = this.checked;
-        combinacoes.generate(self.materias);
+        combinacoes.generate(materias.list());
         display_combinacao(1);
-        undisplay_turma(turma);
-        display_turma(turma);
+        turmas.undisplay_over(turma);
+        turmas.display_over(turma);
     }
     function turma_onmouseup()
     {
@@ -318,32 +144,35 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, co
         }
         for (var i = 0; i < checkboxes.length; i++) {
             var split   = checkboxes[i].value.split(" ");
-            var materia = self.materias[split[0]];
+            var materia = materias.get(split[0]);
             var turma   = materia.turmas[split[1]];
             turma.selected        = !at_least_one_selected;
             checkboxes[i].checked = !at_least_one_selected;
         }
-        combinacoes.generate(self.materias);
+        combinacoes.generate(materias.list());
         display_combinacao(1);
-        undisplay_turma(turma);
-        display_turma(turma);
+        turmas.undisplay_over(turma);
+        turmas.display_over(turma);
     }
-    ui_turmas.turma_onmouseover = function () { display_turma(this.turma); };
-    ui_turmas.turma_onmouseout = function () { undisplay_turma(this.turma); };
+    ui_turmas.turma_onmouseover = function () { turmas.display_over(this.turma); };
+    ui_turmas.turma_onmouseout = function () { turmas.undisplay_over(this.turma); };
     ui_turmas.turma_changed = turma_changed;
     ui_turmas.turma_onmouseup = turma_onmouseup;
 }
 
 window.onload = function() {
-    var combinacoes = new Combinacoes();
-
-    dconsole = new Dconsole("dconsole");
-    var ui_logger      = new UI_logger("logger");
-    var ui_horario     = new UI_horario("horario");
     var ui_combinacoes = new UI_combinacoes();
     var ui_materias    = new UI_materias("materias_list", ui_combinacoes);
+    var ui_horario     = new UI_horario("horario");
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
-    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, combinacoes);
+    var ui_logger      = new UI_logger("logger");
+
+    var combinacoes = new Combinacoes();
+    var materias = new Materias();
+    var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
+
+    dconsole = new Dconsole("dconsole");
+    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.add_item = lista.adicionar;

@@ -26,7 +26,7 @@ function Combinacoes()
 /* TODO tentar manter selecao anterior (ou mais semelhante) */
         var new_combinacoes = new Array();
         var new_deselected = new Array();
-        for (var i in materias) {
+        for (var i = 0; i < materias.length; i++) {
             var materia = materias[i];
             var ok = 0;
 
@@ -159,10 +159,10 @@ function Combinacoes()
             }
         }
         var comum = new Array();
-        for (var i = 0; i < 6; i++) {
-            comum[i] = new Array();
+        for (var i4 = 0; i4 < 6; i4++) {
+            comum[i4] = new Array();
             for (var j = 0; j < 14; j++) {
-                comum[i][j] = 1;
+                comum[i4][j] = 1;
             }
         }
         for (var cc in new_combinacoes) {
