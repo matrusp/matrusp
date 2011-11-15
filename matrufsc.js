@@ -1,4 +1,4 @@
-function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combinacoes)
+function Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, combinacoes)
 {
     var self = this;
 
@@ -68,15 +68,15 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
 
         if (current_turma)
             map_turma(current_turma, null, function(priv, dia, hora) {
-                self.horario.clear_cell(dia, hora);
+                ui_horario.clear_cell(dia, hora);
             });
 
         map_turma(turma, c, function(c, dia, hora) {
             if (c && c[dia][hora] && c[dia][hora].horario.materia != materia) {
                 ui_logger.set_text("choque de horario", "lightcoral");
-                self.horario.display_cell(dia, hora, red_cell(materia.codigo));
+                ui_horario.display_cell(dia, hora, red_cell(materia.codigo));
             } else {
-                self.horario.display_cell(dia, hora, black_cell(materia.codigo));
+                ui_horario.display_cell(dia, hora, black_cell(materia.codigo));
             }
         });
 
@@ -93,21 +93,21 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
 
         if (!c) {
             self.displaying_turma = "";
-            self.horario.reset();
+            ui_horario.reset();
             return;
         }
 
         if (turma != current_turma)
             map_turma(turma, c, function(c, dia, hora) {
                 if (c[dia][hora] && c[dia][hora].horario)
-                    self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                    ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
                 else
-                    self.horario.clear_cell(dia, hora);
+                    ui_horario.clear_cell(dia, hora);
             });
 
         if (current_turma)
             map_turma(current_turma, c, function(c, dia, hora) {
-                self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
             });
 
         ui_logger.reset();
@@ -126,15 +126,15 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
 
         var c = combinacoes.get(cc);
         if (!c) {
-            self.horario.reset();
+            ui_horario.reset();
             cc = 0;
         } else {
             for (var dia = 0; dia < 6; dia++) {
                 for (var hora = 0; hora < 14; hora++) {
                     if (c[dia][hora] && c[dia][hora].horario)
-                        self.horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                        ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
                     else
-                        self.horario.clear_cell(dia, hora);
+                        ui_horario.clear_cell(dia, hora);
                 }
             }
             for (var i in c.horarios_combo) {
@@ -220,8 +220,6 @@ function Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combi
 
 //console.log(self.salvar());
     }
-
-    self.horario = horario;
 
     self.materias = new Object();
     self.selected_materia = "";
@@ -347,11 +345,11 @@ window.onload = function() {
 
     dconsole = new Dconsole("dconsole");
     var ui_logger      = new UI_logger("logger");
-    var horario = new Horario("horario");
+    var ui_horario     = new UI_horario("horario");
     var ui_combinacoes = new UI_combinacoes();
-    var ui_materias = new UI_materias("materias_list", ui_combinacoes);
-    var ui_turmas   = new UI_turmas("turmas_list", horario.height());
-    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, horario, ui_combinacoes, combinacoes);
+    var ui_materias    = new UI_materias("materias_list", ui_combinacoes);
+    var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
+    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, ui_horario, ui_combinacoes, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.add_item = lista.adicionar;

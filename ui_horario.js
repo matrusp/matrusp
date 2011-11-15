@@ -1,4 +1,4 @@
-function Horario(id)
+function UI_horario(id)
 {
     var self = this;
     var dias  = [ "Segunda", "Ter\u00e7a", "Quarta", "Quinta", "Sexta", "S\u00e1bado" ];
