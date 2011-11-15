@@ -1,4 +1,4 @@
-function Lista(materias_list, turmas_list, ui_logger, horario, ui_combinacoes)
+function Lista(ui_materias, turmas_list, ui_logger, horario, ui_combinacoes)
 {
     var self = this;
 
@@ -447,31 +447,6 @@ function Lista(materias_list, turmas_list, ui_logger, horario, ui_combinacoes)
         });
     })();
 
-    function materia_onclick_add()
-    {
-    }
-    function materia_onclick_remove()
-    {
-        var codigo = this.parentNode.getElementsByTagName("td")[0].innerHTML;
-
-        if (self.selected_materia.codigo == codigo) {
-            self.turmas_list.innerHTML = "";
-        }
-
-        self.materias[codigo].row.parentNode.removeChild(self.materias[codigo].row);
-        delete self.materias[codigo];
-
-        gerar_combinacoes();
-
-        display_combinacao(0);
-
-        ui_logger.set_text("'" + codigo + "' removida", "lightgreen");
-    }
-    function materia_onclick()
-    {
-        var materia = self.materias[this.parentNode.getElementsByTagName("td")[0].innerHTML];
-        create_turmas_list(materia);
-    }
     function list_add_item(str)
     {
         var array = str.split("\n"); /* uma turma por item */
@@ -523,32 +498,7 @@ function Lista(materias_list, turmas_list, ui_logger, horario, ui_combinacoes)
 
         gerar_combinacoes();
 
-        /* parte gráfica */
-        var row  = document.createElement("tr");
-        row.style.backgroundColor = materia.cor;
-        row.style.cursor="pointer";
-        var data = document.createElement("td");
-        data.onclick = materia_onclick;
-        data.style.width = "70px";
-        data.innerHTML = materia.codigo;
-        row.appendChild(data);
-        var data = document.createElement("td");
-        data.onclick = materia_onclick;
-        data.style.width = "44px";
-        row.appendChild(data);
-        var data = document.createElement("td");
-        data.onclick = materia_onclick;
-        data.innerHTML = materia.nome;
-        row.appendChild(data);
-        var data = document.createElement("td");
-        data.onclick = materia_onclick_remove;
-        data.innerHTML = "X";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
-        row.appendChild(data);
-        self.materias_tbody.appendChild(row);
-
-        self.materias[materia.codigo].row = row;
+        ui_materias.add_item(materia);
 
         display_combinacao(0);
 
@@ -598,62 +548,6 @@ function Lista(materias_list, turmas_list, ui_logger, horario, ui_combinacoes)
     self.horario = horario;
 
     self.adicionar = adicionar;
-
-    self.materias_list = document.getElementById(materias_list);
-
-    self.materias_list.style.border = "1px solid black";
-    self.materias_list.style.width  = "770px";
-
-    {
-        self.materias_table = document.createElement("table");
-        self.materias_tbody = document.createElement("tbody");
-        self.materias_table.className = "materias";
-        self.materias_table.style.width="770px";
-        self.materias_table.cellPadding="1";
-        self.materias_table.cellSpacing="1";
-        self.materias_table.appendChild(self.materias_tbody);
-        self.materias_list.appendChild(self.materias_table);
-        var row  = document.createElement("tr");
-        row.style.backgroundColor = "#eeeeee";
-        var data = document.createElement("td");
-        data.style.width = "70px";
-        data.innerHTML = "C\u00f3digo";
-        row.appendChild(data);
-        var data = document.createElement("td");
-        data.style.width = "44px";
-        data.innerHTML = "Turma";
-        row.appendChild(data);
-        var data = document.createElement("td");
-
-        var t2 = document.createElement("table");
-        t2.cellPadding="0";
-        t2.cellSpacing="0";
-        t2.style.width="100%";
-        var tb2 = document.createElement("tbody");
-        var r2  = document.createElement("tr");
-        r2.appendChild(ui_combinacoes.get_td());
-        var d2 = document.createElement("td");
-        d2.style.textAlign = "right";
-        d2.style.width="250px";
-        d2.style.fontFamily = "monospace";
-        d2.style.fontSize = "13px";
-        d2.innerHTML = "crie atividades aqui >>>>";
-
-        r2.appendChild(d2);
-        tb2.appendChild(r2);
-        t2.appendChild(tb2);
-        data.appendChild(t2);
-
-        row.appendChild(data);
-        var data = document.createElement("td");
-        data.onclick = materia_onclick_add;
-        data.innerHTML = "<strong>+</strong>";
-        data.style.cursor="pointer";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
-        row.appendChild(data);
-        self.materias_tbody.appendChild(row);
-    }
 
     self.turmas_list   = document.getElementById(turmas_list);
 
@@ -714,6 +608,36 @@ function Lista(materias_list, turmas_list, ui_logger, horario, ui_combinacoes)
     };
     ui_combinacoes.previous = self.previous;
     ui_combinacoes.next = self.next;
+
+    /* UI_materias */
+    function materia_onclick_add()
+    {
+    }
+    function materia_onclick_remove()
+    {
+        var codigo = this.parentNode.getElementsByTagName("td")[0].innerHTML;
+
+        if (self.selected_materia.codigo == codigo) {
+            self.turmas_list.innerHTML = "";
+        }
+
+        self.materias[codigo].row.parentNode.removeChild(self.materias[codigo].row);
+        delete self.materias[codigo];
+
+        gerar_combinacoes();
+
+        display_combinacao(0);
+
+        ui_logger.set_text("'" + codigo + "' removida", "lightgreen");
+    }
+    function materia_onclick()
+    {
+        var materia = self.materias[this.parentNode.getElementsByTagName("td")[0].innerHTML];
+        create_turmas_list(materia);
+    }
+    ui_materias.onclick_add = materia_onclick_add;
+    ui_materias.materia_onclick_remove = materia_onclick_remove;
+    ui_materias.materia_onclick = materia_onclick;
 }
 
 window.onload = function() {
@@ -721,7 +645,8 @@ window.onload = function() {
     var ui_logger      = new UI_logger("logger");
     var horario = new Horario("horario");
     var ui_combinacoes = new UI_combinacoes();
-    var lista   = new Lista("materias_list", "turmas_list", ui_logger, horario, ui_combinacoes);
+    var ui_materias = new UI_materias("materias_list", ui_combinacoes);
+    var lista   = new Lista(ui_materias, "turmas_list", ui_logger, horario, ui_combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.adicionar = lista.adicionar;
