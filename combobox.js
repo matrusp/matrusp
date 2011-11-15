@@ -56,7 +56,7 @@ function Combobox(input, suggestions, ui_logger)
         self.array.push(li);
         ul.appendChild(li);
     };
-    function clear_list() {
+    function list_clear() {
         self.suggestions.innerHTML = "";
         self.selected_item = -1;
         self.array = new Array();
@@ -131,7 +131,7 @@ function Combobox(input, suggestions, ui_logger)
                 }
                 ui_logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
             } else {
-                clear_list();
+                list_clear();
                 self.suggestions.style.display = "none";
                 ui_logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
             }
@@ -160,7 +160,7 @@ function Combobox(input, suggestions, ui_logger)
                 lastfetch = fetch;
             }
         } else {
-            clear_list();
+            list_clear();
             self.suggestions.style.display = "none";
         }
     };
