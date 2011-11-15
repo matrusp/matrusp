@@ -62,6 +62,20 @@ function Materias()
         };
         return ret;
     }
+    function new_item(codigo, nome) {
+        if (materias[codigo])
+            return null;
+        var materia = new Object();
+        materia.codigo = codigo;
+        materia.nome   = nome;
+        materia.cor    = get_color();
+        materia.turmas = new Array();
+        materia.horarios = new Object();
+        materia.editavel = true;
+        materias[materia.codigo] = materia;
+        list.push(materia);
+        return materia;
+    }
     function add_item(codigo, str)
     {
         var array = str.split("\n"); /* uma turma por item */
@@ -105,6 +119,7 @@ function Materias()
             materia.horarios[index].materia = materia;
             materia.horarios[index].aulas = turma.aulas;
         }
+        materia.editavel = false;
         materias[materia.codigo] = materia;
         list.push(materia);
 
@@ -123,6 +138,7 @@ function Materias()
     /* procedures */
     self.set_selected = function(materia) { selected = materia; };
     self.add_item = add_item;
+    self.new_item = new_item;
     self.remove_item = remove_item;
     /* functions */
     self.get = function(codigo) { return materias[codigo]; };

@@ -28,9 +28,15 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         ui_combinacoes.set_total(combinacoes.length());
     }
 
-    function add_item(codigo, str)
-    {
+    function new_item(codigo, nome) {
+        var materia = materias.new_item(codigo, nome);
+        add_item2(materia);
+    };
+    function add_item(codigo, str) {
         var materia = materias.add_item(codigo, str);
+        add_item2(materia);
+    };
+    function add_item2(materia) {
         if (!materia) {
             ui_logger.set_text("'" + codigo + "' ja foi adicionada", "lightcoral");
             return;
@@ -78,6 +84,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
     }
 
     /* self */
+    self.new_item = new_item;
     self.add_item = add_item;
     self.previous = previous;
     self.next = next;
@@ -140,6 +147,7 @@ window.onload = function() {
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.cb_add_item = main.add_item;
+    combo.cb_new_item = main.new_item;
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;

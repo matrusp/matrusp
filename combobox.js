@@ -106,7 +106,7 @@ function Combobox(input, suggestions, ui_logger)
             list_hide();
         }
     };
-    self.input.onfocus   = function() { if (self.array.length > 1) list_show(); };
+    self.input.onfocus   = function() { if (self.input.value) list_show(); };
     self.input.onkeydown = function(e) {
         var c = (e) ? e.keyCode : event.keyCode;
         if (c == 40 /* down */) {
@@ -233,11 +233,12 @@ function Combobox(input, suggestions, ui_logger)
         str += atividades;
         atividades++;
         var codigo = "XXX" + str;
-        self.cb_add_item(codigo, "");
+        self.cb_new_item(codigo, nome);
     }
 
     /* procedures */
     self.add_item    = add_item;
     /* callbacks */
     self.cb_add_item = null;
+    self.cb_new_item = null;
 }
