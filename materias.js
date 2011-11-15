@@ -62,7 +62,7 @@ function Materias()
         };
         return ret;
     }
-    function add_item(str)
+    function add_item(codigo, str)
     {
         var array = str.split("\n"); /* uma turma por item */
         var split = array[0].split("\t");

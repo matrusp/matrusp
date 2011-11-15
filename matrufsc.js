@@ -1,4 +1,4 @@
-function Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes)
+function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes)
 {
     var self = this;
 
@@ -28,12 +28,11 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turm
         ui_combinacoes.set_total(combinacoes.length());
     }
 
-    self.adicionar = list_add_item;
-    function list_add_item(str)
+    function adicionar(codigo, str)
     {
-        var materia = materias.add_item(str);
+        var materia = materias.add_item(codigo, str);
         if (!materia) {
-            ui_logger.set_text("'" + split[0] + "' ja foi adicionada", "lightcoral");
+            ui_logger.set_text("'" + codigo + "' ja foi adicionada", "lightcoral");
             return;
         }
         combinacoes.generate(materias.list());
@@ -41,8 +40,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turm
         display_combinacao(1);
         ui_logger.set_text("'" + materia.codigo + "' adicionada", "lightgreen");
     }
-
-    self.previous = function() {
+    function previous() {
         if (!combinacoes.length())
             return;
         var c = combinacoes.current() - 1;
@@ -50,7 +48,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turm
             c = combinacoes.length();
         display_combinacao(c);
     };
-    self.next = function() {
+    function next() {
         if (!combinacoes.length())
             return;
         var c = combinacoes.current() + 1;
@@ -59,7 +57,7 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turm
         display_combinacao(c);
     };
 
-    self.salvar = function() {
+    function salvar() {
         var list = materias.list();
         var n = list.length();
         var ret = "";
@@ -76,6 +74,12 @@ function Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turm
         }
         return ret;
     }
+
+    /* self */
+    self.adicionar = adicionar;
+    self.previous = previous;
+    self.next = next;
+    self.salvar = salvar;
 
     /* UI_combinacoes */
     ui_combinacoes.changed = function(val) {
@@ -170,17 +174,17 @@ window.onload = function() {
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
     dconsole = new Dconsole("dconsole");
-    var lista   = new Lista(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes);
+    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
-    combo.add_item = lista.adicionar;
+    combo.add_item = main.adicionar;
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;
         var c = ev.keyCode;
         if (ev.srcElement == combo.input)
             return;
-        if (ev.srcElement == lista.selecao_atual) {
+        if (ev.srcElement == main.selecao_atual) {
             var pos = -1;
             if (document.selection) {
                 var range = document.selection.createRange();
@@ -190,12 +194,12 @@ window.onload = function() {
                 pos = ev.srcElement.selectionStart;
             }
             if (c == 13) {
-                lista.selecao_atual.blur();
-                lista.selecao_atual.focus();
+                main.selecao_atual.blur();
+                main.selecao_atual.focus();
             } else if (pos == ev.srcElement.value.length && c == 39) {
-                lista.next();
+                main.next();
             } else if (pos == 0 && c == 37) {
-                lista.previous();
+                main.previous();
                 if (document.selection) {
                     var range = ev.srcElement.createTextRange();
                     range.collapse(true);
@@ -209,33 +213,33 @@ window.onload = function() {
             return;
         }
         if (c == 39) {
-            lista.next();
+            main.next();
         } else if (c == 37) {
-            lista.previous();
+            main.previous();
         }
     };
     if (0) {
     //1a fase
-    lista.adicionar("EEL7010");
-    lista.adicionar("EEL7011");
-    lista.adicionar("EGR5619");
-    lista.adicionar("MTM5183");
-    lista.adicionar("MTM5512");
-    lista.adicionar("QMC5106");
+    main.adicionar("EEL7010");
+    main.adicionar("EEL7011");
+    main.adicionar("EGR5619");
+    main.adicionar("MTM5183");
+    main.adicionar("MTM5512");
+    main.adicionar("QMC5106");
     } else if (0) {
     //2a fase
-    lista.adicionar("EEL7020");
-    lista.adicionar("EEL7021");
-    lista.adicionar("FSC5161");
-    lista.adicionar("LLV5603");
-    lista.adicionar("MTM5184");
-    lista.adicionar("MTM5247");
+    main.adicionar("EEL7020");
+    main.adicionar("EEL7021");
+    main.adicionar("FSC5161");
+    main.adicionar("LLV5603");
+    main.adicionar("MTM5184");
+    main.adicionar("MTM5247");
     } else if (0) {
     //3a fase
-    lista.adicionar("EEL7030");
-    lista.adicionar("EEL7031");
-    lista.adicionar("FSC5162");
-    lista.adicionar("FSC5164");
-    lista.adicionar("MTM5185");
+    main.adicionar("EEL7030");
+    main.adicionar("EEL7031");
+    main.adicionar("FSC5162");
+    main.adicionar("FSC5164");
+    main.adicionar("MTM5185");
     }
 }

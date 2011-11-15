@@ -175,16 +175,16 @@ function Combobox(input, suggestions, ui_logger)
                     self.timer = null;
                 }
                 if (str.length > 0) {
-                    self.add_item(str);
+                    self.add_item(this.codigo, str);
                 } else {
-                    ui_logger.set_text("'" + this.materia + "' nao adicionada", "lightcoral");
+                    ui_logger.set_text("'" + this.codigo + "' nao adicionada", "lightcoral");
                 }
             }
             this.available = true;
         }
     }
     var full_requests = new Array();
-    function adicionar(materia) {
+    function adicionar(codigo) {
         var n = full_requests.length;
         for (var i = 0; i < n; i++)
             if (full_requests[i].available)
@@ -193,11 +193,11 @@ function Combobox(input, suggestions, ui_logger)
             full_requests[i] = new XMLHttpRequest();
         }
         full_requests[i].available = false;
-        full_requests[i].materia = materia;
-        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(materia), true);
+        full_requests[i].codigo = codigo;
+        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(codigo), true);
         full_requests[i].onreadystatechange = list_onreadystatechange;
         full_requests[i].send(null);
-        ui_logger.waiting("buscando '" + materia + "'");
+        ui_logger.waiting("buscando '" + codigo + "'");
     }
 
     /* callbacks */
