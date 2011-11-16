@@ -34,12 +34,6 @@ function UI_turmas(id, height)
         row.onmouseover = function() { self.cb_onmouseover(this.turma); }
         row.onmouseout  = function() { self.cb_onmouseout(this.turma); }
 
-        var turma = new Object();
-        turma.turma     = "xturma";
-        turma.aulas     = null;
-        turma.professor = "xprofessor";
-        turma.selected  = 1;
-        turma.materia   = current_materia;
         current_materia.turmas[turma.turma] = turma;
 
         var data = document.createElement("td");
@@ -58,14 +52,15 @@ function UI_turmas(id, height)
 
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
-        data.innerHTML = "turma";
+        data.innerHTML = turma.turma;
         data.style.width = "44px";
         row.appendChild(data);
 
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
-        data.innerHTML = "professor";
+        data.innerHTML = turma.professor;
         row.appendChild(data);
+        row.turma = turma;
 
         self.tbody.appendChild(row);
     }
@@ -102,6 +97,7 @@ function UI_turmas(id, height)
             data.onmouseup = function() { self.cb_new_turma(); };
             data.innerHTML = ">>>> adicione turmas aqui <<<<";
             row.appendChild(data);
+            row.turma = turma;
 
             self.tbody.appendChild(row);
         }

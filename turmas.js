@@ -5,6 +5,8 @@ function Turmas(ui_logger, ui_horario, combinacoes)
 
     function map_turma(turma, priv, func)
     {
+        if (!turma.aulas)
+            return;
         for (var i = 0; i < turma.aulas.length; i++) {
             var dia  = turma.aulas[i].dia;
             var hora = turma.aulas[i].hora;

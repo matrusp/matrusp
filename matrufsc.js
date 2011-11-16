@@ -30,13 +30,13 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
 
     function new_item(codigo, nome) {
         var materia = materias.new_item(codigo, nome);
-        add_item2(materia);
+        add_item2(materia, codigo);
     };
     function add_item(codigo, str) {
         var materia = materias.add_item(codigo, str);
-        add_item2(materia);
+        add_item2(materia, codigo);
     };
-    function add_item2(materia) {
+    function add_item2(materia, codigo) {
         if (!materia) {
             ui_logger.set_text("'" + codigo + "' ja foi adicionada", "lightcoral");
             return;
@@ -46,7 +46,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         display_combinacao(1);
         ui_turmas.create(materia);
         materias.set_selected(materia);
-        ui_logger.set_text("'" + materia.codigo + "' adicionada", "lightgreen");
+        ui_logger.set_text("'" + codigo + "' adicionada", "lightgreen");
     }
     function previous() {
         if (!combinacoes.length())
@@ -120,9 +120,19 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         materias.set_selected(materia);
     }
     /* UI_turmas */
+    var n_turmas = 1;
     ui_turmas.cb_new_turma   = function() {
+        var nome = new String();
+        if (n_turmas < 1000)
+            nome += "0";
+        if (n_turmas <  100)
+            nome += "0";
+        if (n_turmas <   10)
+            nome += "0";
+        nome += n_turmas;
+        n_turmas++;
         var materia = materias.get_selected();
-        var turma = materias.new_turma(materia, "NOSDF", null, "PROFEA");
+        var turma = materias.new_turma(materia, nome, null, null);
         ui_turmas.new_turma(turma);
     };
     ui_turmas.cb_onmouseover = function(turma) { turmas.display_over(turma); };

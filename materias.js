@@ -78,6 +78,7 @@ function Materias()
     }
     function new_turma(materia, nome, aulas, professor) {
         var turma = new Object();
+        var index;
         turma.turma     = nome;
         turma.aulas     = aulas;
         turma.professor = professor;
@@ -85,20 +86,22 @@ function Materias()
         turma.materia   = materia;
         materia.turmas[turma.turma] = turma;
         if (aulas) {
-            var index = turma.aulas.index();
-            if (!materia.horarios[index]) {
-                materia.horarios[index] = new Object();
-            }
-            if (!materia.horarios[index].turmas) {
-                materia.horarios[index].turmas = new Object();
-            }
-            if (!materia.horarios[index].turma_representante) {
-                materia.horarios[index].turma_representante = turma;
-            }
-            materia.horarios[index].turmas[turma.turma] = turma;
-            materia.horarios[index].materia = materia;
-            materia.horarios[index].aulas = turma.aulas;
+            index = turma.aulas.index();
+        } else {
+            index = nome;
         }
+        if (!materia.horarios[index]) {
+            materia.horarios[index] = new Object();
+        }
+        if (!materia.horarios[index].turmas) {
+            materia.horarios[index].turmas = new Object();
+        }
+        if (!materia.horarios[index].turma_representante) {
+            materia.horarios[index].turma_representante = turma;
+        }
+        materia.horarios[index].turmas[turma.turma] = turma;
+        materia.horarios[index].materia = materia;
+        materia.horarios[index].aulas = turma.aulas;
         return turma;
     }
     function add_item(codigo, str)
