@@ -2,6 +2,8 @@ function UI_turmas(id, height)
 {
     var self = this;
 
+    var current_materia = null;
+
     list = document.getElementById(id);
 
     list.style.border = "1px solid black";
@@ -25,16 +27,84 @@ function UI_turmas(id, height)
         }
         self.updated();
     }
+    function adicionar_turma_atividade() {
+        var row  = document.createElement("tr");
+        row.style.backgroundColor = current_materia.cor;
+        row.style.cursor="pointer";
+        row.onmouseover = function() { self.onmouseover(this.turma); }
+        row.onmouseout  = function() { self.onmouseout(this.turma); }
+
+        var turma = new Object();
+        turma.turma     = "xturma";
+        turma.aulas     = null;
+        turma.professor = "xprofessor";
+        turma.selected  = 1;
+        turma.materia   = current_materia;
+        current_materia.turmas[turma.turma] = turma;
+
+        var data = document.createElement("td");
+        var input = document.createElement("input");
+        input.type     = "checkbox";
+        input.value    = current_materia.codigo + " " + turma.turma;
+        input.onchange = function() {
+            var split = this.value.split(" ");
+            self.set(split[0], split[1], this.checked);
+            self.updated();
+        };
+        data.appendChild(input);
+        input.checked  = turma.selected;
+        data.style.width = "22px";
+        row.appendChild(data);
+
+        var data = document.createElement("td");
+        data.onmouseup = onmouseup;
+        data.innerHTML = "turma";
+        data.style.width = "44px";
+        row.appendChild(data);
+
+        var data = document.createElement("td");
+        data.onmouseup = onmouseup;
+        data.innerHTML = "professor";
+        row.appendChild(data);
+
+        self.tbody.appendChild(row);
+    }
     var create = function(materia) {
         list.innerHTML = "";
 
+        current_materia = materia;
+
         var table = document.createElement("table");
-        var tbody = document.createElement("tbody");
+        self.tbody = document.createElement("tbody");
         table.className = "materias";
         table.style.width="330px";
         table.cellPadding="1";
         table.cellSpacing="1";
 
+        if (materia.editavel) {
+            var row  = document.createElement("tr");
+            row.style.backgroundColor = materia.cor;
+
+            var row  = document.createElement("tr");
+            row.style.backgroundColor = materia.cor;
+            row.materia = materia;
+
+            var data = document.createElement("td");
+            data.style.width = "22px";
+            row.appendChild(data);
+            var data = document.createElement("td");
+            data.style.width = "44px";
+            row.appendChild(data);
+
+            var data = document.createElement("td");
+            data.style.cursor = "pointer";
+            data.style.textAlign = "center";
+            data.onmouseup = adicionar_turma_atividade;
+            data.innerHTML = ">>>> adicione turmas aqui <<<<";
+            row.appendChild(data);
+
+            self.tbody.appendChild(row);
+        }
         for (var i in materia.horarios) {
             var horario = materia.horarios[i];
 
@@ -84,10 +154,10 @@ function UI_turmas(id, height)
             data.innerHTML = innerHTML;
             row.appendChild(data);
 
-            tbody.appendChild(row);
+            self.tbody.appendChild(row);
         }
 
-        table.appendChild(tbody);
+        table.appendChild(self.tbody);
         list.appendChild(table);
 
         /* TODO determine scrollbar width */
@@ -99,6 +169,7 @@ function UI_turmas(id, height)
     self.create = create;
     self.reset = function() { list.innerHTML = ""; };
     /* callbacks */
+    self.new_turma    = null;
     self.onmouseover  = null;
     self.onmouseout   = null;
     self.updated      = null;
