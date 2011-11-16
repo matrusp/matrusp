@@ -76,6 +76,31 @@ function Materias()
         list.push(materia);
         return materia;
     }
+    function new_turma(materia, nome, aulas, professor) {
+        var turma = new Object();
+        turma.turma     = nome;
+        turma.aulas     = aulas;
+        turma.professor = professor;
+        turma.selected  = 1;
+        turma.materia   = materia;
+        materia.turmas[turma.turma] = turma;
+        if (aulas) {
+            var index = turma.aulas.index();
+            if (!materia.horarios[index]) {
+                materia.horarios[index] = new Object();
+            }
+            if (!materia.horarios[index].turmas) {
+                materia.horarios[index].turmas = new Object();
+            }
+            if (!materia.horarios[index].turma_representante) {
+                materia.horarios[index].turma_representante = turma;
+            }
+            materia.horarios[index].turmas[turma.turma] = turma;
+            materia.horarios[index].materia = materia;
+            materia.horarios[index].aulas = turma.aulas;
+        }
+        return turma;
+    }
     function add_item(codigo, str)
     {
         var array = str.split("\n"); /* uma turma por item */
@@ -90,34 +115,11 @@ function Materias()
         materia.nome   = split[1];
         materia.cor    = get_color();
 
+        materia.horarios = new Object();
         materia.turmas = new Array();
         for (var i = 1; i < array.length - 1; i++) {
             var split = array[i].split("\t");
-            var turma = new Object();
-            turma.turma     = split[0];
-            turma.aulas     = criar_aulas(split[3]);
-            turma.professor = split[4];
-            turma.selected  = 1;
-            turma.materia   = materia;
-            materia.turmas[turma.turma] = turma;
-        }
-
-        materia.horarios = new Object();
-        for (var i in materia.turmas) {
-            var turma = materia.turmas[i];
-            var index = turma.aulas.index();
-            if (!materia.horarios[index]) {
-                materia.horarios[index] = new Object();
-            }
-            if (!materia.horarios[index].turmas) {
-                materia.horarios[index].turmas = new Object();
-            }
-            if (!materia.horarios[index].turma_representante) {
-                materia.horarios[index].turma_representante = turma;
-            }
-            materia.horarios[index].turmas[turma.turma] = turma;
-            materia.horarios[index].materia = materia;
-            materia.horarios[index].aulas = turma.aulas;
+            new_turma(materia, split[0], criar_aulas(split[3]), split[4]);
         }
         materia.editavel = false;
         materias[materia.codigo] = materia;
@@ -140,6 +142,7 @@ function Materias()
     self.add_item = add_item;
     self.new_item = new_item;
     self.remove_item = remove_item;
+    self.new_turma = new_turma;
     /* functions */
     self.get = function(codigo) { return materias[codigo]; };
     self.get_selected = function() { return selected; };

@@ -120,6 +120,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         materias.set_selected(materia);
     }
     /* UI_turmas */
+    ui_turmas.cb_new_turma   = function() {
+        var materia = materias.get_selected();
+        var turma = materias.new_turma(materia, "NOSDF", null, "PROFEA");
+        ui_turmas.new_turma(turma);
+    };
     ui_turmas.cb_onmouseover = function(turma) { turmas.display_over(turma); };
     ui_turmas.cb_onmouseout  = function(turma) { turmas.undisplay_over(turma); };
     ui_turmas.cb_changed     = function(codigo, turma, checked) { materias.get(codigo).turmas[turma].selected = checked; };

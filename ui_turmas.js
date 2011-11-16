@@ -27,7 +27,7 @@ function UI_turmas(id, height)
         }
         self.cb_updated();
     }
-    function adicionar_turma_atividade() {
+    function new_turma(turma) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
         row.style.cursor="pointer";
@@ -99,7 +99,7 @@ function UI_turmas(id, height)
             var data = document.createElement("td");
             data.style.cursor = "pointer";
             data.style.textAlign = "center";
-            data.onmouseup = adicionar_turma_atividade;
+            data.onmouseup = function() { self.cb_new_turma(); };
             data.innerHTML = ">>>> adicione turmas aqui <<<<";
             row.appendChild(data);
 
@@ -168,6 +168,7 @@ function UI_turmas(id, height)
     /* procedures */
     self.create = create;
     self.reset = function() { list.innerHTML = ""; };
+    self.new_turma = new_turma;
     /* callbacks */
     self.cb_new_turma    = null;
     self.cb_onmouseover  = null;
