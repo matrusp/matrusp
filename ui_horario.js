@@ -73,8 +73,39 @@ function UI_horario(id)
         cell.style.backgroundColor = data.bgcolor;
         cell.style.color = data.color;
     }
+    function set_toggle(func, onover, onout) {
+        for (var dia = 0; dia < 6; dia++) {
+            for (var hora = 0; hora < 14; hora++) {
+                if (func) {
+                    array[dia][hora].style.cursor = "pointer";
+                    array[dia][hora].onclick     = function() { func(this.dia, this.hora); };
+                    array[dia][hora].onmouseover = function() { onover(this.dia, this.hora); };
+                    array[dia][hora].onmouseout  = function() { onout(this.dia, this.hora); };
+                } else {
+                    array[dia][hora].style.cursor = "";
+                    array[dia][hora].onclick = function () {};
+                }
+                array[dia][hora].dia = dia;
+                array[dia][hora].hora = hora;
+            }
+        }
+    }
+    function set_absoulte() {
+        horario.style.position = "absolute";
+        horario.style.backgroundColor = "#FFFFFF";
+        horario.style.zIndex = "2000";
+        horario.style.top = "50%";
+        horario.style.left = "50%";
+
+        horario.style.marginTop = "-" + (horario.offsetHeight/2) + "px";
+        horario.style.marginLeft = "-" + (horario.offsetWidth/2) + "px";
+    }
 
     /* procedures */
+    self.hide         = function() { horario.style.display = "none"; };
+    self.show         = function() { horario.style.display = ""; };
+    self.set_absolute = set_absoulte;
+    self.set_toggle   = set_toggle;
     self.display_cell = display_cell;
     self.clear_cell   = clear_cell;
     self.reset        = reset;

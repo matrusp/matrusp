@@ -27,6 +27,11 @@ function UI_turmas(id, height)
         }
         self.cb_updated();
     }
+    function editar() {
+        var row = this.parentNode;
+        var turma = row.turma;
+        self.cb_edit_turma(current_materia, turma);
+    }
     function new_turma(horario) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
@@ -57,19 +62,27 @@ function UI_turmas(id, height)
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
             innerHTML += turma.turma + "<br>";
-            if (!row.turma)
+            if (!row.turma) {
                 row.turma = turma;
+                turma.row = row;
+            }
         }
         data.innerHTML = innerHTML;
         data.style.width = "44px";
         row.appendChild(data);
 
         var data = document.createElement("td");
-        data.onmouseup = onmouseup;
-        var innerHTML = new String();
-        for (var j in horario.turmas) {
-            var turma = horario.turmas[j];
-            innerHTML += turma.professor + "<br>";
+        if (current_materia.editavel) {
+            data.onmouseup = editar;
+            data.style.textAlign = "center";
+            var innerHTML = ">>>> edite horario aqui <<<<";
+        } else {
+            data.onmouseup = onmouseup;
+            var innerHTML = new String();
+            for (var j in horario.turmas) {
+                var turma = horario.turmas[j];
+                innerHTML += turma.professor + "<br>";
+            }
         }
         data.innerHTML = innerHTML;
         row.appendChild(data);
@@ -130,6 +143,7 @@ function UI_turmas(id, height)
     self.reset = function() { list.innerHTML = ""; };
     self.new_turma = new_turma;
     /* callbacks */
+    self.cb_edit_turma   = null;
     self.cb_new_turma    = null;
     self.cb_onmouseover  = null;
     self.cb_onmouseout   = null;
