@@ -102,7 +102,7 @@ function Materias()
         materia.horarios[index].turmas[turma.turma] = turma;
         materia.horarios[index].materia = materia;
         materia.horarios[index].aulas = turma.aulas;
-        return turma;
+        return materia.horarios[index];
     }
     function add_item(codigo, str)
     {

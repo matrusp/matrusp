@@ -27,40 +27,52 @@ function UI_turmas(id, height)
         }
         self.cb_updated();
     }
-    function new_turma(turma) {
+    function new_turma(horario) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
         row.style.cursor="pointer";
         row.onmouseover = function() { self.cb_onmouseover(this.turma); }
         row.onmouseout  = function() { self.cb_onmouseout(this.turma); }
 
-        current_materia.turmas[turma.turma] = turma;
-
         var data = document.createElement("td");
-        var input = document.createElement("input");
-        input.type     = "checkbox";
-        input.value    = current_materia.codigo + " " + turma.turma;
-        input.onchange = function() {
-            var split = this.value.split(" ");
-            self.cb_changed(split[0], split[1], this.checked);
-            self.cb_updated();
-        };
-        data.appendChild(input);
-        input.checked  = turma.selected;
+        for (var j in horario.turmas) {
+            var turma = horario.turmas[j];
+            var input = document.createElement("input");
+            input.type     = "checkbox";
+            input.value    = current_materia.codigo + " " + turma.turma;
+            input.onchange = function() {
+                var split = this.value.split(" ");
+                self.cb_changed(split[0], split[1], this.checked);
+                self.cb_updated();
+            };
+            data.appendChild(input);
+            input.checked  = turma.selected;
+        }
         data.style.width = "22px";
         row.appendChild(data);
 
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
-        data.innerHTML = turma.turma;
+        var innerHTML = new String();
+        for (var j in horario.turmas) {
+            var turma = horario.turmas[j];
+            innerHTML += turma.turma + "<br>";
+            if (!row.turma)
+                row.turma = turma;
+        }
+        data.innerHTML = innerHTML;
         data.style.width = "44px";
         row.appendChild(data);
 
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
-        data.innerHTML = turma.professor;
+        var innerHTML = new String();
+        for (var j in horario.turmas) {
+            var turma = horario.turmas[j];
+            innerHTML += turma.professor + "<br>";
+        }
+        data.innerHTML = innerHTML;
         row.appendChild(data);
-        row.turma = turma;
 
         self.tbody.appendChild(row);
     }
@@ -97,60 +109,12 @@ function UI_turmas(id, height)
             data.onmouseup = function() { self.cb_new_turma(); };
             data.innerHTML = ">>>> adicione turmas aqui <<<<";
             row.appendChild(data);
-            row.turma = turma;
 
             self.tbody.appendChild(row);
         }
         for (var i in materia.horarios) {
             var horario = materia.horarios[i];
-
-            var row  = document.createElement("tr");
-            row.style.backgroundColor = materia.cor;
-            row.style.cursor="pointer";
-            row.onmouseover = function() { self.cb_onmouseover(this.turma); }
-            row.onmouseout  = function() { self.cb_onmouseout(this.turma); }
-
-            var data = document.createElement("td");
-            for (var j in horario.turmas) {
-                var turma = horario.turmas[j];
-                var input = document.createElement("input");
-                input.type     = "checkbox";
-                input.value    = materia.codigo + " " + turma.turma;
-                input.onchange = function() {
-                    var split = this.value.split(" ");
-                    self.cb_changed(split[0], split[1], this.checked);
-                    self.cb_updated();
-                };
-                data.appendChild(input);
-                input.checked  = turma.selected;
-            }
-            data.style.width = "22px";
-            row.appendChild(data);
-
-            var data = document.createElement("td");
-            data.onmouseup = onmouseup;
-            var innerHTML = new String();
-            for (var j in horario.turmas) {
-                var turma = horario.turmas[j];
-                innerHTML += turma.turma + "<br>";
-                if (!row.turma)
-                    row.turma = turma;
-            }
-            data.innerHTML = innerHTML;
-            data.style.width = "44px";
-            row.appendChild(data);
-
-            var data = document.createElement("td");
-            data.onmouseup = onmouseup;
-            var innerHTML = new String();
-            for (var j in horario.turmas) {
-                var turma = horario.turmas[j];
-                innerHTML += turma.professor + "<br>";
-            }
-            data.innerHTML = innerHTML;
-            row.appendChild(data);
-
-            self.tbody.appendChild(row);
+            new_turma(horario);
         }
 
         table.appendChild(self.tbody);
