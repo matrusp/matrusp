@@ -78,18 +78,13 @@ function Materias()
     }
     function new_turma(materia, nome, aulas, professor) {
         var turma = new Object();
-        var index;
+        var index = aulas.index();
         turma.turma     = nome;
         turma.aulas     = aulas;
         turma.professor = professor;
         turma.selected  = 1;
         turma.materia   = materia;
         materia.turmas[turma.turma] = turma;
-        if (aulas) {
-            index = turma.aulas.index();
-        } else {
-            index = nome;
-        }
         if (!materia.horarios[index]) {
             materia.horarios[index] = new Object();
         }
