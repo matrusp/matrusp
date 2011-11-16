@@ -147,6 +147,14 @@ function Materias()
     self.remove_item = remove_item;
     self.new_turma = new_turma;
     /* functions */
+    self.get_nome = function(nome) {
+        for (var i in materias) {
+            var materia = materias[i];
+            if (materia.nome == nome)
+                return materia;
+        }
+        return null;
+    };
     self.get = function(codigo) { return materias[codigo]; };
     self.get_selected = function() { return selected; };
     self.list = function() { return list; };

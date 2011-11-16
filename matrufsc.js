@@ -29,8 +29,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
     }
 
     function new_item(codigo, nome) {
+        if (materias.get_nome(nome)) {
+            add_item2(null, nome);
+            return;
+        }
         var materia = materias.new_item(codigo, nome);
-        add_item2(materia, codigo);
+        add_item2(materia, nome);
     };
     function add_item(codigo, str) {
         var materia = materias.add_item(codigo, str);
