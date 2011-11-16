@@ -136,7 +136,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         nome += n_turmas;
         n_turmas++;
         var materia = materias.get_selected();
-        var turma = materias.new_turma(materia, nome, null, null);
+        var aulas = new Array();
+        aulas.nome = nome;
+        aulas.index = function() { return this.nome; };
+        var turma = materias.new_turma(materia, nome, aulas, null);
         ui_turmas.new_turma(turma);
     };
     ui_turmas.cb_onmouseover = function(turma) { turmas.display_over(turma); };
