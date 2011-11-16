@@ -34,8 +34,8 @@ function UI_materias(id, ui_combinacoes)
     row.appendChild(data);
     tbody.appendChild(row);
 
-    function onclick() { self.onclick(this.parentNode.materia); };
-    function onremove() { self.onremove(this.parentNode.materia); };
+    function onclick() { self.cb_onclick(this.parentNode.materia); };
+    function onremove() { self.cb_onremove(this.parentNode.materia); };
     function add_item(materia) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = materia.cor;
@@ -68,6 +68,6 @@ function UI_materias(id, ui_combinacoes)
     /* functions */
     self.add_item = add_item;
     /* callbacks */
-    self.onremove = null;
-    self.onclick  = null;
+    self.cb_onremove = null;
+    self.cb_onclick  = null;
 }

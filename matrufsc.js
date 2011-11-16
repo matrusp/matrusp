@@ -91,9 +91,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
     self.salvar = salvar;
 
     /* UI_combinacoes */
-    ui_combinacoes.previous = self.previous;
-    ui_combinacoes.next     = self.next;
-    ui_combinacoes.changed  = function(val) {
+    ui_combinacoes.cb_previous = self.previous;
+    ui_combinacoes.cb_next     = self.next;
+    ui_combinacoes.cb_changed  = function(val) {
         if (!combinacoes.length())
             return;
         var int = parseInt(val);
@@ -105,7 +105,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         }
     };
     /* UI_materias */
-    ui_materias.onremove    = function(materia) {
+    ui_materias.cb_onremove    = function(materia) {
         var selected = materias.get_selected();
         if (selected && selected.codigo == materia.codigo)
             ui_turmas.reset();
@@ -115,15 +115,15 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, materias, turma
         combinacoes.generate(materias.list());
         display_combinacao(1);
     };
-    ui_materias.onclick     = function(materia) {
+    ui_materias.cb_onclick     = function(materia) {
         ui_turmas.create(materia);
         materias.set_selected(materia);
     }
     /* UI_turmas */
-    ui_turmas.onmouseover = function(turma) { turmas.display_over(turma); };
-    ui_turmas.onmouseout  = function(turma) { turmas.undisplay_over(turma); };
-    ui_turmas.set         = function(codigo, turma, checked) { materias.get(codigo).turmas[turma].selected = checked; };
-    ui_turmas.updated     = function() {
+    ui_turmas.cb_onmouseover = function(turma) { turmas.display_over(turma); };
+    ui_turmas.cb_onmouseout  = function(turma) { turmas.undisplay_over(turma); };
+    ui_turmas.cb_changed     = function(codigo, turma, checked) { materias.get(codigo).turmas[turma].selected = checked; };
+    ui_turmas.cb_updated     = function() {
         var turma = turmas.get_selected();
         combinacoes.generate(materias.list());
         display_combinacao(1);

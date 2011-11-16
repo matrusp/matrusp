@@ -22,17 +22,17 @@ function UI_turmas(id, height)
         }
         for (var i = 0; i < checkboxes.length; i++) {
             var split   = checkboxes[i].value.split(" ");
-            self.set(split[0], split[1], !at_least_one_selected);
+            self.cb_changed(split[0], split[1], !at_least_one_selected);
             checkboxes[i].checked = !at_least_one_selected;
         }
-        self.updated();
+        self.cb_updated();
     }
     function adicionar_turma_atividade() {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
         row.style.cursor="pointer";
-        row.onmouseover = function() { self.onmouseover(this.turma); }
-        row.onmouseout  = function() { self.onmouseout(this.turma); }
+        row.onmouseover = function() { self.cb_onmouseover(this.turma); }
+        row.onmouseout  = function() { self.cb_onmouseout(this.turma); }
 
         var turma = new Object();
         turma.turma     = "xturma";
@@ -48,8 +48,8 @@ function UI_turmas(id, height)
         input.value    = current_materia.codigo + " " + turma.turma;
         input.onchange = function() {
             var split = this.value.split(" ");
-            self.set(split[0], split[1], this.checked);
-            self.updated();
+            self.cb_changed(split[0], split[1], this.checked);
+            self.cb_updated();
         };
         data.appendChild(input);
         input.checked  = turma.selected;
@@ -111,8 +111,8 @@ function UI_turmas(id, height)
             var row  = document.createElement("tr");
             row.style.backgroundColor = materia.cor;
             row.style.cursor="pointer";
-            row.onmouseover = function() { self.onmouseover(this.turma); }
-            row.onmouseout  = function() { self.onmouseout(this.turma); }
+            row.onmouseover = function() { self.cb_onmouseover(this.turma); }
+            row.onmouseout  = function() { self.cb_onmouseout(this.turma); }
 
             var data = document.createElement("td");
             for (var j in horario.turmas) {
@@ -122,8 +122,8 @@ function UI_turmas(id, height)
                 input.value    = materia.codigo + " " + turma.turma;
                 input.onchange = function() {
                     var split = this.value.split(" ");
-                    self.set(split[0], split[1], this.checked);
-                    self.updated();
+                    self.cb_changed(split[0], split[1], this.checked);
+                    self.cb_updated();
                 };
                 data.appendChild(input);
                 input.checked  = turma.selected;
@@ -169,9 +169,9 @@ function UI_turmas(id, height)
     self.create = create;
     self.reset = function() { list.innerHTML = ""; };
     /* callbacks */
-    self.new_turma    = null;
-    self.onmouseover  = null;
-    self.onmouseout   = null;
-    self.updated      = null;
-    self.set          = null;
+    self.cb_new_turma    = null;
+    self.cb_onmouseover  = null;
+    self.cb_onmouseout   = null;
+    self.cb_updated      = null;
+    self.cb_changed      = null;
 }

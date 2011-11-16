@@ -10,7 +10,7 @@ function UI_combinacoes(id)
     self.selecao_atual.style.width      = "30px";
     self.selecao_atual.style.height     = "13px";
     self.selecao_atual.value = 0;
-    self.selecao_atual.onchange = function () { self.changed(this.value); };
+    self.selecao_atual.onchange = function () { self.cb_changed(this.value); };
     d2.appendChild(document.createTextNode("Combina\u00e7\u00f5es "));
     var button = document.createElement("span");
     button.style.MozUserSelect = "none";
@@ -20,9 +20,9 @@ function UI_combinacoes(id)
     button.style.cursor = "pointer";
     button.innerHTML = "<strong>&nbsp;<&nbsp;</strong>";
     button.onselectstart = function () { return false; };
-    button.onclick = function () { self.previous(); return false; };
+    button.onclick = function () { self.cb_previous(); return false; };
     if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
-        button.ondblclick = function () { self.previous(); };
+        button.ondblclick = function () { self.cb_previous(); };
     }
     d2.appendChild(button);
     d2.appendChild(document.createTextNode(" "));
@@ -39,9 +39,9 @@ function UI_combinacoes(id)
     button.style.cursor = "pointer";
     button.innerHTML = "<strong>&nbsp;>&nbsp;</strong>";
     button.onselectstart = function () { return false; };
-    button.onclick = function () { self.next(); return false; };
+    button.onclick = function () { self.cb_next(); return false; };
     if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
-        button.ondblclick = function () { self.next(); };
+        button.ondblclick = function () { self.cb_next(); };
     }
     d2.appendChild(button);
 
@@ -49,7 +49,7 @@ function UI_combinacoes(id)
     self.set_current = function(n) { self.selecao_atual.value = n; };
     self.set_total = function(n) { numero_selecoes.nodeValue = n; };
     /* callbacks */
-    self.previous = null;
-    self.next     = null;
-    self.changed  = null;
+    self.cb_previous = null;
+    self.cb_next     = null;
+    self.cb_changed  = null;
 }
