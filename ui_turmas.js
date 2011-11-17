@@ -122,9 +122,6 @@ function UI_turmas(id, height)
         if (current_materia.editavel) {
             var row  = document.createElement("tr");
             row.style.backgroundColor = current_materia.cor;
-
-            var row  = document.createElement("tr");
-            row.style.backgroundColor = current_materia.cor;
             row.materia = current_materia;
 
             var data = document.createElement("td");
@@ -140,6 +137,22 @@ function UI_turmas(id, height)
             data.onmouseup = function() { self.cb_new_turma(); };
             data.style.fontSize = "13px"
             data.innerHTML = ">>>> adicione turmas aqui <<<<";
+            row.appendChild(data);
+
+            self.tbody.appendChild(row);
+
+            var row  = document.createElement("tr");
+            row.style.backgroundColor = current_materia.cor;
+            var data = document.createElement("td");
+            data.style.width = "22px";
+            row.appendChild(data);
+            var data = document.createElement("td");
+            data.style.width = "44px";
+            row.appendChild(data);
+            var data = document.createElement("td");
+            data.style.textAlign = "center";
+            data.innerHTML = "O suporte para atividades gen\u00e9ricas ainda est\u00e1 em fase de testes. " +
+                             "Certifique-se que a turma que voc\u00ea vai editar esteja na sele\u00e7\u00e3o atual.";
             row.appendChild(data);
 
             self.tbody.appendChild(row);
