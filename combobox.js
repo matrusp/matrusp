@@ -40,6 +40,7 @@ function Combobox(input, suggestions, ui_logger)
         self.array = new Array();
         self.selected_item = -1;
         self.suggestions.appendChild(self.ul);
+        self.suggestions.style.minWidth = "300px";
         list_add_item("Criar atividade nova");
         self.array[0].style.fontSize = "13px";
         self.array[0].style.fontWeight = "bold";
