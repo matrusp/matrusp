@@ -154,7 +154,7 @@ function Combobox(input, suggestions, ui_logger)
             } else {
                 list_clear();
                 list_show();
-                ui_logger.set_text("'" + self.fetch + "' nao encontrado", "lightcoral");
+                ui_logger.set_text("'" + self.fetch + "' n\u00e3o encontrado", "lightcoral");
             }
         }
     }
@@ -199,7 +199,7 @@ function Combobox(input, suggestions, ui_logger)
                 if (str.length > 0) {
                     self.cb_add_item(this.codigo, str);
                 } else {
-                    ui_logger.set_text("'" + this.codigo + "' nao adicionada", "lightcoral");
+                    ui_logger.set_text("'" + this.codigo + "' n\u00e3o adicionada", "lightcoral");
                 }
             }
             this.available = true;

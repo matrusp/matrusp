@@ -13,7 +13,7 @@ function UI_logger(id)
     }
     var reset = function() {
         stop();
-        ui_logger.innerHTML = "&lt;&lt;&lt;&lt; adicione materias aqui";
+        ui_logger.innerHTML = "&lt;&lt;&lt;&lt; adicione mat\u00e9rias aqui";
         ui_logger.style.backgroundColor = "#eeeeee";
     };
     var set_text = function(str, color) {

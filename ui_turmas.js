@@ -93,7 +93,7 @@ function UI_turmas(id, height)
         if (current_materia.editavel) {
             data.onmouseup = editar;
             data.style.textAlign = "center";
-            var innerHTML = ">>>> edite horario aqui <<<<";
+            var innerHTML = ">>>> edite hor\u00e1rio aqui <<<<";
         } else {
             data.onmouseup = onmouseup;
             var innerHTML = new String();
@@ -138,6 +138,7 @@ function UI_turmas(id, height)
             data.style.cursor = "pointer";
             data.style.textAlign = "center";
             data.onmouseup = function() { self.cb_new_turma(); };
+            data.style.fontSize = "13px"
             data.innerHTML = ">>>> adicione turmas aqui <<<<";
             row.appendChild(data);
 
