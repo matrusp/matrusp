@@ -2,7 +2,6 @@ function Combinacoes()
 {
     var self = this;
 
-    var deselected = new Array();
     var combinacoes = null;
     var current_int = 0;
     var overlay = null;
@@ -35,11 +34,12 @@ function Combinacoes()
     var generate = function(materias) {
 /* TODO tentar manter selecao anterior (ou mais semelhante) */
         var new_combinacoes = new Array();
-        var new_deselected = new Array();
         for (var i = 0; i < materias.length; i++) {
             var materia = materias[i];
             var ok = 0;
 
+            if (materia.selected == 0)
+                continue;
             /* se nenhuma turma de nenhum horario da materia esta
              * selecionada, pular materia */
             for (var j in materia.horarios) {
@@ -54,10 +54,11 @@ function Combinacoes()
                     break;
             }
             if (!ok) {
-                new_deselected[materia.codigo] = materia;
+                materia.selected = 0;
                 continue;
             }
 
+            materia.selected = 1;
             if (!new_combinacoes.length) {
                 for (var j in materia.horarios) {
                     var horario = materia.horarios[j];
@@ -154,15 +155,14 @@ function Combinacoes()
                         ok3 = 1;
                     }
                     if (!ok2) {
-                        if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
-                        console.log("choque de horario, horario nao pode ser adicionado em nenhuma combinacao");
+//                        if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
+//                        console.log("choque de horario, horario nao pode ser adicionado em nenhuma combinacao");
                     }
                 }
                 if (!ok3) {
-                    if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
-                    console.log("choque de horario, materia ", materia.codigo, " nao pode ser adicionado em nenhuma combinacao");
-                    new_deselected[materia.codigo] = materia;
-                    /* TODO dar essa informacao ao usuario */
+//                    if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
+//                    console.log("choque de horario, materia ", materia.codigo, " nao pode ser adicionado em nenhuma combinacao");
+                    materia.selected = -1;
                 } else {
                     new_combinacoes = combinacoes2;
                 }
@@ -201,7 +201,6 @@ function Combinacoes()
         }
         new_combinacoes.sort(comparar_combinacoes);
         combinacoes = new_combinacoes;
-        deselected = new_deselected;
     }
 
     /* procedures */
@@ -213,7 +212,6 @@ function Combinacoes()
     self.get_current = function( ) { if (current_int) return self.get(current_int); };
     self.get_overlay = function( ) { return overlay; };
     self.current     = function( ) { return current_int; };
-    self.deselected  = function( ) { return deselected; };
     self.length      = function( ) { return combinacoes ? combinacoes.length : 0; };
     self.closest     = closest;
 }

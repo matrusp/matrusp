@@ -71,6 +71,7 @@ function Materias()
         materia.cor    = get_color();
         materia.turmas = new Array();
         materia.horarios = new Object();
+        materia.selected = 1;
         materia.editavel = true;
         materias[materia.codigo] = materia;
         list.push(materia);
@@ -97,6 +98,7 @@ function Materias()
         materia.horarios[index].turmas[turma.turma] = turma;
         materia.horarios[index].materia = materia;
         materia.horarios[index].aulas = turma.aulas;
+        materia.selected = 1;
         turma.horario = materia.horarios[index];
         return materia.horarios[index];
     }
@@ -120,6 +122,7 @@ function Materias()
             var split = array[i].split("\t");
             new_turma(materia, split[0], criar_aulas(split[3]), split[4]);
         }
+        materia.selected = 1;
         materia.editavel = false;
         materias[materia.codigo] = materia;
         list.push(materia);

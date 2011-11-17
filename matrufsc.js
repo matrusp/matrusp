@@ -4,10 +4,18 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, mat
 
     function display_combinacao(cc)
     {
-        var deselected = combinacoes.deselected();
-        for (var i in deselected) {
-            var materia = deselected[i];
-            materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
+        var m = materias.list();
+        for (var i = 0; i < m.length; i++) {
+            var materia = m[i];
+            if (materia.selected == -1) {
+                materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
+                materia.ui_selected.checked = false;
+                materia.ui_selected.disabled = "disabled";
+            } else if (materia.selected == 0) {
+                materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
+                materia.ui_selected.checked = false;
+                materia.ui_selected.disabled = "";
+            }
         }
 
         turmas.reset();
@@ -18,6 +26,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, mat
             for (var i in c.horarios_combo) {
                 var turma = c.horarios_combo[i].turma_representante;
                 turma.materia.ui_turma.innerHTML = turma.turma;
+                turma.materia.ui_selected.checked = true;
+                turma.materia.ui_selected.disabled = "";
                 turmas.display(turma, c);
             }
         }
@@ -107,6 +117,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, mat
         }
     };
     /* UI_materias */
+    ui_materias.cb_select      = function(codigo, checked) {
+        var materia = materias.get(codigo);
+        materia.selected = checked;
+        update_all();
+    };
     ui_materias.cb_onremove    = function(materia) {
         var selected = materias.get_selected();
         if (selected && selected.codigo == materia.codigo)
@@ -174,6 +189,17 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, mat
         combinacoes.generate(materias.list());
         ui_combinacoes.set_ok();
         display_combinacao(combinacoes.closest(current));
+        var errmsg = new String();
+        var m = materias.list();
+        for (var i = 0; i < m.length; i++) {
+            var materia = m[i];
+            if (materia.selected == -1) {
+                errmsg += materia.codigo;
+            }
+        }
+        if (errmsg != "") {
+            ui_logger.set_text("materias em choque: " + errmsg, "lightcoral");
+        }
         current = null;
     }
     function normal_cell(d)  { return {strong:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }

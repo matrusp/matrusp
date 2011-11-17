@@ -18,6 +18,9 @@ function UI_materias(id, ui_combinacoes)
     var row  = document.createElement("tr");
     row.style.backgroundColor = "#eeeeee";
     var data = document.createElement("td");
+    data.style.width = "22px";
+    row.appendChild(data);
+    var data = document.createElement("td");
     data.style.width = "70px";
     data.innerHTML = "C\u00f3digo";
     row.appendChild(data);
@@ -40,6 +43,16 @@ function UI_materias(id, ui_combinacoes)
         var row  = document.createElement("tr");
         row.style.backgroundColor = materia.cor;
         row.style.cursor="pointer";
+        var data = document.createElement("td");
+        var input = document.createElement("input");
+        input.type     = "checkbox";
+        input.value    = materia.codigo;
+        input.onchange = function() { self.cb_select(this.value, this.checked); };
+        input.checked  = true;
+        data.appendChild(input);
+        materia.ui_selected = input;
+        data.style.width = "22px";
+        row.appendChild(data);
         var data = document.createElement("td");
         data.onclick = onclick;
         data.style.width = "70px";
@@ -68,6 +81,7 @@ function UI_materias(id, ui_combinacoes)
     /* functions */
     self.add_item = add_item;
     /* callbacks */
+    self.cb_select   = null;
     self.cb_onremove = null;
     self.cb_onclick  = null;
 }
