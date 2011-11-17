@@ -2,10 +2,20 @@ function Combinacoes()
 {
     var self = this;
 
-    var deselected = null;
+    var deselected = new Array();
     var combinacoes = null;
     var current_int = 0;
+    var overlay = null;
 
+    function clear_overlay() {
+        overlay = new Array();
+        for (var i = 0; i < 6; i++)
+            overlay[i] = new Array();
+    }
+    clear_overlay();
+    function closest() {
+        return 1;
+    }
     function valor_combinacao(c) {
         var sum = 0;
         for (dia = 0; dia < 6; dia++) {
@@ -197,10 +207,13 @@ function Combinacoes()
     /* procedures */
     self.generate    = generate;
     self.set_current = function(n) { current_int = n; };
+    self.clear_overlay= clear_overlay;
     /* functions */
     self.get         = function(n) { if (combinacoes && n >= 1 && n <= combinacoes.length) return combinacoes[n-1]; };
     self.get_current = function( ) { if (current_int) return self.get(current_int); };
+    self.get_overlay = function( ) { return overlay; };
     self.current     = function( ) { return current_int; };
     self.deselected  = function( ) { return deselected; };
     self.length      = function( ) { return combinacoes ? combinacoes.length : 0; };
+    self.closest     = closest;
 }

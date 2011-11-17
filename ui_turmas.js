@@ -3,6 +3,7 @@ function UI_turmas(id, height)
     var self = this;
 
     var current_materia = null;
+    var current_turma = null;
 
     list = document.getElementById(id);
 
@@ -27,10 +28,23 @@ function UI_turmas(id, height)
         }
         self.cb_updated();
     }
+    function edit_start(turma) {
+        current_turma = turma;
+        var row = current_turma.row;
+        row.style.backgroundColor = "black";
+        row.style.color           = "white";
+    }
+    function edit_end() {
+        if (current_turma) {
+            var row = current_turma.row;
+            row.style.backgroundColor = current_materia.cor;
+            row.style.color           = "black";
+        }
+    }
     function editar() {
         var row = this.parentNode;
         var turma = row.turma;
-        self.cb_edit_turma(current_materia, turma);
+        self.cb_edit_turma(turma);
     }
     function new_turma(horario) {
         var row  = document.createElement("tr");
@@ -101,13 +115,13 @@ function UI_turmas(id, height)
         table.cellPadding="1";
         table.cellSpacing="1";
 
-        if (materia.editavel) {
+        if (current_materia.editavel) {
             var row  = document.createElement("tr");
-            row.style.backgroundColor = materia.cor;
+            row.style.backgroundColor = current_materia.cor;
 
             var row  = document.createElement("tr");
-            row.style.backgroundColor = materia.cor;
-            row.materia = materia;
+            row.style.backgroundColor = current_materia.cor;
+            row.materia = current_materia;
 
             var data = document.createElement("td");
             data.style.width = "22px";
@@ -125,8 +139,8 @@ function UI_turmas(id, height)
 
             self.tbody.appendChild(row);
         }
-        for (var i in materia.horarios) {
-            var horario = materia.horarios[i];
+        for (var i in current_materia.horarios) {
+            var horario = current_materia.horarios[i];
             new_turma(horario);
         }
 
@@ -138,10 +152,15 @@ function UI_turmas(id, height)
             table.style.width="310px";
     }
 
+    self.old_cb_onmouseover = null;
+    self.old_cb_onmouseout  = null;
+
     /* procedures */
     self.create = create;
     self.reset = function() { list.innerHTML = ""; };
     self.new_turma = new_turma;
+    self.edit_start = edit_start;
+    self.edit_end   = edit_end;
     /* callbacks */
     self.cb_edit_turma   = null;
     self.cb_new_turma    = null;

@@ -64,11 +64,11 @@ function UI_horario(id)
     var display_cell = function(dia, hora, data) {
         var cell = array[dia][hora];
         var innerHTML = new String();
-        if (data.strong)
-            innerHTML += "<strong>";
+//        if (data.strong)
+//            innerHTML += "<strong>";
         innerHTML += data.text;
-        if (data.strong)
-            innerHTML += "</strong>";
+//        if (data.strong)
+//            innerHTML += "</strong>";
         cell.innerHTML = innerHTML;
         cell.style.backgroundColor = data.bgcolor;
         cell.style.color = data.color;
@@ -83,7 +83,9 @@ function UI_horario(id)
                     array[dia][hora].onmouseout  = function() { onout(this.dia, this.hora); };
                 } else {
                     array[dia][hora].style.cursor = "";
-                    array[dia][hora].onclick = function () {};
+                    array[dia][hora].onclick = null;
+                    array[dia][hora].onmouseover = null;
+                    array[dia][hora].onmouseout = null;
                 }
                 array[dia][hora].dia = dia;
                 array[dia][hora].hora = hora;

@@ -19,6 +19,7 @@ function Turmas(ui_logger, ui_horario, combinacoes)
     function display_over(turma)
     {
         var c       = combinacoes.get_current();
+        var overlay = combinacoes.get_overlay();
         var materia = turma.materia;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
