@@ -59,11 +59,15 @@ function UI_turmas(id, height)
             var input = document.createElement("input");
             input.type     = "checkbox";
             input.value    = current_materia.codigo + " " + turma.turma;
-            input.onchange = function() {
+            turma_onchange = function() {
                 var split = this.value.split(" ");
                 self.cb_changed(split[0], split[1], this.checked);
                 self.cb_updated();
             };
+            input.onchange = turma_onchange;
+            if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
+                input.onclick = function() { this.blur() };
+            }
             data.appendChild(input);
             input.checked  = turma.selected;
         }

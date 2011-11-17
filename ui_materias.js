@@ -47,7 +47,11 @@ function UI_materias(id, ui_combinacoes)
         var input = document.createElement("input");
         input.type     = "checkbox";
         input.value    = materia.codigo;
-        input.onchange = function() { self.cb_select(this.value, this.checked); };
+        materia_onchange = function() { self.cb_select(this.value, this.checked); };
+        input.onchange = materia_onchange;
+        if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
+            input.onclick = function() { this.blur() };
+        }
         input.checked  = true;
         data.appendChild(input);
         materia.ui_selected = input;

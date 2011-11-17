@@ -18,6 +18,8 @@ function Turmas(ui_logger, ui_horario, combinacoes)
     }
     function display_over(turma)
     {
+        if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
+            return;
         var c       = combinacoes.get_current();
         var overlay = combinacoes.get_overlay();
         var materia = turma.materia;
@@ -47,6 +49,8 @@ function Turmas(ui_logger, ui_horario, combinacoes)
     function black_cell(str) { return {strong:false,text:str,bgcolor:"black",color:"white"}; }
     function undisplay_over(turma)
     {
+        if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
+            return;
         var c       = combinacoes.get_current();
         var materia = turma.materia;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;

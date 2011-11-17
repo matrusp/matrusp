@@ -294,7 +294,7 @@ window.onload = function() {
     var materias = new Materias();
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
-    var dconsole = new Dconsole("dconsole");
+    dconsole2 = new Dconsole("dconsole");
     var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
