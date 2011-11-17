@@ -12,8 +12,34 @@ function Combinacoes()
             overlay[i] = new Array();
     }
     clear_overlay();
-    function closest() {
-        return 1;
+    function closest(orig) {
+        if (!orig)
+            return 1;
+        var best_c = null;
+        var best_p = 0;
+        for (var j = 0; j < combinacoes.length; j++) {
+            var c = combinacoes[j];
+            var p = 0;
+            var num = 0;
+            var den = 0;
+            for (var i in c.horarios_combo) {
+                var t = c.horarios_combo[i].turma_representante;
+                for (var i2 in orig.horarios_combo) {
+                    var t2 = orig.horarios_combo[i2].turma_representante;
+                    if (t.materia == t2.materia) {
+                        p += 10;
+                        if (t == t2)
+                            p += 100;
+                        break;
+                    }
+                }
+            }
+            if (best_p < p) {
+                best_p = p;
+                best_c = j;
+            }
+        }
+        return best_c+1;
     }
     function valor_combinacao(c) {
         var sum = 0;
@@ -32,7 +58,6 @@ function Combinacoes()
         return va - vb;
     }
     var generate = function(materias) {
-/* TODO tentar manter selecao anterior (ou mais semelhante) */
         var new_combinacoes = new Array();
         for (var i = 0; i < materias.length; i++) {
             var materia = materias[i];

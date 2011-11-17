@@ -185,7 +185,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, mat
             editando = null;
         }
         var current = combinacoes.get_current();
-        /* FIXME stay in same configuracao */
         combinacoes.generate(materias.list());
         ui_combinacoes.set_ok();
         display_combinacao(combinacoes.closest(current));
