@@ -9,11 +9,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             var materia = m[i];
             if (materia.selected == -1) {
                 materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
-                materia.ui_selected.checked = false;
+                materia.ui_selected.checked = 0;
                 materia.ui_selected.disabled = "disabled";
             } else if (materia.selected == 0) {
                 materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
-                materia.ui_selected.checked = false;
+                materia.ui_selected.checked = 0;
                 materia.ui_selected.disabled = "";
             }
         }
@@ -136,7 +136,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_turmas.new_turma(turma);
         update_all();
     };
-    function update_all() {
+    function update_all(comb) {
         if (editando) {
             var overlay = combinacoes.get_overlay();
             var aulas = new Array();
@@ -165,10 +165,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             ui_turmas.edit_end();
             editando = null;
         }
-        var current = combinacoes.get_current();
+        if (!comb)
+            var current = combinacoes.get_current();
         combinacoes.generate(materias.list());
         ui_combinacoes.set_ok();
-        display_combinacao(combinacoes.closest(current));
+        if (comb)
+            display_combinacao(comb);
+        else
+            display_combinacao(combinacoes.closest(current));
         var errmsg = new String();
         var m = materias.list();
         for (var i = 0; i < m.length; i++) {
@@ -254,7 +258,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     ui_turmas.cb_onmouseout  = function(turma) { turmas.undisplay_over(turma); };
     ui_turmas.cb_changed     = function(codigo, turma, checked) {
         var materia = materias.get(codigo);
-        materia.turmas[turma].selected = checked;
+        materia.turmas[turma].selected = checked ? 1 : 0;
         materia.selected = true;
     };
     ui_turmas.cb_updated     = function() {
@@ -263,9 +267,95 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         turmas.display_over(turma);
     };
     /* UI_saver */
-    ui_saver.cb_salvar = function() {
+    var thestr;
+    ui_saver.cb_salvar = function(identificador) {
+        var list = materias.list();
+        var n = list.length;
+        var ret = "";
+        ret += combinacoes.current();
+        for (var i = 0; i < n; i++) {
+            var materia = list[i];
+            ret += "|";
+            ret += escape(materia.codigo) + "'";
+            ret += escape(materia.nome) + "'";
+            ret += (materia.selected + 1) + "'";
+            ret += (materia.editavel) + "'";
+            for (var j in materia.turmas) {
+                var turma = materia.turmas[j];
+                ret += escape(turma.turma) + "\"";
+                ret += (turma.selected?1:0) + "\""
+                if (!materia.editavel)
+                    ret += escape(turma.professor) + "\"";
+                for (var k = 0; k < turma.aulas.length; k++) {
+                    var aula = turma.aulas[k];
+                    if (k) ret += ",";
+                    ret += aula.dia.toString(16) + ",";
+                    ret += aula.hora.toString(16) + ",";
+                    ret += aula.n.toString(16);
+                }
+                ret += "'";
+            }
+        }
+        thestr = ret;
     };
-    ui_saver.cb_carregar = function() {
+    ui_saver.cb_carregar = function(identificador) {
+        var str = thestr;
+        var split = str.split("|");
+        var n_comb = parseInt(split[0]);
+        var imported_all = new Array();
+        for (var i = 1; i < split.length; i++) {
+            var imported_materia = new Object();
+            var materia_str = "";
+            var materia = split[i].split("'");
+            materia_str += unescape(materia[0]) + "\t";
+            materia_str += unescape(materia[1]) + "\n";
+            var t2 = new Array();
+            for (var j = 4; j < materia.length-1; j++) {
+                var turma = materia[j].split("\"");
+                materia_str += unescape(turma[0]) + "\t0\t0\t";
+                t2[unescape(turma[0])] = parseInt(turma[1]);
+                var horario = turma[3].split(",");
+                for (var k = 0; k < horario.length; k += 3) {
+                    var dia = parseInt(horario[k+0], 16);
+                    var hora = parseInt(horario[k+1], 16);
+                    var n = parseInt(horario[k+2], 16);
+                    if (k != 0)
+                        materia_str += " ";
+                    materia_str += materias.aulas_string(dia, hora, n);
+                }
+                materia_str += "\t" + unescape(turma[2]) + "\n";
+            }
+            imported_materia.codigo   = unescape(materia[0]);
+            imported_materia.turmas   = t2;
+            imported_materia.selected = parseInt(materia[2]) - 1;
+            imported_materia.editavel = parseInt(materia[3]);
+            imported_materia.str = materia_str;
+            imported_all.push(imported_materia);
+        }
+        materias.reset();
+        ui_materias.reset();
+        ui_logger.reset();
+        turmas.reset();
+        ui_turmas.reset();
+
+        for (var i in imported_all) {
+            var imported_materia = imported_all[i];
+            materia = materias.add_item(imported_materia.codigo, imported_materia.str);
+            if (!materia) {
+                ui_logger.set_text("houve algum erro ao importar as materias!", "lightcoral");
+                return;
+            }
+            for (var j in materia.turmas)
+                materia.turmas[j].selected = imported_materia.turmas[j] ? 1 : 0;
+            materia.selected = imported_materia.selected;
+            materia.editavel = imported_materia.editavel;
+            ui_materias.add_item(materia);
+            ui_turmas.create(materia);
+            materias.set_selected(materia);
+        }
+        ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
+        imported_all = null;
+        update_all(n_comb);
     };
 }
 
@@ -335,7 +425,7 @@ window.onload = function() {
     combo.add_item("MTM5183");
     combo.add_item("MTM5512");
     combo.add_item("QMC5106");
-    } else if (0) {
+    } else if (1) {
     //2a fase
     combo.add_item("EEL7020");
     combo.add_item("EEL7021");

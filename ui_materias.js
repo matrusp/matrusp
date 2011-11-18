@@ -7,35 +7,47 @@ function UI_materias(id, ui_combinacoes)
     list.style.border = "1px solid black";
     list.style.width  = "770px";
 
-    var table = document.createElement("table");
-    var tbody = document.createElement("tbody");
-    table.className = "materias";
-    table.style.width="770px";
-    table.cellPadding="1";
-    table.cellSpacing="1";
-    table.appendChild(tbody);
-    list.appendChild(table);
-    var row  = document.createElement("tr");
-    row.style.backgroundColor = "#eeeeee";
-    var data = document.createElement("td");
-    data.style.width = "22px";
-    row.appendChild(data);
-    var data = document.createElement("td");
-    data.style.width = "70px";
-    data.innerHTML = "C\u00f3digo";
-    row.appendChild(data);
-    var data = document.createElement("td");
-    data.style.width = "44px";
-    data.innerHTML = "Turma";
-    row.appendChild(data);
-    var data = document.createElement("td");
-    data.id = "combinacoes";
-    row.appendChild(data);
-    var data = document.createElement("td");
-    data.innerHTML = "";
-    data.style.width = "15px";
-    row.appendChild(data);
-    tbody.appendChild(row);
+    var table;
+    var tbody;
+
+    function create() {
+        table = document.createElement("table");
+        tbody = document.createElement("tbody");
+        table.className = "materias";
+        table.style.width="770px";
+        table.cellPadding="1";
+        table.cellSpacing="1";
+        table.appendChild(tbody);
+        list.appendChild(table);
+        var row  = document.createElement("tr");
+        row.style.backgroundColor = "#eeeeee";
+        var data = document.createElement("td");
+        data.style.width = "22px";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.style.width = "70px";
+        data.innerHTML = "C\u00f3digo";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.style.width = "44px";
+        data.innerHTML = "Turma";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.id = "combinacoes";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.innerHTML = "";
+        data.style.width = "15px";
+        row.appendChild(data);
+        tbody.appendChild(row);
+    }
+    create();
+
+    function reset() {
+        var rows = tbody.getElementsByTagName("tr");
+        while (rows[1])
+            tbody.removeChild(rows[1]);
+    }
 
     function onclick() { self.cb_onclick(this.parentNode.materia); };
     function onremove() { self.cb_onremove(this.parentNode.materia); };
@@ -84,6 +96,7 @@ function UI_materias(id, ui_combinacoes)
 
     /* functions */
     self.add_item = add_item;
+    self.reset    = reset;
     /* callbacks */
     self.cb_select   = null;
     self.cb_onremove = null;

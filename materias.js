@@ -3,8 +3,29 @@ function Materias()
     var self = this;
     var selected = null;
 
-    var materias = new Object();
-    var list = new Array();
+    var materias;
+    var list;
+    function reset() {
+        materias = new Object();
+        list = new Array();
+    }
+    reset();
+
+    var horas = new Object();
+    horas["0730"] =  0; horas[ 0] = "0730";
+    horas["0820"] =  1; horas[ 1] = "0820";
+    horas["0910"] =  2; horas[ 2] = "0910";
+    horas["1010"] =  3; horas[ 3] = "1010";
+    horas["1100"] =  4; horas[ 4] = "1100";
+    horas["1330"] =  5; horas[ 5] = "1330";
+    horas["1420"] =  6; horas[ 6] = "1420";
+    horas["1510"] =  7; horas[ 7] = "1510";
+    horas["1620"] =  8; horas[ 8] = "1620";
+    horas["1710"] =  9; horas[ 9] = "1710";
+    horas["1830"] = 10; horas[10] = "1830";
+    horas["1920"] = 11; horas[11] = "1920";
+    horas["2020"] = 12; horas[12] = "2020";
+    horas["2110"] = 13; horas[13] = "2110";
 
     var get_color = (function(){
         var cores = [ "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgreen",
@@ -20,22 +41,6 @@ function Materias()
     })();
     function criar_aulas(horarios)
     {
-        var horas = new Object();
-        horas["0730"] =  0; horas[ 0] = "0730";
-        horas["0820"] =  1; horas[ 1] = "0820";
-        horas["0910"] =  2; horas[ 2] = "0910";
-        horas["1010"] =  3; horas[ 3] = "1010";
-        horas["1100"] =  4; horas[ 4] = "1100";
-        horas["1330"] =  5; horas[ 5] = "1330";
-        horas["1420"] =  6; horas[ 6] = "1420";
-        horas["1510"] =  7; horas[ 7] = "1510";
-        horas["1620"] =  8; horas[ 8] = "1620";
-        horas["1710"] =  9; horas[ 9] = "1710";
-        horas["1830"] = 10; horas[10] = "1830";
-        horas["1920"] = 11; horas[11] = "1920";
-        horas["2020"] = 12; horas[12] = "2020";
-        horas["2110"] = 13; horas[13] = "2110";
-
         var split = horarios.replace(/ \/ \S*/ig, "").split(" ");
         var ret = new Array();
         for (var i = 0; i < split.length; i++) {
@@ -72,7 +77,7 @@ function Materias()
         materia.turmas = new Array();
         materia.horarios = new Object();
         materia.selected = 1;
-        materia.editavel = true;
+        materia.editavel = 1;
         materias[materia.codigo] = materia;
         list.push(materia);
         return materia;
@@ -123,12 +128,14 @@ function Materias()
             new_turma(materia, split[0], criar_aulas(split[3]), split[4]);
         }
         materia.selected = 1;
-        materia.editavel = false;
+        materia.editavel = 0;
         materias[materia.codigo] = materia;
         list.push(materia);
 
         return materia;
     }
+    function load_item(str) {
+    };
     function remove_item(materia) {
         for (var i = 0; i < list.length; i++) {
             if (list[i] == materia) {
@@ -140,6 +147,7 @@ function Materias()
     }
 
     /* procedures */
+    self.reset = reset;
     self.set_selected = function(materia) { selected = materia; };
     self.add_item = add_item;
     self.new_item = new_item;
@@ -154,6 +162,7 @@ function Materias()
         }
         return null;
     };
+    self.aulas_string = function(dia, hora, n) { return (dia+2) + "." + horas[hora] + "-" + n + " / CTC"; };
     self.get = function(codigo) { return materias[codigo]; };
     self.get_selected = function() { return selected; };
     self.list = function() { return list; };
