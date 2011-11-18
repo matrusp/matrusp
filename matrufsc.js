@@ -1,4 +1,4 @@
-function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, materias, turmas, combinacoes)
+function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, materias, turmas, combinacoes)
 {
     var self = this;
 
@@ -76,30 +76,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, mat
         display_combinacao(c);
     };
 
-    function salvar() {
-        var list = materias.list();
-        var n = list.length();
-        var ret = "";
-        for (var i = 0; i < n; i++) {
-            var materia = list[i];
-            ret += "'" + materia.codigo + "'{"
-            for (var j in materia.turmas) {
-                var turma = materia.turmas[j];
-                if (turma.selected) {
-                    ret += turma.turma + ",";
-                }
-            }
-            ret += "}";
-        }
-        return ret;
-    }
-
     /* self */
     self.new_item = new_item;
     self.add_item = add_item;
     self.previous = previous;
     self.next = next;
-    self.salvar = salvar;
 
     /* UI_combinacoes */
     ui_combinacoes.cb_update   = function() { update_all(); };
@@ -281,6 +262,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, mat
         update_all();
         turmas.display_over(turma);
     };
+    /* UI_saver */
+    ui_saver.cb_salvar = function() {
+    };
+    ui_saver.cb_carregar = function() {
+    };
 }
 
 window.onload = function() {
@@ -289,13 +275,14 @@ window.onload = function() {
     var ui_horario     = new UI_horario("horario");
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
     var ui_logger      = new UI_logger("logger");
+    var ui_saver       = new UI_saver("saver");
 
     var combinacoes = new Combinacoes();
     var materias = new Materias();
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
     dconsole2 = new Dconsole("dconsole");
-    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, materias, turmas, combinacoes);
+    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.cb_add_item = main.add_item;
