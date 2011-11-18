@@ -11,7 +11,6 @@ function UI_saver(id)
     input.style.fontFamily = "monospace";
     input.style.fontSize   = "11px";
     input.style.width = "90px"
-    input.value = "bla";
     ui_logger.appendChild(input);
     ui_logger.appendChild(document.createTextNode(" "));
     var button = document.createElement("span");

@@ -282,12 +282,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             ret += (materia.editavel) + "'";
             for (var j in materia.turmas) {
                 var turma = materia.turmas[j];
-                ret += escape(turma.turma) + "\"";
-                ret += (turma.selected?1:0) + "\""
+                ret += escape(turma.turma) + ".";
+                ret += (turma.selected?1:0) + "."
                 if (!materia.editavel)
-                    ret += escape(turma.professor) + "\"";
+                    ret += escape(turma.professor) + ".";
                 else
-                    ret += escape("professor") + "\"";
+                    ret += escape("professor") + ".";
                 for (var k = 0; k < turma.aulas.length; k++) {
                     var aula = turma.aulas[k];
                     if (k) ret += ",";
@@ -330,7 +330,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             materia_str += unescape(materia[1]) + "\n";
             var t2 = new Array();
             for (var j = 4; j < materia.length-1; j++) {
-                var turma = materia[j].split("\"");
+                var turma = materia[j].split(".");
                 materia_str += unescape(turma[0]) + "\t0\t0\t";
                 t2[unescape(turma[0])] = parseInt(turma[1]);
                 var horario = turma[3].split(",");
@@ -393,7 +393,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         };
         load_request.open("GET", "cgi-bin/load.cgi?q=" + encodeURIComponent(identificador), true);
         load_request.send(null);
-        ui_logger.waiting("salvando '" + identificador + "'");
+        ui_logger.waiting("carregando '" + identificador + "'");
     }
 }
 
