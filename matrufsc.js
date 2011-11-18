@@ -315,13 +315,15 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 materia_str += unescape(turma[0]) + "\t0\t0\t";
                 t2[unescape(turma[0])] = parseInt(turma[1]);
                 var horario = turma[3].split(",");
-                for (var k = 0; k < horario.length; k += 3) {
-                    var dia = parseInt(horario[k+0], 16);
-                    var hora = parseInt(horario[k+1], 16);
-                    var n = parseInt(horario[k+2], 16);
-                    if (k != 0)
-                        materia_str += " ";
-                    materia_str += materias.aulas_string(dia, hora, n);
+                if (horario.length != 1) {
+                    for (var k = 0; k < horario.length; k += 3) {
+                        var dia = parseInt(horario[k+0], 16);
+                        var hora = parseInt(horario[k+1], 16);
+                        var n = parseInt(horario[k+2], 16);
+                        if (k != 0)
+                            materia_str += " ";
+                        materia_str += materias.aulas_string(dia, hora, n);
+                    }
                 }
                 materia_str += "\t" + unescape(turma[2]) + "\n";
             }
@@ -425,7 +427,7 @@ window.onload = function() {
     combo.add_item("MTM5183");
     combo.add_item("MTM5512");
     combo.add_item("QMC5106");
-    } else if (1) {
+    } else if (0) {
     //2a fase
     combo.add_item("EEL7020");
     combo.add_item("EEL7021");

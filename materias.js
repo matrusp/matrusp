@@ -41,23 +41,7 @@ function Materias()
     })();
     function criar_aulas(horarios)
     {
-        var split = horarios.replace(/ \/ \S*/ig, "").split(" ");
         var ret = new Array();
-        for (var i = 0; i < split.length; i++) {
-            ret[i] = new Object();
-            ret[i].dia  = parseInt(split[i].slice(0,1)) - 2;
-            ret[i].hora = horas[split[i].slice(2,6)];
-            ret[i].n    = parseInt(split[i].slice(7));
-        }
-        for (var i = 0; i < ret.length-1; i++) {
-            for (var j = i+1; j < ret.length; j++) {
-                if ((ret[j].dia < ret[i].dia) || ((ret[j].dia == ret[i].dia) && (ret[j].hora < ret[i].hora))) {
-                    var tmp = ret[i];
-                    ret[i] = ret[j];
-                    ret[j] = tmp;
-                }
-            }
-        }
         ret.index = function() {
             var r = "";
             for (var i = 0; i < this.length; i++) {
@@ -65,6 +49,24 @@ function Materias()
             }
             return r;
         };
+        if (horarios != "") {
+            var split = horarios.replace(/ \/ \S*/ig, "").split(" ");
+            for (var i = 0; i < split.length; i++) {
+                ret[i] = new Object();
+                ret[i].dia  = parseInt(split[i].slice(0,1)) - 2;
+                ret[i].hora = horas[split[i].slice(2,6)];
+                ret[i].n    = parseInt(split[i].slice(7));
+            }
+            for (var i = 0; i < ret.length-1; i++) {
+                for (var j = i+1; j < ret.length; j++) {
+                    if ((ret[j].dia < ret[i].dia) || ((ret[j].dia == ret[i].dia) && (ret[j].hora < ret[i].hora))) {
+                        var tmp = ret[i];
+                        ret[i] = ret[j];
+                        ret[j] = tmp;
+                    }
+                }
+            }
+        }
         return ret;
     }
     function new_item(codigo, nome) {
