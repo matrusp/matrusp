@@ -267,7 +267,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         turmas.display_over(turma);
     };
     /* UI_saver */
-    var thestr;
     ui_saver.cb_salvar = function(identificador) {
         var list = materias.list();
         var n = list.length;
@@ -299,10 +298,22 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 ret += "'";
             }
         }
-        thestr = ret;
+        save_request = new XMLHttpRequest();
+        save_request.savestr = identificador;
+        save_request.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if ((this.status != 200) || this.responseText != "OK") {
+                    ui_logger.set_text("'" + this.savestr + "' n\u00e3o pode ser salvo", "lightcoral");
+                } else {
+                    ui_logger.set_text("'" + this.savestr + "' foi salvo", "lightgreen");
+                }
+            }
+        };
+        save_request.open("GET", "cgi-bin/save.cgi?q=" + encodeURIComponent(identificador) + "=" + ret, true);
+        save_request.send(null);
+        ui_logger.waiting("salvando '" + identificador + "'");
     };
-    ui_saver.cb_carregar = function(identificador) {
-        var str = thestr;
+    function carregar(str) {
         var split = str.split("|");
         var versao = parseInt(split[0]);
         if (versao > 1) {
@@ -367,6 +378,23 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         imported_all = null;
         update_all(n_comb);
     };
+    ui_saver.cb_carregar = function(identificador) {
+        load_request = new XMLHttpRequest();
+        load_request.loadstr = identificador;
+        load_request.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status != 200) {
+                    ui_logger.set_text("'" + this.loadstr + "' n\u00e3o pode ser carregado", "lightcoral");
+                } else {
+                    carregar(this.responseText);
+                    ui_logger.set_text("'" + this.loadstr + "' foi carregado", "lightgreen");
+                }
+            }
+        };
+        load_request.open("GET", "cgi-bin/load.cgi?q=" + encodeURIComponent(identificador), true);
+        load_request.send(null);
+        ui_logger.waiting("salvando '" + identificador + "'");
+    }
 }
 
 window.onload = function() {
