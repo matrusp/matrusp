@@ -286,6 +286,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 ret += (turma.selected?1:0) + "\""
                 if (!materia.editavel)
                     ret += escape(turma.professor) + "\"";
+                else
+                    ret += escape("professor") + "\"";
                 for (var k = 0; k < turma.aulas.length; k++) {
                     var aula = turma.aulas[k];
                     if (k) ret += ",";
@@ -342,7 +344,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
 
         for (var i in imported_all) {
             var imported_materia = imported_all[i];
-            materia = materias.add_item(imported_materia.codigo, imported_materia.str);
+            materia = materias.add_item(imported_materia.codigo, imported_materia.str, imported_materia.editavel);
             if (!materia) {
                 ui_logger.set_text("houve algum erro ao importar as materias!", "lightcoral");
                 return;

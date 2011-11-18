@@ -39,16 +39,21 @@ function Materias()
             return ret;
         });
     })();
-    function criar_aulas(horarios)
+    function criar_aulas(horarios, nome, editavel)
     {
         var ret = new Array();
-        ret.index = function() {
-            var r = "";
-            for (var i = 0; i < this.length; i++) {
-                r += (this[i].dia+2) + "." + horas[this[i].hora] + "-" + this[i].n;
-            }
-            return r;
-        };
+        if (editavel) {
+            ret.nome = nome;
+            ret.index = function() { return this.nome; };
+        } else {
+            ret.index = function() {
+                var r = "";
+                for (var i = 0; i < this.length; i++) {
+                    r += (this[i].dia+2) + "." + horas[this[i].hora] + "-" + this[i].n;
+                }
+                return r;
+            };
+        }
         if (horarios != "") {
             var split = horarios.replace(/ \/ \S*/ig, "").split(" ");
             for (var i = 0; i < split.length; i++) {
@@ -109,7 +114,7 @@ function Materias()
         turma.horario = materia.horarios[index];
         return materia.horarios[index];
     }
-    function add_item(codigo, str)
+    function add_item(codigo, str, editavel)
     {
         var array = str.split("\n"); /* uma turma por item */
         var split = array[0].split("\t");
@@ -127,7 +132,7 @@ function Materias()
         materia.turmas = new Array();
         for (var i = 1; i < array.length - 1; i++) {
             var split = array[i].split("\t");
-            new_turma(materia, split[0], criar_aulas(split[3]), split[4]);
+            new_turma(materia, split[0], criar_aulas(split[3], split[0], editavel), split[4]);
         }
         materia.selected = 1;
         materia.editavel = 0;
