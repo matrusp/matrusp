@@ -272,6 +272,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         var list = materias.list();
         var n = list.length;
         var ret = "";
+        ret += "1|"; /* TODO VERSAO */
         ret += combinacoes.current();
         for (var i = 0; i < n; i++) {
             var materia = list[i];
@@ -303,9 +304,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     ui_saver.cb_carregar = function(identificador) {
         var str = thestr;
         var split = str.split("|");
-        var n_comb = parseInt(split[0]);
+        var versao = parseInt(split[0]);
+        if (versao > 1) {
+            ui_logger.set_text("impossivel carregar dados salvos de versao mais recente", "lightcoral");
+            return;
+        }
+        var n_comb = parseInt(split[1]);
         var imported_all = new Array();
-        for (var i = 1; i < split.length; i++) {
+        for (var i = 2; i < split.length; i++) {
             var imported_materia = new Object();
             var materia_str = "";
             var materia = split[i].split("'");
