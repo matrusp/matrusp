@@ -47,8 +47,6 @@ function UI_combinacoes(id)
     d2.appendChild(document.createTextNode(" "));
 
     /* procedures */
-    self.set_dirty = function() { button.style.backgroundColor = "lightcoral"; };
-    self.set_ok = function() { button.style.backgroundColor = "lightblue"; };
     self.set_current = function(n) { self.selecao_atual.value = n; };
     self.set_total = function(n) { numero_selecoes.nodeValue = n; };
     /* callbacks */

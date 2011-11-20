@@ -219,7 +219,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         if (!comb)
             var current = combinacoes.get_current();
         combinacoes.generate(materias.list());
-        ui_combinacoes.set_ok();
         if (comb)
             display_combinacao(comb);
         else
@@ -297,7 +296,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             else
                 overlay[dia][hora] = true;
             onover(dia, hora);
-            ui_combinacoes.set_dirty();
         };
         ui_grayout.show();
         ui_horario.set_toggle(toggle, onover, onout);
