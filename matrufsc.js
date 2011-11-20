@@ -50,7 +50,7 @@ function UI_ajuda_popup(id)
     self.hide();
 }
 
-function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, materias, turmas, combinacoes)
+function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes)
 {
     var self = this;
 
@@ -300,6 +300,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             onover(dia, hora);
             ui_combinacoes.set_dirty();
         };
+        ui_grayout.show();
         ui_horario.set_toggle(toggle, onover, onout);
         ui_turmas.edit_start(turma);
         editando = turma;
@@ -318,6 +319,18 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         var turma = turmas.get_selected();
         update_all();
         turmas.display_over(turma);
+    };
+    ui_turmas.cb_ok          = function() {
+        ui_grayout.hide();
+        update_all();
+    };
+    ui_turmas.cb_cancel      = function() {
+        ui_grayout.hide();
+        combinacoes.clear_overlay();
+        ui_horario.set_toggle(null);
+        ui_turmas.edit_end();
+        editando = null;
+        display_combinacao(combinacoes.get_current());
     };
     /* UI_saver */
     ui_saver.cb_salvar = function(identificador) {
@@ -503,7 +516,7 @@ window.onload = function() {
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
     dconsole2 = new Dconsole("dconsole");
-    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, materias, turmas, combinacoes);
+    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.cb_add_item = main.add_item;

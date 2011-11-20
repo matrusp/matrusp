@@ -8,6 +8,9 @@ function UI_horario(id)
     var horario = document.getElementById(id);
 
     horario.style.border = "1px solid black";
+    horario.style.backgroundColor = "#eeeeee";
+    horario.style.position = "relative";
+    horario.style.zIndex = "2000";
 
     array = new Array();
     for (var i = 0; i < 6; i++) {

@@ -7,8 +7,10 @@ function UI_turmas(id, height)
 
     list = document.getElementById(id);
 
+    var thiswidth = 330;
+
     list.style.border = "1px solid black";
-    list.style.width  = "330px";
+    list.style.width  = thiswidth + "px";
     list.style.height    = (height-2) + "px";
     list.style.maxHeight = (height-2) + "px";
 
@@ -33,12 +35,16 @@ function UI_turmas(id, height)
         var row = current_turma.row;
         row.style.backgroundColor = "black";
         row.style.color           = "white";
+        self.ok_button.style.display = "";
+        self.cancel_button.style.display = "";
     }
     function edit_end() {
         if (current_turma) {
             var row = current_turma.row;
             row.style.backgroundColor = current_materia.cor;
             row.style.color           = "black";
+            self.ok_button.style.display = "none";
+            self.cancel_button.style.display = "none";
         }
     }
     function editar() {
@@ -156,6 +162,48 @@ function UI_turmas(id, height)
             row.appendChild(data);
 
             self.tbody.appendChild(row);
+
+            var button = document.createElement("span");
+            button.style.display = "none";
+            button.style.position = "absolute";
+            button.style.zIndex = "2000";
+            button.style.MozUserSelect = "none";
+            button.style.KhtmlUserSelect = "none";
+            button.style.border = "1px solid black";
+            button.style.backgroundColor = "lightblue";
+            button.style.top = "50%";
+            button.style.textAlign = "center";
+            button.style.fontFamily = "monospace";
+            button.style.fontSize = "20px";
+            button.style.marginLeft = ((thiswidth/2) - 100) + "px";
+            button.style.width = "100px";
+            button.style.cursor = "pointer";
+            button.innerHTML = "<strong>OK</strong>";
+            button.onselectstart = function () { return false; };
+            button.onclick = function () { self.cb_ok(); return false; };
+            list.appendChild(button);
+            self.ok_button = button;
+
+            var button = document.createElement("span");
+            button.style.display = "none";
+            button.style.position = "absolute";
+            button.style.zIndex = "2000";
+            button.style.MozUserSelect = "none";
+            button.style.KhtmlUserSelect = "none";
+            button.style.border = "1px solid black";
+            button.style.backgroundColor = "lightblue";
+            button.style.top = "50%";
+            button.style.textAlign = "center";
+            button.style.fontFamily = "monospace";
+            button.style.fontSize = "20px";
+            button.style.marginLeft = ((thiswidth/2)) + "px";
+            button.style.width = "100px";
+            button.style.cursor = "pointer";
+            button.innerHTML = "<strong>Cancelar</strong>";
+            button.onselectstart = function () { return false; };
+            button.onclick = function () { self.cb_cancel(); return false; };
+            list.appendChild(button);
+            self.cancel_button = button;
         }
         for (var i in current_materia.horarios) {
             var horario = current_materia.horarios[i];
@@ -186,4 +234,6 @@ function UI_turmas(id, height)
     self.cb_onmouseout   = null;
     self.cb_updated      = null;
     self.cb_changed      = null;
+    self.cb_ok           = null;
+    self.cb_cancel       = null;
 }
