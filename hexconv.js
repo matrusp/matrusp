@@ -1,3 +1,11 @@
+/**
+ *
+ * Based on:
+ *  Base64 encode / decode
+ *  http://www.webtoolkit.info/
+ *
+ **/
+
 var HexConv = {
 
 	// private property
