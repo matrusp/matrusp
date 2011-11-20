@@ -185,6 +185,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             ui_logger.set_text("materias em choque: " + errmsg, "lightcoral");
         }
         current = null;
+        mudancas = combinacoes.get_current();
     }
     function normal_cell(d)  { return {strong:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
     function red_cell(str)   { return {strong:true,text:str,bgcolor:"red",color:"black"}; }
@@ -306,14 +307,17 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                     ui_logger.set_text("'" + this.savestr + "' n\u00e3o pode ser salvo", "lightcoral");
                 } else {
                     ui_logger.set_text("'" + this.savestr + "' foi salvo", "lightgreen");
+                    mudancas = false;
                 }
             }
         };
+        ret = HexConv.encode(ret);
         save_request.open("GET", "cgi-bin/save.cgi?q=" + encodeURIComponent(identificador) + "=" + ret, true);
         save_request.send(null);
         ui_logger.waiting("salvando '" + identificador + "'");
     };
     function carregar(str) {
+        str = HexConv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
         if (versao > 1) {
@@ -377,13 +381,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
         imported_all = null;
         update_all(n_comb);
+        mudancas = false;
     };
     ui_saver.cb_carregar = function(identificador) {
         load_request = new XMLHttpRequest();
         load_request.loadstr = identificador;
         load_request.onreadystatechange = function() {
             if (this.readyState == 4) {
-                if (this.status != 200) {
+                if ((this.status != 200) || this.responseText == "") {
                     ui_logger.set_text("'" + this.loadstr + "' n\u00e3o pode ser carregado", "lightcoral");
                 } else {
                     carregar(this.responseText);
@@ -397,6 +402,22 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     }
 }
 
+window.onbeforeunload = function (e) {
+    e = e || window.event;
+    var str = 'Mudanças feitas não foram salvas'
+
+    if (mudancas) {
+    // For IE and Firefox prior to version 4
+    if (e) {
+      e.returnValue = str;
+    }
+
+    // For Safari
+    return str;
+    }
+};
+
+mudancas = false;
 window.onload = function() {
     var ui_materias    = new UI_materias("materias_list");
     var ui_combinacoes = new UI_combinacoes("combinacoes");
@@ -478,5 +499,20 @@ window.onload = function() {
     combo.add_item("FSC5162");
     combo.add_item("FSC5164");
     combo.add_item("MTM5185");
+    } else if (0) {
+    //4a fase
+    combo.add_item("EEL7040");
+    combo.add_item("EEL7041");
+    combo.add_item("EMC5125");
+    combo.add_item("FSC5163");
+    combo.add_item("MTM5186");
+    } else if (0) {
+    //5a fase
+    combo.add_item("EEL7050");
+    combo.add_item("EEL7051");
+    combo.add_item("EEL7052");
+    combo.add_item("EEL7053");
+    combo.add_item("EPS5209");
+    combo.add_item("INE5118");
     }
 }

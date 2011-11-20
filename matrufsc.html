@@ -8,6 +8,15 @@
 
 <body style="background-color:#eeeeee;">
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div style="overflow:auto;width:780px;margin:0 auto;">
  <table><tr><td colspan=2>
   <table cellpadding="0" cellspacing="0" width="100%"><tr><td>
@@ -29,18 +38,22 @@
   <div id="turmas_list" style="overflow:auto;"></div>
   </td></tr><tr><td colspan=2>
    <table cellpadding="0" cellspacing="0" width="100%"><tr>
-    <td style="font-family:monospace;font-size:11px;" align="left" width="200px">
-      versão 16<br>banco de dados atualizado em 18/11/11
+    <td style="font-family:monospace;font-size:11px;" align="left" width="300px">
+      versão 16. banco de dados atualizado em 18/11/11
     </td>
     <td style="font-family:monospace;font-size:13px;" align="right">
     <div id="saver"></div>
    </td></tr></table>
  </td></tr></table>
 </div>
+<div style="overflow:visible;width:780px;margin:0 auto;">
+<div class="fb-like" data-href="http://ramiro.arrozcru.org/matrufsc" data-send="false" data-width="700" data-show-faces="false" data-font="lucida grande"></div>
+</div>
 
 <div id="dconsole" style="font-family:monospace;font-size:11px;">
 </div>
 
+<script type="text/javascript" src="hexconv.js"></script>
 <script type="text/javascript" src="ui_saver.js"></script>
 <script type="text/javascript" src="ui_logger.js"></script>
 <script type="text/javascript" src="dconsole.js"></script>

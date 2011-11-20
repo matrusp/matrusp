@@ -151,7 +151,7 @@ function UI_turmas(id, height)
             row.appendChild(data);
             var data = document.createElement("td");
             data.style.textAlign = "center";
-            data.innerHTML = "O suporte para atividades gen\u00e9ricas ainda est\u00e1 em fase de testes. " +
+            data.innerHTML = "O suporte para atividades gen\u00e9ricas ainda est\u00e1 em fase experimental. " +
                              "Certifique-se que a turma que voc\u00ea vai editar esteja na sele\u00e7\u00e3o atual.";
             row.appendChild(data);
 
