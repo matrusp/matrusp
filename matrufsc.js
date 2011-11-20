@@ -440,7 +440,7 @@ window.onload = function() {
     document.onkeydown = function(e) {
         var ev = e ? e : event;
         var c = ev.keyCode;
-        if (ev.srcElement == combo.input)
+        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input)
             return;
         if (ev.srcElement == ui_combinacoes.selecao_atual) {
             var pos = -1;

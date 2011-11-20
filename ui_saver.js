@@ -35,6 +35,8 @@ function UI_saver(id)
     button.onclick = function () { self.cb_carregar(input.value); return false; };
     ui_logger.appendChild(button);
 
+    self.input = input;
+
     /* callbacks */
     self.cb_salvar   = null;
     self.cb_carregar = null;
