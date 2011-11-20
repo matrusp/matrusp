@@ -92,21 +92,8 @@ function UI_horario(id)
             }
         }
     }
-    function set_absoulte() {
-        horario.style.position = "absolute";
-        horario.style.backgroundColor = "#FFFFFF";
-        horario.style.zIndex = "2000";
-        horario.style.top = "50%";
-        horario.style.left = "50%";
-
-        horario.style.marginTop = "-" + (horario.offsetHeight/2) + "px";
-        horario.style.marginLeft = "-" + (horario.offsetWidth/2) + "px";
-    }
 
     /* procedures */
-    self.hide         = function() { horario.style.display = "none"; };
-    self.show         = function() { horario.style.display = ""; };
-    self.set_absolute = set_absoulte;
     self.set_toggle   = set_toggle;
     self.display_cell = display_cell;
     self.clear_cell   = clear_cell;

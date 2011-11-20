@@ -1,3 +1,55 @@
+function UI_grayout(id)
+{
+    var self = this;
+
+    self.grayout = document.getElementById(id);
+    self.grayout.style.position = "absolute";
+    self.grayout.style.left = "0px";
+    self.grayout.style.top = "0px";
+    self.grayout.style.width = "100%";
+    self.grayout.style.height = "100%";
+    self.grayout.style.backgroundColor = "#666666";
+    self.grayout.style.opacity = ".7";
+    self.grayout.style.filter = "alpha(opacity=70)";
+    self.grayout.style.zIndex = "1000";
+
+    /* procedures */
+    self.hide = function() { self.grayout.style.display = "none"; };
+    self.show = function() { self.grayout.style.display = ""; };
+
+    self.hide();
+}
+
+function UI_ajuda_popup(id)
+{
+    var self = this;
+
+    self.popup = document.getElementById(id);
+
+    self.popup.style.position = "absolute";
+    self.popup.style.backgroundColor = "#eeeeee";
+    self.popup.style.width = "600px";
+    self.popup.style.height = "480px";
+    self.popup.style.zIndex = "2000";
+    self.popup.style.top = "10%";
+    self.popup.style.left = "50%";
+    self.popup.style.border = "1px solid black";
+    self.popup.style.fontFamily = "verdana";
+    self.popup.style.fontSize = "15px";
+    self.popup.style.overflow = "auto";
+
+    function show() {
+        self.popup.style.display = "";
+        self.popup.style.marginLeft = "-" + (self.popup.offsetWidth /2) + "px";
+    }
+
+    /* procedures */
+    self.hide         = function() { self.popup.style.display = "none"; };
+    self.show         = show;
+
+    self.hide();
+}
+
 function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, materias, turmas, combinacoes)
 {
     var self = this;
@@ -417,6 +469,7 @@ window.onbeforeunload = function (e) {
     }
 };
 
+ajuda_shown = false;
 mudancas = false;
 window.onload = function() {
     var ui_materias    = new UI_materias("materias_list");
@@ -425,6 +478,25 @@ window.onload = function() {
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
     var ui_logger      = new UI_logger("logger");
     var ui_saver       = new UI_saver("saver");
+
+    var ui_grayout     = new UI_grayout("grayout");
+    var ui_ajuda_popup = new UI_ajuda_popup("ajuda_popup");
+    ui_ajuda_popup.link = document.getElementById("ajuda");
+    var a = document.createElement("a");
+    a.href = "#";
+    a.innerHTML = "Ajuda?";
+    a.onclick = function() {
+        ui_ajuda_popup.show();
+        ui_grayout.show();
+        ajuda_shown = true;
+    };
+    ui_ajuda_popup.link.appendChild(a);
+    fechar_ajuda_obj = document.getElementById("fechar_ajuda");
+    fechar_ajuda_obj.onclick = function() {
+        ui_grayout.hide();
+        ui_ajuda_popup.hide();
+        ajuda_shown = false;
+    }
 
     var combinacoes = new Combinacoes();
     var materias = new Materias();
@@ -440,6 +512,10 @@ window.onload = function() {
     document.onkeydown = function(e) {
         var ev = e ? e : event;
         var c = ev.keyCode;
+        if (ajuda_shown && c == 27) {
+            fechar_ajuda_obj.onclick();
+            return;
+        }
         if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input)
             return;
         if (ev.srcElement == ui_combinacoes.selecao_atual) {
