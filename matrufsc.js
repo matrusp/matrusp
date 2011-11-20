@@ -135,7 +135,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     self.next = next;
 
     /* UI_combinacoes */
-    ui_combinacoes.cb_update   = function() { update_all(); };
     ui_combinacoes.cb_previous = self.previous;
     ui_combinacoes.cb_next     = self.next;
     ui_combinacoes.cb_changed  = function(val) {

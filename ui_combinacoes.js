@@ -46,17 +46,6 @@ function UI_combinacoes(id)
     d2.appendChild(button);
     d2.appendChild(document.createTextNode(" "));
 
-    var button = document.createElement("span");
-    button.style.MozUserSelect = "none";
-    button.style.KhtmlUserSelect = "none";
-    button.style.border = "1px solid black";
-    button.style.backgroundColor = "lightblue";
-    button.style.cursor = "pointer";
-    button.innerHTML = "gerar";
-    button.onselectstart = function () { return false; };
-    button.onclick = function () { self.cb_update(); return false; };
-    d2.appendChild(button);
-
     /* procedures */
     self.set_dirty = function() { button.style.backgroundColor = "lightcoral"; };
     self.set_ok = function() { button.style.backgroundColor = "lightblue"; };
@@ -66,5 +55,4 @@ function UI_combinacoes(id)
     self.cb_previous = null;
     self.cb_next     = null;
     self.cb_changed  = null;
-    self.cb_update   = null;
 }
