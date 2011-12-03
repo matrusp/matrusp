@@ -99,6 +99,7 @@ function Combobox(input, suggestions, ui_logger)
     self.input.style.fontSize   = "11px";
     self.suggestions.style.fontFamily = "monospace";
     self.suggestions.style.fontSize   = "11px";
+    self.suggestions.style.zIndex = "3000";
 
     self.input.onblur    = function() {
         if (self.mouseisdown) {
