@@ -429,7 +429,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             var imported_materia = imported_all[i];
             materia = materias.add_item(imported_materia.codigo, imported_materia.str, imported_materia.editavel);
             if (!materia) {
-                ui_logger.set_text("houve algum erro ao importar as materias!", "lightcoral");
+                ui_logger.set_text("houve algum erro ao importar as mat\u00e9rias!", "lightcoral");
                 return;
             }
             for (var j in materia.turmas)
