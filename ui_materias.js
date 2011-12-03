@@ -39,6 +39,14 @@ function UI_materias(id, ui_combinacoes)
         data.innerHTML = "";
         data.style.width = "15px";
         row.appendChild(data);
+        var data = document.createElement("td");
+        data.innerHTML = "";
+        data.style.width = "15px";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.innerHTML = "";
+        data.style.width = "15px";
+        row.appendChild(data);
         tbody.appendChild(row);
     }
     create();
@@ -51,6 +59,8 @@ function UI_materias(id, ui_combinacoes)
 
     function onclick() { self.cb_onclick(this.parentNode.materia); };
     function onremove() { self.cb_onremove(this.parentNode.materia); };
+    function onmoveup() { self.cb_onmoveup(this.parentNode.materia); };
+    function onmovedown() { self.cb_onmovedown(this.parentNode.materia); };
     function add_item(materia) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = materia.cor;
@@ -82,6 +92,18 @@ function UI_materias(id, ui_combinacoes)
         var data = document.createElement("td");
         data.onclick = onclick;
         data.innerHTML = materia.nome;
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.onclick = onmovedown;
+        data.innerHTML = "v";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.onclick = onmoveup;
+        data.innerHTML = "^";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
         row.appendChild(data);
         var data = document.createElement("td");
         data.onclick = onremove;

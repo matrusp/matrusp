@@ -154,6 +154,40 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         materia.selected = checked;
         update_all();
     };
+    ui_materias.cb_onmoveup    = function(materia) {
+        var m = materias.list();
+        for (var i = 0; i < m.length; i++)
+            if (m[i] == materia)
+                break;
+        if (i >= m.length) {
+            console.log("something went wrong!");
+            return;
+        }
+        if (i == 0)
+            return;
+        m[i].row.parentNode.insertBefore(m[i].row, m[i-1].row);
+        var tmp = m[i-1];
+        m[i-1]  = m[i  ];
+        m[i  ]  = tmp;
+        update_all();
+    };
+    ui_materias.cb_onmovedown  = function(materia) {
+        var m = materias.list();
+        for (var i = 0; i < m.length; i++)
+            if (m[i] == materia)
+                break;
+        if (i >= m.length) {
+            console.log("something went wrong!");
+            return;
+        }
+        if (i == m.length-1)
+            return;
+        m[i].row.parentNode.insertBefore(m[i+1].row, m[i].row);
+        var tmp = m[i+1];
+        m[i+1]  = m[i  ];
+        m[i  ]  = tmp;
+        update_all();
+    };
     ui_materias.cb_onremove    = function(materia) {
         var selected = materias.get_selected();
         if (selected && selected.codigo == materia.codigo)
