@@ -327,7 +327,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_horario.set_toggle(null);
         ui_turmas.edit_end();
         editando = null;
-        display_combinacao(combinacoes.get_current());
+        display_combinacao(combinacoes.current());
     };
     /* UI_saver */
     ui_saver.cb_salvar = function(identificador) {
