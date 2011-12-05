@@ -89,7 +89,28 @@ function Materias()
         list.push(materia);
         return materia;
     }
+    var n_turmas = 1;
+    function new_turma_name() {
+        var nome = new String();
+        if (n_turmas < 1000)
+            nome += "0";
+        if (n_turmas <  100)
+            nome += "0";
+        if (n_turmas <   10)
+            nome += "0";
+        nome += n_turmas;
+        n_turmas++;
+        return nome;
+    };
     function new_turma(materia, nome, aulas, professor) {
+        if (nome == null) {
+            aulas = new Array();
+            do {
+                nome = new_turma_name();
+            } while (materia.turmas[nome]);
+            aulas.nome = nome;
+            aulas.index = function() { return this.nome; };
+        }
         var turma = new Object();
         var index = aulas.index();
         turma.turma     = nome;
