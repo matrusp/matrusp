@@ -39,7 +39,7 @@ function Materias()
             return ret;
         });
     })();
-    function criar_aulas(horarios, nome, editavel)
+    function criar_aulas(str, nome, editavel)
     {
         var ret = new Array();
         if (editavel) {
@@ -54,8 +54,8 @@ function Materias()
                 return r;
             };
         }
-        if (horarios != "") {
-            var split = horarios.replace(/ \/ \S*/ig, "").split(" ");
+        if (str != "") {
+            var split = str.replace(/ \/ \S*/ig, "").split(" ");
             for (var i = 0; i < split.length; i++) {
                 ret[i] = new Object();
                 ret[i].dia  = parseInt(split[i].slice(0,1)) - 2;
