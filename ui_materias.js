@@ -58,9 +58,11 @@ function UI_materias(id, ui_combinacoes)
     }
 
     function onclick() { self.cb_onclick(this.parentNode.materia); };
-    function onremove() { self.cb_onremove(this.parentNode.materia); };
-    function onmoveup() { self.cb_onmoveup(this.parentNode.materia); };
-    function onmovedown() { self.cb_onmovedown(this.parentNode.materia); };
+    function onremove() { this.onmouseout(); self.cb_onremove(this.parentNode.materia); };
+    function onmoveup() { this.onmouseout(); self.cb_onmoveup(this.parentNode.materia); };
+    function onmovedown() { this.onmouseout(); self.cb_onmovedown(this.parentNode.materia); };
+    function hover_off() { this.style.backgroundColor = this.oldbg; this.style.color = "black"; };
+    function hover_on()  { this.style.backgroundColor = "black"; this.style.color = this.oldbg; };
     function add_item(materia) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = materia.cor;
@@ -94,18 +96,30 @@ function UI_materias(id, ui_combinacoes)
         data.innerHTML = materia.nome;
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.color = "black";
+        data.oldbg = materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
         data.onclick = onmovedown;
         data.innerHTML = "v";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.color = "black";
+        data.oldbg = materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
         data.onclick = onmoveup;
         data.innerHTML = "^";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.color = "black";
+        data.oldbg = materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
         data.onclick = onremove;
         data.innerHTML = "X";
         data.style.width = "15px";
