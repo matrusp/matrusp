@@ -25,8 +25,7 @@ function UI_turmas(id, height)
             }
         }
         for (var i = 0; i < checkboxes.length; i++) {
-            var split   = checkboxes[i].value.split(" ");
-            self.cb_changed(split[0], split[1], !at_least_one_selected);
+            self.cb_changed(checkboxes[i].turma, !at_least_one_selected);
             checkboxes[i].checked = !at_least_one_selected;
         }
         self.cb_updated();
@@ -111,10 +110,9 @@ function UI_turmas(id, height)
             var turma = horario.turmas[j];
             var input = document.createElement("input");
             input.type     = "checkbox";
-            input.value    = current_materia.codigo + " " + turma.turma;
+            input.turma    = turma;
             input.onchange = function() {
-                var split = this.value.split(" ");
-                self.cb_changed(split[0], split[1], this.checked);
+                self.cb_changed(this.turma, this.checked);
                 self.cb_updated();
             };
             if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {

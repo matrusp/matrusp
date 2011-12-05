@@ -383,10 +383,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     };
     ui_turmas.cb_onmouseover = function(turma) { turmas.display_over(turma); };
     ui_turmas.cb_onmouseout  = function(turma) { turmas.undisplay_over(turma); };
-    ui_turmas.cb_changed     = function(codigo, turma, checked) {
-        var materia = materias.get(codigo);
-        materia.turmas[turma].selected = checked ? 1 : 0;
-        materia.selected = true;
+    ui_turmas.cb_changed     = function(turma, checked) {
+        turma.selected = checked ? 1 : 0;
+        turma.materia.selected = true;
     };
     ui_turmas.cb_updated     = function() {
         var turma = turmas.get_selected();
