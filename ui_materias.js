@@ -101,6 +101,9 @@ function UI_materias(id, ui_combinacoes)
         data.innerHTML = materia.nome;
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.MozUserSelect = "none";
+        data.style.KhtmlUserSelect = "none";
+        data.onselectstart = function () { return false; };
         data.style.color = "black";
         data.oldbg = materia.cor;
         data.onmouseout  = hover_off;
@@ -111,6 +114,9 @@ function UI_materias(id, ui_combinacoes)
         data.style.textAlign = "center";
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.MozUserSelect = "none";
+        data.style.KhtmlUserSelect = "none";
+        data.onselectstart = function () { return false; };
         data.style.color = "black";
         data.oldbg = materia.cor;
         data.onmouseout  = hover_off;
@@ -121,6 +127,9 @@ function UI_materias(id, ui_combinacoes)
         data.style.textAlign = "center";
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.MozUserSelect = "none";
+        data.style.KhtmlUserSelect = "none";
+        data.onselectstart = function () { return false; };
         data.style.color = "black";
         data.oldbg = materia.cor;
         data.onmouseout  = hover_off;

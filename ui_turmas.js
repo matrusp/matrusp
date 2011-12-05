@@ -124,6 +124,9 @@ function UI_turmas(id, height)
         row.appendChild(data);
 
         var data = document.createElement("td");
+        data.style.MozUserSelect = "none";
+        data.style.KhtmlUserSelect = "none";
+        data.onselectstart = function () { return false; };
         data.style.color = "black";
         data.oldbg = current_materia.cor;
         data.onmouseout  = hover_off;
@@ -135,6 +138,9 @@ function UI_turmas(id, height)
         row.appendChild(data);
 
         var data = document.createElement("td");
+        data.style.MozUserSelect = "none";
+        data.style.KhtmlUserSelect = "none";
+        data.onselectstart = function () { return false; };
         data.style.color = "black";
         data.oldbg = current_materia.cor;
         data.onmouseout  = hover_off;
