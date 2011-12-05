@@ -108,17 +108,11 @@ function UI_turmas(id, height)
         row.appendChild(data);
 
         var data = document.createElement("td");
-        if (current_materia.editavel) {
-            data.onmouseup = editar;
-            data.style.textAlign = "center";
-            var innerHTML = ">>>> edite hor\u00e1rio aqui <<<<";
-        } else {
-            data.onmouseup = onmouseup;
-            var innerHTML = new String();
-            for (var j in horario.turmas) {
-                var turma = horario.turmas[j];
-                innerHTML += turma.professor + "<br>";
-            }
+        data.onmouseup = onmouseup;
+        var innerHTML = new String();
+        for (var j in horario.turmas) {
+            var turma = horario.turmas[j];
+            innerHTML += turma.professor + "<br>";
         }
         data.innerHTML = innerHTML;
         row.appendChild(data);
