@@ -48,7 +48,14 @@ function UI_turmas(id, height)
             self.cancel_button.style.display = "none";
         }
     }
+    function remove_turma(turma) {
+        var row = turma.row;
+        row.parentNode.removeChild(row);
+    }
     function remove() {
+        var row = this.parentNode;
+        var turma = row.turma;
+        self.cb_remove_turma(turma);
     }
     function editar() {
         var row = this.parentNode;
@@ -250,10 +257,12 @@ function UI_turmas(id, height)
     self.create = create;
     self.reset = function() { list.innerHTML = ""; insert_before = null; };
     self.new_turma = new_turma;
+    self.remove_turma = remove_turma;
     self.edit_start = edit_start;
     self.edit_end   = edit_end;
     /* callbacks */
     self.cb_edit_turma   = null;
+    self.cb_remove_turma = null;
     self.cb_new_turma    = null;
     self.cb_onmouseover  = null;
     self.cb_onmouseout   = null;

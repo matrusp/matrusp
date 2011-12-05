@@ -250,6 +250,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_turmas.new_turma(turma);
         update_all();
     };
+    ui_turmas.cb_remove_turma = function(turma) {
+        var materia = turma.materia;
+        materias.remove_turma(materia, turma);
+        ui_turmas.remove_turma(turma);
+        update_all();
+    };
     function update_all(comb) {
         if (editando) {
             var overlay = combinacoes.get_overlay();

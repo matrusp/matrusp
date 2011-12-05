@@ -135,6 +135,18 @@ function Materias()
         turma.horario = materia.horarios[index];
         return materia.horarios[index];
     }
+    function remove_turma(materia, turma) {
+        for (var i in materia.horarios) {
+            var horario = materia.horarios[i];
+            if (horario.turma_representante == turma) {
+                for (var j in horario.turmas)
+                    delete horario.turmas[j];
+                delete materia.horarios[i];
+                break;
+            }
+        }
+        delete materia.turmas[turma.turma];
+    }
     function add_item(codigo, str, editavel)
     {
         var array = str.split("\n"); /* uma turma por item */
@@ -181,6 +193,7 @@ function Materias()
     self.new_item = new_item;
     self.remove_item = remove_item;
     self.new_turma = new_turma;
+    self.remove_turma = remove_turma;
     /* functions */
     self.get_nome = function(nome) {
         for (var i in materias) {
