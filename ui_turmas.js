@@ -116,6 +116,10 @@ function UI_turmas(id, height)
             self.tbody.insertBefore(row, insert_before);
         else
             self.tbody.appendChild(row);
+
+        /* TODO determine scrollbar width */
+        if (self.table.offsetHeight >= list.offsetHeight)
+            self.table.style.width="310px";
     }
     var create = function(materia) {
         list.innerHTML = "";
@@ -123,12 +127,12 @@ function UI_turmas(id, height)
 
         current_materia = materia;
 
-        var table = document.createElement("table");
+        self.table = document.createElement("table");
         self.tbody = document.createElement("tbody");
-        table.className = "materias";
-        table.style.width="330px";
-        table.cellPadding="1";
-        table.cellSpacing="1";
+        self.table.className = "materias";
+        self.table.style.width="330px";
+        self.table.cellPadding="1";
+        self.table.cellSpacing="1";
 
         for (var i in current_materia.horarios) {
             var horario = current_materia.horarios[i];
@@ -205,12 +209,12 @@ function UI_turmas(id, height)
             self.cancel_button = button;
         }
 
-        table.appendChild(self.tbody);
-        list.appendChild(table);
+        self.table.appendChild(self.tbody);
+        list.appendChild(self.table);
 
         /* TODO determine scrollbar width */
-        if (table.offsetHeight >= list.offsetHeight)
-            table.style.width="310px";
+        if (self.table.offsetHeight >= list.offsetHeight)
+            self.table.style.width="310px";
     }
 
     self.old_cb_onmouseover = null;
