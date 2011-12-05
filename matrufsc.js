@@ -278,8 +278,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                         var aula = {dia:dia,hora:hora,n:1};
                         aulas.push(aula);
                     }
+            editando.materia.horarios[editando.aulas.index()].aulas = aulas;
+            if (aulas.index() != editando.aulas.index()) {
+                editando.materia.horarios[aulas.index()] = editando.materia.horarios[editando.aulas.index()];
+                delete editando.materia.horarios[editando.aulas.index()];
+            }
             editando.aulas = aulas;
-            editando.materia.horarios[editando.turma].aulas = aulas;
             combinacoes.clear_overlay();
             ui_horario.set_toggle(null);
             ui_turmas.edit_end();
