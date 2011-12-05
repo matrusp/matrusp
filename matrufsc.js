@@ -423,10 +423,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 var turma = materia.turmas[j];
                 ret += escape(turma.turma) + ".";
                 ret += (turma.selected?1:0) + "."
-                if (!materia.editavel)
-                    ret += escape(turma.professor) + ".";
-                else
-                    ret += escape("professor") + ".";
+                ret += escape(turma.professor) + ".";
                 for (var k = 0; k < turma.aulas.length; k++) {
                     var aula = turma.aulas[k];
                     if (k) ret += ",";
