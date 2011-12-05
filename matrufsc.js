@@ -94,8 +94,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             return;
         }
         var materia = materias.new_item(codigo, nome);
+        var aulas = new Array();
+        aulas.nome = new_turma_name();
+        aulas.index = function() { return this.nome; };
+        var turma = materias.new_turma(materia, aulas.nome, aulas, null);
         add_item2(materia, nome);
-        ui_turmas.cb_new_turma();
     };
     function add_item(codigo, str) {
         var materia = materias.add_item(codigo, str);
@@ -228,7 +231,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     }
     /* UI_turmas */
     var n_turmas = 1;
-    ui_turmas.cb_new_turma   = function() {
+    function new_turma_name() {
         var nome = new String();
         if (n_turmas < 1000)
             nome += "0";
@@ -238,11 +241,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             nome += "0";
         nome += n_turmas;
         n_turmas++;
+        return nome;
+    };
+    ui_turmas.cb_new_turma   = function() {
         var materia = materias.get_selected();
         var aulas = new Array();
-        aulas.nome = nome;
+        aulas.nome = new_turma_name();
         aulas.index = function() { return this.nome; };
-        var turma = materias.new_turma(materia, nome, aulas, null);
+        var turma = materias.new_turma(materia, aulas.nome, aulas, null);
         ui_turmas.new_turma(turma);
         update_all();
     };

@@ -4,6 +4,7 @@ function UI_turmas(id, height)
 
     var current_materia = null;
     var current_turma = null;
+    var insert_before = null;
 
     list = document.getElementById(id);
 
@@ -111,10 +112,14 @@ function UI_turmas(id, height)
         data.innerHTML = innerHTML;
         row.appendChild(data);
 
-        self.tbody.appendChild(row);
+        if (insert_before)
+            self.tbody.insertBefore(row, insert_before);
+        else
+            self.tbody.appendChild(row);
     }
     var create = function(materia) {
         list.innerHTML = "";
+        insert_before = null;
 
         current_materia = materia;
 
@@ -125,6 +130,10 @@ function UI_turmas(id, height)
         table.cellPadding="1";
         table.cellSpacing="1";
 
+        for (var i in current_materia.horarios) {
+            var horario = current_materia.horarios[i];
+            new_turma(horario);
+        }
         if (current_materia.editavel) {
             var row  = document.createElement("tr");
             row.style.backgroundColor = current_materia.cor;
@@ -146,6 +155,7 @@ function UI_turmas(id, height)
             row.appendChild(data);
 
             self.tbody.appendChild(row);
+            insert_before = row;
 
             var row  = document.createElement("tr");
             row.style.backgroundColor = current_materia.cor;
@@ -205,10 +215,6 @@ function UI_turmas(id, height)
             list.appendChild(button);
             self.cancel_button = button;
         }
-        for (var i in current_materia.horarios) {
-            var horario = current_materia.horarios[i];
-            new_turma(horario);
-        }
 
         table.appendChild(self.tbody);
         list.appendChild(table);
@@ -223,7 +229,7 @@ function UI_turmas(id, height)
 
     /* procedures */
     self.create = create;
-    self.reset = function() { list.innerHTML = ""; };
+    self.reset = function() { list.innerHTML = ""; insert_before = null; };
     self.new_turma = new_turma;
     self.edit_start = edit_start;
     self.edit_end   = edit_end;
