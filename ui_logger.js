@@ -2,6 +2,9 @@ function UI_logger(id)
 {
     var self = this;
 
+    var persistent_color = null;
+    var persistent_str = null;
+
     var ui_logger = document.getElementById(id).parentNode;
     ui_logger.style.fontFamily = "monospace";
     ui_logger.style.fontSize   = "13px";
@@ -13,8 +16,8 @@ function UI_logger(id)
     }
     var reset = function() {
         stop();
-        ui_logger.innerHTML = "&lt;&lt;&lt;&lt; adicione mat\u00e9rias aqui";
-        ui_logger.style.backgroundColor = "#eeeeee";
+        ui_logger.innerHTML = persistent_str;
+        ui_logger.style.backgroundColor = persistent_color;
     };
     var set_text = function(str, color) {
         stop();
@@ -36,12 +39,23 @@ function UI_logger(id)
         self.updatesearch();
         ui_logger.style.backgroundColor = "lightyellow";
     }
+    var set_persistent = function(str, color) {
+        persistent_str = str;
+        persistent_color = color;
+    }
+    var clear_persistent = function() {
+        persistent_str = "&lt;&lt;&lt;&lt; adicione mat\u00e9rias aqui";
+        persistent_color = "#eeeeee";
+    }
+    clear_persistent();
     reset();
 
     /* procedures */
     self.reset        = reset;
     self.stop         = stop;
     self.set_text     = set_text;
+    self.set_persistent = set_persistent;
+    self.clear_persistent = clear_persistent;
     self.updatesearch = updatesearch;
     self.waiting      = waiting;
 }

@@ -297,8 +297,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             }
         }
         if (errmsg != "") {
-            ui_logger.set_text("materias em choque: " + errmsg, "lightcoral");
+            ui_logger.set_persistent("materias em choque: " + errmsg, "lightcoral");
+        } else {
+            ui_logger.clear_persistent();
         }
+        ui_logger.reset();
         current = null;
         mudancas = combinacoes.get_current();
     }
