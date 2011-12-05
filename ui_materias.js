@@ -25,7 +25,7 @@ function UI_materias(id, ui_combinacoes)
         data.style.width = "22px";
         row.appendChild(data);
         var data = document.createElement("td");
-        data.style.width = "70px";
+        data.style.width = "51px";
         data.innerHTML = "C\u00f3digo";
         row.appendChild(data);
         var data = document.createElement("td");
