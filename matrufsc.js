@@ -198,6 +198,30 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         materias.remove_item(materia);
         update_all();
     };
+    ui_materias.cb_onmouseover = function(materia) {
+        var c = combinacoes.get_current();
+        for (var i in c.horarios_combo) {
+            var turma = c.horarios_combo[i].turma_representante;
+            if (turma.materia == materia) {
+                turmas.display_over(turma);
+                break;
+            }
+        }
+// TODO maybe display turmas onmouseover
+//        ui_turmas.create(materia);
+    };
+    ui_materias.cb_onmouseout  = function(materia) {
+        var c = combinacoes.get_current();
+        for (var i in c.horarios_combo) {
+            var turma = c.horarios_combo[i].turma_representante;
+            if (turma.materia == materia) {
+                turmas.undisplay_over(turma);
+                break;
+            }
+        }
+// TODO maybe display turmas onmouseover
+//        ui_turmas.create(materias.get_selected());
+    };
     ui_materias.cb_onclick     = function(materia) {
         ui_turmas.create(materia);
         materias.set_selected(materia);
