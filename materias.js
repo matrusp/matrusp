@@ -174,8 +174,6 @@ function Materias()
 
         return materia;
     }
-    function load_item(str) {
-    };
     function remove_item(materia) {
         for (var i = 0; i < list.length; i++) {
             if (list[i] == materia) {
