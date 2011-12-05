@@ -46,7 +46,7 @@ function Combobox(input, suggestions, ui_logger)
         self.array[0].style.fontWeight = "bold";
         self.array[0].onmouseup = function() {
             deselect_item();
-            new_item(self.input.value);
+            self.cb_new_item(self.input.value);
             list_hide();
             self.input.blur();
         };
@@ -122,7 +122,7 @@ function Combobox(input, suggestions, ui_logger)
             if (self.selected_item == 0) {
                 deselect_item();
                 list_hide();
-                new_item(self.input.value);
+                self.cb_new_item(self.input.value);
                 self.input.focus();
                 return;
             } else
@@ -222,9 +222,6 @@ function Combobox(input, suggestions, ui_logger)
         full_requests[i].onreadystatechange = list_onreadystatechange;
         full_requests[i].send(null);
         ui_logger.waiting("buscando '" + codigo + "'");
-    }
-    function new_item(nome) {
-        self.cb_new_item(nome);
     }
 
     /* procedures */
