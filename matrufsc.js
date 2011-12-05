@@ -293,11 +293,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         for (var i = 0; i < m.length; i++) {
             var materia = m[i];
             if (materia.selected == -1) {
-                errmsg += materia.codigo;
+                errmsg += " " + materia.codigo;
             }
         }
         if (errmsg != "") {
-            ui_logger.set_persistent("materias em choque: " + errmsg, "lightcoral");
+            ui_logger.set_persistent("materias em choque:" + errmsg, "lightcoral");
         } else {
             ui_logger.clear_persistent();
         }
