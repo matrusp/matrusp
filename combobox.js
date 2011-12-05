@@ -223,19 +223,8 @@ function Combobox(input, suggestions, ui_logger)
         full_requests[i].send(null);
         ui_logger.waiting("buscando '" + codigo + "'");
     }
-    var atividades = 1;
     function new_item(nome) {
-        var str = new String();
-        if (atividades < 1000)
-            str += "0";
-        if (atividades <  100)
-            str += "0";
-        if (atividades <   10)
-            str += "0";
-        str += atividades;
-        atividades++;
-        var codigo = "XXX" + str;
-        self.cb_new_item(codigo, nome);
+        self.cb_new_item(nome);
     }
 
     /* procedures */

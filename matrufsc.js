@@ -88,7 +88,24 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_combinacoes.set_total(combinacoes.length());
     }
 
-    function new_item(codigo, nome) {
+    var atividades = 1;
+    function new_atividade_name() {
+        var str = new String();
+        if (atividades < 1000)
+            str += "0";
+        if (atividades <  100)
+            str += "0";
+        if (atividades <   10)
+            str += "0";
+        str += atividades;
+        atividades++;
+        return str;
+    }
+    function new_item(nome) {
+        do {
+            var str = new_atividade_name();
+            var codigo = "XXX" + str;
+        } while (materias.get(codigo));
         if (materias.get_nome(nome)) {
             add_item2(null, nome);
             return;
