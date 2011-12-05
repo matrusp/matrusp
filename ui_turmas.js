@@ -184,19 +184,6 @@ function UI_turmas(id, height)
         self.tbody.appendChild(row);
         insert_before = row;
 
-        if (current_materia.editavel) {
-            var row  = document.createElement("tr");
-            row.style.backgroundColor = current_materia.cor;
-            var data = document.createElement("td");
-            data.colSpan = "5";
-            data.style.textAlign = "center";
-            data.innerHTML = "O suporte para atividades gen\u00e9ricas ainda est\u00e1 em fase experimental. " +
-                             "Certifique-se que a turma que voc\u00ea vai editar esteja na sele\u00e7\u00e3o atual.";
-            row.appendChild(data);
-
-            self.tbody.appendChild(row);
-        }
-
         var button = document.createElement("span");
         button.style.display = "none";
         button.style.position = "absolute";
