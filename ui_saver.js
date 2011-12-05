@@ -1,4 +1,4 @@
-function UI_saver(id)
+function UI_saver(id, identificador)
 {
     var self = this;
 
@@ -11,6 +11,8 @@ function UI_saver(id)
     input.style.fontFamily = "monospace";
     input.style.fontSize   = "11px";
     input.style.width = "90px"
+    if (identificador)
+        input.value = identificador;
     ui_logger.appendChild(input);
     ui_logger.appendChild(document.createTextNode(" "));
     var button = document.createElement("span");

@@ -437,6 +437,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                     ui_logger.set_text("'" + this.savestr + "' n\u00e3o pode ser salvo", "lightcoral");
                 } else {
                     ui_logger.set_text("'" + this.savestr + "' foi salvo", "lightgreen");
+                    createCookie("identificador", this.savestr, 365);
                     mudancas = false;
                 }
             }
@@ -446,7 +447,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         save_request.send(null);
         ui_logger.waiting("salvando '" + identificador + "'");
     };
-    function carregar(str) {
+    function carregar(str, identificador) {
         str = HexConv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
@@ -509,6 +510,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             materias.set_selected(materia);
         }
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
+        createCookie("identificador", identificador, 365);
         imported_all = null;
         update_all(n_comb);
         mudancas = false;
@@ -521,7 +523,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 if ((this.status != 200) || this.responseText == "") {
                     ui_logger.set_text("'" + this.loadstr + "' n\u00e3o pode ser carregado", "lightcoral");
                 } else {
-                    carregar(this.responseText);
+                    carregar(this.responseText, identificador);
                     ui_logger.set_text("'" + this.loadstr + "' foi carregado", "lightgreen");
                 }
             }
@@ -555,7 +557,7 @@ window.onload = function() {
     var ui_horario     = new UI_horario("horario");
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
     var ui_logger      = new UI_logger("logger");
-    var ui_saver       = new UI_saver("saver");
+    var ui_saver       = new UI_saver("saver", readCookie("identificador"));
 
     var ui_grayout     = new UI_grayout("grayout");
     var ui_ajuda_popup = new UI_ajuda_popup("ajuda_popup");
