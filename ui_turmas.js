@@ -48,11 +48,15 @@ function UI_turmas(id, height)
             self.cancel_button.style.display = "none";
         }
     }
+    function remove() {
+    }
     function editar() {
         var row = this.parentNode;
         var turma = row.turma;
         self.cb_edit_turma(turma);
     }
+    function hover_off() { this.style.backgroundColor = this.oldbg; this.style.color = "black"; };
+    function hover_on()  { this.style.backgroundColor = "black"; this.style.color = this.oldbg; };
     function new_turma(horario) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
@@ -112,6 +116,28 @@ function UI_turmas(id, height)
         data.innerHTML = innerHTML;
         row.appendChild(data);
 
+        var data = document.createElement("td");
+        data.style.color = "black";
+        data.oldbg = current_materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
+        data.onclick = editar;
+        data.innerHTML = "E";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
+        row.appendChild(data);
+
+        var data = document.createElement("td");
+        data.style.color = "black";
+        data.oldbg = current_materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
+        data.onclick = remove;
+        data.innerHTML = "X";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
+        row.appendChild(data);
+
         if (insert_before)
             self.tbody.insertBefore(row, insert_before);
         else
@@ -144,7 +170,7 @@ function UI_turmas(id, height)
             row.materia = current_materia;
 
             var data = document.createElement("td");
-            data.colSpan = "3";
+            data.colSpan = "5";
             data.style.cursor = "pointer";
             data.style.textAlign = "center";
             data.onmouseup = function() { self.cb_new_turma(); };
@@ -158,56 +184,56 @@ function UI_turmas(id, height)
             var row  = document.createElement("tr");
             row.style.backgroundColor = current_materia.cor;
             var data = document.createElement("td");
-            data.colSpan = "3";
+            data.colSpan = "5";
             data.style.textAlign = "center";
             data.innerHTML = "O suporte para atividades gen\u00e9ricas ainda est\u00e1 em fase experimental. " +
                              "Certifique-se que a turma que voc\u00ea vai editar esteja na sele\u00e7\u00e3o atual.";
             row.appendChild(data);
 
             self.tbody.appendChild(row);
-
-            var button = document.createElement("span");
-            button.style.display = "none";
-            button.style.position = "absolute";
-            button.style.zIndex = "2000";
-            button.style.MozUserSelect = "none";
-            button.style.KhtmlUserSelect = "none";
-            button.style.border = "1px solid black";
-            button.style.backgroundColor = "lightblue";
-            button.style.top = "50%";
-            button.style.textAlign = "center";
-            button.style.fontFamily = "monospace";
-            button.style.fontSize = "20px";
-            button.style.marginLeft = ((thiswidth/2) - 100) + "px";
-            button.style.width = "100px";
-            button.style.cursor = "pointer";
-            button.innerHTML = "<strong>OK</strong>";
-            button.onselectstart = function () { return false; };
-            button.onclick = function () { self.cb_ok(); return false; };
-            list.appendChild(button);
-            self.ok_button = button;
-
-            var button = document.createElement("span");
-            button.style.display = "none";
-            button.style.position = "absolute";
-            button.style.zIndex = "2000";
-            button.style.MozUserSelect = "none";
-            button.style.KhtmlUserSelect = "none";
-            button.style.border = "1px solid black";
-            button.style.backgroundColor = "lightblue";
-            button.style.top = "50%";
-            button.style.textAlign = "center";
-            button.style.fontFamily = "monospace";
-            button.style.fontSize = "20px";
-            button.style.marginLeft = ((thiswidth/2)) + "px";
-            button.style.width = "100px";
-            button.style.cursor = "pointer";
-            button.innerHTML = "<strong>Cancelar</strong>";
-            button.onselectstart = function () { return false; };
-            button.onclick = function () { self.cb_cancel(); return false; };
-            list.appendChild(button);
-            self.cancel_button = button;
         }
+
+        var button = document.createElement("span");
+        button.style.display = "none";
+        button.style.position = "absolute";
+        button.style.zIndex = "2000";
+        button.style.MozUserSelect = "none";
+        button.style.KhtmlUserSelect = "none";
+        button.style.border = "1px solid black";
+        button.style.backgroundColor = "lightblue";
+        button.style.top = "50%";
+        button.style.textAlign = "center";
+        button.style.fontFamily = "monospace";
+        button.style.fontSize = "20px";
+        button.style.marginLeft = ((thiswidth/2) - 100) + "px";
+        button.style.width = "100px";
+        button.style.cursor = "pointer";
+        button.innerHTML = "<strong>OK</strong>";
+        button.onselectstart = function () { return false; };
+        button.onclick = function () { self.cb_ok(); return false; };
+        list.appendChild(button);
+        self.ok_button = button;
+
+        var button = document.createElement("span");
+        button.style.display = "none";
+        button.style.position = "absolute";
+        button.style.zIndex = "2000";
+        button.style.MozUserSelect = "none";
+        button.style.KhtmlUserSelect = "none";
+        button.style.border = "1px solid black";
+        button.style.backgroundColor = "lightblue";
+        button.style.top = "50%";
+        button.style.textAlign = "center";
+        button.style.fontFamily = "monospace";
+        button.style.fontSize = "20px";
+        button.style.marginLeft = ((thiswidth/2)) + "px";
+        button.style.width = "100px";
+        button.style.cursor = "pointer";
+        button.innerHTML = "<strong>Cancelar</strong>";
+        button.onselectstart = function () { return false; };
+        button.onclick = function () { self.cb_cancel(); return false; };
+        list.appendChild(button);
+        self.cancel_button = button;
 
         self.table.appendChild(self.tbody);
         list.appendChild(self.table);
