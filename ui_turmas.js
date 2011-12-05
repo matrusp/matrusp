@@ -151,10 +151,7 @@ function UI_turmas(id, height)
         data.style.textAlign = "center";
         row.appendChild(data);
 
-        if (insert_before)
-            self.tbody.insertBefore(row, insert_before);
-        else
-            self.tbody.appendChild(row);
+        self.tbody.insertBefore(row, insert_before);
 
         /* TODO determine scrollbar width */
         if (self.table.offsetHeight >= list.offsetHeight)
@@ -177,23 +174,23 @@ function UI_turmas(id, height)
             var horario = current_materia.horarios[i];
             new_turma(horario);
         }
+        var row  = document.createElement("tr");
+        row.style.backgroundColor = current_materia.cor;
+        row.materia = current_materia;
+
+        var data = document.createElement("td");
+        data.colSpan = "5";
+        data.style.cursor = "pointer";
+        data.style.textAlign = "center";
+        data.onmouseup = function() { self.cb_new_turma(); };
+        data.style.fontSize = "13px"
+        data.innerHTML = ">>>> adicione turmas aqui <<<<";
+        row.appendChild(data);
+
+        self.tbody.appendChild(row);
+        insert_before = row;
+
         if (current_materia.editavel) {
-            var row  = document.createElement("tr");
-            row.style.backgroundColor = current_materia.cor;
-            row.materia = current_materia;
-
-            var data = document.createElement("td");
-            data.colSpan = "5";
-            data.style.cursor = "pointer";
-            data.style.textAlign = "center";
-            data.onmouseup = function() { self.cb_new_turma(); };
-            data.style.fontSize = "13px"
-            data.innerHTML = ">>>> adicione turmas aqui <<<<";
-            row.appendChild(data);
-
-            self.tbody.appendChild(row);
-            insert_before = row;
-
             var row  = document.createElement("tr");
             row.style.backgroundColor = current_materia.cor;
             var data = document.createElement("td");
