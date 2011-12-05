@@ -95,6 +95,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         }
         var materia = materias.new_item(codigo, nome);
         add_item2(materia, nome);
+        ui_turmas.cb_new_turma();
     };
     function add_item(codigo, str) {
         var materia = materias.add_item(codigo, str);
