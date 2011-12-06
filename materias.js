@@ -123,10 +123,10 @@ function Materias()
             materia.horarios[index] = new Object();
             materia.horarios[index].turmas = new Object();
             materia.horarios[index].turma_representante = turma;
+            materia.horarios[index].materia = materia;
+            materia.horarios[index].aulas = turma.aulas;
         }
         materia.horarios[index].turmas[turma.nome] = turma;
-        materia.horarios[index].materia = materia;
-        materia.horarios[index].aulas = turma.aulas;
         materia.selected = 1;
         turma.horario = materia.horarios[index];
         return materia.horarios[index];
