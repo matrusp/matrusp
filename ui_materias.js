@@ -73,6 +73,7 @@ function UI_materias(id, ui_combinacoes)
         row.style.cursor="pointer";
         var data = document.createElement("td");
         var input = document.createElement("input");
+        input.title = "selecionar/deselecionar matéria";
         input.type     = "checkbox";
         input.value    = materia.codigo;
         materia_onchange = function() { self.cb_select(this.value, this.checked); };
@@ -110,6 +111,7 @@ function UI_materias(id, ui_combinacoes)
         data.onmouseover = hover_on;
         data.onclick = onmovedown;
         data.innerHTML = "v";
+        data.title = "diminuir prioridade da matéria";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
@@ -123,6 +125,7 @@ function UI_materias(id, ui_combinacoes)
         data.onmouseover = hover_on;
         data.onclick = onmoveup;
         data.innerHTML = "^";
+        data.title = "aumentar prioridade da matéria";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
@@ -136,6 +139,7 @@ function UI_materias(id, ui_combinacoes)
         data.onmouseover = hover_on;
         data.onclick = onremove;
         data.innerHTML = "X";
+        data.title = "remover matéria";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);

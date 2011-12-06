@@ -22,6 +22,7 @@ function UI_saver(id, identificador)
     button.style.backgroundColor = "lightblue";
     button.style.cursor = "pointer";
     button.innerHTML = "salvar";
+    button.title = "salvar estado do programa";
     button.onselectstart = function () { return false; };
     button.onclick = function () { self.cb_salvar(input.value); return false; };
     ui_logger.appendChild(button);
@@ -33,6 +34,7 @@ function UI_saver(id, identificador)
     button.style.backgroundColor = "lightblue";
     button.style.cursor = "pointer";
     button.innerHTML = "carregar";
+    button.title = "carregar estado do programa";
     button.onselectstart = function () { return false; };
     button.onclick = function () { self.cb_carregar(input.value); return false; };
     ui_logger.appendChild(button);

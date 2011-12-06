@@ -19,6 +19,7 @@ function UI_combinacoes(id)
     button.style.backgroundColor = "lightblue";
     button.style.cursor = "pointer";
     button.innerHTML = "<strong>&nbsp;<&nbsp;</strong>";
+    button.title = "combinação anterior";
     button.onselectstart = function () { return false; };
     button.onclick = function () { self.cb_previous(); return false; };
     if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
@@ -38,6 +39,7 @@ function UI_combinacoes(id)
     button.style.backgroundColor = "lightblue";
     button.style.cursor = "pointer";
     button.innerHTML = "<strong>&nbsp;>&nbsp;</strong>";
+    button.title = "próxima combinação";
     button.onselectstart = function () { return false; };
     button.onclick = function () { self.cb_next(); return false; };
     if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {

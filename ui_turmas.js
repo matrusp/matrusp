@@ -78,6 +78,7 @@ function UI_turmas(id, height)
         data.onmouseover = hover_on;
         data.onclick = editar;
         data.innerHTML = "E";
+        data.title = "editar horário";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
@@ -92,6 +93,7 @@ function UI_turmas(id, height)
         data.onmouseover = hover_on;
         data.onclick = remove;
         data.innerHTML = "X";
+        data.title = "remover turma";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
@@ -113,6 +115,7 @@ function UI_turmas(id, height)
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
             var input = document.createElement("input");
+            input.title = "selecionar/deselecionar turma";
             input.type     = "checkbox";
             input.turma    = turma;
             input.onchange = function() {
