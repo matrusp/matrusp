@@ -634,7 +634,12 @@ window.onload = function() {
             fechar_ajuda_obj.onclick();
             return;
         }
-        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input || main.editando)
+        if (main.editando) {
+            if (c == 27)
+                ui_turmas.cb_cancel();
+            return;
+        }
+        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input)
             return;
         if (ev.srcElement == ui_combinacoes.selecao_atual) {
             var pos = -1;
