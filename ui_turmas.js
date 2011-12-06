@@ -179,6 +179,10 @@ function UI_turmas(id, height)
         data.onmouseup = function() { self.cb_new_turma(); };
         data.style.fontSize = "13px"
         data.innerHTML = ">>>> adicione turmas aqui <<<<";
+        data.style.color = "black";
+        data.oldbg = current_materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
         row.appendChild(data);
 
         self.tbody.appendChild(row);
