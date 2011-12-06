@@ -78,7 +78,7 @@ function UI_turmas(id, height)
         data.onmouseover = hover_on;
         data.onclick = editar;
         data.innerHTML = "E";
-        data.title = "editar horário";
+        data.title = "editar horário desta turma";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
