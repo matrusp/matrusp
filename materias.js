@@ -113,18 +113,18 @@ function Materias()
         }
         var turma = new Object();
         var index = aulas.index();
-        turma.turma     = nome;
+        turma.nome      = nome;
         turma.aulas     = aulas;
         turma.professor = professor;
         turma.selected  = 1;
         turma.materia   = materia;
-        materia.turmas[turma.turma] = turma;
+        materia.turmas[turma.nome] = turma;
         if (!materia.horarios[index]) {
             materia.horarios[index] = new Object();
             materia.horarios[index].turmas = new Object();
             materia.horarios[index].turma_representante = turma;
         }
-        materia.horarios[index].turmas[turma.turma] = turma;
+        materia.horarios[index].turmas[turma.nome] = turma;
         materia.horarios[index].materia = materia;
         materia.horarios[index].aulas = turma.aulas;
         materia.selected = 1;
@@ -141,7 +141,7 @@ function Materias()
                 break;
             }
         }
-        delete materia.turmas[turma.turma];
+        delete materia.turmas[turma.nome];
     }
     function add_item(codigo, str, editavel)
     {

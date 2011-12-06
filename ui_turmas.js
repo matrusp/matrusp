@@ -129,7 +129,7 @@ function UI_turmas(id, height)
         var innerHTML = new String();
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
-            innerHTML += turma.turma + "<br>";
+            innerHTML += turma.nome + "<br>";
             if (!row.turma) {
                 row.turma = turma;
                 turma.row = row;

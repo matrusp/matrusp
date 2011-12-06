@@ -77,7 +77,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         } else {
             for (var i in c.horarios_combo) {
                 var turma = c.horarios_combo[i].turma_representante;
-                turma.materia.ui_turma.innerHTML = turma.turma;
+                turma.materia.ui_turma.innerHTML = turma.nome;
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
                 turmas.display(turma, c);
@@ -260,7 +260,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         if (editando) {
             var overlay = combinacoes.get_overlay();
             var aulas = new Array();
-            aulas.nome  = editando.turma;
+            aulas.nome  = editando.nome;
             aulas.index = function() { return this.nome; };
             for (var i = 0; i < editando.aulas.length; i++) {
                 var aula = editando.aulas[i];
@@ -420,7 +420,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             ret += (materia.editavel) + "'";
             for (var j in materia.turmas) {
                 var turma = materia.turmas[j];
-                ret += escape(turma.turma) + ".";
+                ret += escape(turma.nome) + ".";
                 ret += (turma.selected?1:0) + "."
                 ret += escape(turma.professor) + ".";
                 for (var k = 0; k < turma.aulas.length; k++) {
