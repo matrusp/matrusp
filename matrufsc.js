@@ -257,7 +257,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         update_all();
     };
     function update_all(comb) {
-        if (editando) {
+        if (self.editando) {
+            var editando = self.editando;
             var overlay = combinacoes.get_overlay();
             var aulas = new Array();
             aulas.nome  = editando.nome;
@@ -293,7 +294,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             combinacoes.clear_overlay();
             ui_horario.set_toggle(null);
             ui_turmas.edit_end();
-            editando = null;
+            self.editando = null;
         }
         if (!comb)
             var current = combinacoes.get_current();
@@ -322,10 +323,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     function normal_cell(d)  { return {strong:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
     function red_cell(str)   { return {strong:true,text:str,bgcolor:"red",color:"black"}; }
     function black_cell(str) { return {strong:false,text:str,bgcolor:"black",color:"white"}; }
-    var editando = null;
+    self.editando = null;
     function edit_start(turma) {
-        if (editando) {
-            if (editando == turma) {
+        if (self.editando) {
+            if (self.editando == turma) {
                 update_all();
                 return;
             }
@@ -382,7 +383,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_grayout.show();
         ui_horario.set_toggle(toggle, onover, onout);
         ui_turmas.edit_start(turma);
-        editando = turma;
+        self.editando = turma;
     }
     ui_turmas.cb_edit_turma  = function(turma) {
         edit_start(turma);
@@ -407,7 +408,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         combinacoes.clear_overlay();
         ui_horario.set_toggle(null);
         ui_turmas.edit_end();
-        editando = null;
+        self.editando = null;
         display_combinacao(combinacoes.current());
     };
     /* UI_saver */
@@ -606,7 +607,7 @@ window.onload = function() {
             fechar_ajuda_obj.onclick();
             return;
         }
-        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input)
+        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input || main.editando)
             return;
         if (ev.srcElement == ui_combinacoes.selecao_atual) {
             var pos = -1;
