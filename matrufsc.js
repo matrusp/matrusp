@@ -642,43 +642,4 @@ window.onload = function() {
             main.previous();
         }
     };
-    if (0) {
-    //1a fase
-    combo.add_item("EEL7010");
-    combo.add_item("EEL7011");
-    combo.add_item("EGR5619");
-    combo.add_item("MTM5183");
-    combo.add_item("MTM5512");
-    combo.add_item("QMC5106");
-    } else if (0) {
-    //2a fase
-    combo.add_item("EEL7020");
-    combo.add_item("EEL7021");
-    combo.add_item("FSC5161");
-    combo.add_item("LLV5603");
-    combo.add_item("MTM5184");
-    combo.add_item("MTM5247");
-    } else if (0) {
-    //3a fase
-    combo.add_item("EEL7030");
-    combo.add_item("EEL7031");
-    combo.add_item("FSC5162");
-    combo.add_item("FSC5164");
-    combo.add_item("MTM5185");
-    } else if (0) {
-    //4a fase
-    combo.add_item("EEL7040");
-    combo.add_item("EEL7041");
-    combo.add_item("EMC5125");
-    combo.add_item("FSC5163");
-    combo.add_item("MTM5186");
-    } else if (0) {
-    //5a fase
-    combo.add_item("EEL7050");
-    combo.add_item("EEL7051");
-    combo.add_item("EEL7052");
-    combo.add_item("EEL7053");
-    combo.add_item("EPS5209");
-    combo.add_item("INE5118");
-    }
 }
