@@ -49,18 +49,24 @@ function Materias()
             ret.index = function() {
                 var r = "";
                 for (var i = 0; i < this.length; i++) {
-                    r += (this[i].dia+2) + "." + horas[this[i].hora] + "-" + this[i].n;
+                    r += (this[i].dia+2) + "." + horas[this[i].hora] + "-1";
                 }
                 return r;
             };
         }
         if (str != "") {
             var split = str.replace(/ \/ \S*/ig, "").split(" ");
+            var i2 = 0;
             for (var i = 0; i < split.length; i++) {
-                ret[i] = new Object();
-                ret[i].dia  = parseInt(split[i].slice(0,1)) - 2;
-                ret[i].hora = horas[split[i].slice(2,6)];
-                ret[i].n    = parseInt(split[i].slice(7));
+                var dia  = parseInt(split[i].slice(0,1)) - 2;
+                var hora = horas[split[i].slice(2,6)];
+                var n    = parseInt(split[i].slice(7));
+                for (var j = 0; j < n; j++) {
+                    var aula = new Object();
+                    aula.dia = dia;
+                    aula.hora = hora+j;
+                    ret.push(aula);
+                }
             }
             for (var i = 0; i < ret.length-1; i++) {
                 for (var j = i+1; j < ret.length; j++) {
@@ -197,7 +203,7 @@ function Materias()
         }
         return null;
     };
-    self.aulas_string = function(dia, hora, n) { return (dia+2) + "." + horas[hora] + "-" + n + " / CTC"; };
+    self.aulas_string = function(dia, hora) { return (dia+2) + "." + horas[hora] + "-1 / CTC"; };
     self.get = function(codigo) { return materias[codigo]; };
     self.get_selected = function() { return selected; };
     self.list = function() { return list; };

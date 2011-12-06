@@ -347,10 +347,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                     for (var i = 0; i < t2.aulas.length; i++) {
                         var dia  = t2.aulas[i].dia;
                         var hora = t2.aulas[i].hora;
-                        var n    = t2.aulas[i].n;
-                        for (var j = 0; j < n; j++) {
-                            delete fake[dia][hora+j];
-                        }
+                        delete fake[dia][hora];
                     }
                 }
             }
@@ -359,11 +356,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             for (var i = 0; i < turma.aulas.length; i++) {
                 var dia  = turma.aulas[i].dia;
                 var hora = turma.aulas[i].hora;
-                var n    = turma.aulas[i].n;
-                for (var j = 0; j < n; j++) {
-                    fake[dia][hora+j] = new Object();
-                    fake[dia][hora+j].horario = turma.horario;
-                }
+                fake[dia][hora] = new Object();
+                fake[dia][hora].horario = turma.horario;
             }
         }
         function display(dia, hora, tipo, fake) {
@@ -451,7 +445,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         var list = materias.list();
         var n = list.length;
         var ret = "";
-        ret += "1|"; /* TODO VERSAO */
+        ret += "2|"; /* TODO VERSAO */
         ret += combinacoes.current();
         for (var i = 0; i < n; i++) {
             var materia = list[i];
@@ -469,8 +463,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                     var aula = turma.aulas[k];
                     if (k) ret += ",";
                     ret += aula.dia.toString(16) + ",";
-                    ret += aula.hora.toString(16) + ",";
-                    ret += aula.n.toString(16);
+                    ret += aula.hora.toString(16);
                 }
                 ret += "'";
             }
@@ -497,8 +490,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         str = HexConv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
-        if (versao > 1) {
-            ui_logger.set_text("impossivel carregar dados salvos de versao mais recente", "lightcoral");
+        if (versao != 2) {
+            ui_logger.set_text("impossivel carregar dados salvos de versao diferente", "lightcoral");
             return;
         }
         var n_comb = parseInt(split[1]);
@@ -516,13 +509,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 t2[unescape(turma[0])] = parseInt(turma[1]);
                 var horario = turma[3].split(",");
                 if (horario.length != 1) {
-                    for (var k = 0; k < horario.length; k += 3) {
+                    for (var k = 0; k < horario.length; k += 2) {
                         var dia = parseInt(horario[k+0], 16);
                         var hora = parseInt(horario[k+1], 16);
-                        var n = parseInt(horario[k+2], 16);
                         if (k != 0)
                             materia_str += " ";
-                        materia_str += materias.aulas_string(dia, hora, n);
+                        materia_str += materias.aulas_string(dia, hora);
                     }
                 }
                 materia_str += "\t" + unescape(turma[2]) + "\n";

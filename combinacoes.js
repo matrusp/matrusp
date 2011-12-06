@@ -113,15 +113,12 @@ function Combinacoes()
                     for (var i2 = 0; i2 < 6; i2++) {
                         combinacao[i2] = new Array();
                     }
-                    for (var k in horario.aulas) {
+                    for (var k = 0; k < horario.aulas.length; k++) {
                         var aula = horario.aulas[k];
                         var dia  = aula.dia;
                         var hora = aula.hora;
-                        var n    = aula.n;
-                        for (var i3 = 0; i3 < n; i3++) {
-                            combinacao[dia][hora+i3] = new Object();
-                            combinacao[dia][hora+i3].horario = horario;
-                        }
+                        combinacao[dia][hora] = new Object();
+                        combinacao[dia][hora].horario = horario;
                     }
                     combinacao[materia.codigo] = horario;
                     combinacao.horarios_combo = new Array();
@@ -144,16 +141,13 @@ function Combinacoes()
                         }
                         if (!ok)
                             continue;
-                        for (var k in horario.aulas) {
+                        for (var k = 0; k < horario.aulas.length; k++) {
                             var aula = horario.aulas[k];
                             var dia  = aula.dia;
                             var hora = aula.hora;
-                            var n    = aula.n;
-                            for (var i3 = 0; i3 < n; i3++) {
-                                if (combinacao[dia][hora+i3]) {
-                                    ok = 0;
-                                    break;
-                                }
+                            if (combinacao[dia][hora]) {
+                                ok = 0;
+                                break;
                             }
                             if (!ok) {
                                 break;
@@ -168,15 +162,12 @@ function Combinacoes()
                             c2[combinacao.horarios_combo[k].materia.codigo] = combinacao.horarios_combo[k];
                             c2.horarios_combo.push(combinacao.horarios_combo[k]);
                         }
-                        for (var k in horario.aulas) {
+                        for (var k = 0; k < horario.aulas.length; k++) {
                             var aula = horario.aulas[k];
                             var dia  = aula.dia;
                             var hora = aula.hora;
-                            var n    = aula.n;
-                            for (var i3 = 0; i3 < n; i3++) {
-                                c2[dia][hora+i3] = new Object();
-                                c2[dia][hora+i3].horario = horario;
-                            }
+                            c2[dia][hora] = new Object();
+                            c2[dia][hora].horario = horario;
                         }
                         c2.horarios_combo.push(horario);
                         combinacoes2.push(c2);

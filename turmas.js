@@ -10,10 +10,7 @@ function Turmas(ui_logger, ui_horario, combinacoes)
         for (var i = 0; i < turma.aulas.length; i++) {
             var dia  = turma.aulas[i].dia;
             var hora = turma.aulas[i].hora;
-            var n    = turma.aulas[i].n;
-            for (var j = 0; j < n; j++) {
-                func(priv, dia, hora+j);
-            }
+            func(priv, dia, hora);
         }
     }
     function display_over(turma)
