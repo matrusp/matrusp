@@ -57,6 +57,19 @@ function Combinacoes()
         var vb = valor_combinacao(b);
         return va - vb;
     }
+    function copy(combinacao) {
+        var c2 = new Array();
+        for (var i2 = 0; i2 < 6; i2++) {
+            c2[i2] = new Array();
+            for (var i3 = 0; i3 < 14; i3++) {
+                if (combinacao[i2][i3]) {
+                    c2[i2][i3] = new Object();
+                    c2[i2][i3].horario = combinacao[i2][i3].horario;
+                }
+            }
+        }
+        return c2;
+    }
     var generate = function(materias) {
         var new_combinacoes = new Array();
         for (var i = 0; i < materias.length; i++) {
@@ -148,16 +161,7 @@ function Combinacoes()
                         }
                         if (!ok)
                             continue;
-                        var c2 = new Array();
-                        for (var i2 = 0; i2 < 6; i2++) {
-                            c2[i2] = new Array();
-                            for (var i3 = 0; i3 < 14; i3++) {
-                                if (combinacao[i2][i3]) {
-                                    c2[i2][i3] = new Object();
-                                    c2[i2][i3].horario = combinacao[i2][i3].horario;
-                                }
-                            }
-                        }
+                        var c2 = copy(combinacao);
                         c2[materia.codigo] = horario;
                         c2.horarios_combo = new Array();
                         for (var k in combinacao.horarios_combo) {
@@ -238,5 +242,6 @@ function Combinacoes()
     self.get_overlay = function( ) { return overlay; };
     self.current     = function( ) { return current_int; };
     self.length      = function( ) { return combinacoes ? combinacoes.length : 0; };
+    self.copy        = function(c) { return copy(c); };
     self.closest     = closest;
 }
