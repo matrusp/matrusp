@@ -335,7 +335,38 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         var materia = materias.get_selected();
         combinacoes.clear_overlay();
         var overlay = combinacoes.get_overlay();
-        function display(dia, hora, tipo, c) {
+        var c       = combinacoes.get_current();
+        var fake    = combinacoes.copy(c);
+        var copy_turma = true;
+        for (var k in c.horarios_combo) {
+            if (c.horarios_combo[k].turma_representante.materia == turma.materia) {
+                if (c.horarios_combo[k].turma_representante == turma) {
+                    copy_turma = false;
+                } else {
+                    var t2 = c.horarios_combo[k].turma_representante;
+                    for (var i = 0; i < t2.aulas.length; i++) {
+                        var dia  = t2.aulas[i].dia;
+                        var hora = t2.aulas[i].hora;
+                        var n    = t2.aulas[i].n;
+                        for (var j = 0; j < n; j++) {
+                            delete fake[dia][hora+j];
+                        }
+                    }
+                }
+            }
+        }
+        if (copy_turma) {
+            for (var i = 0; i < turma.aulas.length; i++) {
+                var dia  = turma.aulas[i].dia;
+                var hora = turma.aulas[i].hora;
+                var n    = turma.aulas[i].n;
+                for (var j = 0; j < n; j++) {
+                    fake[dia][hora+j] = new Object();
+                    fake[dia][hora+j].horario = turma.horario;
+                }
+            }
+        }
+        function display(dia, hora, tipo, fake) {
             /* 0 clear
              * 1 normal
              * 2 over
@@ -347,33 +378,37 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 case 0: ui_horario.clear_cell(dia, hora); break;
                 case 1: ui_horario.display_cell(dia, hora, {strong:false,text:turma.materia.codigo,bgcolor:turma.materia.cor,color:"black"}); break;
                 case 2: ui_horario.display_cell(dia, hora, {strong:false,text:turma.materia.codigo,bgcolor:"black",color:"white"}); break;
-                case 3: ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora])); break;
+                case 3: ui_horario.display_cell(dia, hora, normal_cell(fake[dia][hora])); break;
                 case 4: ui_horario.display_cell(dia, hora, {strong:false,text:turma.materia.codigo,bgcolor:"black",color:"red"}); break;
                 case 5: ui_horario.display_cell(dia, hora, {strong:false,text:turma.materia.codigo,bgcolor:"red",color:"black"}); break;
             }
         };
+        for (var dia = 0; dia < 6; dia++) {
+            for (var hora = 0; hora < 14; hora++) {
+                if (fake[dia][hora]) {
+                    display(dia, hora, 3, fake);
+                } else {
+                    display(dia, hora, 0);
+                }
+            }
+        }
         function onover(dia, hora) {
-            var c  = combinacoes.get_current();
-            var eq = c[dia][hora] ? c[dia][hora].horario == turma.horario : 0;
+            var eq = fake   [dia][hora] ? fake[dia][hora].horario == turma.horario : 0;
             var a1 = overlay[dia][hora] ? 0 : 1;
-            var a2 = c      [dia][hora] ? 0 : 1;
+            var a2 = fake   [dia][hora] ? 0 : 1;
             var a3 = eq                 ? 0 : 1;
             var todisplay = [ [ [ 2, 5 ], [ 1, 1 ] ], [ [ 3, 4 ], [ 2, 2 ] ] ];
-            display(dia, hora, todisplay[a1][a2][a3], c);
-//console.log("onover(" + a1 + ", " + a2 + ", " + a3 + ") " + todisplay[o][c][eq]);
+            display(dia, hora, todisplay[a1][a2][a3], fake);
         };
         function onout(dia, hora) {
-            var c  = combinacoes.get_current();
-            var eq = c[dia][hora] ? c[dia][hora].horario == turma.horario : 0;
+            var eq = fake   [dia][hora] ? fake[dia][hora].horario == turma.horario : 0;
             var a1 = overlay[dia][hora] ? 0 : 1;
-            var a2 = c      [dia][hora] ? 0 : 1;
+            var a2 = fake   [dia][hora] ? 0 : 1;
             var a3 = eq                 ? 0 : 1;
             var todisplay = [ [ [ 0, 5 ], [ 1, 1 ] ], [ [ 3, 3 ], [ 0, 0 ] ] ];
-            display(dia, hora, todisplay[a1][a2][a3], c);
-//console.log("onout(" + a1 + ", " + a2 + ", " + a3 + ") " + todisplay[o][c][eq]);
+            display(dia, hora, todisplay[a1][a2][a3], fake);
         };
         function toggle(dia, hora) {
-//console.log("ontoggle");
             if (overlay[dia][hora])
                 overlay[dia][hora] = false;
             else

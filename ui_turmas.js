@@ -5,6 +5,7 @@ function UI_turmas(id, height)
     var current_materia = null;
     var current_turma = null;
     var insert_before = null;
+    var old_cb_onmouseout = null;
 
     list = document.getElementById(id);
 
@@ -37,6 +38,8 @@ function UI_turmas(id, height)
         row.style.color           = "white";
         self.ok_button.style.display = "";
         self.cancel_button.style.display = "";
+        old_cb_onmouseout = self.cb_onmouseout;
+        self.cb_onmouseout = function() {};
     }
     function edit_end() {
         if (current_turma) {
@@ -45,6 +48,7 @@ function UI_turmas(id, height)
             row.style.color           = "black";
             self.ok_button.style.display = "none";
             self.cancel_button.style.display = "none";
+            self.cb_onmouseout = old_cb_onmouseout;
         }
     }
     function remove_turma(turma) {
