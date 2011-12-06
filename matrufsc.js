@@ -12,10 +12,12 @@ function UI_grayout(id)
     self.grayout.style.opacity = ".7";
     self.grayout.style.filter = "alpha(opacity=70)";
     self.grayout.style.zIndex = "1000";
+    self.grayout.onclick = function() { self.cb_onclick(); };
 
     /* procedures */
     self.hide = function() { self.grayout.style.display = "none"; };
     self.show = function() { self.grayout.style.display = ""; };
+    self.cb_onclick = null;
 
     self.hide();
 }
@@ -598,6 +600,13 @@ window.onload = function() {
     var ui_saver       = new UI_saver("saver", readCookie("identificador"));
 
     var ui_grayout     = new UI_grayout("grayout");
+    ui_grayout.cb_onclick = function() {
+        if (ajuda_shown) {
+            fechar_ajuda_obj.onclick();
+        } else if (main.editando) {
+            ui_turmas.cb_cancel();
+        }
+    };
     var ui_ajuda_popup = new UI_ajuda_popup("ajuda_popup");
     ui_ajuda_popup.link = document.getElementById("ajuda");
     var a = document.createElement("a");
