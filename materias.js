@@ -121,11 +121,7 @@ function Materias()
         materia.turmas[turma.turma] = turma;
         if (!materia.horarios[index]) {
             materia.horarios[index] = new Object();
-        }
-        if (!materia.horarios[index].turmas) {
             materia.horarios[index].turmas = new Object();
-        }
-        if (!materia.horarios[index].turma_representante) {
             materia.horarios[index].turma_representante = turma;
         }
         materia.horarios[index].turmas[turma.turma] = turma;
