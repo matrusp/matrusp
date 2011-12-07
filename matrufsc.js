@@ -52,7 +52,7 @@ function UI_ajuda_popup(id)
     self.hide();
 }
 
-function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes)
+function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes, persistence)
 {
     var self = this;
 
@@ -321,6 +321,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_logger.reset();
         current = null;
         mudancas = combinacoes.get_current();
+        persistence.write_state(self.save_state());
     }
     function normal_cell(d)  { return {strong:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
     function red_cell(str)   { return {strong:true,text:str,bgcolor:"red",color:"black"}; }
@@ -443,7 +444,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         display_combinacao(combinacoes.current());
     };
     /* UI_saver */
-    ui_saver.cb_salvar = function(identificador) {
+    self.save_state = function() {
         var list = materias.list();
         var n = list.length;
         var ret = "";
@@ -470,6 +471,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 ret += "'";
             }
         }
+        return HexConv.encode(ret);
+    }
+    ui_saver.cb_salvar = function(identificador) {
+        var ret = self.save_state();
         save_request = new XMLHttpRequest();
         save_request.savestr = identificador;
         save_request.onreadystatechange = function() {
@@ -478,17 +483,16 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                     ui_logger.set_text("'" + this.savestr + "' n\u00e3o pode ser salvo", "lightcoral");
                 } else {
                     ui_logger.set_text("'" + this.savestr + "' foi salvo", "lightgreen");
-                    createCookie("identificador", this.savestr, 365);
+                    persistence.write_id(this.savestr);
                     mudancas = false;
                 }
             }
         };
-        ret = HexConv.encode(ret);
         save_request.open("GET", "cgi-bin/save.cgi?q=" + encodeURIComponent(identificador) + "=" + ret, true);
         save_request.send(null);
         ui_logger.waiting("salvando '" + identificador + "'");
     };
-    function carregar(str, identificador) {
+    self.carregar = function(str, identificador) {
         str = HexConv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
@@ -550,7 +554,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             materias.set_selected(materia);
         }
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
-        createCookie("identificador", identificador, 365);
+        if (identificador)
+            persistence.write_id(identificador);
         imported_all = null;
         update_all(n_comb);
         mudancas = false;
@@ -563,7 +568,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 if ((this.status != 200) || this.responseText == "") {
                     ui_logger.set_text("'" + this.loadstr + "' n\u00e3o pode ser carregado", "lightcoral");
                 } else {
-                    carregar(this.responseText, identificador);
+                    self.carregar(this.responseText, identificador);
                     ui_logger.set_text("'" + this.loadstr + "' foi carregado", "lightgreen");
                 }
             }
@@ -574,30 +579,17 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     }
 }
 
-window.onbeforeunload = function (e) {
-    e = e || window.event;
-    var str = 'Mudanças feitas não foram salvas'
-
-    if (mudancas) {
-    // For IE and Firefox prior to version 4
-    if (e) {
-      e.returnValue = str;
-    }
-
-    // For Safari
-    return str;
-    }
-};
-
 ajuda_shown = false;
 mudancas = false;
 window.onload = function() {
+    var persistence = new Persistence();
+
     var ui_materias    = new UI_materias("materias_list");
     var ui_combinacoes = new UI_combinacoes("combinacoes");
     var ui_horario     = new UI_horario("horario");
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
     var ui_logger      = new UI_logger("logger");
-    var ui_saver       = new UI_saver("saver", readCookie("identificador"));
+    var ui_saver       = new UI_saver("saver", persistence.read_id());
 
     var ui_grayout     = new UI_grayout("grayout");
     ui_grayout.cb_onclick = function() {
@@ -630,7 +622,7 @@ window.onload = function() {
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
     dconsole2 = new Dconsole("dconsole");
-    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes);
+    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes, persistence);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
     combo.cb_add_item = main.add_item;
@@ -684,4 +676,21 @@ window.onload = function() {
             main.previous();
         }
     };
+
+    window.onbeforeunload = function (e) {
+        e = e || window.event;
+        var str = 'Mudanças feitas não foram salvas'
+
+        if (mudancas && !persistence.write_state(main.save_state())) {
+            // For IE and Firefox prior to version 4
+            if (e) { e.returnValue = str; }
+            // For Safari
+            return str;
+        }
+    };
+
+    var state = persistence.read_state();
+    if (state) {
+        main.carregar(state);
+    }
 }
