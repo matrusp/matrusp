@@ -174,10 +174,10 @@ function Combinacoes()
                         ok2 = 1;
                         ok3 = 1;
                     }
-                    if (!ok2) {
+//                    if (!ok2) {
 //                        if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
 //                        console.log("choque de horario, horario nao pode ser adicionado em nenhuma combinacao");
-                    }
+//                    }
                 }
                 if (!ok3) {
 //                    if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
