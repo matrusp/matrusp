@@ -176,7 +176,17 @@ function UI_turmas(id, height)
 
         for (var i in current_materia.horarios) {
             var horario = current_materia.horarios[i];
-            new_turma(horario);
+            if (current_materia.agrupar == 1) {
+                new_turma(horario);
+            } else {
+                for (var k in horario.turmas) {
+                    var turma = horario.turmas[k];
+                    var tmp = new Object();
+                    tmp.turmas = new Object();
+                    tmp.turmas[turma.nome] = turma;
+                    new_turma(tmp);
+                }
+            }
         }
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
@@ -197,6 +207,33 @@ function UI_turmas(id, height)
 
         self.tbody.appendChild(row);
         insert_before = row;
+
+        var row  = document.createElement("tr");
+        row.style.backgroundColor = "#eeeeee";
+        row.style.color = "black";
+        row.style.cursor = "pointer";
+
+        var data = document.createElement("td");
+        var input = document.createElement("input");
+        input.type     = "checkbox";
+        input.onchange = function() { self.cb_toggle_agrupar(); };
+        if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
+            input.onclick = function() { this.blur() };
+        }
+        data.appendChild(input);
+        input.checked = materia.agrupar;
+        data.style.width = "22px";
+        row.appendChild(data);
+
+        var data = document.createElement("td");
+        data.colSpan = "4";
+        data.onmouseup = function() { self.cb_toggle_agrupar(); };
+        data.style.fontSize = "13px"
+        data.style.cursor = "pointer";
+        data.innerHTML = "agrupar turmas com horários iguais";
+        row.appendChild(data);
+
+        self.tbody.appendChild(row);
 
         var button = document.createElement("span");
         button.style.display = "none";
@@ -259,6 +296,7 @@ function UI_turmas(id, height)
     self.edit_start = edit_start;
     self.edit_end   = edit_end;
     /* callbacks */
+    self.cb_toggle_agrupar= null;
     self.cb_edit_turma   = null;
     self.cb_remove_turma = null;
     self.cb_new_turma    = null;

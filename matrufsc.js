@@ -113,7 +113,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             return;
         }
         var materia = materias.new_item(codigo, nome);
-        var turma = materias.new_turma(materia);
+        materias.new_turma(materia);
         add_item2(materia, nome);
     };
     function add_item(codigo, str) {
@@ -246,10 +246,17 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         materias.set_selected(materia);
     }
     /* UI_turmas */
+    ui_turmas.cb_toggle_agrupar = function() {
+        var materia = materias.get_selected();
+        materia.agrupar = materia.agrupar ? 0 : 1;
+        materias.fix_horarios(materia);
+        update_all();
+        ui_turmas.create(materia);
+    };
     ui_turmas.cb_new_turma   = function() {
         var materia = materias.get_selected();
-        var turma = materias.new_turma(materia);
-        ui_turmas.new_turma(turma);
+        materias.new_turma(materia);
+        ui_turmas.create(materia);
         update_all();
     };
     ui_turmas.cb_remove_turma = function(turma) {
@@ -263,29 +270,19 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             var editando = self.editando;
             var overlay = combinacoes.get_overlay();
             var aulas = new Array();
-            aulas.nome  = editando.nome;
-            aulas.index = function() { return this.nome; };
             for (dia = 0; dia < 6; dia++)
                 for (hora = 0; hora < 14; hora++)
                     if (overlay[dia][hora]) {
                         var aula = {dia:dia,hora:hora,n:1};
                         aulas.push(aula);
                     }
-            var old_index = editando.aulas.index();
-            var new_index =          aulas.index();
-            if (old_index != new_index) {
-                editando.materia.horarios[new_index] = editando.materia.horarios[old_index];
-                delete editando.materia.horarios[old_index];
-            }
-            for (var t in editando.materia.horarios[new_index].turmas) {
-                var t2 = editando.materia.horarios[new_index].turmas[t];
-                t2.aulas = aulas;
-            }
-            editando.materia.horarios[new_index].aulas = aulas;
+            editando.horario.aulas = aulas;
             editando.aulas = aulas;
+            materias.fix_horarios(editando.materia);
             combinacoes.clear_overlay();
             ui_horario.set_toggle(null);
             ui_turmas.edit_end();
+            ui_turmas.create(editando.materia);
             self.editando = null;
         }
         if (!comb)
@@ -414,7 +411,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         var list = materias.list();
         var n = list.length;
         var ret = "";
-        ret += "2|"; /* TODO VERSAO */
+        ret += "3|"; /* TODO VERSAO */
         ret += combinacoes.current();
         for (var i = 0; i < n; i++) {
             var materia = list[i];
@@ -422,7 +419,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             ret += escape(materia.codigo) + "'";
             ret += escape(materia.nome) + "'";
             ret += (materia.selected + 1) + "'";
-            ret += (materia.editavel) + "'";
+            ret += (materia.agrupar) + "'";
             for (var j in materia.turmas) {
                 var turma = materia.turmas[j];
                 ret += escape(turma.nome) + ".";
@@ -462,7 +459,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         str = HexConv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
-        if (versao != 2) {
+        if (versao > 3) {
             ui_logger.set_text("impossivel carregar dados salvos de versao diferente", "lightcoral");
             return;
         }
@@ -494,7 +491,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             imported_materia.codigo   = unescape(materia[0]);
             imported_materia.turmas   = t2;
             imported_materia.selected = parseInt(materia[2]) - 1;
-            imported_materia.editavel = parseInt(materia[3]);
+            imported_materia.agrupar = parseInt(materia[3]);
+            if (versao < 3)
+                imported_materia.agrupar = 1;
             imported_materia.str = materia_str;
             imported_all.push(imported_materia);
         }
@@ -506,15 +505,13 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
 
         for (var i in imported_all) {
             var imported_materia = imported_all[i];
-            materia = materias.add_item(imported_materia.codigo, imported_materia.str, imported_materia.editavel);
+            materia = materias.add_item(imported_materia.codigo, imported_materia.str, imported_materia.selected, imported_materia.agrupar);
             if (!materia) {
                 ui_logger.set_text("houve algum erro ao importar as mat\u00e9rias!", "lightcoral");
                 return;
             }
             for (var j in materia.turmas)
                 materia.turmas[j].selected = imported_materia.turmas[j] ? 1 : 0;
-            materia.selected = imported_materia.selected;
-            materia.editavel = imported_materia.editavel;
             ui_materias.add_item(materia);
             ui_turmas.create(materia);
             materias.set_selected(materia);
