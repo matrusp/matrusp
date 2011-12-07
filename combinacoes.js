@@ -57,12 +57,12 @@ function Combinacoes()
         var vb = valor_combinacao(b);
         return va - vb;
     }
-    function copy(combinacao) {
+    function copy(combinacao, except) {
         var c2 = new Array();
         for (var i2 = 0; i2 < 6; i2++) {
             c2[i2] = new Array();
             for (var i3 = 0; i3 < 14; i3++) {
-                if (combinacao[i2][i3]) {
+                if (combinacao[i2][i3] && combinacao[i2][i3].horario.materia != except) {
                     c2[i2][i3] = new Object();
                     c2[i2][i3].horario = combinacao[i2][i3].horario;
                 }
@@ -233,6 +233,6 @@ function Combinacoes()
     self.get_overlay = function( ) { return overlay; };
     self.current     = function( ) { return current_int; };
     self.length      = function( ) { return combinacoes ? combinacoes.length : 0; };
-    self.copy        = function(c) { return copy(c); };
+    self.copy        = function(c, e) { return copy(c, e); };
     self.closest     = closest;
 }

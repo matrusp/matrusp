@@ -265,16 +265,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             var aulas = new Array();
             aulas.nome  = editando.nome;
             aulas.index = function() { return this.nome; };
-            for (var i = 0; i < editando.aulas.length; i++) {
-                var aula = editando.aulas[i];
-                var dia  = aula.dia;
-                var hora = aula.hora;
-                if (overlay[dia][hora]) {
-                    overlay[dia][hora] = null;
-                } else {
-                    aulas.push(aula);
-                }
-            }
             for (dia = 0; dia < 6; dia++)
                 for (hora = 0; hora < 14; hora++)
                     if (overlay[dia][hora]) {
@@ -339,29 +329,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         combinacoes.clear_overlay();
         var overlay = combinacoes.get_overlay();
         var c       = combinacoes.get_current();
-        var fake    = combinacoes.copy(c);
-        var copy_turma = true;
-        for (var k in c.horarios_combo) {
-            if (c.horarios_combo[k].turma_representante.materia == turma.materia) {
-                if (c.horarios_combo[k].turma_representante == turma) {
-                    copy_turma = false;
-                } else {
-                    var t2 = c.horarios_combo[k].turma_representante;
-                    for (var i = 0; i < t2.aulas.length; i++) {
-                        var dia  = t2.aulas[i].dia;
-                        var hora = t2.aulas[i].hora;
-                        delete fake[dia][hora];
-                    }
-                }
-            }
-        }
-        if (copy_turma) {
-            for (var i = 0; i < turma.aulas.length; i++) {
-                var dia  = turma.aulas[i].dia;
-                var hora = turma.aulas[i].hora;
-                fake[dia][hora] = new Object();
-                fake[dia][hora].horario = turma.horario;
-            }
+        var fake    = combinacoes.copy(c, turma.materia);
+        for (var i = 0; i < turma.aulas.length; i++) {
+            var dia  = turma.aulas[i].dia;
+            var hora = turma.aulas[i].hora;
+            overlay[dia][hora] = true;
         }
         function display(dia, hora, tipo, fake) {
             /* 0 clear
@@ -380,15 +352,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 case 5: ui_horario.display_cell(dia, hora, {strong:false,text:turma.materia.codigo,bgcolor:"red",color:"black"}); break;
             }
         };
-        for (var dia = 0; dia < 6; dia++) {
-            for (var hora = 0; hora < 14; hora++) {
-                if (fake[dia][hora]) {
-                    display(dia, hora, 3, fake);
-                } else {
-                    display(dia, hora, 0);
-                }
-            }
-        }
         function onover(dia, hora) {
             var eq = fake   [dia][hora] ? fake[dia][hora].horario == turma.horario : 0;
             var a1 = overlay[dia][hora] ? 0 : 1;
@@ -416,6 +379,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_horario.set_toggle(toggle, onover, onout);
         ui_turmas.edit_start(turma);
         self.editando = turma;
+        for (var dia = 0; dia < 6; dia++)
+            for (var hora = 0; hora < 14; hora++)
+                onout(dia, hora);
     }
     ui_turmas.cb_edit_turma  = function(turma) {
         edit_start(turma);
