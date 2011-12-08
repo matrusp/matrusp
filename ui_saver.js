@@ -5,7 +5,6 @@ function UI_saver(id, identificador)
     var ui_saver = document.getElementById(id).parentNode;
     ui_saver.style.fontFamily = "monospace";
     ui_saver.style.fontSize   = "13px";
-    ui_saver.style.width = "300px";
     ui_saver.appendChild(document.createTextNode("identificador: "));
     var input = document.createElement("input");
     input.style.fontFamily = "monospace";
