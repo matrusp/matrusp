@@ -437,6 +437,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         return HexConv.encode(ret);
     }
     ui_saver.cb_salvar = function(identificador) {
+        if (!identificador || identificador == "") {
+            ui_logger.set_text("identificador invalido", "lightcoral");
+            return;
+        }
         var ret = self.save_state();
         save_request = new XMLHttpRequest();
         save_request.savestr = identificador;
@@ -524,6 +528,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         mudancas = false;
     };
     ui_saver.cb_carregar = function(identificador) {
+        if (!identificador || identificador == "") {
+            ui_logger.set_text("identificador invalido", "lightcoral");
+            return;
+        }
         load_request = new XMLHttpRequest();
         load_request.loadstr = identificador;
         load_request.onreadystatechange = function() {
@@ -653,7 +661,7 @@ window.onload = function() {
     };
 
     var state = persistence.read_state();
-    if (state) {
+    if (state && state != "") {
         main.carregar(state);
     }
 }
