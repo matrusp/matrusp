@@ -23,10 +23,10 @@ function UI_saver(id, identificador)
     button.style.border = "1px solid black";
     button.style.backgroundColor = "lightblue";
     button.style.cursor = "pointer";
-    button.innerHTML = "salvar";
-    button.title = "salvar estado do programa";
+    button.innerHTML = "abrir";
+    button.title = "abrir histórico";
     button.onselectstart = function () { return false; };
-    button.onclick = function () { self.cb_salvar(input.value); return false; };
+    button.onclick = function () { self.cb_carregar(input.value); return false; };
     ui_saver.appendChild(button);
     ui_saver.appendChild(document.createTextNode(" "));
     var button = document.createElement("span");
@@ -35,10 +35,10 @@ function UI_saver(id, identificador)
     button.style.border = "1px solid black";
     button.style.backgroundColor = "lightblue";
     button.style.cursor = "pointer";
-    button.innerHTML = "carregar";
-    button.title = "carregar estado do programa";
+    button.innerHTML = "salvar";
+    button.title = "salvar histórico";
     button.onselectstart = function () { return false; };
-    button.onclick = function () { self.cb_carregar(input.value); return false; };
+    button.onclick = function () { self.cb_salvar(input.value); return false; };
     ui_saver.appendChild(button);
 
     self.input = input;
