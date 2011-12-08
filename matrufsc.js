@@ -160,8 +160,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     ui_combinacoes.cb_changed  = function(val) {
         if (!combinacoes.length())
             return;
-        var int = parseInt(val);
-        if (int.toString() == val && val >= 1 && val <= combinacoes.length()) {
+        if (parseInt(val).toString() == val && val >= 1 && val <= combinacoes.length()) {
             ui_logger.reset();
             display_combinacao(val);
         } else {
