@@ -196,6 +196,7 @@ function Combobox(input, suggestions, ui_logger)
         } else {
             lastfetch = null;
             list_clear();
+            ui_logger.reset();
             list_hide();
         }
     };
