@@ -456,9 +456,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         save_request.onreadystatechange = function() {
             if (this.readyState == 4) {
                 if ((this.status != 200) || this.responseText != "OK") {
-                    ui_logger.set_text("'" + this.savestr + "' n\u00e3o pode ser salvo", "lightcoral");
+                    ui_logger.set_text("erro ao salvar horário para '" + this.savestr + "'", "lightcoral");
                 } else {
-                    ui_logger.set_text("'" + this.savestr + "' foi salvo", "lightgreen");
+                    ui_logger.set_text("horário para '" + this.savestr + "' foi salvo", "lightgreen");
                     persistence.write_id(this.savestr);
                     mudancas = false;
                 }
@@ -466,14 +466,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         };
         save_request.open("GET", "cgi-bin/save.cgi?q=" + encodeURIComponent(identificador) + "=" + ret, true);
         save_request.send(null);
-        ui_logger.waiting("salvando '" + identificador + "'");
+        ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
     self.carregar = function(str, identificador) {
         str = hexconv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
         if (versao > 3) {
-            ui_logger.set_text("impossivel carregar dados salvos de versao diferente", "lightcoral");
+            ui_logger.set_text("erro feio! (favor entrar em contato, veja 'Ajuda?')", "lightcoral");
             return;
         }
         var n_comb = parseInt(split[1]);
@@ -546,16 +546,16 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         load_request.onreadystatechange = function() {
             if (this.readyState == 4) {
                 if ((this.status != 200) || this.responseText == "") {
-                    ui_logger.set_text("'" + this.loadstr + "' n\u00e3o pode ser carregado", "lightcoral");
+                    ui_logger.set_text("erro ao abrir horário para '" + this.loadstr + "'", "lightcoral");
                 } else {
                     self.carregar(this.responseText, identificador);
-                    ui_logger.set_text("'" + this.loadstr + "' foi carregado", "lightgreen");
+                    ui_logger.set_text("horário para '" + this.loadstr + "' foi carregado", "lightgreen");
                 }
             }
         };
         load_request.open("GET", "cgi-bin/load.cgi?q=" + encodeURIComponent(identificador), true);
         load_request.send(null);
-        ui_logger.waiting("carregando '" + identificador + "'");
+        ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
 }
 
@@ -563,13 +563,14 @@ ajuda_shown = false;
 mudancas = false;
 window.onload = function() {
     var persistence = new Persistence();
+    var identificador = persistence.read_id();
 
     var ui_materias    = new UI_materias("materias_list");
     var ui_combinacoes = new UI_combinacoes("combinacoes");
     var ui_horario     = new UI_horario("horario");
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
     var ui_logger      = new UI_logger("logger");
-    var ui_saver       = new UI_saver("saver", persistence.read_id());
+    var ui_saver       = new UI_saver("saver");
 
     var ui_grayout     = new UI_grayout("grayout");
     ui_grayout.cb_onclick = function() {
@@ -669,8 +670,13 @@ window.onload = function() {
         }
     };
 
+    ui_saver.identificar(identificador);
     var state = persistence.read_state();
     if (state && state != "") {
         main.carregar(state);
+    } else {
+        if (identificador != null && identificador != "") {
+            ui_saver.cb_carregar(identificador);
+        }
     }
 }
