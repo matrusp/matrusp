@@ -18,7 +18,8 @@ main.js
 header_gen: header_gen.c
 	gcc -O3 -std=c99 -o header_gen header_gen.c -lz
 
-equiv.h full.h fetch.h: header_gen
+equiv.h full.h: fetch.h
+fetch.h: header_gen
 	./header_gen turmas.pdf fetch.h full.h equiv.h
 
 save.cgi: save.c
@@ -31,7 +32,13 @@ fetch.cgi: fetch.c full.h fetch.h equiv.h
 	gcc -O3 -std=c99 -o fetch.cgi fetch.c
 
 matrufsc.js: $(SRC)
-	cat $^ > $@
+	closure $(addprefix --js=,$(SRC)) --js_output_file=$@
+#	cat $^ > $@
 
 clean::
-	rm -f fetch.h equiv.h full.h header_gen fetch.cgi full.cgi save.cgi load.cgi matrufsc.js *~
+	rm -rf fetch.h equiv.h full.h header_gen fetch.cgi full.cgi save.cgi load.cgi matrufsc.js install *~
+
+install:: all
+	mkdir -p install/cgi-bin
+	cp matrufsc.js index.html install/
+	cp full.cgi fetch.cgi save.cgi load.cgi install/cgi-bin/
