@@ -32,7 +32,7 @@ fetch.cgi: fetch.c full.h fetch.h equiv.h
 	gcc -O3 -std=c99 -o fetch.cgi fetch.c
 
 matrufsc.js: $(SRC)
-	closure $(addprefix --js=,$(SRC)) --js_output_file=$@
+	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
 #	cat $^ > $@
 
 clean::

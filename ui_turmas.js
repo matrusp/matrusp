@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function UI_turmas(id, height)
 {
     var self = this;

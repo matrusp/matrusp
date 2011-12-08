@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function UI_grayout(id)
 {
     var self = this;
@@ -22,6 +25,9 @@ function UI_grayout(id)
     self.hide();
 }
 
+/**
+ * @constructor
+ */
 function UI_ajuda_popup(id)
 {
     var self = this;
@@ -52,6 +58,9 @@ function UI_ajuda_popup(id)
     self.hide();
 }
 
+/**
+ * @constructor
+ */
 function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes, persistence)
 {
     var self = this;
@@ -406,6 +415,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         display_combinacao(combinacoes.current());
     };
     /* UI_saver */
+    var hexconv = new HexConv();
     self.save_state = function() {
         var list = materias.list();
         var n = list.length;
@@ -433,7 +443,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 ret += "'";
             }
         }
-        return HexConv.encode(ret);
+        return hexconv.encode(ret);
     }
     ui_saver.cb_salvar = function(identificador) {
         if (!identificador || identificador == "") {
@@ -459,7 +469,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_logger.waiting("salvando '" + identificador + "'");
     };
     self.carregar = function(str, identificador) {
-        str = HexConv.decode(str);
+        str = hexconv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
         if (versao > 3) {

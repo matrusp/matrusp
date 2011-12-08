@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function Persistence()
 {
     var self = this;

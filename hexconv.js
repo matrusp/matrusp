@@ -6,39 +6,41 @@
  *
  **/
 
-var HexConv = {
+/**
+ * @constructor
+ */
+function HexConv()
+{
+    var self = this;
 
-	// private property
-        _keys : "0123456789ABCDEF",
+    self._keys = "0123456789ABCDEF";
 
-encode : function(input) {
- input = HexConv._utf8_encode(input);
- var output = new String();
- var l = input.length;
- for (var i = 0; i < l; i++) {
-  var c  = input.charCodeAt(i);
-  var o1 = c >> 4;
-  var o2 = c & 15;
-  output += this._keys.charAt(o1) + this._keys.charAt(o2);
- }
- return output;
-},
+    self.encode = function(input) {
+        input = _utf8_encode(input);
+        var output = new String();
+        var l = input.length;
+        for (var i = 0; i < l; i++) {
+            var c  = input.charCodeAt(i);
+            var o1 = c >> 4;
+            var o2 = c & 15;
+            output += self._keys.charAt(o1) + self._keys.charAt(o2);
+        }
+        return output;
+    };
+    self.decode = function(input) {
+        input = input.toUpperCase();
+        var output = new String();
+        var l = input.length;
+        for (var i = 0; i < l; i+=2) {
+            var in1 = self._keys.indexOf(input.charAt(i+0));
+            var in2 = self._keys.indexOf(input.charAt(i+1));
+            var c = (in1 << 4) | in2;
+            output += String.fromCharCode(c);
+        }
+        return _utf8_decode(output);
+    };
 
-decode : function(input) {
- input = input.toUpperCase();
- var output = new String();
- var l = input.length;
- for (var i = 0; i < l; i+=2) {
-  var in1 = this._keys.indexOf(input.charAt(i+0));
-  var in2 = this._keys.indexOf(input.charAt(i+1));
-  var c = (in1 << 4) | in2;
-  output += String.fromCharCode(c);
- }
- return HexConv._utf8_decode(output);
-},
-
-	// private method for UTF-8 encoding
-	_utf8_encode : function (string) {
+	function _utf8_encode(string) {
 		string = string.replace(/\r\n/g,"\n");
 		var utftext = "";
 		for (var n = 0; n < string.length; n++) {
@@ -55,10 +57,8 @@ decode : function(input) {
 			}
 		}
 		return utftext;
-	},
-
-	// private method for UTF-8 decoding
-	_utf8_decode : function (utftext) {
+	};
+	function _utf8_decode(utftext) {
 		var string = "";
 		var i = 0;
 		var c = c1 = c2 = 0;
@@ -79,5 +79,5 @@ decode : function(input) {
 			}
 		}
 		return string;
-	}
+	};
 }

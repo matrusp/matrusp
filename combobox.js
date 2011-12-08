@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function Combobox(input, suggestions, ui_logger)
 {
     var lastfetch  = new String();

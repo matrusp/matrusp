@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function UI_combinacoes(id)
 {
     var self = this;

@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function UI_logger(id)
 {
     var self = this;

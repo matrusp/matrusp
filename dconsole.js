@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function Dconsole(id)
 {
     var self = this;

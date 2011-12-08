@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function UI_saver(id, identificador)
 {
     var self = this;

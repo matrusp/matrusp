@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function Materias()
 {
     var self = this;

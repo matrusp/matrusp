@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function Turmas(ui_logger, ui_horario, combinacoes)
 {
     var self = this;

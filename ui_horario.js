@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function UI_horario(id)
 {
     var self = this;
