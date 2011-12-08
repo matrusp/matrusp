@@ -24,7 +24,8 @@ function UI_horario(id)
     row.appendChild(document.createElement("th"));
     for (var i = 0; i < dias.length; i++) {
         var head = document.createElement("th");
-        head.className = "feiras";
+        head.style.fontFamily = "monospace";
+        head.style.fontSize = "11px";
         head.innerHTML = dias[i];
         row.appendChild(head);
     }
@@ -37,11 +38,18 @@ function UI_horario(id)
         var row = document.createElement("tr");
         var hora = document.createElement("td");
         hora.innerHTML = horas[j];
-        hora.className = "horario";
+        hora.style.fontFamily = "monospace";
+        hora.style.fontSize = "11px";
         row.appendChild(hora);
         for (var i = 0; i < dias.length; i++) {
             var data = document.createElement("td");
-            data.className = "aula";
+            data.style.backgroundColor = "white";
+            data.style.border = "1px solid black";
+            data.style.height = "18px";
+            data.style.width = "60px";
+            data.style.fontFamily = "monospace";
+            data.style.fontSize = "11px";
+            data.style.textAlign = "center";
             data.innerHTML = "&nbsp;";
             array[i][j] = data;
             row.appendChild(data);

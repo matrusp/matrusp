@@ -32,11 +32,19 @@ function Combobox(input, suggestions, ui_logger)
     self.color_1 = "#eeeeee";
     self.input       = document.getElementById(input);
     self.suggestions = document.getElementById(suggestions);
-    self.suggestions.className = "combobox";
+    self.suggestions.style.border = "1px solid black";
+    self.suggestions.style.position = "absolute";
+    self.suggestions.style.padding = "0";
+    self.suggestions.style.margin = "0";
     self.mouseisdown = false;
 
     function list_create() {
         self.ul = document.createElement("ul");
+        self.ul.style.backgroundColor = "white";
+        self.ul.style.border = "1px dotted";
+        self.ul.style.padding = "1px";
+        self.ul.style.zIndex = "1";
+        self.ul.style.margin = "0";
         self.array = new Array();
         self.selected_item = -1;
         self.suggestions.appendChild(self.ul);
@@ -54,6 +62,9 @@ function Combobox(input, suggestions, ui_logger)
     }
     function list_add_item(str) {
         var li = document.createElement("li");
+        li.style.backgroundColor = "white";
+        li.style.display = "block";
+        li.style.width = "100%";
 
         li.innerHTML   = str;
         li.onmouseover = function() { select_item(this.index); };

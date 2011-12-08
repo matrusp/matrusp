@@ -13,7 +13,10 @@ function UI_materias(id, ui_combinacoes)
     function create() {
         table = document.createElement("table");
         tbody = document.createElement("tbody");
-        table.className = "materias";
+        table.style.backgroundColor = "black";
+        table.style.fontFamily = "monospace";
+        table.style.tableLayout = "fixed";
+        table.style.fontSize = "11px";
         table.style.width="770px";
         table.cellPadding="1";
         table.cellSpacing="1";

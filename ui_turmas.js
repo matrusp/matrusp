@@ -169,7 +169,10 @@ function UI_turmas(id, height)
 
         self.table = document.createElement("table");
         self.tbody = document.createElement("tbody");
-        self.table.className = "materias";
+        self.table.style.backgroundColor = "black";
+        self.table.style.fontFamily = "monospace";
+        self.table.style.tableLayout = "fixed";
+        self.table.style.fontSize = "11px";
         self.table.style.width="330px";
         self.table.cellPadding="1";
         self.table.cellSpacing="1";
