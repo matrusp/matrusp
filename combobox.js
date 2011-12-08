@@ -233,7 +233,7 @@ function Combobox(input, suggestions, ui_logger)
         }
         full_requests[i].available = false;
         full_requests[i].codigo = codigo;
-        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(codigo), true);
+        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(codigo.toUpperCase()), true);
         full_requests[i].onreadystatechange = list_onreadystatechange;
         full_requests[i].send(null);
         ui_logger.waiting("buscando '" + codigo + "'");
