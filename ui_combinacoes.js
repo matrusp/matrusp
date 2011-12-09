@@ -49,11 +49,15 @@ function UI_combinacoes(id)
         button.ondblclick = function () { self.cb_next(); };
     }
     d2.appendChild(button);
-    d2.appendChild(document.createTextNode(" "));
+    d2.appendChild(document.createTextNode(" horas aula: ("));
+    var horas_aula = document.createTextNode("0");
+    d2.appendChild(horas_aula);
+    d2.appendChild(document.createTextNode(")"));
 
     /* procedures */
     self.set_current = function(n) { self.selecao_atual.value = n; };
     self.set_total = function(n) { numero_selecoes.nodeValue = n; };
+    self.set_horas_aula = function(n) { horas_aula.nodeValue = n; };
     /* callbacks */
     self.cb_previous = null;
     self.cb_next     = null;

@@ -67,6 +67,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
 
     function display_combinacao(cc)
     {
+        var horas_aula = 0;
         var m = materias.list();
         for (var i = 0; i < m.length; i++) {
             var materia = m[i];
@@ -98,12 +99,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 turma.materia.ui_turma.innerHTML = turma.nome;
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
+                horas_aula += parseInt(turma.horas_aula);
                 turmas.display(turma, c);
             }
         }
         combinacoes.set_current(cc);
         ui_combinacoes.set_current(cc);
         ui_combinacoes.set_total(combinacoes.length());
+        ui_combinacoes.set_horas_aula(horas_aula);
     }
 
     var atividades = 1;
