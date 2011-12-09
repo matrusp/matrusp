@@ -471,8 +471,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 }
             }
         };
-        save_request.open("GET", "cgi-bin/save.cgi?q=" + encodeURIComponent(identificador) + "=" + ret, true);
-        save_request.send(null);
+        save_request.open("POST", "cgi-bin/save.cgi?q=" + encodeURIComponent(identificador), true);
+        save_request.send(ret);
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
     self.carregar = function(str, identificador) {

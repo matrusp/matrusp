@@ -5,10 +5,11 @@
 int main()
 {
     FILE *fp;
-    char *p, *q, *e;
+    char *p, *e;
     char *prefix="/home/caldo_de_cana/matrufsc/dados/";
-    char *data, *name, *bigname;
-    int l1, l2;
+    char *name, *bigname;
+    char c;
+    int l1;
     int i;
 
     printf("Content-type: text/html\n"
@@ -23,22 +24,14 @@ int main()
         return 0;
     p += 2;
 
-    q = strstr(p, "=");
-    if (!q)
-        return 0;
-
-    l1 = (q-p) + 1;
+    l1 = strlen(p) + 1;
     name = malloc(l1);
     bigname = malloc(strlen(prefix)+(l1<<2)-1);
-    q++;
-    l2 = strlen(q) + 1;
-    data = malloc(l2);
 
-    if (!bigname || !name || !data)
+    if (!bigname || !name)
         return 0;
 
     strncpy(name, p, l1-1);
-    strncpy(data, q, l2-1);
 
     strcat(bigname, prefix);
     e = bigname + strlen(prefix);
@@ -50,7 +43,8 @@ int main()
     fp = fopen(bigname, "w");
     if (!fp)
         return 0;
-    fwrite(data, l2, 1, fp);
+    while ((c=fgetc(stdin))!=EOF)
+        fputc(c, fp);
     fclose(fp);
 
     printf("OK");
