@@ -124,7 +124,11 @@ print_materia(void)
     }
     fprintf(fp_full,
         "    { \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\" },\n",
-        full[0], full[1], full[2], full[3], full[4],
+        full[0], /* código da disciplina */
+        full[1], /* nome da turma */
+        full[2], /* nome da disciplina */
+        full[3], /* horas-aula */
+        full[4], /* vagas */
         full[5] ? full[5] : "" /* horário */,
         full[6] ? full[6] : "" /* professor */);
     equiv++;
@@ -188,6 +192,16 @@ strdup_to_ascii(char *string)
     }
     return strdup(ascii_string);
 }
+static void
+strdupcat(char **a, char *b)
+{
+    int size = strlen(*a) + strlen(b) + 2;
+    char *ret = malloc(size);
+    ret[0] = 0;
+    sprintf(ret, "%s %s", *a, b);
+    free(*a);
+    *a = ret;
+}
 
 static int
 parse_line(char *line, size_t line_len)
@@ -243,7 +257,57 @@ parse_line(char *line, size_t line_len)
                             full[0] = strdup(string);
                             fetch[0] = strdup(string);
                         } else if (full[6]) {
+                            if (!strcmp(string, "de") ||
+                                !strcmp(string, "CADASTRO DE TURMAS") ||
+                                !strcmp(string, "20121") ||
+                                !strcmp(string, "Semestre:") ||
+                                !strcmp(string, "Departamento:") ||
+                                !strcmp(string, "TODOS") ||
+                                !strcmp(string, "Curso:") ||
+                                !strcmp(string, "TODOS") ||
+                                !strcmp(string, "Nome da Disciplina") ||
+                                !strcmp(string, "H.A.") ||
+                                !strcmp(string, "Horarios/Locais") ||
+                                !strcmp(string, "Turma") ||
+                                !strcmp(string, "Disciplina") ||
+                                !strcmp(string, "Vagas Ofertadas") ||
+                                !strcmp(string, "Vagas Ocupadas") ||
+                                !strcmp(string, "Alunos Especiais") ||
+                                !strcmp(string, "Saldo Vagas") ||
+                                !strcmp(string, "Pedidos sem vaga") ||
+                                !strcmp(string, "Professores") ||
+                                !strcmp(string, "Curso") ||
+                                !strcmp(string, "29") ||
+                                !strncmp(string, "SeTIC", 5) ||
+                                (string[0] == 'P' && (unsigned char) string[1] == 0xe1) ||
+                                (string[0] == 'H' && string[1] == 'o' && string[2] == 'r') ||
+                                !strcmp(string, ""))
+                            {
                             /* do nothing */
+                            } else if (is_horario(string)) {
+                                strdupcat(&full[5], string);
+                            } else {
+                                int total_chars = strlen(string);
+                                int upper_case = 0;
+                                int lower_case = 0;
+                                int only_I = 1;
+                                int kkk;
+                                for (kkk = 0; kkk < total_chars; kkk++) {
+                                    if      (string[kkk] >= 'A' && string[kkk] <= 'Z')
+                                        upper_case++;
+                                    else if (string[kkk] >= 'a' && string[kkk] <= 'z')
+                                        lower_case++;
+                                    if (string[kkk] != 'I')
+                                        only_I = 0;
+                                }
+                                if (lower_case || only_I) {
+                                    strdupcat(&full[2], string); /* nome da disciplina */
+                                } else if (upper_case) {
+                                    strdupcat(&full[6], string); /* nome do professor */
+                                } else {
+                                fprintf(stderr, "unhandled string '%s' (%d/%d)\n", string, upper_case, lower_case);
+                                }
+                            }
                         } else if (full[5]) {
                             full[6] = strdup_to_utf8(string);
                         } else if (full[4]) {
