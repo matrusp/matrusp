@@ -119,15 +119,21 @@ function Materias()
             turma.horario = materia.horarios[index];
         }
     }
-    function new_turma(materia, nome, aulas, professor) {
+    function new_turma(materia, nome, horas_aula, vagas, aulas, professor) {
         if (nome == null) {
             aulas = new Array();
             do {
                 nome = new_turma_name();
             } while (materia.turmas[nome]);
         }
+        if (horas_aula == null)
+            horas_aula = 0;
+        if (vagas == null)
+            vagas = 0;
         var turma = new Object();
         turma.nome      = nome;
+        turma.horas_aula= horas_aula;
+        turma.vagas     = vagas;
         turma.aulas     = aulas;
         turma.professor = professor;
         turma.selected  = 1;
@@ -170,7 +176,7 @@ function Materias()
         materia.turmas = new Array();
         for (var i = 1; i < array.length - 1; i++) {
             var split = array[i].split("\t");
-            new_turma(materia, split[0], criar_aulas(split[3], split[0]), split[4]);
+            new_turma(materia, split[0], split[1], split[2], criar_aulas(split[3], split[0]), split[4]);
         }
 
         materias[materia.codigo] = materia;

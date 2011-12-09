@@ -427,7 +427,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         var list = materias.list();
         var n = list.length;
         var ret = "";
-        ret += "3|"; /* TODO VERSAO */
+        ret += "4|"; /* TODO VERSAO */
         ret += combinacoes.current();
         for (var i = 0; i < n; i++) {
             var materia = list[i];
@@ -441,6 +441,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 ret += escape(turma.nome) + ".";
                 ret += (turma.selected?1:0) + "."
                 ret += escape(turma.professor) + ".";
+                ret += turma.horas_aula + ".";
+                ret += turma.vagas + ".";
                 for (var k = 0; k < turma.aulas.length; k++) {
                     var aula = turma.aulas[k];
                     if (k) ret += ",";
@@ -479,7 +481,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         str = hexconv.decode(str);
         var split = str.split("|");
         var versao = parseInt(split[0]);
-        if (versao > 3) {
+        if (versao > 4) {
             ui_logger.set_text("erro feio! (favor entrar em contato, veja 'Ajuda?')", "lightcoral");
             return;
         }
@@ -494,9 +496,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             var t2 = new Array();
             for (var j = 4; j < materia.length-1; j++) {
                 var turma = materia[j].split(".");
-                materia_str += unescape(turma[0]) + "\t0\t0\t";
                 t2[unescape(turma[0])] = parseInt(turma[1]);
-                var horario = turma[3].split(",");
+                if (versao < 4) {
+                    materia_str += unescape(turma[0]) + "\t0\t0\t";
+                    var horario = turma[3].split(",");
+                } else {
+                    materia_str += unescape(turma[0]) + "\t" + parseInt(turma[3]) + "\t" + parseInt(turma[4]) + "\t";
+                    var horario = turma[5].split(",");
+                }
                 if (horario.length != 1) {
                     for (var k = 0; k < horario.length; k += 2) {
                         var dia = parseInt(horario[k+0], 16);
