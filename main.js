@@ -300,13 +300,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             ui_turmas.create(editando.materia);
             self.editando = null;
         }
-        if (!comb)
+        if (comb == null)
             var current = combinacoes.get_current();
         combinacoes.generate(materias.list());
-        if (comb)
-            display_combinacao(comb);
-        else
-            display_combinacao(combinacoes.closest(current));
+        if (comb == null)
+            comb = combinacoes.closest(current)
+        if (comb < 1 || comb > combinacoes.length())
+            comb = 1;
+        display_combinacao(comb);
         var errmsg = new String();
         var m = materias.list();
         for (var i = 0; i < m.length; i++) {
