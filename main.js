@@ -87,7 +87,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             cc = 0;
         } else {
             for (var i in c.horarios_combo) {
-                var turma = c.horarios_combo[i].turma_representante;
+                for (var k in c.horarios_combo[i].turmas) {
+                    if (c.horarios_combo[i].turmas[k].selected) {
+                        var turma = c.horarios_combo[i].turmas[k];
+                        break;
+                    }
+                }
+                if (!turma)
+                    var turma = c.horarios_combo[i].turma_representante;
                 turma.materia.ui_turma.innerHTML = turma.nome;
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
