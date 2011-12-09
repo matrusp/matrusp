@@ -5,12 +5,14 @@ function Materias()
 {
     var self = this;
     var selected = null;
+    var color_counter = 0;
 
     var materias;
     var list;
     function reset() {
         materias = new Object();
         list = new Array();
+        color_counter = 0;
     }
     reset();
 
@@ -30,18 +32,15 @@ function Materias()
     horas["2020"] = 12; horas[12] = "2020";
     horas["2110"] = 13; horas[13] = "2110";
 
-    var get_color = (function(){
-        var cores = [ "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgreen",
-                      "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightsteelblue",
-                      "lightyellow" ];
-        var counter = 0;
-        return (function(){
-            var ret = cores[counter++];
-            if (counter >= cores.length)
-                counter = 0;
-            return ret;
-        });
-    })();
+    var cores = [ "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgreen",
+                  "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightsteelblue",
+                  "lightyellow" ];
+    function get_color() {
+        var ret = cores[color_counter++];
+        if (color_counter >= cores.length)
+            color_counter = 0;
+        return ret;
+    };
     function criar_aulas(str, nome)
     {
         var ret = new Array();
