@@ -191,6 +191,21 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     ui_materias.cb_select      = function(codigo, checked) {
         var materia = materias.get(codigo);
         materia.selected = checked ? 1 : 0;
+        if (materia.selected) {
+            var selected = 0;
+            for (var i = 0; i < materia.turmas.length; i++) {
+                var turma = materia.turmas[i];
+                if (turma.selected)
+                    selected = 1;
+            }
+            if (!selected) {
+                for (var i = 0; i < materia.turmas.length; i++) {
+                    var turma = materia.turmas[i];
+                    turma.selected = 1
+                }
+                ui_turmas.create(materia);
+            }
+        }
         update_all();
     };
     ui_materias.cb_onmoveup    = function(materia) {
