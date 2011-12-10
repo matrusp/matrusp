@@ -190,7 +190,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     /* UI_materias */
     ui_materias.cb_select      = function(codigo, checked) {
         var materia = materias.get(codigo);
-        materia.selected = checked;
+        materia.selected = checked ? 1 : 0;
         update_all();
     };
     ui_materias.cb_onmoveup    = function(materia) {
@@ -238,6 +238,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     };
     ui_materias.cb_onmouseover = function(materia) {
         var c = combinacoes.get_current();
+        if (!c)
+            return;
         for (var i in c.horarios_combo) {
             var turma = c.horarios_combo[i].turma_representante;
             if (turma.materia == materia) {
@@ -250,6 +252,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     };
     ui_materias.cb_onmouseout  = function(materia) {
         var c = combinacoes.get_current();
+        if (!c)
+            return;
         for (var i in c.horarios_combo) {
             var turma = c.horarios_combo[i].turma_representante;
             if (turma.materia == materia) {
@@ -408,7 +412,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     ui_turmas.cb_onmouseout  = function(turma) { turmas.undisplay_over(turma); };
     ui_turmas.cb_changed     = function(turma, checked) {
         turma.selected = checked ? 1 : 0;
-        turma.materia.selected = true;
+        turma.materia.selected = 1;
     };
     ui_turmas.cb_updated     = function() {
         var turma = turmas.get_selected();

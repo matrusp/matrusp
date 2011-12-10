@@ -201,7 +201,8 @@ function Materias()
                 criar_aulas(turma, horario);
             }
             order_aulas(turma);
-            turma.selected  = 1;
+            if (turma.selected == null)
+                turma.selected = 1;
             turma.materia   = materia;
         }
         fix_horarios(materia);
