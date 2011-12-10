@@ -71,7 +71,7 @@ function UI_materias(id, ui_combinacoes)
     function onmovedown() { this.onmouseout(); self.cb_onmovedown(this.parentNode.materia); };
     function hover_off() { this.style.backgroundColor = this.oldbg; this.style.color = "black"; };
     function hover_on()  { this.style.backgroundColor = "black"; this.style.color = this.oldbg; };
-    function add_item(materia) {
+    function add(materia) {
         var row  = document.createElement("tr");
         row.onmouseover = function() { self.cb_onmouseover(this.materia); };
         row.onmouseout  = function() { self.cb_onmouseout(this.materia); };
@@ -155,7 +155,7 @@ function UI_materias(id, ui_combinacoes)
     }
 
     /* functions */
-    self.add_item = add_item;
+    self.add = add;
     self.reset    = reset;
     /* callbacks */
     self.cb_select   = null;

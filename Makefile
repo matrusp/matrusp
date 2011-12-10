@@ -1,7 +1,7 @@
 all: full.cgi fetch.cgi save.cgi load.cgi matrufsc.js
 
 SRC=persistence.js \
-hexconv.js \
+jsonxml.js \
 ui_saver.js \
 ui_logger.js \
 dconsole.js \
@@ -15,28 +15,28 @@ ui_horario.js \
 combobox.js \
 main.js
 
-header_gen: header_gen.c
-	gcc -O3 -std=c99 -o header_gen header_gen.c -lz
+full2.h: header_gen.c turmas_db full.c fetch.c full2.c
+	gcc -Wall -O3 -std=c99 -o header_gen header_gen.c -I/usr/include/libxml2 -lxml2
+	./header_gen turmas_db fetch.h full.h
+	gcc -Wall -O3 -std=c99 -o full2 full2.c -lz
+	./full2 > full2.h
 
-equiv.h full.h: fetch.h
-fetch.h: header_gen
-	./header_gen turmas.pdf fetch.h full.h equiv.h
-
-save.cgi: save.c
-	gcc -O3 -std=c99 -o save.cgi save.c
-load.cgi: load.c
-	gcc -O3 -std=c99 -o load.cgi load.c
-full.cgi: full.c full.h
+full.cgi: full.c full2.h
 	gcc -O3 -std=c99 -o full.cgi full.c
-fetch.cgi: fetch.c full.h fetch.h equiv.h
+fetch.cgi: fetch.c full2.h
 	gcc -O3 -std=c99 -o fetch.cgi fetch.c
 
+save.cgi: save.c
+	gcc -Wall -O3 -std=c99 -o save.cgi save.c
+load.cgi: load.c
+	gcc -Wall -O3 -std=c99 -o load.cgi load.c
+
 matrufsc.js: $(SRC)
-	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
-#	cat $^ > $@
+#	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
+	cat $^ > $@
 
 clean::
-	rm -rf fetch.h equiv.h full.h header_gen fetch.cgi full.cgi save.cgi load.cgi matrufsc.js install *~
+	rm -rf fetch.h full.h full2.h header_gen full2 fetch.cgi full.cgi save.cgi load.cgi matrufsc.js install *~
 
 install:: all
 	mkdir -p install/cgi-bin

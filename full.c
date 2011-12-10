@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <inttypes.h>
 
 #include "full.h"
 
@@ -36,11 +37,10 @@ cmp_materia(char *a, char *b)
 int main()
 {
     int l = sizeof(full)/sizeof(full[0]);
-    int has_started = 0;
     char *p;
     int i;
 
-    printf("Content-type: text/html\n"
+    printf("Content-type: text/xml\n"
            "Expires: -1\n"
            "\n");
 
@@ -56,14 +56,9 @@ int main()
         return 0;
 
     for (i = 0; i < l; i++) {
-        if (cmp_materia(full[i][0], p)) {
-            if (!has_started)
-                printf("%s\t%s\n", full[i][0], full[i][2]);
-            printf("%s\t%s\t%s\t%s\t%s\n", full[i][1], full[i][3], full[i][4], full[i][5], full[i][6]);
-            has_started++;
-        } else {
-            if (has_started)
-                break;
+        if (cmp_materia(full[i].codigo_disciplina, p)) {
+            printf("%s", full[i].result);
+            break;
         }
     }
 

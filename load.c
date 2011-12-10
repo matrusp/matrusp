@@ -11,7 +11,7 @@ int main()
     int l1, l2;
     int i;
 
-    printf("Content-type: text/html\n"
+    printf("Content-type: text/xml\n"
            "Expires: -1\n"
            "\n");
 

@@ -122,29 +122,30 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         atividades++;
         return str;
     }
-    function new_item(nome) {
+    function new_materia(nome) {
         do {
             var str = new_atividade_name();
             var codigo = "XXX" + str;
         } while (materias.get(codigo));
         if (materias.get_nome(nome)) {
-            add_item2(null, nome);
+            ui_logger.set_text("'" + codigo + "' ja foi adicionada", "lightcoral");
             return;
         }
         var materia = materias.new_item(codigo, nome);
         materias.new_turma(materia);
-        add_item2(materia, nome);
+        ui_materias.add(materia);
+        ui_turmas.create(materia);
+        materias.set_selected(materia);
+        ui_logger.set_text("'" + nome + "' adicionada", "lightgreen");
+        update_all();
     };
-    function add_item(codigo, str) {
-        var materia = materias.add_item(codigo, str);
-        add_item2(materia, codigo);
-    };
-    function add_item2(materia, codigo) {
+    function add_materia(codigo, xml) {
+        var materia = materias.add_xml(codigo, xml);
         if (!materia) {
             ui_logger.set_text("'" + codigo + "' ja foi adicionada", "lightcoral");
             return;
         }
-        ui_materias.add_item(materia);
+        ui_materias.add(materia);
         ui_turmas.create(materia);
         materias.set_selected(materia);
         ui_logger.set_text("'" + codigo + "' adicionada", "lightgreen");
@@ -168,8 +169,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     };
 
     /* self */
-    self.new_item = new_item;
-    self.add_item = add_item;
+    self.new_materia = new_materia;
+    self.add_materia = add_materia;
     self.previous = previous;
     self.next = next;
 
@@ -295,7 +296,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                         aulas.push(aula);
                     }
             editando.horario.aulas = aulas;
-            editando.aulas = aulas;
+            for (var k in editando.horario.turmas)
+                editando.horario.turmas[k].aulas = aulas;
             materias.fix_horarios(editando.materia);
             combinacoes.clear_overlay();
             ui_horario.set_toggle(null);
@@ -426,37 +428,44 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         display_combinacao(combinacoes.current());
     };
     /* UI_saver */
-    var hexconv = new HexConv();
     self.save_state = function() {
         var list = materias.list();
-        var n = list.length;
-        var ret = "";
-        ret += "4|"; /* TODO VERSAO */
-        ret += combinacoes.current();
-        for (var i = 0; i < n; i++) {
+        var state = new Object();
+        state.versao     = 4;
+        state.materia_selected = materias.get_selected().codigo;
+        state.combinacao = combinacoes.current();
+        state.materias   = new Array();
+        for (var i = 0; i < list.length; i++) {
+            var state_materia = new Object();
             var materia = list[i];
-            ret += "|";
-            ret += escape(materia.codigo) + "'";
-            ret += escape(materia.nome) + "'";
-            ret += (materia.selected + 1) + "'";
-            ret += (materia.agrupar) + "'";
-            for (var j in materia.turmas) {
+            state_materia.codigo   = materia.codigo;
+            state_materia.nome     = materia.nome;
+            state_materia.cor      = materia.cor;
+            state_materia.turmas   = new Array();
+            for (var j = 0; j < materia.turmas.length; j++) {
+                var state_turma = new Object();
                 var turma = materia.turmas[j];
-                ret += escape(turma.nome) + ".";
-                ret += (turma.selected?1:0) + "."
-                ret += escape(turma.professor) + ".";
-                ret += turma.horas_aula + ".";
-                ret += turma.vagas + ".";
-                for (var k = 0; k < turma.aulas.length; k++) {
-                    var aula = turma.aulas[k];
-                    if (k) ret += ",";
-                    ret += aula.dia.toString(16) + ",";
-                    ret += aula.hora.toString(16);
-                }
-                ret += "'";
+                state_turma.nome             = turma.nome;
+                state_turma.horas_aula       = turma.horas_aula;
+                state_turma.vagas_ofertadas  = turma.vagas_ofertadas;
+                state_turma.vagas_ocupadas   = turma.vagas_ocupadas;
+                state_turma.alunos_especiais = turma.alunos_especiais;
+                state_turma.saldo_vagas      = turma.saldo_vagas;
+                state_turma.pedidos_sem_vaga = turma.pedidos_sem_vaga;
+                state_turma.professores      = new Array();
+                for (var k = 0; k < turma.professores.length; k++)
+                    state_turma.professores.push(turma.professores[k]);
+                state_turma.horarios         = new Array();
+                for (var k = 0; k < turma.aulas.length; k++)
+                    state_turma.horarios.push(materias.aulas_string(turma.aulas[k]));
+                state_turma.selected         = turma.selected;
+                state_materia.turmas.push(state_turma);
             }
+            state_materia.agrupar  = materia.agrupar;
+            state_materia.selected = materia.selected;
+            state.materias.push(state_materia);
         }
-        return hexconv.encode(ret);
+        return "<state>" + json_to_xml(state) + "</state>";
     }
     ui_saver.cb_salvar = function(identificador) {
         if (!identificador || identificador == "") {
@@ -481,77 +490,35 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         save_request.send(ret);
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
-    self.carregar = function(str, identificador) {
-        str = hexconv.decode(str);
-        var split = str.split("|");
-        var versao = parseInt(split[0]);
-        if (versao > 4) {
-            ui_logger.set_text("erro feio! (favor entrar em contato, veja 'Ajuda?')", "lightcoral");
+    self.carregar = function(xml, identificador) {
+        state = xml_to_state(xml);
+
+        if (state.versao > 4) {
+            ui_logger.set_text("erro ao tentar abrir horário de versão mais recente", "lightcoral");
             return;
         }
-        var n_comb = parseInt(split[1]);
-        var imported_all = new Array();
-        for (var i = 2; i < split.length; i++) {
-            var imported_materia = new Object();
-            var materia_str = "";
-            var materia = split[i].split("'");
-            materia_str += unescape(materia[0]) + "\t";
-            materia_str += unescape(materia[1]) + "\n";
-            var t2 = new Array();
-            for (var j = 4; j < materia.length-1; j++) {
-                var turma = materia[j].split(".");
-                t2[unescape(turma[0])] = parseInt(turma[1]);
-                if (versao < 4) {
-                    materia_str += unescape(turma[0]) + "\t0\t0\t";
-                    var horario = turma[3].split(",");
-                } else {
-                    materia_str += unescape(turma[0]) + "\t" + parseInt(turma[3]) + "\t" + parseInt(turma[4]) + "\t";
-                    var horario = turma[5].split(",");
-                }
-                if (horario.length != 1) {
-                    for (var k = 0; k < horario.length; k += 2) {
-                        var dia = parseInt(horario[k+0], 16);
-                        var hora = parseInt(horario[k+1], 16);
-                        if (k != 0)
-                            materia_str += " ";
-                        materia_str += materias.aulas_string(dia, hora);
-                    }
-                }
-                materia_str += "\t" + unescape(turma[2]) + "\n";
-            }
-            imported_materia.codigo   = unescape(materia[0]);
-            imported_materia.turmas   = t2;
-            imported_materia.selected = parseInt(materia[2]) - 1;
-            imported_materia.agrupar = parseInt(materia[3]);
-            if (versao < 3)
-                imported_materia.agrupar = 1;
-            imported_materia.str = materia_str;
-            imported_all.push(imported_materia);
-        }
+
         materias.reset();
         ui_materias.reset();
         ui_logger.reset();
         turmas.reset();
         ui_turmas.reset();
 
-        for (var i in imported_all) {
-            var imported_materia = imported_all[i];
-            materia = materias.add_item(imported_materia.codigo, imported_materia.str, imported_materia.selected, imported_materia.agrupar);
+        for (var i = 0; i < state.materias.length; i++) {
+            materia = materias.add_json(state.materias[i]);
             if (!materia) {
                 ui_logger.set_text("houve algum erro ao importar as mat\u00e9rias!", "lightcoral");
                 return;
             }
-            for (var j in materia.turmas)
-                materia.turmas[j].selected = imported_materia.turmas[j] ? 1 : 0;
-            ui_materias.add_item(materia);
+            ui_materias.add(materia);
             ui_turmas.create(materia);
-            materias.set_selected(materia);
         }
+        ui_turmas.create(materias.get(state.materia_selected));
+        materias.set_selected(materias.get(state.materia_selected));
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
         if (identificador)
             persistence.write_id(identificador);
-        imported_all = null;
-        update_all(n_comb);
+        update_all(state.combinacao);
         mudancas = false;
     };
     ui_saver.cb_carregar = function(identificador) {
@@ -563,10 +530,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         load_request.loadstr = identificador;
         load_request.onreadystatechange = function() {
             if (this.readyState == 4) {
-                if ((this.status != 200) || this.responseText == "") {
+                if ((this.status != 200) || !this.responseXML) {
                     ui_logger.set_text("erro ao abrir horário para '" + this.loadstr + "'", "lightcoral");
                 } else {
-                    self.carregar(this.responseText, identificador);
+                    self.carregar(this.responseXML, identificador);
                     ui_logger.set_text("horário para '" + this.loadstr + "' foi carregado", "lightgreen");
                 }
             }
@@ -624,8 +591,8 @@ window.onload = function() {
     var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes, persistence);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
 
-    combo.cb_add_item = main.add_item;
-    combo.cb_new_item = main.new_item;
+    combo.cb_add_materia = main.add_materia;
+    combo.cb_new_materia = main.new_materia;
 
     document.onkeydown = function(e) {
         var ev = e ? e : event;
@@ -688,6 +655,7 @@ window.onload = function() {
         }
     };
 
+/*
     ui_saver.identificar(identificador);
     var state = persistence.read_state();
     if (state && state != "") {
@@ -697,4 +665,5 @@ window.onload = function() {
             ui_saver.cb_carregar(identificador);
         }
     }
+*/
 }

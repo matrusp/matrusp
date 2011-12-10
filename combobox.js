@@ -57,7 +57,7 @@ function Combobox(input, suggestions, ui_logger)
         self.array[0].style.fontWeight = "bold";
         self.array[0].onmouseup = function() {
             deselect_item();
-            self.cb_new_item(self.input.value);
+            self.cb_new_materia(self.input.value);
             list_hide();
             self.input.blur();
         };
@@ -136,7 +136,7 @@ function Combobox(input, suggestions, ui_logger)
             if (self.selected_item == 0) {
                 deselect_item();
                 list_hide();
-                self.cb_new_item(self.input.value);
+                self.cb_new_materia(self.input.value);
                 self.input.focus();
                 return;
             } else
@@ -208,13 +208,13 @@ function Combobox(input, suggestions, ui_logger)
     {
         if (this.readyState == 4) {
             if (this.status == 200) {
-                var str = this.responseText;
+                var xml = this.responseXML;
                 if (self.timer) {
                     clearTimeout(self.timer);
                     self.timer = null;
                 }
-                if (str.length > 0) {
-                    self.cb_add_item(this.codigo, str);
+                if (xml) {
+                    self.cb_add_materia(this.codigo, xml);
                 } else {
                     ui_logger.set_text("'" + this.codigo + "' n\u00e3o adicionada", "lightcoral");
                 }
@@ -242,6 +242,6 @@ function Combobox(input, suggestions, ui_logger)
     /* procedures */
     self.add_item    = add_item;
     /* callbacks */
-    self.cb_add_item = null;
-    self.cb_new_item = null;
+    self.cb_add_materia = null;
+    self.cb_new_materia = null;
 }

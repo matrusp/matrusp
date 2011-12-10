@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <inttypes.h>
 
-#include "full.h"
-#include "equiv.h"
 #include "fetch.h"
 
 #include <locale.h>
@@ -67,8 +66,8 @@ int main()
     iconv(to_ascii, &d, &i_s, &o, &o_s);
 
     for (i = 0; i < l && j < 10; i++) {
-        if (strstr(fetch[i][0], o0) || strstr(fetch[i][1], o0)) {
-            printf("%s %s\n", fetch[i][0], full[equiv[i]][2]);
+        if (strstr(fetch[i].codigo_disciplina, o0) || strstr(fetch[i].nome_disciplina_ascii, o0)) {
+            printf("%s %s\n", fetch[i].codigo_disciplina, fetch[i].nome_disciplina_utf8);
             j++;
         }
     }
