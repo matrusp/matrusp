@@ -655,15 +655,21 @@ window.onload = function() {
         }
     };
 
-/*
     ui_saver.identificar(identificador);
     var state = persistence.read_state();
     if (state && state != "") {
-        main.carregar(state);
+        if (window.DOMParser) {
+            var parser = new DOMParser();
+            var xml = parser.parseFromString(state, "text/xml");
+        } else {
+            var xml = new ActiveXObject("Microsoft.XMLDOM");
+            xml.async = "false";
+            xml.loadXML(state);
+        }
+        main.carregar(xml);
     } else {
         if (identificador != null && identificador != "") {
             ui_saver.cb_carregar(identificador);
         }
     }
-*/
 }
