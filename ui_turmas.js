@@ -295,11 +295,13 @@ function UI_turmas(id, height)
 
     /* procedures */
     self.create = create;
-    self.reset = function() { list.innerHTML = ""; insert_before = null; };
+    self.reset = function() { list.innerHTML = ""; insert_before = null; current_materia = null; };
     self.new_turma = new_turma;
     self.remove_turma = remove_turma;
     self.edit_start = edit_start;
     self.edit_end   = edit_end;
+    /* functions */
+    self.get_current = function() { return current_materia; };
     /* callbacks */
     self.cb_toggle_agrupar= null;
     self.cb_edit_turma   = null;

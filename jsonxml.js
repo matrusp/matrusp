@@ -32,8 +32,11 @@ function make_array(obj1, obj2)
 function json_fix_materia(materia)
 {
     make_array(materia, "turmas");
+    materia.selected = parseInt(materia.selected);
+    materia.agrupar  = parseInt(materia.agrupar);
     for (var k = 0; k < materia.turmas.length; k++) {
         var turma = materia.turmas[k];
+        turma.selected = parseInt(turma.selected);
         make_array(turma, "professores");
         make_array(turma, "horarios");
     }

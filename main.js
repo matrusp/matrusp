@@ -431,8 +431,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
     self.save_state = function() {
         var list = materias.list();
         var state = new Object();
+        var materia = ui_turmas.get_current();
+        materia = (materia == null) ? "" : materia.codigo;
         state.versao     = 4;
-        state.materia_selected = materias.get_selected().codigo;
+        state.materia_selected = materia;
         state.combinacao = combinacoes.current();
         state.materias   = new Array();
         for (var i = 0; i < list.length; i++) {
@@ -473,6 +475,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             return;
         }
         var ret = self.save_state();
+
+        persistence.write_state(ret);
+
         save_request = new XMLHttpRequest();
         save_request.savestr = identificador;
         save_request.onreadystatechange = function() {
@@ -505,15 +510,16 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         ui_turmas.reset();
 
         for (var i = 0; i < state.materias.length; i++) {
-            materia = materias.add_json(state.materias[i]);
+            var materia = materias.add_json(state.materias[i]);
             if (!materia) {
                 ui_logger.set_text("houve algum erro ao importar as mat\u00e9rias!", "lightcoral");
                 return;
             }
             ui_materias.add(materia);
-            ui_turmas.create(materia);
         }
-        ui_turmas.create(materias.get(state.materia_selected));
+        var materia = materias.get(state.materia_selected);
+        if (materia)
+            ui_turmas.create(materia);
         materias.set_selected(materias.get(state.materia_selected));
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
         if (identificador)
