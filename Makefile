@@ -15,7 +15,7 @@ ui_horario.js \
 combobox.js \
 main.js
 
-full2.h: header_gen.c turmas_db full.c fetch.c full2.c
+full2.h: header_gen.c turmas_db full2.c
 	gcc -Wall -O3 -std=c99 -o header_gen header_gen.c -I/usr/include/libxml2 -lxml2
 	./header_gen turmas_db fetch.h full.h
 	gcc -Wall -O3 -std=c99 -o full2 full2.c -lz
