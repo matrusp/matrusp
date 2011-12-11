@@ -49,10 +49,9 @@ function UI_combinacoes(id)
         button.ondblclick = function () { self.cb_next(); };
     }
     d2.appendChild(button);
-    d2.appendChild(document.createTextNode(" horas aula: ("));
+    d2.appendChild(document.createTextNode(" Horas aula: "));
     var horas_aula = document.createTextNode("0");
     d2.appendChild(horas_aula);
-    d2.appendChild(document.createTextNode(")"));
 
     /* procedures */
     self.set_current = function(n) { self.selecao_atual.value = n; };
