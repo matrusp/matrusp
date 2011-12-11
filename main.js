@@ -308,6 +308,15 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 for (hora = 0; hora < 14; hora++)
                     if (overlay[dia][hora]) {
                         var aula = {dia:dia,hora:hora,n:1};
+                        for (var k = 0; k < editando.aulas.length; k++) {
+                            var a2 = editando.aulas[k];
+                            if (a2.dia == dia && a2.hora == hora) {
+                                aula.sala = a2.sala;
+                                break;
+                            }
+                        }
+                        if (aula.sala == null)
+                            aula.sala = "SALA";
                         aulas.push(aula);
                     }
             editando.horario.aulas = aulas;

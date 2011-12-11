@@ -73,10 +73,12 @@ function Materias()
         var dia  = parseInt(str.slice(0,1)) - 2;
         var hora = horas[str.slice(2,6)];
         var n    = parseInt(str.slice(7));
+        var sala = str.slice(11,21);
         for (var j = 0; j < n; j++) {
             var aula = new Object();
             aula.dia = dia;
             aula.hora = hora+j;
+            aula.sala = sala;
             turma.aulas.push(aula);
         }
     }
@@ -249,7 +251,7 @@ function Materias()
         }
         return null;
     };
-    self.aulas_string = function(aula) { return (aula.dia+2) + "." + horas[aula.hora] + "-1 / CTC"; };
+    self.aulas_string = function(aula) { return (aula.dia+2) + "." + horas[aula.hora] + "-1 / " + aula.sala; };
     self.get = function(codigo) { return materias[codigo]; };
     self.get_selected = function() { return selected; };
     self.list = function() { return list; };
