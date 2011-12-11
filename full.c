@@ -4,7 +4,7 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "full.h"
+#include "full2.h"
 
 static int
 is_materia(char *s)
@@ -34,15 +34,23 @@ cmp_materia(char *a, char *b)
            (a[7] == b[7]);
 }
 
+extern char **environ;
 int main()
 {
-    int l = sizeof(full)/sizeof(full[0]);
+    int l = sizeof(full2)/sizeof(full2[0]);
+    int use_gzip = 0;
     char *p;
     int i;
 
+    for (i = 0; environ[i]; i++)
+        if (!strncmp(environ[i], "HTTP_ACCEPT_ENCODING", 20))
+            if (strstr(environ[i]+21, "deflate")) {
+                use_gzip = 1;
+                break;
+            }
+
     printf("Content-type: text/xml\n"
-           "Expires: -1\n"
-           "\n");
+           "Expires: -1\n");
 
     p = getenv("QUERY_STRING");
     if (!p)
@@ -52,15 +60,27 @@ int main()
         return 0;
     p += 2;
 
-    if (!is_materia(p))
+    if (!is_materia(p)) {
+        printf("\n");
         return 0;
+    }
 
     for (i = 0; i < l; i++) {
-        if (cmp_materia(full[i].codigo_disciplina, p)) {
-            printf("%s", full[i].result);
-            break;
+        if (cmp_materia(full2[i].codigo_disciplina, p)) {
+            if (use_gzip) {
+                printf("Content-Encoding: deflate\n"
+                       "Content-Length: %d\n"
+                       "\n", full2[i].result_deflate_length);
+                fwrite(full2[i].result_deflate, full2[i].result_deflate_length, 1, stdout);
+            } else {
+                printf("\n");
+                printf("%s", full2[i].result);
+            }
+            return 0;
         }
     }
+
+    printf("\n");
 
     return 0;
 }

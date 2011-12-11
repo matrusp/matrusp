@@ -16,12 +16,12 @@ int main(int argc, char **argv)
         uint8_t out[len];
         z_stream strm;
 
-        printf("static uint8_t %s_gzipped[] = { ", full[i].codigo_disciplina);
+        printf("static uint8_t %s_deflate[] = { ", full[i].codigo_disciplina);
 
         strm.zalloc = Z_NULL;
         strm.zfree  = Z_NULL;
         strm.opaque = Z_NULL;
-        if (deflateInit(&strm, Z_DEFAULT_COMPRESSION) != Z_OK)
+        if (deflateInit2(&strm, Z_BEST_COMPRESSION, Z_DEFLATED, -15, MAX_MEM_LEVEL, Z_DEFAULT_STRATEGY) != Z_OK)
             return -1;
         strm.avail_in  = len;
         strm.next_in   = (uint8_t *) full[i].result;
@@ -39,12 +39,12 @@ int main(int argc, char **argv)
     printf(
         "static struct {\n"
         "    char *codigo_disciplina;\n"
-        "    char *result_gzipped;\n"
-        "    int   result_gzipped_length;\n"
+        "    char *result_deflate;\n"
+        "    int   result_deflate_length;\n"
         "    char *result;\n"
         "} full2[] = {\n");
     for (i = 0; i < l; i++)
-        printf("    { \"%s\", %s_gzipped, sizeof(%s_gzipped), \"%s\" },\n",
+        printf("    { \"%s\", %s_deflate, sizeof(%s_deflate), \"%s\" },\n",
             full[i].codigo_disciplina, full[i].codigo_disciplina,
             full[i].codigo_disciplina, full[i].result);
     printf("};\n");
