@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <inttypes.h>
+#include <time.h>
 
 #include "fetch.h"
 
@@ -32,12 +33,16 @@ int main()
     char *p, *d, *d0, *o, *o0;
     size_t p_s, i_s, o_s;
     int l = sizeof(fetch)/sizeof(fetch[0]);
+    time_t now = time(0) + 20*60;
+    struct tm tm = *gmtime(&now);
+    char expires_buf[128];
     iconv_t to_ascii;
     int i, j = 0;
 
-    printf("Content-type: text/html\n"
-           "Expires: -1\n"
-           "\n");
+    printf("Content-type: text/html\n");
+    strftime(expires_buf, sizeof(expires_buf), "%a, %d %b %Y %H:%M:%S %Z", &tm);
+    printf("Expires: %s\n", expires_buf);
+    printf("\n");
 
     p = getenv("QUERY_STRING");
     if (!p)

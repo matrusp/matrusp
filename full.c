@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <inttypes.h>
+#include <time.h>
 
 #include "full2.h"
 
@@ -38,6 +39,9 @@ extern char **environ;
 int main()
 {
     int l = sizeof(full2)/sizeof(full2[0]);
+    time_t now = time(0) + 20*60;
+    struct tm tm = *gmtime(&now);
+    char expires_buf[128];
     int use_gzip = 0;
     char *p;
     int i;
@@ -49,8 +53,9 @@ int main()
                 break;
             }
 
-    printf("Content-type: text/xml\n"
-           "Expires: -1\n");
+    printf("Content-type: text/xml\n");
+    strftime(expires_buf, sizeof(expires_buf), "%a, %d %b %Y %H:%M:%S %Z", &tm);
+    printf("Expires: %s\n", expires_buf);
 
     p = getenv("QUERY_STRING");
     if (!p)
