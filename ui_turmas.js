@@ -12,7 +12,7 @@ function UI_turmas(id, height)
 
     list = document.getElementById(id);
 
-    var thiswidth = 330;
+    var thiswidth = 328;
 
     list.style.border = "1px solid black";
     list.style.width  = thiswidth + "px";
@@ -175,7 +175,7 @@ function UI_turmas(id, height)
         self.table.style.fontFamily = "monospace";
         self.table.style.tableLayout = "fixed";
         self.table.style.fontSize = "11px";
-        self.table.style.width="330px";
+        self.table.style.width= thiswidth + "px";
         self.table.cellPadding="1";
         self.table.cellSpacing="1";
 
