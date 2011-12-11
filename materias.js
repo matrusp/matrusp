@@ -11,8 +11,9 @@ function Materias()
     function reset() {
         materias = new Object();
         list = new Array();
+        for (var i = 0; i < cores.length; i++)
+            cores[i].taken = 0;
     }
-    reset();
 
     var horas = new Object();
     horas["0730"] =  0; horas[ 0] = "0730";
@@ -68,6 +69,9 @@ function Materias()
         }
         return get_color(taken+1);
     };
+
+    reset();
+
     function criar_aulas(turma, str)
     {
         var dia  = parseInt(str.slice(0,1)) - 2;
