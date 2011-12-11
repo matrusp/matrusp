@@ -515,12 +515,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 }
             }
         };
-        save_request.open("POST", "cgi-bin/save.cgi?q=" + encodeURIComponent(identificador), true);
+        save_request.open("POST", "cgi-bin/save2.cgi?q=" + encodeURIComponent(identificador), true);
         save_request.send(ret);
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
     self.carregar = function(xml, identificador) {
-        state = xml_to_state(xml);
+        var state = xml_to_state(xml);
 
         if (state.versao > 4) {
             ui_logger.set_text("erro ao tentar abrir horário de versão mais recente", "lightcoral");
@@ -568,7 +568,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 }
             }
         };
-        load_request.open("GET", "cgi-bin/load.cgi?q=" + encodeURIComponent(identificador), true);
+        load_request.open("GET", "cgi-bin/load2.cgi?q=" + encodeURIComponent(identificador), true);
         load_request.send(null);
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }

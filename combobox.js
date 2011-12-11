@@ -189,7 +189,7 @@ function Combobox(input, suggestions, ui_logger)
                 fetch_request = new XMLHttpRequest();
                 fetch_request.searchstr = fetch;
                 fetch_request.onreadystatechange = suggestions_onreadystatechange;
-                fetch_request.open("GET", "cgi-bin/fetch.cgi?q=" + encodeURIComponent(fetch.toUpperCase()), true);
+                fetch_request.open("GET", "cgi-bin/fetch2.cgi?q=" + encodeURIComponent(fetch.toUpperCase()), true);
                 fetch_request.send(null);
                 self.fetch = fetch;
                 self.pontos = new String();
@@ -233,7 +233,7 @@ function Combobox(input, suggestions, ui_logger)
         }
         full_requests[i].available = false;
         full_requests[i].codigo = codigo;
-        full_requests[i].open("GET", "cgi-bin/full.cgi?q=" + encodeURIComponent(codigo.toUpperCase()), true);
+        full_requests[i].open("GET", "cgi-bin/full2.cgi?q=" + encodeURIComponent(codigo.toUpperCase()), true);
         full_requests[i].onreadystatechange = list_onreadystatechange;
         full_requests[i].send(null);
         ui_logger.waiting("buscando '" + codigo + "'");
