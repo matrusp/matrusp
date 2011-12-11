@@ -213,7 +213,7 @@ function Combobox(input, suggestions, ui_logger)
                     clearTimeout(self.timer);
                     self.timer = null;
                 }
-                if (xml) {
+                if (this.responseText != "") {
                     self.cb_add_materia(this.codigo, xml);
                 } else {
                     ui_logger.set_text("'" + this.codigo + "' n\u00e3o adicionada", "lightcoral");
