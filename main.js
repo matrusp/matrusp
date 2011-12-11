@@ -127,10 +127,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
             var str = new_atividade_name();
             var codigo = "XXX" + str;
         } while (materias.get(codigo));
-        if (materias.get_nome(nome)) {
-            ui_logger.set_text("'" + codigo + "' ja foi adicionada", "lightcoral");
-            return;
-        }
         var materia = materias.new_item(codigo, nome);
         materias.new_turma(materia);
         ui_materias.add(materia);
