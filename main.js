@@ -697,4 +697,6 @@ window.onload = function() {
             ui_saver.cb_carregar(identificador);
         }
     }
+    if (combo.input.value == identificador)
+        combo.input.value = "";
 }
