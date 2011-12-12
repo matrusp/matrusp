@@ -170,21 +170,14 @@ function Materias()
         materia.selected = 1;
     }
     function remove_turma(materia, turma) {
-        for (var i in materia.horarios) {
-            var horario = materia.horarios[i];
-            if (horario.turma_representante == turma) {
-                for (var j in horario.turmas)
-                    delete horario.turmas[j];
-                delete materia.horarios[i];
-                break;
-            }
-        }
-        for (var i = 0; i < materia.turmas.length; i++) {
-            if (materia.turmas[i] == turma) {
-                materia.turmas.splice(i,1);
-                break;
-            }
-        }
+        var turmas = turma.horario.turmas;
+        for (var j in turmas)
+            for (var i = 0; i < materia.turmas.length; i++)
+                if (materia.turmas[i] == turmas[j]) {
+                    materia.turmas.splice(i,1);
+                    break;
+                }
+        fix_horarios(materia);
     }
     function add_json(materia)
     {
