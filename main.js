@@ -258,8 +258,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 break;
             }
         }
-// TODO maybe display turmas onmouseover
-//        ui_turmas.create(materia);
     };
     ui_materias.cb_onmouseout  = function(materia) {
         var c = combinacoes.get_current();
@@ -272,8 +270,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
                 break;
             }
         }
-// TODO maybe display turmas onmouseover
-//        ui_turmas.create(materias.get_selected());
     };
     ui_materias.cb_onclick     = function(materia) {
         ui_turmas.create(materia);
