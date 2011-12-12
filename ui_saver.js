@@ -13,6 +13,7 @@ function UI_saver(id)
     input.style.fontFamily = "monospace";
     input.style.fontSize   = "11px";
     input.style.width = "90px";
+    input.title = "Escolha um identificador qualquer para salvar/abrir seus horários. O identificador pode ser qualquer coisa (por exemplo seu número de matrícula). Cuidado: qualquer um pode usar qualquer identificador.";
     ui_saver.appendChild(input);
     ui_saver.appendChild(document.createTextNode(" "));
     var button = document.createElement("span");
@@ -62,8 +63,8 @@ function UI_saver(id)
         self.button_save.style.filter = "";
         self.button_load.style.opacity = "";
         self.button_load.style.filter = "";
-        self.button_save.title = "salvar histórico";
-        self.button_load.title = "abrir histórico";
+        self.button_save.title = "salvar horário";
+        self.button_load.title = "abrir horário";
         self.enabled = true;
     }
     self.input.onkeyup = function(e) {

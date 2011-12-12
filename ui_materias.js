@@ -108,6 +108,7 @@ function UI_materias(id, ui_combinacoes)
         data.innerHTML = materia.nome;
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.fontSize = "15px";
         data.style.MozUserSelect = "none";
         data.style.KhtmlUserSelect = "none";
         data.onselectstart = function () { return false; };
@@ -116,12 +117,13 @@ function UI_materias(id, ui_combinacoes)
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
         data.onclick = onmovedown;
-        data.innerHTML = "v";
+        data.innerHTML = "\u2193";
         data.title = "diminuir prioridade da matéria";
         data.style.width = "15px";
         data.style.textAlign = "center";
         row.appendChild(data);
         var data = document.createElement("td");
+        data.style.fontSize = "15px";
         data.style.MozUserSelect = "none";
         data.style.KhtmlUserSelect = "none";
         data.onselectstart = function () { return false; };
@@ -130,7 +132,7 @@ function UI_materias(id, ui_combinacoes)
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
         data.onclick = onmoveup;
-        data.innerHTML = "^";
+        data.innerHTML = "\u2191";
         data.title = "aumentar prioridade da matéria";
         data.style.width = "15px";
         data.style.textAlign = "center";

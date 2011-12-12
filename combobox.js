@@ -52,7 +52,7 @@ function Combobox(input, suggestions, ui_logger)
         self.selected_item = -1;
         self.suggestions.appendChild(self.ul);
         self.suggestions.style.minWidth = "300px";
-        list_add_item("Criar atividade nova");
+        list_add_item("Criar atividade extra", "Clique aqui para criar uma atividade extra-curricular, adicionando seus próprios horários");
         self.array[0].style.fontSize = "13px";
         self.array[0].style.fontWeight = "bold";
         self.array[0].onmouseup = function() {
@@ -63,8 +63,10 @@ function Combobox(input, suggestions, ui_logger)
         };
         list_hide();
     }
-    function list_add_item(str) {
+    function list_add_item(str, title) {
         var li = document.createElement("li");
+        if (title)
+            li.title = title;
         li.style.backgroundColor = "white";
         li.style.display = "block";
         li.style.width = "100%";
