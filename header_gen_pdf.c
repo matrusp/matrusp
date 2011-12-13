@@ -99,7 +99,19 @@ read_char(char c, int *entity_end, int *delimiter, char **object,
     }
 }
 
-static char *full[7] = { 0 };
+struct {
+    char *codigo_disciplina;
+    char *nome_turma;
+    char *nome_disciplina;
+    char *horas_aula;
+    char *vagas_ofertadas;
+    char *vagas_ocupadas;
+    char *alunos_especiais;
+    char *saldo_vagas;
+    char *pedidos_sem_vaga;
+    char *horarios;
+    char *professores;
+} full = { 0 };
 static char *fetch[2] = { 0 };
 static int string_i, is_string;
 static int string_len;
@@ -109,29 +121,29 @@ iconv_t to_ascii;
 
 static FILE *fp_fetch = NULL;
 static FILE *fp_full = NULL;
-static FILE *fp_equiv = NULL;
 static void
 print_materia(void)
 {
     static char lastc[10] = { 0 };
-    static int equiv = 0;
-    if (!full[0])
+    if (!full.codigo_disciplina)
         return;
     if (strcmp(lastc, fetch[0])) {
         fprintf(fp_fetch, "    { \"%s\", \"%s\" },\n", fetch[0], fetch[1]);
         strcpy(lastc, fetch[0]);
-        fprintf(fp_equiv, "    %d,\n", equiv);
     }
     fprintf(fp_full,
         "    { \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\" },\n",
-        full[0], /* código da disciplina */
-        full[1], /* nome da turma */
-        full[2], /* nome da disciplina */
-        full[3], /* horas-aula */
-        full[4], /* vagas */
-        full[5] ? full[5] : "" /* horário */,
-        full[6] ? full[6] : "" /* professor */);
-    equiv++;
+        full.codigo_disciplina,
+        full.nome_turma,
+        full.nome_disciplina,
+        full.horas_aula,
+        full.vagas_ofertadas,
+        full.vagas_ocupadas,
+        full.alunos_especiais,
+        full.saldo_vagas,
+        full.pedidos_sem_vaga,
+        full.horarios ? full.horarios : "",
+        full.professores ? full.professores : "");
 }
 static void
 freep(void *p2)
@@ -147,13 +159,22 @@ free_materia(void)
 {
     freep(&fetch[0]);
     freep(&fetch[1]);
-    freep(&full[0]);
-    freep(&full[1]);
-    freep(&full[2]);
-    freep(&full[3]);
-    freep(&full[4]);
-    freep(&full[5]);
-    freep(&full[6]);
+    freep(&full.codigo_disciplina);
+    freep(&full.nome_turma);
+    freep(&full.nome_disciplina);
+    freep(&full.horas_aula);
+    freep(&full.vagas_ofertadas);
+    freep(&full.codigo_disciplina);
+    freep(&full.nome_turma);
+    freep(&full.nome_disciplina);
+    freep(&full.horas_aula);
+    freep(&full.vagas_ofertadas);
+    freep(&full.vagas_ocupadas);
+    freep(&full.alunos_especiais);
+    freep(&full.saldo_vagas);
+    freep(&full.pedidos_sem_vaga);
+    freep(&full.horarios);
+    freep(&full.professores);
 }
 
 static char *
@@ -254,9 +275,9 @@ parse_line(char *line, size_t line_len)
                         if        (is_materia(string)) {
                             print_materia();
                             free_materia();
-                            full[0] = strdup(string);
+                            full.codigo_disciplina = strdup(string);
                             fetch[0] = strdup(string);
-                        } else if (full[6]) {
+                        } else if (full.professores) {
                             if (!strcmp(string, "de") ||
                                 !strcmp(string, "CADASTRO DE TURMAS") ||
                                 !strcmp(string, "20121") ||
@@ -285,7 +306,7 @@ parse_line(char *line, size_t line_len)
                             {
                             /* do nothing */
                             } else if (is_horario(string)) {
-                                strdupcat(&full[5], string);
+                                strdupcat(&full.horarios, string);
                             } else {
                                 int total_chars = strlen(string);
                                 int upper_case = 0;
@@ -301,35 +322,36 @@ parse_line(char *line, size_t line_len)
                                         only_I = 0;
                                 }
                                 if (lower_case || only_I) {
-                                    strdupcat(&full[2], string); /* nome da disciplina */
+                                    strdupcat(&full.nome_disciplina, string); /* nome da disciplina */
                                 } else if (upper_case) {
-                                    strdupcat(&full[6], string); /* nome do professor */
+                                    strdupcat(&full.professores, string); /* nome do professor */
                                 } else {
                                 fprintf(stderr, "unhandled string '%s' (%d/%d)\n", string, upper_case, lower_case);
                                 }
                             }
-                        } else if (full[5]) {
-                            full[6] = strdup_to_utf8(string);
-                        } else if (full[4]) {
-                            static int wait = 0;
-                            wait++;
-                            if (wait == 5) {
-                                if (is_horario(string)) {
-                                    full[5] = strdup(string);
-                                } else {
-                                    full[6] = strdup_to_utf8(string);
-                                }
-                                wait = 0;
+                        } else if (full.horarios) {
+                            full.professores = strdup_to_utf8(string);
+                        } else if (full.pedidos_sem_vaga) {
+                            if (is_horario(string)) {
+                                full.horarios = strdup(string);
+                            } else {
+                                full.professores = strdup_to_utf8(string);
                             }
-                        } else if (full[3]) {
-                            full[4] = strdup(string);
-                        } else if (full[2]) {
-                            full[3] = strdup(string);
-                        } else if (full[1]) {
-                            full[2] = strdup_to_utf8(string);
+                        } else if (full.saldo_vagas) {
+                            full.pedidos_sem_vaga = strdup(string);
+                        } else if (full.vagas_ocupadas) {
+                            full.saldo_vagas = strdup(string);
+                        } else if (full.vagas_ofertadas) {
+                            full.vagas_ocupadas = strdup(string);
+                        } else if (full.horas_aula) {
+                            full.vagas_ofertadas = strdup(string);
+                        } else if (full.nome_disciplina) {
+                            full.horas_aula = strdup(string);
+                        } else if (full.nome_turma) {
+                            full.nome_disciplina = strdup_to_utf8(string);
                             fetch[1] = strdup_to_ascii(string);
-                        } else if (full[0]) {
-                            full[1] = strdup(string);
+                        } else if (full.codigo_disciplina) {
+                            full.nome_turma = strdup(string);
                         }
                         string_i           = 0;
                         string[string_i  ] = 0;
@@ -382,8 +404,8 @@ int main(int argc, char *argv[])
     int fd_in = 0;
     int ret = -1;
 
-    if (argc < 5) {
-        fprintf(stderr, "usage: %s <input.pdf> <fetch.h> <full.h> <equiv.h>\n", argv[0]);
+    if (argc < 4) {
+        fprintf(stderr, "usage: %s <input.pdf> <fetch.h> <full.h>\n", argv[0]);
         goto end;
     }
 
@@ -409,19 +431,17 @@ int main(int argc, char *argv[])
         goto end;
     }
     fp_full = fopen(argv[3], "wb");
-    if (!fp_fetch) {
+    if (!fp_full) {
         fprintf(stderr, "could not open output file '%s'\n", argv[3]);
-        goto end;
-    }
-    fp_equiv = fopen(argv[4], "wb");
-    if (!fp_fetch) {
-        fprintf(stderr, "could not open output file '%s'\n", argv[4]);
         goto end;
     }
 
     fprintf(fp_fetch, "static char *fetch[][2] = {\n");
-    fprintf(fp_full, "static char *full[][7] = {\n");
-    fprintf(fp_equiv, "static int equiv[] = {\n");
+    fprintf(fp_full,
+        "static struct {\n"
+        "    char *codigo_disciplina;\n"
+        "    char *result;\n"
+        "} full[] = {\n");
 
     setlocale(LC_ALL, "");
 
@@ -498,12 +518,10 @@ int main(int argc, char *argv[])
 
     fprintf(fp_full, "};\n");
     fprintf(fp_fetch, "};\n");
-    fprintf(fp_equiv, "};\n");
 
     ret = 0;
 
 end:
-    if (fp_equiv) fclose(fp_equiv);
     if (fp_fetch) fclose(fp_fetch);
     if (fp_full) fclose(fp_full);
     if (buf_in) munmap((void*)buf_in, st.st_size);
