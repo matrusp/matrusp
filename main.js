@@ -184,8 +184,17 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         }
     };
     /* UI_materias */
-    ui_materias.cb_select      = function(codigo, checked) {
-        var materia = materias.get(codigo);
+    ui_materias.cb_changed = function(materia, attr, str) {
+        if (str == "") {
+            ui_logger.set_text("o código não pode ser vazio", "lightcoral");
+        } else if (attr == "codigo" && materias.get(str)) {
+            ui_logger.set_text("código '" + str + "' já está sendo usado", "lightcoral");
+        } else {
+            materias.changed(materia, attr, str);
+            update_all();
+        }
+    };
+    ui_materias.cb_select      = function(materia, checked) {
         materia.selected = checked ? 1 : 0;
         if (materia.selected) {
             var selected = 0;
@@ -641,7 +650,7 @@ window.onload = function() {
                 ui_turmas.cb_cancel();
             return;
         }
-        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input)
+        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input || ev.srcElement == ui_materias.input)
             return;
         if (ev.srcElement == ui_combinacoes.selecao_atual) {
             var pos = -1;

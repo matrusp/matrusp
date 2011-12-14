@@ -218,6 +218,16 @@ function Materias()
 
         return add_json(xml_to_materia(xml));
     }
+    function changed(materia, attr, str) {
+        if (attr == "nome") {
+            materia.nome = str;
+        } else if (attr == "codigo") {
+            var tmp = materias[materia.codigo];
+            delete materias[materia.codigo];
+            materias[str] = materia;
+            materia.codigo = str;
+        }
+    }
     function remove_item(materia) {
         color_available(materia.cor);
         for (var i = 0; i < list.length; i++) {
@@ -235,6 +245,7 @@ function Materias()
     self.add_json = add_json;
     self.add_xml = add_xml;
     self.new_item = new_item;
+    self.changed = changed;
     self.remove_item = remove_item;
     self.new_turma = new_turma;
     self.remove_turma = remove_turma;
