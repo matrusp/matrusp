@@ -38,7 +38,7 @@ function UI_campus(id)
     /* function */
     self.get_selected = function( ) { return select.selectedIndex; };
     /* procedures */
-    self.set_selected = function(n) { select.selectedIndex = n; };
+    self.set_selected = function(n) { select.selectedIndex = n; select.onchange(); };
     /* callbacks */
     self.cb_set_suffix = null;
 }
