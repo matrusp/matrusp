@@ -542,8 +542,9 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         if (materia)
             ui_turmas.create(materia);
         materias.set_selected(materias.get(state.materia_selected));
-        if (state.campus)
-            ui_campus.set_selected(state.campus);
+        if (!state.campus)
+            state.campus = 0;
+        ui_campus.set_selected(state.campus);
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
         if (identificador)
             persistence.write_id(identificador);
