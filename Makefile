@@ -2,6 +2,7 @@ all: full2.cgi fetch2.cgi save2.cgi load2.cgi matrufsc.js
 
 SRC=persistence.js \
 jsonxml.js \
+ui_campus.js \
 ui_saver.js \
 ui_logger.js \
 dconsole.js \
@@ -15,9 +16,14 @@ ui_horario.js \
 combobox.js \
 main.js
 
-header_gen_pdf: header_gen_pdf.c turmas.pdf
-	gcc -Wall -O3 -std=c99 -o header_gen_pdf header_gen_pdf.c -lz
-	./header_gen_pdf turmas.pdf fetch_pdf.h full_pdf.h equiv_pdf.h
+joinville: header_gen_pdf.c turmas.pdf
+	gcc -Wall -g3 -O3 -std=c99 -o header_gen_pdf header_gen_pdf.c -lz
+	./header_gen_pdf turmas.pdf fetch.h full.h
+	gcc -Wall -O3 -std=c99 -o full2 full2.c -lz
+	./full2 > full2.h
+	gcc -O3 -std=c99 -o full2_JOI.cgi full.c
+	gcc -O3 -std=c99 -o fetch2_JOI.cgi fetch.c
+	rm -f full2 fetch.h full2.h full.h
 
 full2.h: header_gen.c turmas_db full2.c
 	gcc -Wall -O3 -std=c99 -o header_gen header_gen.c -I/usr/include/libxml2 -lxml2
@@ -41,9 +47,10 @@ matrufsc.js: $(SRC)
 	cat $^ > $@
 
 clean::
-	rm -rf fetch.h full.h full2.h header_gen full2 fetch2.cgi full2.cgi save2.cgi load2.cgi matrufsc.js install *~
+	rm -rf fetch.h full.h full2.h header_gen full2 fetch2.cgi full2.cgi header_gen_pdf fetch2_JOI.cgi full2_JOI.cgi save2.cgi load2.cgi matrufsc.js install *~
 
 install:: all
 	mkdir -p install/cgi-bin
 	cp matrufsc.js index.html install/
 	cp full2.cgi fetch2.cgi save2.cgi load2.cgi install/cgi-bin/
+	-cp full2_JOI.cgi fetch2_JOI.cgi install/cgi-bin/

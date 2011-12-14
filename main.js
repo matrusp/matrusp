@@ -61,7 +61,7 @@ function UI_ajuda_popup(id)
 /**
  * @constructor
  */
-function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes, persistence)
+function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, materias, turmas, combinacoes, persistence)
 {
     var self = this;
 
@@ -455,6 +455,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         materia = (materia == null) ? "" : materia.codigo;
         state.versao     = 4;
         state.materia_selected = materia;
+        state.campus     = ui_campus.get_selected();
         state.combinacao = combinacoes.current();
         state.materias   = new Array();
         for (var i = 0; i < list.length; i++) {
@@ -541,6 +542,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         if (materia)
             ui_turmas.create(materia);
         materias.set_selected(materias.get(state.materia_selected));
+        if (state.campus)
+            ui_campus.set_selected(state.campus);
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
         if (identificador)
             persistence.write_id(identificador);
@@ -568,6 +571,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_
         load_request.send(null);
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
+    /* UI_campus */
+    ui_campus.cb_set_suffix = function(suffix) {
+        combo.suffix = suffix;
+    };
 }
 
 ajuda_shown = false;
@@ -581,6 +588,7 @@ window.onload = function() {
     var ui_horario     = new UI_horario("horario");
     var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
     var ui_logger      = new UI_logger("logger");
+    var ui_campus      = new UI_campus("campus");
     var ui_saver       = new UI_saver("saver");
 
     var ui_grayout     = new UI_grayout("grayout");
@@ -614,8 +622,8 @@ window.onload = function() {
     var turmas = new Turmas(ui_logger, ui_horario, combinacoes);
 
     dconsole2 = new Dconsole("dconsole");
-    var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_grayout, materias, turmas, combinacoes, persistence);
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
+    var main   = new Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, materias, turmas, combinacoes, persistence);
 
     combo.cb_add_materia = main.add_materia;
     combo.cb_new_materia = main.new_materia;

@@ -23,18 +23,6 @@
 #include <ctype.h>
 
 static int
-is_turma(char *s)
-{
-    /* turmas têm 4 ou 5 dígitos seguidos de uma possível letra */
-    return
-        (s[ 0] >= '0' && s[0] <= '9') &&
-        (s[ 1] >= '0' && s[1] <= '9') &&
-        (s[ 2] >= '0' && s[2] <= '9') &&
-        (s[ 3] >= '0' && s[3] <= '9') &&
-        (!s[4] || (s[ 4] >= '0' && s[4] <= '9')) &&
-        (!s[4] || !s[5] || (s[ 5] >= 'A' && s[5] <= 'Z'));
-}
-static int
 is_horario(char *s)
 {
     /* horarios são no formato "#.####-# / XXX-XXXXX" */
@@ -50,6 +38,63 @@ is_horario(char *s)
         (s[ 8] == ' ') &&
         (s[ 9] == '/') &&
         (s[10] == ' ');
+}
+static char **
+split_horarios(char *string)
+{
+    char *s = strdup(string);
+    char **ret;
+    char *bkp = s;
+    int count = 0;
+    int i;
+
+    while(*s) {
+        if (!is_horario(s))
+            return NULL;
+        s += 11;
+        while (*s && *s != ' ')
+            s++;
+        count++;
+        if (*s == ' ') {
+            *s = 0;
+            s++;
+        }
+    }
+
+    ret = malloc(sizeof(char*)*(count+1));
+    if (!ret)
+        return ret;
+    s = bkp;
+    for (i = 0; i < count; i++) {
+        char *s2 = strdup(s);
+        s += strlen(s)+1;
+        ret[i] = s2;
+    }
+    ret[i] = NULL;
+    free(bkp);
+
+    return ret;
+}
+static char **
+add_split_horarios(char **horarios, char *string)
+{
+    char **tmp = split_horarios(string);
+    int i, count;
+    char **ret;
+    for (i = 0; horarios[i]; i++);
+    count  = i;
+    for (i = 0; tmp[i]; i++);
+    count += i;
+    ret = malloc(sizeof(char*)*(count+1));
+    for (i = 0; horarios[i]; i++)
+        ret[i] = horarios[i];
+    count = i;
+    for (i = 0; tmp[i]; i++)
+        ret[count+i] = tmp[i];
+    ret[count+i] = NULL;
+    free(horarios);
+    free(tmp);
+    return ret;
 }
 static int
 is_materia(char *s)
@@ -109,16 +154,20 @@ struct {
     char *alunos_especiais;
     char *saldo_vagas;
     char *pedidos_sem_vaga;
-    char *horarios;
+    char **horarios;
     char *professores;
 } full = { 0 };
-static char *fetch[2] = { 0 };
+struct {
+    char *codigo_disciplina;
+    char *nome_disciplina;
+} fetch = { 0 };
 static int string_i, is_string;
 static int string_len;
 static char *string;
 iconv_t to_utf8;
 iconv_t to_ascii;
 
+static int has_started = 0;
 static FILE *fp_fetch = NULL;
 static FILE *fp_full = NULL;
 static void
@@ -127,23 +176,60 @@ print_materia(void)
     static char lastc[10] = { 0 };
     if (!full.codigo_disciplina)
         return;
-    if (strcmp(lastc, fetch[0])) {
-        fprintf(fp_fetch, "    { \"%s\", \"%s\" },\n", fetch[0], fetch[1]);
-        strcpy(lastc, fetch[0]);
+
+    if (!full.horarios) {
+        fprintf(stderr, "materia sem horarios! '%s' '%s'\n", full.codigo_disciplina, full.nome_turma);
+        return;
     }
-    fprintf(fp_full,
-        "    { \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\" },\n",
-        full.codigo_disciplina,
-        full.nome_turma,
-        full.nome_disciplina,
-        full.horas_aula,
-        full.vagas_ofertadas,
-        full.vagas_ocupadas,
-        full.alunos_especiais,
-        full.saldo_vagas,
-        full.pedidos_sem_vaga,
-        full.horarios ? full.horarios : "",
-        full.professores ? full.professores : "");
+
+    if (strcmp(lastc, fetch.codigo_disciplina)) {
+        fprintf(fp_fetch,
+            "    { \"%s\", \"%s\", \"%s\" },\n",
+            fetch.codigo_disciplina,
+            fetch.nome_disciplina,
+            full.nome_disciplina);
+
+        if (has_started)
+            fprintf(fp_full, "</materias>\" },\n");
+
+        fprintf(fp_full, "    { \"%s\", \"", full.codigo_disciplina);
+        fprintf(fp_full, "<materias>");
+        fprintf(fp_full, "<codigo>%s</codigo>", full.codigo_disciplina);
+        fprintf(fp_full, "<nome>%s</nome>", full.nome_disciplina);
+        strcpy(lastc, fetch.codigo_disciplina);
+        has_started = 1;
+    }
+
+    fprintf(fp_full, "<turmas>");
+    fprintf(fp_full, "<nome>%s</nome>", full.nome_turma);
+    fprintf(fp_full, "<horas_aula>%s</horas_aula>", full.horas_aula);
+    fprintf(fp_full, "<vagas_ofertadas>%s</vagas_ofertadas>", full.vagas_ofertadas);
+    fprintf(fp_full, "<vagas_ocupadas>%s</vagas_ocupadas>", full.vagas_ocupadas);
+    fprintf(fp_full, "<alunos_especiais>%s</alunos_especiais>", full.alunos_especiais);
+    fprintf(fp_full, "<saldo_vagas>%s</saldo_vagas>", full.saldo_vagas);
+    fprintf(fp_full, "<pedidos_sem_vaga>%s</pedidos_sem_vaga>", full.pedidos_sem_vaga);
+    for (int j = 0; full.horarios[j]; j++)
+        fprintf(fp_full, "<horarios>%s</horarios>", full.horarios[j]);
+    fprintf(fp_full, "<professores>%s</professores>", full.professores);
+    fprintf(fp_full, "</turmas>");
+
+    if        (!strcmp(full.codigo_disciplina, "EMB5010") && !strcmp(full.nome_turma, "02601B")) {
+    } else if (!strcmp(full.codigo_disciplina, "EMB5016") && !strcmp(full.nome_turma, "03601B")) {
+        free(full.nome_disciplina);
+        full.nome_disciplina = strdup("Cálculo Numérico [Reservada Curso]");
+        free(full.horarios[0]);
+        free(full.horarios);
+        full.horarios = malloc(3*sizeof(char*));
+        full.horarios[0] = strdup("2.1620-2 / JOI-JOI012");
+        full.horarios[1] = strdup("5.1010-2 / JOI-AUD01");
+        full.horarios[2] = NULL;
+    } else if (!strcmp(full.codigo_disciplina, "EMB5028") && !strcmp(full.nome_turma, "01601D")) {
+        free(full.nome_disciplina);
+        full.nome_disciplina = strdup("Comunicação e Expressão [Reservada Curso]");
+    } else if (!strcmp(full.codigo_disciplina, "EMB5115") && !strcmp(full.nome_turma, "06601A")) {
+        free(full.nome_disciplina);
+        full.nome_disciplina = strdup("Vibrações [Reservada Curso]");
+    }
 }
 static void
 freep(void *p2)
@@ -157,8 +243,9 @@ freep(void *p2)
 static void
 free_materia(void)
 {
-    freep(&fetch[0]);
-    freep(&fetch[1]);
+    int i;
+    freep(&fetch.codigo_disciplina);
+    freep(&fetch.nome_disciplina);
     freep(&full.codigo_disciplina);
     freep(&full.nome_turma);
     freep(&full.nome_disciplina);
@@ -173,6 +260,9 @@ free_materia(void)
     freep(&full.alunos_especiais);
     freep(&full.saldo_vagas);
     freep(&full.pedidos_sem_vaga);
+    if (full.horarios)
+        for (i = 0; full.horarios[i]; i++)
+            free(full.horarios[i]);
     freep(&full.horarios);
     freep(&full.professores);
 }
@@ -276,16 +366,16 @@ parse_line(char *line, size_t line_len)
                             print_materia();
                             free_materia();
                             full.codigo_disciplina = strdup(string);
-                            fetch[0] = strdup(string);
+                            fetch.codigo_disciplina = strdup(string);
                         } else if (full.professores) {
                             if (!strcmp(string, "de") ||
                                 !strcmp(string, "CADASTRO DE TURMAS") ||
                                 !strcmp(string, "20121") ||
                                 !strcmp(string, "Semestre:") ||
                                 !strcmp(string, "Departamento:") ||
-                                !strcmp(string, "TODOS") ||
+                                !strcmp(string, "EMB - Campus Joinville, Diretoria EMB") ||
                                 !strcmp(string, "Curso:") ||
-                                !strcmp(string, "TODOS") ||
+                                !strcmp(string, "601 - ENGENHARIA DA MOBILIDADE [Campus Joinville]") ||
                                 !strcmp(string, "Nome da Disciplina") ||
                                 !strcmp(string, "H.A.") ||
                                 !strcmp(string, "Horarios/Locais") ||
@@ -298,7 +388,7 @@ parse_line(char *line, size_t line_len)
                                 !strcmp(string, "Pedidos sem vaga") ||
                                 !strcmp(string, "Professores") ||
                                 !strcmp(string, "Curso") ||
-                                !strcmp(string, "29") ||
+                                !strcmp(string, "10") ||
                                 !strncmp(string, "SeTIC", 5) ||
                                 (string[0] == 'P' && (unsigned char) string[1] == 0xe1) ||
                                 (string[0] == 'H' && string[1] == 'o' && string[2] == 'r') ||
@@ -306,13 +396,14 @@ parse_line(char *line, size_t line_len)
                             {
                             /* do nothing */
                             } else if (is_horario(string)) {
-                                strdupcat(&full.horarios, string);
+                                full.horarios = add_split_horarios(full.horarios, string);
                             } else {
                                 int total_chars = strlen(string);
                                 int upper_case = 0;
                                 int lower_case = 0;
                                 int only_I = 1;
                                 int kkk;
+fprintf(stderr, "string: %s\n", string);
                                 for (kkk = 0; kkk < total_chars; kkk++) {
                                     if      (string[kkk] >= 'A' && string[kkk] <= 'Z')
                                         upper_case++;
@@ -333,14 +424,16 @@ parse_line(char *line, size_t line_len)
                             full.professores = strdup_to_utf8(string);
                         } else if (full.pedidos_sem_vaga) {
                             if (is_horario(string)) {
-                                full.horarios = strdup(string);
+                                full.horarios = split_horarios(string);
                             } else {
                                 full.professores = strdup_to_utf8(string);
                             }
                         } else if (full.saldo_vagas) {
-                            full.pedidos_sem_vaga = strdup(string);
-                        } else if (full.vagas_ocupadas) {
+                            full.pedidos_sem_vaga = strdup("0");
+                        } else if (full.alunos_especiais) {
                             full.saldo_vagas = strdup(string);
+                        } else if (full.vagas_ocupadas) {
+                            full.alunos_especiais = strdup(string);
                         } else if (full.vagas_ofertadas) {
                             full.vagas_ocupadas = strdup(string);
                         } else if (full.horas_aula) {
@@ -349,7 +442,7 @@ parse_line(char *line, size_t line_len)
                             full.horas_aula = strdup(string);
                         } else if (full.nome_turma) {
                             full.nome_disciplina = strdup_to_utf8(string);
-                            fetch[1] = strdup_to_ascii(string);
+                            fetch.nome_disciplina = strdup_to_ascii(string);
                         } else if (full.codigo_disciplina) {
                             full.nome_turma = strdup(string);
                         }
@@ -396,7 +489,7 @@ void parse_stream(const char *stream, int stream_size)
 
 int main(int argc, char *argv[])
 {
-    const uint8_t *buf_in = NULL;
+    char *buf_in = NULL;
     char *fname_in = argv[1];
     int do_deflate = 0;
     int length = 0;
@@ -436,7 +529,12 @@ int main(int argc, char *argv[])
         goto end;
     }
 
-    fprintf(fp_fetch, "static char *fetch[][2] = {\n");
+    fprintf(fp_fetch,
+        "static struct {\n"
+        "    char *codigo_disciplina;\n"
+        "    char *nome_disciplina_ascii;\n"
+        "    char *nome_disciplina_utf8;\n"
+        "} fetch[] = {\n");
     fprintf(fp_full,
         "static struct {\n"
         "    char *codigo_disciplina;\n"
@@ -471,7 +569,7 @@ int main(int argc, char *argv[])
             int out_size = 0;
             int out_offset = 0;
             unsigned char *out = NULL;
-            z_stream strm;
+            z_stream strm = { 0 };
             int ret;
 
             i += 7;
@@ -489,7 +587,7 @@ int main(int argc, char *argv[])
             }
 
             strm.avail_in = length;
-            strm.next_in = (char *) &buf_in[i];
+            strm.next_in = (unsigned char *) &buf_in[i];
 
             do {
                 out_size += chunk_size;
@@ -505,7 +603,7 @@ int main(int argc, char *argv[])
             } while (strm.avail_out == 0);
             out_size -= strm.avail_out;
 
-            parse_stream(out, out_size);
+            parse_stream((const char *) out, out_size);
 
             inflateEnd(&strm);
             free(out);
@@ -516,6 +614,8 @@ int main(int argc, char *argv[])
     iconv_close(to_utf8);
     iconv_close(to_ascii);
 
+    if (has_started)
+        fprintf(fp_full, "</materias>\" },\n");
     fprintf(fp_full, "};\n");
     fprintf(fp_fetch, "};\n");
 
