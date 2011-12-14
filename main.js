@@ -72,11 +72,11 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         for (var i = 0; i < m.length; i++) {
             var materia = m[i];
             if (materia.selected == -1) {
-                materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
+                materia.ui_turma.innerHTML = "<strike>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strike>";
                 materia.ui_selected.checked = 0;
                 materia.ui_selected.disabled = "disabled";
             } else if (materia.selected == 0) {
-                materia.ui_turma.innerHTML = "<strike>XXXXXX</strike>";
+                materia.ui_turma.innerHTML = "<strike>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strike>";
                 materia.ui_selected.checked = 0;
                 materia.ui_selected.disabled = "";
             }
