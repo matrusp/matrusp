@@ -73,10 +73,12 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             var materia = m[i];
             if (materia.selected == -1) {
                 materia.ui_turma.innerHTML = "<strike>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strike>";
+                materia.ui_turma.style.textAlign = "center";
                 materia.ui_selected.checked = 0;
                 materia.ui_selected.disabled = "disabled";
             } else if (materia.selected == 0) {
                 materia.ui_turma.innerHTML = "<strike>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strike>";
+                materia.ui_turma.style.textAlign = "center";
                 materia.ui_selected.checked = 0;
                 materia.ui_selected.disabled = "";
             }
@@ -97,6 +99,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 if (!turma)
                     var turma = c.horarios_combo[i].turma_representante;
                 turma.materia.ui_turma.innerHTML = turma.nome;
+                turma.materia.ui_turma.style.textAlign = "left";
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
                 horas_aula += parseInt(turma.horas_aula);
