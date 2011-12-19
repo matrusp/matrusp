@@ -149,9 +149,15 @@ function Materias()
         }
     }
     function new_turma(materia) {
+        var nok = true;
         do {
             var nome = new_turma_name();
-        } while (materia.turmas[nome]);
+            for (var k = 0; k < materia.turmas.length; k++)
+                if (materia.turmas[k].nome == nome)
+                    break;
+            if (k == materia.turmas.length)
+                nok = false;
+        } while (nok);
 
         var turma = new Object();
         turma.nome             = nome;
