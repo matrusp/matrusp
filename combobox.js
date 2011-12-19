@@ -23,7 +23,6 @@ function Combobox(input, suggestions, ui_logger)
     }
     function deselect_item()
     {
-        self.mouseisdown = false;
         if (self.selected_item != -1) {
             self.array[self.selected_item].style.backgroundColor = self.color_0;
             self.selected_item = -1;
@@ -36,7 +35,7 @@ function Combobox(input, suggestions, ui_logger)
     self.color_1 = "#eeeeee";
     self.input       = document.getElementById(input);
     self.suggestions = document.getElementById(suggestions);
-    self.mouseisdown = false;
+    self.mouse_over_suggestions = false;
 
     function list_create() {
         self.suggestions.style.border = "1px solid black";
@@ -51,6 +50,9 @@ function Combobox(input, suggestions, ui_logger)
         self.internal_div.style.margin = "0";
         self.array = new Array();
         self.selected_item = -1;
+
+        self.suggestions.onmouseover = function() { self.mouse_over_suggestions = true; };
+        self.suggestions.onmouseout  = function() { self.mouse_over_suggestions = false; };
         self.suggestions.appendChild(self.internal_div);
         self.suggestions.style.minWidth = "300px";
         list_add_item("Criar atividade extra", "Clique aqui para criar uma atividade extra-curricular, adicionando seus próprios horários");
@@ -81,8 +83,6 @@ function Combobox(input, suggestions, ui_logger)
         li.innerHTML   = str;
         li.onmouseover = function() { select_item(this.index); };
         li.onmouseout  = function() { deselect_item(); };
-        li.onclick     = function() { deselect_item(); };
-        li.onmousedown = function() { self.mouseisdown = true; return false; };
         li.onselectstart=function() { return false; }
         li.onmouseup   = function() {
             deselect_item();
@@ -111,14 +111,15 @@ function Combobox(input, suggestions, ui_logger)
         self.suggestions.style.display = "";
     }
     function list_hide() {
+        self.mouse_over_suggestions = false;
         self.suggestions.style.display = "none";
     }
 
     list_create();
 
     self.input.onblur    = function() {
-        if (self.mouseisdown) {
-            self.input.onfocus();
+        if (self.mouse_over_suggestions) {
+            self.input.focus();
         } else {
             list_hide();
         }
