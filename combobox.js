@@ -173,6 +173,7 @@ function Combobox(input, suggestions, ui_logger)
 
     self.input.onblur    = function() {
         if (self.mouse_over_suggestions) {
+            setTimeout("document.getElementById(\"" + input + "\").focus();",1);
             self.input.focus();
         } else {
             list_hide();
