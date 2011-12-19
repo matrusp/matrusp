@@ -57,6 +57,8 @@ function UI_turmas(id, height)
     function remove_turma(turma) {
         var row = turma.row;
         row.parentNode.removeChild(row);
+        if (self.table.offsetHeight < list.offsetHeight)
+            self.table.style.width = thiswidth + "px";
     }
     function remove() {
         var row = this.parentNode;
@@ -103,9 +105,8 @@ function UI_turmas(id, height)
 
         self.tbody.insertBefore(row, insert_before);
 
-        /* TODO determine scrollbar width */
         if (self.table.offsetHeight >= list.offsetHeight)
-            self.table.style.width="310px";
+            self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
     };
     function new_turma(horario) {
         var row  = document.createElement("tr");
@@ -285,9 +286,8 @@ function UI_turmas(id, height)
         self.table.appendChild(self.tbody);
         list.appendChild(self.table);
 
-        /* TODO determine scrollbar width */
         if (self.table.offsetHeight >= list.offsetHeight)
-            self.table.style.width="310px";
+            self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
     }
 
     self.old_cb_onmouseover = null;

@@ -593,6 +593,12 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
 ajuda_shown = false;
 mudancas = false;
 window.onload = function() {
+    var scrollbar_test = document.createElement("div");
+    scrollbar_test.style.overflow = "scroll";
+    document.body.appendChild(scrollbar_test);
+    document.scrollbar_width = scrollbar_test.offsetWidth - scrollbar_test.clientWidth;
+    document.body.removeChild(scrollbar_test);
+
     var persistence = new Persistence();
     var identificador = persistence.read_id();
 

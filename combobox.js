@@ -50,11 +50,7 @@ function Combobox(input, suggestions, ui_logger)
         self.internal_div.style.backgroundColor = "white";
         self.internal_div.style.padding = "0";
         self.internal_div.style.zIndex = "1";
-        var test = document.createElement("div");
-        test.style.overflow = "scroll";
-        self.suggestions.appendChild(test);
-        self.internal_div.style.marginRight = (test.offsetWidth - test.clientWidth) + "px";
-        self.suggestions.removeChild(test);
+        self.internal_div.style.marginRight = document.scrollbar_width + "px";
 
         self.array = new Array();
         self.selected_item = -1;
