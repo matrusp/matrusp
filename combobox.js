@@ -102,9 +102,8 @@ function Combobox(input, suggestions, ui_logger)
             list_add_item(split[i]);
     }
     function list_clear() {
-        for (var i = 1; i < self.array.length; i++) {
+        for (var i = 1; i < self.array.length; i++)
             self.internal_div.removeChild(self.array[i]);
-        }
         self.array.splice(1, self.array.length);
         self.selected_item = -1;
     };
