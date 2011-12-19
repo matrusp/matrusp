@@ -127,7 +127,7 @@ function Combobox(input, suggestions, ui_logger)
         self.timer = setTimeout((function(t){return function(){t.updatesearch();}})(self), 200);
     }
     var more_suggestions = function() {
-        if ((this.readyState == 4) && (this.status == 200)) {
+        if ((this.readyState == 4) && (this.status == 200) && self.timer) {
             var str = this.responseText;
             if (str.length > 0) {
                 self.internal_div.removeChild(self.array[self.more]);
