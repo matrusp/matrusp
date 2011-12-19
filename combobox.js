@@ -195,7 +195,6 @@ function Combobox(input, suggestions, ui_logger)
                 fetch_request.open("GET", "cgi-bin/fetch2" + self.suffix + ".cgi?q=" + encodeURIComponent(fetch.toUpperCase()), true);
                 fetch_request.send(null);
                 self.fetch = fetch;
-                self.pontos = new String();
                 ui_logger.waiting("procurando '" + fetch + "'");
                 lastfetch = fetch;
             }
