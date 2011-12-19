@@ -121,7 +121,10 @@ extract_turmas(const char *content, int length)
             char *pedidos_sem_vaga;
             char **horarios;
             char **professores;
-        } full;
+        } full = { 0 };
+        xmlNodePtr child;
+        int i = 0;
+
         xmlNodePtr codigo_disciplina = tr->children->next->next->next;
         xmlNodePtr nome_turma        = codigo_disciplina->next;
         xmlNodePtr nome_disciplina   = nome_turma       ->next;
@@ -136,7 +139,24 @@ extract_turmas(const char *content, int length)
 
         full.codigo_disciplina  = (char *) xmlNodeGetContent(codigo_disciplina->children);
         full.nome_turma         = (char *) xmlNodeGetContent(nome_turma       ->children);
-        full.nome_disciplina    = (char *) xmlNodeGetContent(nome_disciplina  ->children);
+        for (child = nome_disciplina->children; child; child = child->next) {
+            if (child->type == 3) {
+                char *tmp = (char *) xmlNodeGetContent(child);
+                if (!full.nome_disciplina) {
+                    full.nome_disciplina = strdup(tmp);
+                } else {
+                    int l1 = strlen(full.nome_disciplina);
+                    int l2 = strlen(tmp);
+                    char *nome = malloc(l1 + l2 + 2);
+                    strcpy(nome     , full.nome_disciplina);
+                    nome[l1] = ' ';
+                    strcpy(nome+l1+1, tmp);
+                    nome[l1+1+l2] = 0x00;
+                    full.nome_disciplina = nome;
+                }
+                xmlFree(tmp);
+            }
+        }
         full.horas_aula         = (char *) xmlNodeGetContent(horas_aula       ->children);
         full.vagas_ofertadas    = (char *) xmlNodeGetContent(vagas_ofertadas  ->children);
         full.vagas_ocupadas     = (char *) xmlNodeGetContent(vagas_ocupadas   ->children);
@@ -184,6 +204,21 @@ extract_turmas(const char *content, int length)
         for (int j = 0; full.professores[j]; j++)
             fprintf(fp_full, "<professores>%s</professores>", full.professores[j]);
         fprintf(fp_full, "</turmas>");
+
+        xmlFree(full.codigo_disciplina);
+        xmlFree(full.nome_turma       );
+        free   (full.nome_disciplina  );
+        xmlFree(full.horas_aula       );
+        xmlFree(full.vagas_ofertadas  );
+        xmlFree(full.vagas_ocupadas   );
+        xmlFree(full.alunos_especiais );
+        xmlFree(full.saldo_vagas      );
+        for (i = 0; full.professores[i]; i++)
+            xmlFree(full.professores[i]);
+        free(full.professores);
+        for (i = 0; full.horarios[i]; i++)
+            xmlFree(full.horarios[i]);
+        free(full.horarios);
 
         tr = tr->next;
     }
