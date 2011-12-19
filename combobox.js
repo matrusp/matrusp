@@ -189,7 +189,7 @@ function Combobox(input, suggestions, ui_logger)
 
         if (fetch.length > 0) {
             if (fetch != lastfetch) {
-                fetch_request = new XMLHttpRequest();
+                var fetch_request = new XMLHttpRequest();
                 fetch_request.searchstr = fetch;
                 fetch_request.onreadystatechange = suggestions_onreadystatechange;
                 fetch_request.open("GET", "cgi-bin/fetch2" + self.suffix + ".cgi?q=" + encodeURIComponent(fetch.toUpperCase()), true);
