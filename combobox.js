@@ -38,16 +38,24 @@ function Combobox(input, suggestions, ui_logger)
     self.mouse_over_suggestions = false;
 
     function list_create() {
+        self.suggestions.style.overflowY = "auto";
+        self.suggestions.style.overflowX = "hidden";
+        self.suggestions.style.maxHeight = "300px";
         self.suggestions.style.border = "1px solid black";
         self.suggestions.style.position = "absolute";
         self.suggestions.style.padding = "0";
         self.suggestions.style.margin = "0";
+        self.suggestions.style.backgroundColor = "white";
         self.internal_div = document.createElement("div");
         self.internal_div.style.backgroundColor = "white";
-        self.internal_div.style.border = "1px dotted";
-        self.internal_div.style.padding = "1px";
+        self.internal_div.style.padding = "0";
         self.internal_div.style.zIndex = "1";
-        self.internal_div.style.margin = "0";
+        var test = document.createElement("div");
+        test.style.overflow = "scroll";
+        self.suggestions.appendChild(test);
+        self.internal_div.style.marginRight = (test.offsetWidth - test.clientWidth) + "px";
+        self.suggestions.removeChild(test);
+
         self.array = new Array();
         self.selected_item = -1;
 
@@ -76,9 +84,10 @@ function Combobox(input, suggestions, ui_logger)
         var li = document.createElement("div");
         if (title)
             li.title = title;
+        li.style.whiteSpace = "nowrap";
         li.style.backgroundColor = "white";
         li.style.display = "block";
-        li.style.width = "100%";
+        li.style.width = "110%";
 
         li.innerHTML   = str;
         li.onmouseover = function() { select_item(this.index); };
@@ -95,17 +104,66 @@ function Combobox(input, suggestions, ui_logger)
         li.index = self.array.length;
         self.array.push(li);
         self.internal_div.appendChild(li);
+        return self.array.length-1;
     };
+    self.stopsearch = function() {
+        if (self.timer) {
+            clearTimeout(self.timer);
+            self.timer = null;
+        }
+    }
+    self.updatesearch = function() {
+        if (!self.more)
+            return;
+        self.pontos += ".";
+        if (self.pontos == "....")
+            self.pontos = ".";
+        self.array[self.more].innerHTML = self.str + self.pontos;
+        self.timer = setTimeout((function(t){return function(){t.updatesearch();}})(self), 200);
+    }
+    var more_suggestions = function() {
+        if ((this.readyState == 4) && (this.status == 200)) {
+            var str = this.responseText;
+            if (str.length > 0) {
+                self.internal_div.removeChild(self.array[self.more]);
+                self.array.splice(self.more, 1);
+                self.more = null;
+                list_add_items(str);
+                self.stopsearch();
+            } else {
+                self.internal_div.removeChild(self.array[self.more]);
+                self.array.splice(self.more, 1);
+                self.more = null;
+            }
+        }
+    }
     function list_add_items(str) {
         var split = str.split("\n");
         for (var i = 0; i < split.length - 1; i++)
             list_add_item(split[i]);
+        if (split.length == 11) {
+            self.more = list_add_item("Buscar mais...");
+            self.array[self.more].style.fontSize = "13px";
+            self.array[self.more].style.fontWeight = "bold";
+            self.array[self.more].onmouseup = function() {
+                var fetch_request = new XMLHttpRequest();
+                fetch_request.onreadystatechange = more_suggestions;
+                fetch_request.open("GET", "cgi-bin/fetch2" + self.suffix + ".cgi?p=" + self.page++ + "&q=" + encodeURIComponent(self.fetch.toUpperCase()), true);
+                fetch_request.send(null);
+                self.str = "Buscando mais";
+                self.pontos = ".";
+                self.updatesearch();
+            };
+        } else {
+            self.more = 0;
+        }
     }
     function list_clear() {
         for (var i = 1; i < self.array.length; i++)
             self.internal_div.removeChild(self.array[i]);
         self.array.splice(1, self.array.length);
         self.selected_item = -1;
+        self.page = 1;
     };
     function list_show() {
         self.suggestions.style.display = "";
