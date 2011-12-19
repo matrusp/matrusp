@@ -139,6 +139,7 @@ function Combobox(input, suggestions, ui_logger)
                 self.internal_div.removeChild(self.array[self.more]);
                 self.array.splice(self.more, 1);
                 self.more = null;
+                self.stopsearch();
             }
         }
     }
@@ -167,6 +168,7 @@ function Combobox(input, suggestions, ui_logger)
         select_item(first);
     }
     function list_clear() {
+        self.stopsearch();
         for (var i = 1; i < self.array.length; i++)
             self.internal_div.removeChild(self.array[i]);
         self.array.splice(1, self.array.length);
