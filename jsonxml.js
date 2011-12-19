@@ -56,6 +56,8 @@ function xml_to_state(xml)
     make_array(state, "materias");
     for (var k = 0; k < state.materias.length; k++)
         json_fix_materia(state.materias[k]);
+    if (state.combinacao)
+        state.combinacao = parseInt(state.combinacao);
     return state;
 }
 function json_to_xml(json) {
