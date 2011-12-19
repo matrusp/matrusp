@@ -142,26 +142,29 @@ function Combobox(input, suggestions, ui_logger)
             }
         }
     }
+    function do_search_more() {
+        var fetch_request = new XMLHttpRequest();
+        fetch_request.onreadystatechange = more_suggestions;
+        fetch_request.open("GET", "cgi-bin/fetch2" + self.suffix + ".cgi?p=" + self.page++ + "&q=" + encodeURIComponent(self.fetch.toUpperCase()), true);
+        fetch_request.send(null);
+        self.str = "Buscando mais";
+        self.pontos = ".";
+        self.updatesearch();
+    };
     function list_add_items(str) {
         var split = str.split("\n");
+        var first = self.array.length;
         for (var i = 0; i < split.length - 1; i++)
             list_add_item(split[i]);
         if (split.length == 11) {
             self.more = list_add_item("Buscar mais...");
             self.array[self.more].style.fontSize = "13px";
             self.array[self.more].style.fontWeight = "bold";
-            self.array[self.more].onmouseup = function() {
-                var fetch_request = new XMLHttpRequest();
-                fetch_request.onreadystatechange = more_suggestions;
-                fetch_request.open("GET", "cgi-bin/fetch2" + self.suffix + ".cgi?p=" + self.page++ + "&q=" + encodeURIComponent(self.fetch.toUpperCase()), true);
-                fetch_request.send(null);
-                self.str = "Buscando mais";
-                self.pontos = ".";
-                self.updatesearch();
-            };
+            self.array[self.more].onmouseup = do_search_more;
         } else {
             self.more = 0;
         }
+        select_item(first);
     }
     function list_clear() {
         for (var i = 1; i < self.array.length; i++)
@@ -199,6 +202,11 @@ function Combobox(input, suggestions, ui_logger)
             deselect_item();
             list_hide();
         } else if (c == 13 /* enter */) {
+            if (self.more && self.selected_item == self.more) {
+                do_search_more();
+                deselect_item();
+                return;
+            } else
             if (self.selected_item == 0) {
                 deselect_item();
                 list_hide();
