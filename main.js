@@ -672,6 +672,11 @@ window.onload = function() {
     document.onkeydown = function(e) {
         var ev = e ? e : event;
         var c = ev.keyCode;
+        var elm = ev.target;
+        if (!elm)
+            elm = ev.srcElement;
+        if (elm.nodeType == 3) // defeat Safari bug
+            elm = elm.parentNode;
         if (ajuda_shown && c == 27) {
             fechar_ajuda_obj.onclick();
             return;
@@ -681,32 +686,32 @@ window.onload = function() {
                 ui_turmas.cb_cancel();
             return;
         }
-        if (ev.srcElement == combo.input || ev.srcElement == ui_saver.input || ev.srcElement == ui_materias.input)
+        if (elm == combo.input || elm == ui_saver.input || elm == ui_materias.input)
             return;
-        if (ev.srcElement == ui_combinacoes.selecao_atual) {
+        if (elm == ui_combinacoes.selecao_atual) {
             var pos = -1;
             if (document.selection) {
                 var range = document.selection.createRange();
-                range.moveStart('character', -ev.srcElement.value.length);
+                range.moveStart('character', -elm.value.length);
                 pos = range.text.length;
             } else {
-                pos = ev.srcElement.selectionStart;
+                pos = elm.selectionStart;
             }
             if (c == 13) {
                 ui_combinacoes.selecao_atual.blur();
                 ui_combinacoes.selecao_atual.focus();
-            } else if (pos == ev.srcElement.value.length && c == 39) {
+            } else if (pos == elm.value.length && c == 39) {
                 main.next();
             } else if (pos == 0 && c == 37) {
                 main.previous();
                 if (document.selection) {
-                    var range = ev.srcElement.createTextRange();
+                    var range = elm.createTextRange();
                     range.collapse(true);
                     range.moveStart('character', 0);
                     range.moveEnd('character', 0);
                     range.select();
                 } else {
-                    ev.srcElement.selectionStart = 0;
+                    elm.selectionStart = 0;
                 }
             }
             return;
