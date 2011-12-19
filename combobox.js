@@ -43,15 +43,15 @@ function Combobox(input, suggestions, ui_logger)
         self.suggestions.style.position = "absolute";
         self.suggestions.style.padding = "0";
         self.suggestions.style.margin = "0";
-        self.ul = document.createElement("ul");
-        self.ul.style.backgroundColor = "white";
-        self.ul.style.border = "1px dotted";
-        self.ul.style.padding = "1px";
-        self.ul.style.zIndex = "1";
-        self.ul.style.margin = "0";
+        self.internal_div = document.createElement("div");
+        self.internal_div.style.backgroundColor = "white";
+        self.internal_div.style.border = "1px dotted";
+        self.internal_div.style.padding = "1px";
+        self.internal_div.style.zIndex = "1";
+        self.internal_div.style.margin = "0";
         self.array = new Array();
         self.selected_item = -1;
-        self.suggestions.appendChild(self.ul);
+        self.suggestions.appendChild(self.internal_div);
         self.suggestions.style.minWidth = "300px";
         list_add_item("Criar atividade extra", "Clique aqui para criar uma atividade extra-curricular, adicionando seus próprios horários");
         self.array[0].style.fontSize = "13px";
@@ -71,7 +71,7 @@ function Combobox(input, suggestions, ui_logger)
         self.suggestions.style.zIndex = "3000";
     }
     function list_add_item(str, title) {
-        var li = document.createElement("li");
+        var li = document.createElement("div");
         if (title)
             li.title = title;
         li.style.backgroundColor = "white";
@@ -94,7 +94,7 @@ function Combobox(input, suggestions, ui_logger)
         li.codigo = str.split(" ")[0];
         li.index = self.array.length;
         self.array.push(li);
-        self.ul.appendChild(li);
+        self.internal_div.appendChild(li);
     };
     function list_add_items(str) {
         var split = str.split("\n");
@@ -103,7 +103,7 @@ function Combobox(input, suggestions, ui_logger)
     }
     function list_clear() {
         for (var i = 1; i < self.array.length; i++) {
-            self.ul.removeChild(self.array[i]);
+            self.internal_div.removeChild(self.array[i]);
         }
         self.array.splice(1, self.array.length);
         self.selected_item = -1;
