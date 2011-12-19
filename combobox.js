@@ -92,7 +92,6 @@ function Combobox(input, suggestions, ui_logger)
     };
     function list_add_items(str) {
         var split = str.split("\n");
-        list_clear();
         for (var i = 0; i < split.length - 1; i++)
             list_add_item(split[i]);
     }
@@ -158,6 +157,7 @@ function Combobox(input, suggestions, ui_logger)
             (this.searchstr == lastfetch)) {
             var str = this.responseText;
             if (str.length > 0) {
+                list_clear();
                 list_add_items(str);
                 list_show();
                 var n = str.split("\n").length - 1;
