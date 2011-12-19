@@ -541,7 +541,7 @@ int main(int argc, char *argv[])
         "    char *result;\n"
         "} full[] = {\n");
 
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "en_US.utf8");
 
     to_utf8 = iconv_open("utf8", "iso-8859-1");
     if (to_utf8 == (iconv_t) -1) {

@@ -250,7 +250,7 @@ int main(int argc, char *argv[])
         "    char *result;\n"
         "} full[] = {\n");
 
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "en_US.utf8");
 
     to_ascii = iconv_open("ASCII//TRANSLIT", "utf8");
     if (to_ascii == (iconv_t) -1) {
