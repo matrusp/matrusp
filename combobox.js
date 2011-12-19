@@ -18,6 +18,15 @@ function Combobox(input, suggestions, ui_logger)
         } else {
             self.selected_item = item;
         }
+        var s_top    = self.suggestions.scrollTop;
+        var s_height = self.suggestions.clientHeight;
+        var i_top    = self.array[self.selected_item].offsetTop;
+        var i_height = self.array[self.selected_item].clientHeight;
+        if        ( s_top             > i_top) {
+            self.suggestions.scrollTop = i_top;
+        } else if ((s_top + s_height) < (i_top + i_height)) {
+            self.suggestions.scrollTop = i_top + i_height - s_height;
+        }
         self.array[self.selected_item].style.backgroundColor = self.color_1;
         list_show();
     }
