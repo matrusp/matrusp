@@ -36,13 +36,13 @@ function Combobox(input, suggestions, ui_logger)
     self.color_1 = "#eeeeee";
     self.input       = document.getElementById(input);
     self.suggestions = document.getElementById(suggestions);
-    self.suggestions.style.border = "1px solid black";
-    self.suggestions.style.position = "absolute";
-    self.suggestions.style.padding = "0";
-    self.suggestions.style.margin = "0";
     self.mouseisdown = false;
 
     function list_create() {
+        self.suggestions.style.border = "1px solid black";
+        self.suggestions.style.position = "absolute";
+        self.suggestions.style.padding = "0";
+        self.suggestions.style.margin = "0";
         self.ul = document.createElement("ul");
         self.ul.style.backgroundColor = "white";
         self.ul.style.border = "1px dotted";
@@ -63,6 +63,12 @@ function Combobox(input, suggestions, ui_logger)
             self.input.blur();
         };
         list_hide();
+
+        self.input.style.fontFamily = "monospace";
+        self.input.style.fontSize   = "11px";
+        self.suggestions.style.fontFamily = "monospace";
+        self.suggestions.style.fontSize   = "11px";
+        self.suggestions.style.zIndex = "3000";
     }
     function list_add_item(str, title) {
         var li = document.createElement("li");
@@ -110,12 +116,6 @@ function Combobox(input, suggestions, ui_logger)
     }
 
     list_create();
-
-    self.input.style.fontFamily = "monospace";
-    self.input.style.fontSize   = "11px";
-    self.suggestions.style.fontFamily = "monospace";
-    self.suggestions.style.fontSize   = "11px";
-    self.suggestions.style.zIndex = "3000";
 
     self.input.onblur    = function() {
         if (self.mouseisdown) {
