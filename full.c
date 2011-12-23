@@ -38,9 +38,9 @@ cmp_materia(char *a, char *b)
 extern char **environ;
 int main()
 {
-    int l = sizeof(full2)/sizeof(full2[0]);
     time_t now = time(0) + 20*60;
     struct tm tm = *gmtime(&now);
+    const struct mapping *r;
     char expires_buf[128];
     int use_gzip = 0;
     char *p;
@@ -70,19 +70,20 @@ int main()
         return 0;
     }
 
-    for (i = 0; i < l; i++) {
-        if (cmp_materia(full2[i].codigo_disciplina, p)) {
-            if (use_gzip) {
-                printf("Content-Encoding: deflate\n"
-                       "Content-Length: %d\n"
-                       "\n", full2[i].result_deflate_length);
-                fwrite(full2[i].result_deflate, full2[i].result_deflate_length, 1, stdout);
-            } else {
-                printf("\n");
-                printf("%s", full2[i].result);
-            }
-            return 0;
+    if ((r = in_word_set(p, strlen(p)))) {
+        if (use_gzip) {
+            const char *deflate        = full_result[r->index].deflate;
+            const int   deflate_length = full_result[r->index].deflate_length;
+            printf("Content-Encoding: deflate\n"
+                    "Content-Length: %d\n"
+                    "\n", deflate_length);
+            fwrite(deflate, deflate_length, 1, stdout);
+        } else {
+            const char *text = full_result[r->index].text;
+            printf("\n");
+            printf("%s", text);
         }
+        return 0;
     }
 
     printf("\n");
