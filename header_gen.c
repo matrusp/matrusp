@@ -1,4 +1,4 @@
-#define _XOPEN_SOURCE 500
+#define _XOPEN_SOURCE 700
 #include <stdio.h>
 #include <inttypes.h>
 #include <stdlib.h>
@@ -17,39 +17,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <locale.h>
-#include <iconv.h>
-#include <errno.h>
+#include "utf8_to_ascii.h"
+#include <assert.h>
 
 #include <ctype.h>
-
-iconv_t to_ascii;
 
 static int has_started = 0;
 static FILE *fp_fetch = NULL;
 static FILE *fp_full = NULL;
-
-static char *
-strdup_to_ascii(char *string)
-{
-    char ascii_string[1024];
-    char *i = string;
-    char *o = ascii_string;
-    char *p;
-    size_t o_s = sizeof(ascii_string);
-    size_t i_s = strlen(string)+1;
-    int ret = iconv(to_ascii, &i, &i_s, &o, &o_s);
-    if (ret == -1) {
-        fprintf(stderr, "%s:%d some error with iconv '%s' %d\n", __FILE__, __LINE__, string, errno);
-        exit(1);
-    }
-    p = ascii_string;
-    while (*p) {
-        *p = toupper(*p);
-        p++;
-    }
-    return strdup(ascii_string);
-}
 
 static xmlNodePtr
 get_child(xmlNodePtr parent, const char *name)
@@ -167,8 +142,10 @@ extract_turmas(const char *content, int length)
         full.horarios           = get_list(horarios   );
         full.professores        = get_list(professores);
 
-        fetch.codigo_disciplina = strdup_to_ascii(full.codigo_disciplina);
-        fetch.nome_disciplina = strdup_to_ascii(full.nome_disciplina);
+        fetch.codigo_disciplina = utf8_to_ascii(full.codigo_disciplina, 0);
+        assert(fetch.codigo_disciplina);
+        fetch.nome_disciplina = utf8_to_ascii(full.nome_disciplina, 0);
+        assert(fetch.nome_disciplina);
 
 
         if (strcmp(lastc, fetch.codigo_disciplina)) {
@@ -285,14 +262,6 @@ int main(int argc, char *argv[])
         "    char *result;\n"
         "} full[] = {\n");
 
-    setlocale(LC_ALL, "en_US.utf8");
-
-    to_ascii = iconv_open("ASCII//TRANSLIT", "utf8");
-    if (to_ascii == (iconv_t) -1) {
-        fprintf(stderr, "oh, bummer!\n");
-        return -1;
-    }
-
     for (int i = 0; i < st.st_size - lend; i++) {
         if        (!strncmp((char *) &buf_in[i], start, lstart)) {
             start_at = i;
@@ -301,8 +270,6 @@ int main(int argc, char *argv[])
             extract_turmas((char *) &buf_in[start_at], end_at - start_at);
         }
     }
-
-    iconv_close(to_ascii);
 
     if (has_started)
         fprintf(fp_full, "</materias>\" },\n");

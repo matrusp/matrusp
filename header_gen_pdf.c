@@ -1,4 +1,4 @@
-#define _XOPEN_SOURCE 500
+#define _XOPEN_SOURCE 700
 #include <stdio.h>
 #include <inttypes.h>
 #include <stdlib.h>
@@ -15,10 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <locale.h>
-#include <iconv.h>
-#include <errno.h>
+#include <assert.h>
 
 #include <ctype.h>
 
@@ -164,8 +161,6 @@ struct {
 static int string_i, is_string;
 static int string_len;
 static char *string;
-iconv_t to_utf8;
-iconv_t to_ascii;
 
 static int has_started = 0;
 static FILE *fp_fetch = NULL;
@@ -273,34 +268,84 @@ strdup_to_utf8(char *string)
     char utf8_string[1024];
     char *i = string;
     char *o = utf8_string;
-    size_t o_s = sizeof(utf8_string);
-    size_t i_s = strlen(string)+1;
-    int ret = iconv(to_utf8, &i, &i_s, &o, &o_s);
-    if (ret == -1) {
-        fprintf(stderr, "%s:%d some error with iconv '%s' %d\n", __FILE__, __LINE__, string, errno);
-        exit(1);
+    int j_i = 0, j_o = 0;
+    while (i[j_i]) {
+        char c = i[j_i++];
+        if (c & 0x80) {
+            uint8_t c2 = (uint8_t) c;
+            const char iso8859_utf8[] = {
+                [0xc0] = "À"[1], [0xc1] = "Á"[1], [0xc2] = "Â"[1], [0xc3] = "Ã"[1],
+                [0xc4] = "Ä"[1], [0xc5] = "Å"[1], [0xc6] = "Æ"[1], [0xc7] = "Ç"[1],
+                [0xc8] = "È"[1], [0xc9] = "É"[1], [0xca] = "Ê"[1], [0xcb] = "Ë"[1],
+                [0xcc] = "Ì"[1], [0xcd] = "Í"[1], [0xce] = "Î"[1], [0xcf] = "Ï"[1],
+                [0xd0] = "Ð"[1], [0xd1] = "Ñ"[1], [0xd2] = "Ò"[1], [0xd3] = "Ó"[1],
+                [0xd4] = "Ô"[1], [0xd5] = "Õ"[1], [0xd6] = "Ö"[1], [0xd7] = "×"[1],
+                [0xd8] = "Ø"[1], [0xd9] = "Ù"[1], [0xda] = "Ú"[1], [0xdb] = "Û"[1],
+                [0xdc] = "Ü"[1], [0xdd] = "Ý"[1], [0xde] = "Þ"[1], [0xdf] = "ß"[1],
+                [0xe0] = "à"[1], [0xe1] = "á"[1], [0xe2] = "â"[1], [0xe3] = "ã"[1],
+                [0xe4] = "ä"[1], [0xe5] = "å"[1], [0xe6] = "æ"[1], [0xe7] = "ç"[1],
+                [0xe8] = "è"[1], [0xe9] = "é"[1], [0xea] = "ê"[1], [0xeb] = "ë"[1],
+                [0xec] = "ì"[1], [0xed] = "í"[1], [0xee] = "î"[1], [0xef] = "ï"[1],
+                [0xf0] = "ð"[1], [0xf1] = "ñ"[1], [0xf2] = "ò"[1], [0xf3] = "ó"[1],
+                [0xf4] = "ô"[1], [0xf5] = "õ"[1], [0xf6] = "ö"[1], [0xf7] = "÷"[1],
+                [0xf8] = "ø"[1], [0xf9] = "ù"[1], [0xfa] = "ú"[1], [0xfb] = "û"[1],
+                [0xfc] = "ü"[1], [0xfd] = "ý"[1], [0xfe] = "þ"[1], [0xff] = "ÿ"[1],
+            };
+            c = iso8859_utf8[c2];
+            if (!c) {
+                fprintf(stderr, "%s:%d char '%2x' not translated (%d) '%s'\n", __FILE__, __LINE__, (uint8_t) i[j_i-2], j_i, string);
+                exit(1);
+            }
+            o[j_o++] = -61;
+        }
+        o[j_o++] = c;
     }
+    assert(j_o < sizeof(utf8_string));
+    o[j_o] = 0x00;
     return strdup(utf8_string);
 }
 static char *
-strdup_to_ascii(char *string)
+iso8859_to_ascii(char *string)
 {
     char ascii_string[1024];
     char *i = string;
     char *o = ascii_string;
-    char *p;
-    size_t o_s = sizeof(ascii_string);
-    size_t i_s = strlen(string)+1;
-    int ret = iconv(to_ascii, &i, &i_s, &o, &o_s);
-    if (ret == -1) {
-        fprintf(stderr, "%s:%d some error with iconv '%s' %d\n", __FILE__, __LINE__, string, errno);
-        exit(1);
+    int j_i = 0, j_o = 0;
+    while (i[j_i]) {
+        char c = i[j_i++];
+        if (c & 0x80) {
+            uint8_t c2 = (uint8_t) c;
+            const char iso8859_ascii[] = {
+                [0xc0] = 'A', [0xc1] = 'A', [0xc2] = 'A', [0xc3] = 'A',
+                [0xc4] = 'A', [0xc5] = 'A', /* [0xc6] = 'Æ', */
+                [0xc7] = 'C', [0xc8] = 'E', [0xc9] = 'E', [0xca] = 'E',
+                [0xcb] = 'E', [0xcc] = 'I', [0xcd] = 'I', [0xce] = 'I',
+                [0xcf] = 'I', [0xd0] = 'D', [0xd1] = 'N', [0xd2] = 'O',
+                [0xd3] = 'O', [0xd4] = 'O', [0xd5] = 'O', [0xd6] = 'O',
+                [0xd7] = 'X', [0xd8] = 'O', [0xd9] = 'U', [0xda] = 'U',
+                [0xdb] = 'U', [0xdc] = 'U', [0xdd] = 'Y', /* [0xde] = 'Þ', */
+                [0xdf] = 'B', [0xe0] = 'a', [0xe1] = 'a', [0xe2] = 'a',
+                [0xe3] = 'a', [0xe4] = 'a', [0xe5] = 'a', /* [0xe6] = 'æ', */
+                [0xe7] = 'c', [0xe8] = 'e', [0xe9] = 'e', [0xea] = 'e',
+                [0xeb] = 'e', [0xec] = 'i', [0xed] = 'i', [0xee] = 'i',
+                [0xef] = 'i', [0xf0] = 'o', [0xf1] = 'n', [0xf2] = 'o',
+                [0xf3] = 'o', [0xf4] = 'o', [0xf5] = 'o', [0xf6] = 'o',
+                [0xf7] = '/', [0xf8] = 'o', [0xf9] = 'u', [0xfa] = 'u',
+                [0xfb] = 'u', [0xfc] = 'u', [0xfd] = 'y', /* [0xfe] = 'þ', */
+                [0xff] = 'y',
+            };
+            c = iso8859_ascii[c2];
+            if (!c) {
+                fprintf(stderr, "%s:%d char '%2x' not translated (%d) '%s'\n", __FILE__, __LINE__, (uint8_t) i[j_i-2], j_i, string);
+                exit(1);
+            }
+        }
+        if (c >= 'a' && c <= 'z')
+            c &= ~0x20;
+        o[j_o++] = c;
     }
-    p = ascii_string;
-    while (*p) {
-        *p = toupper(*p);
-        p++;
-    }
+    assert(j_o < sizeof(ascii_string));
+    o[j_o] = 0x00;
     return strdup(ascii_string);
 }
 static void
@@ -442,7 +487,7 @@ fprintf(stderr, "string: %s\n", string);
                             full.horas_aula = strdup(string);
                         } else if (full.nome_turma) {
                             full.nome_disciplina = strdup_to_utf8(string);
-                            fetch.nome_disciplina = strdup_to_ascii(string);
+                            fetch.nome_disciplina = iso8859_to_ascii(string);
                         } else if (full.codigo_disciplina) {
                             full.nome_turma = strdup(string);
                         }
@@ -541,19 +586,6 @@ int main(int argc, char *argv[])
         "    char *result;\n"
         "} full[] = {\n");
 
-    setlocale(LC_ALL, "en_US.utf8");
-
-    to_utf8 = iconv_open("utf8", "iso-8859-1");
-    if (to_utf8 == (iconv_t) -1) {
-        fprintf(stderr, "oh, bummer 1!\n");
-        return -1;
-    }
-    to_ascii = iconv_open("ASCII//TRANSLIT", "iso-8859-1");
-    if (to_ascii == (iconv_t) -1) {
-        fprintf(stderr, "oh, bummer 2!\n");
-        return -1;
-    }
-
     for (int i = 0; i < st.st_size-11; i++) {
         if        (!strncmp(&buf_in[i], "Length"     , 6)) {
             do_deflate = 0;
@@ -610,9 +642,6 @@ int main(int argc, char *argv[])
         }
     }
     print_materia();
-
-    iconv_close(to_utf8);
-    iconv_close(to_ascii);
 
     if (has_started)
         fprintf(fp_full, "</materias>\" },\n");
