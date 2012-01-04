@@ -259,6 +259,19 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         materias.remove_item(materia);
         update_all();
     };
+    var m_array = null;
+    var m_timer = null;
+    var m_count = null;
+    self.m_update_turma = function() {
+        if (m_count != -1)
+            turmas.undisplay_over(m_array[m_count]);
+        m_count++;
+        if (m_count >= m_array.length)
+            m_count = 0;
+        turmas.display_over(m_array[m_count]);
+        if (m_array.length != 1)
+            m_timer = setTimeout((function(t){return function(){t.m_update_turma();}})(self), 1000);
+    }
     ui_materias.cb_onmouseover = function(materia) {
         var c = combinacoes.get_current();
         if (!c)
@@ -267,9 +280,12 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             var turma = c.horarios_combo[i].turma_representante;
             if (turma.materia == materia) {
                 turmas.display_over(turma);
-                break;
+                return;
             }
         }
+        m_array = materia.turmas;
+        m_count = -1;
+        self.m_update_turma();
     };
     ui_materias.cb_onmouseout  = function(materia) {
         var c = combinacoes.get_current();
@@ -279,9 +295,15 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             var turma = c.horarios_combo[i].turma_representante;
             if (turma.materia == materia) {
                 turmas.undisplay_over(turma);
-                break;
+                return;
             }
         }
+        turmas.undisplay_over(m_array[m_count]);
+        if (m_timer)
+            clearTimeout(m_timer);
+        m_array = null;
+        m_timer = null;
+        m_count = null;
     };
     ui_materias.cb_onclick     = function(materia) {
         ui_turmas.create(materia);
