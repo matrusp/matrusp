@@ -30,7 +30,7 @@ function UI_campus(id)
 
     select.onchange = function() {
         if      (this.selectedIndex == 0)
-            self.cb_set_suffix("");
+            self.cb_set_suffix("_FLO");
         else if (this.selectedIndex == 1)
             self.cb_set_suffix("_JOI");
     }

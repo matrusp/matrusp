@@ -4,7 +4,7 @@
 #include <zlib.h>
 #include <inttypes.h>
 
-#include "full.h"
+#include FULL_H
 
 int main(int argc, char **argv)
 {
@@ -65,9 +65,9 @@ int main(int argc, char **argv)
 
     fprintf(fp_full2,
         "static struct {\n"
-        "    const char *text;\n"
-        "    const char *deflate;\n"
-        "    const int   deflate_length;\n"
+        "    const char    *text;\n"
+        "    const uint8_t *deflate;\n"
+        "    const int      deflate_length;\n"
         "} full_result[] = {\n");
     for (i = 0; i < l; i++) {
         fprintf(fp_full2, "    { \"%s\", %s_deflate, %s_deflate_length },\n",

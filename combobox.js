@@ -39,7 +39,7 @@ function Combobox(input, suggestions, ui_logger)
     }
 
     var self = this;
-    self.suffix = "";
+    self.suffix = "_FLO";
     self.color_0 = "white";
     self.color_1 = "#eeeeee";
     self.input       = document.getElementById(input);

@@ -6,7 +6,7 @@
 #include <inttypes.h>
 #include <time.h>
 
-#include "fetch.h"
+#include FETCH_H
 
 #include "utf8_to_ascii.h"
 

@@ -5,7 +5,7 @@
 #include <inttypes.h>
 #include <time.h>
 
-#include "full2.h"
+#include FULL2_H
 
 static int
 is_materia(char *s)
@@ -72,8 +72,8 @@ int main()
 
     if ((r = in_word_set(p, strlen(p)))) {
         if (use_gzip) {
-            const char *deflate        = full_result[r->index].deflate;
-            const int   deflate_length = full_result[r->index].deflate_length;
+            const uint8_t *deflate        = full_result[r->index].deflate;
+            const int      deflate_length = full_result[r->index].deflate_length;
             printf("Content-Encoding: deflate\n"
                     "Content-Length: %d\n"
                     "\n", deflate_length);
