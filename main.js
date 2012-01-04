@@ -473,8 +473,8 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         for (var i = 0; i < list.length; i++) {
             var state_materia = new Object();
             var materia = list[i];
-            state_materia.codigo   = materia.codigo;
-            state_materia.nome     = materia.nome;
+            state_materia.codigo   = materia.codigo.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/&/g,"&amp;");
+            state_materia.nome     = materia.nome.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/&/g,"&amp;");
             state_materia.cor      = materia.cor;
             state_materia.turmas   = new Array();
             for (var j = 0; j < materia.turmas.length; j++) {
@@ -544,6 +544,8 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
 
         for (var i = 0; i < state.materias.length; i++) {
             var materia = materias.add_json(state.materias[i]);
+            materia.codigo = materia.codigo.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+            materia.nome = materia.nome.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
             if (!materia) {
                 ui_logger.set_text("houve algum erro ao importar as mat\u00e9rias!", "lightcoral");
                 return;

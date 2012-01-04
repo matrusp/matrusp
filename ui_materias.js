@@ -87,7 +87,8 @@ function UI_materias(id, ui_combinacoes)
         input.onblur = function() {
             if (this.value != row.materia[attr])
                 self.cb_changed(row.materia, attr, this.value);
-            data.innerHTML = row.materia[attr];
+            data.innerHTML = "";
+            data.appendChild(document.createTextNode(row.materia[attr]));
             self.input = null;
         };
         input.onkeydown = function(e) {
@@ -134,7 +135,8 @@ function UI_materias(id, ui_combinacoes)
         data.onclick = onclick;
         data.style.textAlign = "center";
         data.style.width = "60px";
-        data.innerHTML = materia.codigo;
+        data.innerHTML = "";
+        data.appendChild(document.createTextNode(materia.codigo));
         row.appendChild(data);
         row.editable_cell["codigo"] = data;
         var data = document.createElement("td");
@@ -145,7 +147,8 @@ function UI_materias(id, ui_combinacoes)
         var data = document.createElement("td");
         data.ondblclick = function() { edit_start(this.parentNode, "nome"); };
         data.onclick = onclick;
-        data.innerHTML = materia.nome;
+        data.innerHTML = "";
+        data.appendChild(document.createTextNode(materia.nome));
         row.appendChild(data);
         row.editable_cell["nome"] = data;
         var data = document.createElement("td");
