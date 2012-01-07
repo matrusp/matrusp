@@ -28,7 +28,9 @@ full2_FLO.js: header_gen turmas_db
 	./header_gen turmas_db full2_FLO.js
 
 save2.cgi: save.c
+save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 load2.cgi: load.c
+load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 
 save2.cgi load2.cgi header_gen header_gen_pdf:
 	gcc -Wall -O3 -std=c99 ${EXTRA_FLAGS} -o $@ $<

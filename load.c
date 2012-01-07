@@ -6,7 +6,7 @@ int main()
 {
     FILE *fp;
     char *p, *e;
-    char *prefix="/home/caldo_de_cana/matrufsc/dados2/";
+    char *prefix=HOME"/matrufsc/dados2/";
     char *name, *bigname, *data;
     int l1, l2;
     int i;
