@@ -190,6 +190,8 @@ function Materias()
         if (materias[materia.codigo])
             return null;
 
+        materia = JSON.parse(JSON.stringify(materia));
+
         if (materia.selected == null)
             materia.selected = 1;
         if (materia.agrupar  == null)

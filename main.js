@@ -138,16 +138,16 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_logger.set_text("'" + nome + "' adicionada", "lightgreen");
         update_all();
     };
-    function add_materia(codigo, xml) {
-        var materia = materias.add_xml(codigo, xml);
+    function add_materia(result) {
+        var materia = materias.add_json(result);
         if (!materia) {
-            ui_logger.set_text("'" + codigo + "' ja foi adicionada", "lightcoral");
+            ui_logger.set_text("'" + result.codigo + "' ja foi adicionada", "lightcoral");
             return;
         }
         ui_materias.add(materia);
         ui_turmas.create(materia);
         materias.set_selected(materia);
-        ui_logger.set_text("'" + codigo + "' adicionada", "lightgreen");
+        ui_logger.set_text("'" + result.codigo + "' adicionada", "lightgreen");
         update_all();
     }
     function previous() {
@@ -608,10 +608,6 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         load_request.send(null);
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
-    /* UI_campus */
-    ui_campus.cb_set_suffix = function(suffix) {
-        combo.suffix = suffix;
-    };
 }
 
 function getScrollBarWidth () {
@@ -779,3 +775,5 @@ window.onload = function() {
     if (combo.input.value == identificador)
         combo.input.value = "";
 }
+
+var database = new Database();

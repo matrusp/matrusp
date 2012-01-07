@@ -145,6 +145,7 @@ struct {
     char *codigo_disciplina;
     char *nome_turma;
     char *nome_disciplina;
+    char *nome_disciplina_ascii;
     char *horas_aula;
     char *vagas_ofertadas;
     char *vagas_ocupadas;
@@ -154,16 +155,11 @@ struct {
     char **horarios;
     char *professores;
 } full = { 0 };
-struct {
-    char *codigo_disciplina;
-    char *nome_disciplina;
-} fetch = { 0 };
 static int string_i, is_string;
 static int string_len;
 static char *string;
 
 static int has_started = 0;
-static FILE *fp_fetch = NULL;
 static FILE *fp_full = NULL;
 static void
 print_materia(void)
@@ -177,36 +173,35 @@ print_materia(void)
         return;
     }
 
-    if (strcmp(lastc, fetch.codigo_disciplina)) {
-        fprintf(fp_fetch,
-            "    { \"%s\", \"%s\", \"%s\" },\n",
-            fetch.codigo_disciplina,
-            fetch.nome_disciplina,
-            full.nome_disciplina);
-
+    if (strcmp(lastc, full.codigo_disciplina)) {
         if (has_started)
-            fprintf(fp_full, "</materias>\" },\n");
+            fprintf(fp_full, "]],\n");
 
-        fprintf(fp_full, "    { \"%s\", \"", full.codigo_disciplina);
-        fprintf(fp_full, "<materias>");
-        fprintf(fp_full, "<codigo>%s</codigo>", full.codigo_disciplina);
-        fprintf(fp_full, "<nome>%s</nome>", full.nome_disciplina);
-        strcpy(lastc, fetch.codigo_disciplina);
+        fprintf(fp_full, "[");
+        fprintf(fp_full, "\"%s\",", full.codigo_disciplina);
+        fprintf(fp_full, "\"%s\",", full.nome_disciplina_ascii);
+        fprintf(fp_full, "\"%s\",", full.nome_disciplina);
+        fprintf(fp_full, "[");
+        strcpy(lastc, full.codigo_disciplina);
         has_started = 1;
     }
 
-    fprintf(fp_full, "<turmas>");
-    fprintf(fp_full, "<nome>%s</nome>", full.nome_turma);
-    fprintf(fp_full, "<horas_aula>%s</horas_aula>", full.horas_aula);
-    fprintf(fp_full, "<vagas_ofertadas>%s</vagas_ofertadas>", full.vagas_ofertadas);
-    fprintf(fp_full, "<vagas_ocupadas>%s</vagas_ocupadas>", full.vagas_ocupadas);
-    fprintf(fp_full, "<alunos_especiais>%s</alunos_especiais>", full.alunos_especiais);
-    fprintf(fp_full, "<saldo_vagas>%s</saldo_vagas>", full.saldo_vagas);
-    fprintf(fp_full, "<pedidos_sem_vaga>%s</pedidos_sem_vaga>", full.pedidos_sem_vaga);
+    fprintf(fp_full, "[");
+    fprintf(fp_full, "\"%s\",", full.nome_turma);
+    fprintf(fp_full, "%s,", full.horas_aula);
+    fprintf(fp_full, "%s,", full.vagas_ofertadas);
+    fprintf(fp_full, "%s,", full.vagas_ocupadas);
+    fprintf(fp_full, "%s,", full.alunos_especiais);
+    fprintf(fp_full, "%s,", full.saldo_vagas);
+    fprintf(fp_full, "%s,", full.pedidos_sem_vaga);
+    fprintf(fp_full, "[");
     for (int j = 0; full.horarios[j]; j++)
-        fprintf(fp_full, "<horarios>%s</horarios>", full.horarios[j]);
-    fprintf(fp_full, "<professores>%s</professores>", full.professores);
-    fprintf(fp_full, "</turmas>");
+        fprintf(fp_full, "\"%s\",", full.horarios[j]);
+    fprintf(fp_full, "],");
+    fprintf(fp_full, "[");
+    fprintf(fp_full, "\"%s\",", full.professores);
+    fprintf(fp_full, "]");
+    fprintf(fp_full, "],");
 
     if        (!strcmp(full.codigo_disciplina, "EMB5010") && !strcmp(full.nome_turma, "02601B")) {
     } else if (!strcmp(full.codigo_disciplina, "EMB5016") && !strcmp(full.nome_turma, "03601B")) {
@@ -239,8 +234,6 @@ static void
 free_materia(void)
 {
     int i;
-    freep(&fetch.codigo_disciplina);
-    freep(&fetch.nome_disciplina);
     freep(&full.codigo_disciplina);
     freep(&full.nome_turma);
     freep(&full.nome_disciplina);
@@ -411,7 +404,6 @@ parse_line(char *line, size_t line_len)
                             print_materia();
                             free_materia();
                             full.codigo_disciplina = strdup(string);
-                            fetch.codigo_disciplina = strdup(string);
                         } else if (full.professores) {
                             if (!strcmp(string, "de") ||
                                 !strcmp(string, "CADASTRO DE TURMAS") ||
@@ -487,7 +479,7 @@ fprintf(stderr, "string: %s\n", string);
                             full.horas_aula = strdup(string);
                         } else if (full.nome_turma) {
                             full.nome_disciplina = strdup_to_utf8(string);
-                            fetch.nome_disciplina = iso8859_to_ascii(string);
+                            full.nome_disciplina_ascii = iso8859_to_ascii(string);
                         } else if (full.codigo_disciplina) {
                             full.nome_turma = strdup(string);
                         }
@@ -542,8 +534,8 @@ int main(int argc, char *argv[])
     int fd_in = 0;
     int ret = -1;
 
-    if (argc < 4) {
-        fprintf(stderr, "usage: %s <input.pdf> <fetch.h> <full.h>\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "usage: %s <input.pdf> <full.h>\n", argv[0]);
         goto end;
     }
 
@@ -563,28 +555,13 @@ int main(int argc, char *argv[])
         goto end;
     }
 
-    fp_fetch = fopen(argv[2], "wb");
-    if (!fp_fetch) {
+    fp_full = fopen(argv[2], "wb");
+    if (!fp_full) {
         fprintf(stderr, "could not open output file '%s'\n", argv[2]);
         goto end;
     }
-    fp_full = fopen(argv[3], "wb");
-    if (!fp_full) {
-        fprintf(stderr, "could not open output file '%s'\n", argv[3]);
-        goto end;
-    }
 
-    fprintf(fp_fetch,
-        "static struct {\n"
-        "    char *codigo_disciplina;\n"
-        "    char *nome_disciplina_ascii;\n"
-        "    char *nome_disciplina_utf8;\n"
-        "} fetch[] = {\n");
-    fprintf(fp_full,
-        "static struct {\n"
-        "    char *codigo_disciplina;\n"
-        "    char *result;\n"
-        "} full[] = {\n");
+    fprintf(fp_full, "database.add(\"JOI\",[\n");
 
     for (int i = 0; i < st.st_size-11; i++) {
         if        (!strncmp(&buf_in[i], "Length"     , 6)) {
@@ -644,14 +621,12 @@ int main(int argc, char *argv[])
     print_materia();
 
     if (has_started)
-        fprintf(fp_full, "</materias>\" },\n");
-    fprintf(fp_full, "};\n");
-    fprintf(fp_fetch, "};\n");
+        fprintf(fp_full, "]],\n");
+    fprintf(fp_full, "]);\n");
 
     ret = 0;
 
 end:
-    if (fp_fetch) fclose(fp_fetch);
     if (fp_full) fclose(fp_full);
     if (buf_in) munmap((void*)buf_in, st.st_size);
     if (fd_in ) close(fd_in);

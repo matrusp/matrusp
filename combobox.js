@@ -3,8 +3,6 @@
  */
 function Combobox(input, suggestions, ui_logger)
 {
-    var lastfetch  = new String();
-
     function select_item(item)
     {
         if (!self.array.length)
@@ -39,7 +37,6 @@ function Combobox(input, suggestions, ui_logger)
     }
 
     var self = this;
-    self.suffix = "_FLO";
     self.color_0 = "white";
     self.color_1 = "#eeeeee";
     self.input       = document.getElementById(input);
@@ -111,53 +108,18 @@ function Combobox(input, suggestions, ui_logger)
         self.internal_div.appendChild(li);
         return self.array.length-1;
     };
-    self.stopsearch = function() {
-        if (self.timer) {
-            clearTimeout(self.timer);
-            self.timer = null;
-        }
-    }
-    self.updatesearch = function() {
-        if (!self.more)
-            return;
-        self.pontos += ".";
-        if (self.pontos == "....")
-            self.pontos = ".";
-        self.array[self.more].innerHTML = self.str + self.pontos;
-        self.timer = setTimeout((function(t){return function(){t.updatesearch();}})(self), 200);
-    }
-    var more_suggestions = function() {
-        if ((this.readyState == 4) && (this.status == 200) && self.timer) {
-            var str = this.responseText;
-            if (str.length > 0) {
-                self.internal_div.removeChild(self.array[self.more]);
-                self.array.splice(self.more, 1);
-                self.more = null;
-                list_add_items(str);
-                self.stopsearch();
-            } else {
-                self.internal_div.removeChild(self.array[self.more]);
-                self.array.splice(self.more, 1);
-                self.more = null;
-                self.stopsearch();
-            }
-        }
-    }
     function do_search_more() {
-        var fetch_request = new XMLHttpRequest();
-        fetch_request.onreadystatechange = more_suggestions;
-        fetch_request.open("GET", "cgi-bin/fetch2" + self.suffix + ".cgi?p=" + self.page++ + "&q=" + encodeURIComponent(self.fetch.toUpperCase()), true);
-        fetch_request.send(null);
-        self.str = "Buscando mais";
-        self.pontos = ".";
-        self.updatesearch();
+        var fetch_result = database.page(self.page++);
+        self.internal_div.removeChild(self.array[self.more]);
+        self.array.splice(self.more, 1);
+        self.more = null;
+        if (fetch_result.length > 0)
+            list_add_items(fetch_result);
     };
-    function list_add_items(str) {
-        var split = str.split("\n");
+    function list_add_items(items) {
         var first = self.array.length;
-        for (var i = 0; i < split.length - 1; i++)
-            list_add_item(split[i]);
-        if (split.length == 11) {
+        items.forEach(function(item){var str = item.codigo + " " + item.nome; list_add_item(str);});
+        if (items.length == 10) {
             self.more = list_add_item("Buscar mais...");
             self.array[self.more].style.fontSize = "13px";
             self.array[self.more].style.fontWeight = "bold";
@@ -168,7 +130,6 @@ function Combobox(input, suggestions, ui_logger)
         select_item(first);
     }
     function list_clear() {
-        self.stopsearch();
         for (var i = 1; i < self.array.length; i++)
             self.internal_div.removeChild(self.array[i]);
         self.array.splice(1, self.array.length);
@@ -206,7 +167,6 @@ function Combobox(input, suggestions, ui_logger)
         } else if (c == 13 /* enter */) {
             if (self.more && self.selected_item == self.more) {
                 do_search_more();
-                deselect_item();
                 return;
             } else
             if (self.selected_item == 0) {
@@ -225,32 +185,6 @@ function Combobox(input, suggestions, ui_logger)
             self.input.focus();
         }
     };
-    function suggestions_onreadystatechange()
-    {
-        if ((this.readyState == 4) && (this.status == 200) &&
-            (this.searchstr == lastfetch)) {
-            var str = this.responseText;
-            if (str.length > 0) {
-                list_clear();
-                list_add_items(str);
-                list_show();
-                var n = str.split("\n").length - 1;
-                var v = new String();
-                if (n == 1) {
-                    v = "1 vez";
-                } else if (n == 10) {
-                    v = "10 vezes ou mais";
-                } else {
-                    v = n + " vezes";
-                }
-                ui_logger.set_text("'" + self.fetch + "' encontrado " + v, "lightgreen");
-            } else {
-                list_clear();
-                list_show();
-                ui_logger.set_text("'" + self.fetch + "' n\u00e3o encontrado", "lightcoral");
-            }
-        }
-    }
     self.input.onkeyup   = function (e) {
         var c = (e) ? e.keyCode : event.keyCode;
         var fetch = self.input.value;
@@ -261,58 +195,39 @@ function Combobox(input, suggestions, ui_logger)
             c != 46 /* del */ && c != 8 /* backspace */)
             return;
 
+        list_clear();
         if (fetch.length > 0) {
-            if (fetch != lastfetch) {
-                var fetch_request = new XMLHttpRequest();
-                fetch_request.searchstr = fetch;
-                fetch_request.onreadystatechange = suggestions_onreadystatechange;
-                fetch_request.open("GET", "cgi-bin/fetch2" + self.suffix + ".cgi?q=" + encodeURIComponent(fetch.toUpperCase()), true);
-                fetch_request.send(null);
-                self.fetch = fetch;
-                ui_logger.waiting("procurando '" + fetch + "'");
-                lastfetch = fetch;
+            database.fetch(fetch);
+            var fetch_result = database.page(0);
+            if (fetch_result.length > 0) {
+                list_add_items(fetch_result);
+                var n = fetch_result.length;
+                var v = new String();
+                if (n == 1) {
+                    v = "1 vez";
+                } else if (n == 10) {
+                    v = "10 vezes ou mais";
+                } else {
+                    v = n + " vezes";
+                }
+                ui_logger.set_text("'" + fetch + "' encontrado " + v, "lightgreen");
+            } else {
+                ui_logger.set_text("'" + fetch + "' n\u00e3o encontrado", "lightcoral");
             }
+            list_show();
         } else {
-            lastfetch = null;
-            list_clear();
             ui_logger.reset();
             list_hide();
         }
     };
 
-    function list_onreadystatechange()
-    {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                var xml = this.responseXML;
-                if (self.timer) {
-                    clearTimeout(self.timer);
-                    self.timer = null;
-                }
-                if (this.responseText != "") {
-                    self.cb_add_materia(this.codigo, xml);
-                } else {
-                    ui_logger.set_text("'" + this.codigo + "' n\u00e3o adicionada", "lightcoral");
-                }
-            }
-            this.available = true;
-        }
-    }
-    var full_requests = new Array();
     function add_item(codigo) {
-        var n = full_requests.length;
-        for (var i = 0; i < n; i++)
-            if (full_requests[i].available)
-                break;
-        if (i == n) {
-            full_requests[i] = new XMLHttpRequest();
+        var full_result = database.full(codigo.toUpperCase());
+        if (full_result) {
+            self.cb_add_materia(full_result);
+        } else {
+            ui_logger.set_text("'" + codigo + "' n\u00e3o adicionada", "lightcoral");
         }
-        full_requests[i].available = false;
-        full_requests[i].codigo = codigo;
-        full_requests[i].open("GET", "cgi-bin/full2" + self.suffix + ".cgi?q=" + encodeURIComponent(codigo.toUpperCase()), true);
-        full_requests[i].onreadystatechange = list_onreadystatechange;
-        full_requests[i].send(null);
-        ui_logger.waiting("buscando '" + codigo + "'");
     }
 
     /* procedures */

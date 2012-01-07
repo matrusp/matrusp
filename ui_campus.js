@@ -30,15 +30,14 @@ function UI_campus(id)
 
     select.onchange = function() {
         if      (this.selectedIndex == 0)
-            self.cb_set_suffix("_FLO");
+            database.set_campus("FLO");
         else if (this.selectedIndex == 1)
-            self.cb_set_suffix("_JOI");
+            database.set_campus("JOI");
     }
+    database.set_campus("FLO");
 
     /* function */
     self.get_selected = function( ) { return select.selectedIndex; };
     /* procedures */
     self.set_selected = function(n) { select.selectedIndex = n; select.onchange(); };
-    /* callbacks */
-    self.cb_set_suffix = null;
 }

@@ -23,7 +23,6 @@
 #include <ctype.h>
 
 static int has_started = 0;
-static FILE *fp_fetch = NULL;
 static FILE *fp_full = NULL;
 
 static xmlNodePtr
@@ -82,12 +81,9 @@ extract_turmas(const char *content, int length)
         static char lastc[10] = { 0 };
         struct {
             char *codigo_disciplina;
-            char *nome_disciplina;
-        } fetch;
-        struct {
-            char *codigo_disciplina;
             char *nome_turma;
             char *nome_disciplina;
+            char *nome_disciplina_ascii;
             char *horas_aula;
             char *vagas_ofertadas;
             char *vagas_ocupadas;
@@ -132,6 +128,8 @@ extract_turmas(const char *content, int length)
                 xmlFree(tmp);
             }
         }
+        full.nome_disciplina_ascii = utf8_to_ascii(full.nome_disciplina, 0);
+        assert(full.nome_disciplina_ascii);
         full.horas_aula         = (char *) xmlNodeGetContent(horas_aula       ->children);
         full.vagas_ofertadas    = (char *) xmlNodeGetContent(vagas_ofertadas  ->children);
         full.vagas_ocupadas     = (char *) xmlNodeGetContent(vagas_ocupadas   ->children);
@@ -142,49 +140,45 @@ extract_turmas(const char *content, int length)
         full.horarios           = get_list(horarios   );
         full.professores        = get_list(professores);
 
-        fetch.codigo_disciplina = utf8_to_ascii(full.codigo_disciplina, 0);
-        assert(fetch.codigo_disciplina);
-        fetch.nome_disciplina = utf8_to_ascii(full.nome_disciplina, 0);
-        assert(fetch.nome_disciplina);
 
-
-        if (strcmp(lastc, fetch.codigo_disciplina)) {
-            fprintf(fp_fetch,
-                "    { \"%s\", \"%s\", \"%s\" },\n",
-                fetch.codigo_disciplina,
-                fetch.nome_disciplina,
-                full.nome_disciplina);
-
+        if (strcmp(lastc, full.codigo_disciplina)) {
             if (has_started)
-                fprintf(fp_full, "</materias>\" },\n");
+                fprintf(fp_full, "]],\n");
 
-            fprintf(fp_full, "    { \"%s\", \"", full.codigo_disciplina);
-            fprintf(fp_full, "<materias>");
-            fprintf(fp_full, "<codigo>%s</codigo>", full.codigo_disciplina);
-            fprintf(fp_full, "<nome>%s</nome>", full.nome_disciplina);
-            strcpy(lastc, fetch.codigo_disciplina);
+            fprintf(fp_full, "[");
+            fprintf(fp_full, "\"%s\",", full.codigo_disciplina);
+            fprintf(fp_full, "\"%s\",", full.nome_disciplina_ascii);
+            fprintf(fp_full, "\"%s\",", full.nome_disciplina);
+            fprintf(fp_full, "[");
+            strcpy(lastc, full.codigo_disciplina);
             has_started = 1;
         }
-        free(fetch.codigo_disciplina);
-        free(fetch.nome_disciplina);
 
-        fprintf(fp_full, "<turmas>");
-        fprintf(fp_full, "<nome>%s</nome>", full.nome_turma);
-        fprintf(fp_full, "<horas_aula>%s</horas_aula>", full.horas_aula);
-        fprintf(fp_full, "<vagas_ofertadas>%s</vagas_ofertadas>", full.vagas_ofertadas);
-        fprintf(fp_full, "<vagas_ocupadas>%s</vagas_ocupadas>", full.vagas_ocupadas);
-        fprintf(fp_full, "<alunos_especiais>%s</alunos_especiais>", full.alunos_especiais);
-        fprintf(fp_full, "<saldo_vagas>%s</saldo_vagas>", full.saldo_vagas);
-        fprintf(fp_full, "<pedidos_sem_vaga>%s</pedidos_sem_vaga>", full.pedidos_sem_vaga);
+        fprintf(fp_full, "[");
+        fprintf(fp_full, "\"%s\",", full.nome_turma);
+        fprintf(fp_full, "%s,", full.horas_aula);
+        fprintf(fp_full, "%s,", full.vagas_ofertadas);
+        fprintf(fp_full, "%s,", full.vagas_ocupadas);
+        fprintf(fp_full, "%s,", full.alunos_especiais);
+        if (!strcmp(full.saldo_vagas, "LOTADA"))
+            fprintf(fp_full, "-1,");
+        else
+            fprintf(fp_full, "%s,", full.saldo_vagas);
+        fprintf(fp_full, "%s,", full.pedidos_sem_vaga);
+        fprintf(fp_full, "[");
         for (int j = 0; full.horarios[j]; j++)
-            fprintf(fp_full, "<horarios>%s</horarios>", full.horarios[j]);
+            fprintf(fp_full, "\"%s\",", full.horarios[j]);
+        fprintf(fp_full, "],");
+        fprintf(fp_full, "[");
         for (int j = 0; full.professores[j]; j++)
-            fprintf(fp_full, "<professores>%s</professores>", full.professores[j]);
-        fprintf(fp_full, "</turmas>");
+            fprintf(fp_full, "\"%s\",", full.professores[j]);
+        fprintf(fp_full, "]");
+        fprintf(fp_full, "],");
 
         xmlFree(full.codigo_disciplina);
         xmlFree(full.nome_turma       );
         free   (full.nome_disciplina  );
+        free   (full.nome_disciplina_ascii);
         xmlFree(full.horas_aula       );
         xmlFree(full.vagas_ofertadas  );
         xmlFree(full.vagas_ocupadas   );
@@ -218,8 +212,8 @@ int main(int argc, char *argv[])
 
     LIBXML_TEST_VERSION
 
-    if (argc < 4) {
-        fprintf(stderr, "usage: %s <input> <fetch.h> <full.h>\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "usage: %s <input> <full.js>\n", argv[0]);
         goto end;
     }
 
@@ -239,28 +233,13 @@ int main(int argc, char *argv[])
         goto end;
     }
 
-    fp_fetch = fopen(argv[2], "wb");
-    if (!fp_fetch) {
+    fp_full = fopen(argv[2], "wb");
+    if (!fp_full) {
         fprintf(stderr, "could not open output file '%s'\n", argv[2]);
         goto end;
     }
-    fp_full = fopen(argv[3], "wb");
-    if (!fp_full) {
-        fprintf(stderr, "could not open output file '%s'\n", argv[3]);
-        goto end;
-    }
 
-    fprintf(fp_fetch,
-        "static struct {\n"
-        "    char *codigo_disciplina;\n"
-        "    char *nome_disciplina_ascii;\n"
-        "    char *nome_disciplina_utf8;\n"
-        "} fetch[] = {\n");
-    fprintf(fp_full,
-        "static struct {\n"
-        "    char *codigo_disciplina;\n"
-        "    char *result;\n"
-        "} full[] = {\n");
+    fprintf(fp_full, "database.add(\"FLO\",[\n");
 
     for (int i = 0; i < st.st_size - lend; i++) {
         if        (!strncmp((char *) &buf_in[i], start, lstart)) {
@@ -272,14 +251,12 @@ int main(int argc, char *argv[])
     }
 
     if (has_started)
-        fprintf(fp_full, "</materias>\" },\n");
-    fprintf(fp_full, "};\n");
-    fprintf(fp_fetch, "};\n");
+        fprintf(fp_full, "]],\n");
+    fprintf(fp_full, "]);\n");
 
     ret = 0;
 
 end:
-    if (fp_fetch) fclose(fp_fetch);
     if (fp_full) fclose(fp_full);
     if (buf_in) munmap((void*)buf_in, st.st_size);
     if (fd_in ) close(fd_in);
