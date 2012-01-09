@@ -48,6 +48,6 @@ clean::
 
 install:: all
 	mkdir -p install/cgi-bin
-	cp matrufsc.js index.html install/
+	cp matrufsc.css matrufsc.js index.html install/
 	cp full2_FLO.js full2_JOI.js install/
 	cp save2.cgi load2.cgi install/cgi-bin/

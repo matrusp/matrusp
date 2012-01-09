@@ -14,7 +14,7 @@ function UI_turmas(id, height)
 
     var thiswidth = 328;
 
-    list.style.border = "1px solid black";
+    list.className = "ui_turmas";
     list.style.width  = thiswidth + "px";
     list.style.height    = (height-2) + "px";
     list.style.maxHeight = (height-2) + "px";
@@ -76,31 +76,29 @@ function UI_turmas(id, height)
         var data = document.createElement("td");
         data.style.MozUserSelect = "none";
         data.style.KhtmlUserSelect = "none";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
         data.onselectstart = function () { return false; };
-        data.style.color = "black";
         data.oldbg = current_materia.cor;
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
         data.onclick = editar;
         data.innerHTML = "E";
         data.title = "editar horário desta turma";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
         row.appendChild(data);
 
         var data = document.createElement("td");
         data.style.MozUserSelect = "none";
         data.style.KhtmlUserSelect = "none";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
         data.onselectstart = function () { return false; };
-        data.style.color = "black";
         data.oldbg = current_materia.cor;
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
         data.onclick = remove;
         data.innerHTML = "X";
         data.title = "remover turma";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
         row.appendChild(data);
 
         self.tbody.insertBefore(row, insert_before);
@@ -111,7 +109,6 @@ function UI_turmas(id, height)
     function new_turma(horario) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
-        row.style.cursor="pointer";
         row.onmouseover = function() { self.cb_onmouseover(this.turma); }
         row.onmouseout  = function() { self.cb_onmouseout(this.turma); }
 
@@ -172,10 +169,6 @@ function UI_turmas(id, height)
 
         self.table = document.createElement("table");
         self.tbody = document.createElement("tbody");
-        self.table.style.backgroundColor = "black";
-        self.table.style.fontFamily = "monospace";
-        self.table.style.tableLayout = "fixed";
-        self.table.style.fontSize = "11px";
         self.table.style.width= thiswidth + "px";
         self.table.cellPadding="1";
         self.table.cellSpacing="1";
@@ -200,12 +193,10 @@ function UI_turmas(id, height)
 
         var data = document.createElement("td");
         data.colSpan = "5";
-        data.style.cursor = "pointer";
         data.style.textAlign = "center";
         data.onmouseup = function() { self.cb_new_turma(); };
         data.style.fontSize = "13px"
         data.innerHTML = ">>>> adicione turmas aqui <<<<";
-        data.style.color = "black";
         data.oldbg = current_materia.cor;
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
@@ -216,8 +207,6 @@ function UI_turmas(id, height)
 
         var row  = document.createElement("tr");
         row.style.backgroundColor = "#eeeeee";
-        row.style.color = "black";
-        row.style.cursor = "pointer";
 
         var data = document.createElement("td");
         var input = document.createElement("input");
@@ -235,27 +224,14 @@ function UI_turmas(id, height)
         data.colSpan = "4";
         data.onmouseup = function() { self.cb_toggle_agrupar(); };
         data.style.fontSize = "13px"
-        data.style.cursor = "pointer";
         data.innerHTML = "agrupar turmas com horários iguais";
         row.appendChild(data);
 
         self.tbody.appendChild(row);
 
         var button = document.createElement("span");
-        button.style.display = "none";
-        button.style.position = "absolute";
-        button.style.zIndex = "2000";
-        button.style.MozUserSelect = "none";
-        button.style.KhtmlUserSelect = "none";
-        button.style.border = "1px solid black";
-        button.style.backgroundColor = "lightblue";
-        button.style.top = "50%";
-        button.style.textAlign = "center";
-        button.style.fontFamily = "monospace";
-        button.style.fontSize = "20px";
         button.style.marginLeft = ((thiswidth/2) - 100) + "px";
-        button.style.width = "100px";
-        button.style.cursor = "pointer";
+        button.style.display = "none";
         button.innerHTML = "<strong>OK</strong>";
         button.onselectstart = function () { return false; };
         button.onclick = function () { self.cb_ok(); return false; };
@@ -263,20 +239,8 @@ function UI_turmas(id, height)
         self.ok_button = button;
 
         var button = document.createElement("span");
-        button.style.display = "none";
-        button.style.position = "absolute";
-        button.style.zIndex = "2000";
-        button.style.MozUserSelect = "none";
-        button.style.KhtmlUserSelect = "none";
-        button.style.border = "1px solid black";
-        button.style.backgroundColor = "lightblue";
-        button.style.top = "50%";
-        button.style.textAlign = "center";
-        button.style.fontFamily = "monospace";
-        button.style.fontSize = "20px";
         button.style.marginLeft = ((thiswidth/2)) + "px";
-        button.style.width = "100px";
-        button.style.cursor = "pointer";
+        button.style.display = "none";
         button.innerHTML = "<strong>Cancelar</strong>";
         button.onselectstart = function () { return false; };
         button.onclick = function () { self.cb_cancel(); return false; };

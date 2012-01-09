@@ -6,15 +6,7 @@ function UI_grayout(id)
     var self = this;
 
     self.grayout = document.getElementById(id);
-    self.grayout.style.position = "absolute";
-    self.grayout.style.left = "0px";
-    self.grayout.style.top = "0px";
-    self.grayout.style.width = "100%";
-    self.grayout.style.height = "100%";
-    self.grayout.style.backgroundColor = "#666666";
-    self.grayout.style.opacity = ".7";
-    self.grayout.style.filter = "alpha(opacity=70)";
-    self.grayout.style.zIndex = "1000";
+    self.grayout.className = "ui_grayout";
     self.grayout.onclick = function() { self.cb_onclick(); };
 
     /* procedures */
@@ -33,18 +25,7 @@ function UI_ajuda_popup(id)
     var self = this;
 
     self.popup = document.getElementById(id);
-
-    self.popup.style.position = "absolute";
-    self.popup.style.backgroundColor = "#eeeeee";
-    self.popup.style.width = "600px";
-    self.popup.style.height = "480px";
-    self.popup.style.zIndex = "2000";
-    self.popup.style.top = "10%";
-    self.popup.style.left = "50%";
-    self.popup.style.border = "1px solid black";
-    self.popup.style.fontFamily = "verdana";
-    self.popup.style.fontSize = "15px";
-    self.popup.style.overflow = "auto";
+    self.popup.className = "ui_ajuda_popup";
 
     function show() {
         self.popup.style.display = "";

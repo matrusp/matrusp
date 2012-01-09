@@ -6,21 +6,14 @@ function UI_campus(id)
     var self = this;
 
     var ui_campus = document.getElementById(id).parentNode;
-    ui_campus.style.fontFamily = "monospace";
-    ui_campus.style.fontSize   = "13px";
+    ui_campus.className = "ui_campus";
     ui_campus.appendChild(document.createTextNode("campus: "));
     var select = document.createElement("select");
-    select.style.fontFamily = "monospace";
-    select.style.fontSize   = "11px";
     var option = document.createElement("option");
-    option.style.fontFamily = "monospace";
-    option.style.fontSize   = "11px";
     option.value = "Florianópolis";
     option.innerHTML = "Florianópolis";
     select.appendChild(option);
     var option = document.createElement("option");
-    option.style.fontFamily = "monospace";
-    option.style.fontSize   = "11px";
     option.value = "Joinville";
     option.innerHTML = "Joinville";
     select.appendChild(option);

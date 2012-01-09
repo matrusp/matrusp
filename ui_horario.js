@@ -9,11 +9,7 @@ function UI_horario(id)
                   "13:30", "14:20", "15:10", "16:20", "17:10",
                   "18:30", "19:20", "20:20", "21:10"];
     var horario = document.getElementById(id);
-
-    horario.style.border = "1px solid black";
-    horario.style.backgroundColor = "#eeeeee";
-    horario.style.position = "relative";
-    horario.style.zIndex = "2000";
+    horario.className = "ui_horario";
 
     array = new Array();
     for (var i = 0; i < 6; i++) {
@@ -27,8 +23,6 @@ function UI_horario(id)
     row.appendChild(document.createElement("th"));
     for (var i = 0; i < dias.length; i++) {
         var head = document.createElement("th");
-        head.style.fontFamily = "monospace";
-        head.style.fontSize = "11px";
         head.innerHTML = dias[i];
         row.appendChild(head);
     }
@@ -41,18 +35,10 @@ function UI_horario(id)
         var row = document.createElement("tr");
         var hora = document.createElement("td");
         hora.innerHTML = horas[j];
-        hora.style.fontFamily = "monospace";
-        hora.style.fontSize = "11px";
         row.appendChild(hora);
         for (var i = 0; i < dias.length; i++) {
             var data = document.createElement("td");
-            data.style.backgroundColor = "white";
-            data.style.border = "1px solid black";
-            data.style.height = "18px";
-            data.style.width = "60px";
-            data.style.fontFamily = "monospace";
-            data.style.fontSize = "11px";
-            data.style.textAlign = "center";
+            data.className = "ui_horario_celula";
             data.innerHTML = "&nbsp;";
             array[i][j] = data;
             row.appendChild(data);

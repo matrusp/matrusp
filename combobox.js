@@ -40,22 +40,13 @@ function Combobox(input, suggestions, ui_logger)
     self.color_0 = "white";
     self.color_1 = "#eeeeee";
     self.input       = document.getElementById(input);
+    self.input.className = "combobox_input";
     self.suggestions = document.getElementById(suggestions);
+    self.suggestions.className = "combobox_suggestions";
     self.mouse_over_suggestions = false;
 
     function list_create() {
-        self.suggestions.style.overflowY = "auto";
-        self.suggestions.style.overflowX = "hidden";
-        self.suggestions.style.maxHeight = "300px";
-        self.suggestions.style.border = "1px solid black";
-        self.suggestions.style.position = "absolute";
-        self.suggestions.style.padding = "0";
-        self.suggestions.style.margin = "0";
-        self.suggestions.style.backgroundColor = "white";
         self.internal_div = document.createElement("div");
-        self.internal_div.style.backgroundColor = "white";
-        self.internal_div.style.padding = "0";
-        self.internal_div.style.zIndex = "1";
         self.internal_div.style.marginRight = (document.scrollbar_width+1) + "px";
 
         self.array = new Array();
@@ -64,7 +55,6 @@ function Combobox(input, suggestions, ui_logger)
         self.suggestions.onmouseover = function() { self.mouse_over_suggestions = true; };
         self.suggestions.onmouseout  = function() { self.mouse_over_suggestions = false; };
         self.suggestions.appendChild(self.internal_div);
-        self.suggestions.style.minWidth = "300px";
         list_add_item("Criar atividade extra", "Clique aqui para criar uma atividade extra-curricular, adicionando seus próprios horários");
         self.array[0].style.fontSize = "13px";
         self.array[0].style.fontWeight = "bold";
@@ -75,21 +65,11 @@ function Combobox(input, suggestions, ui_logger)
             self.input.blur();
         };
         list_hide();
-
-        self.input.style.fontFamily = "monospace";
-        self.input.style.fontSize   = "11px";
-        self.suggestions.style.fontFamily = "monospace";
-        self.suggestions.style.fontSize   = "11px";
-        self.suggestions.style.zIndex = "3000";
     }
     function list_add_item(str, title) {
         var li = document.createElement("div");
         if (title)
             li.title = title;
-        li.style.whiteSpace = "nowrap";
-        li.style.backgroundColor = "white";
-        li.style.display = "block";
-        li.style.width = "110%";
 
         li.innerHTML   = str;
         li.onmouseover = function() { select_item(this.index); };

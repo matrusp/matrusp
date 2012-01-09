@@ -9,8 +9,7 @@ function UI_logger(id)
     var persistent_str = null;
 
     var ui_logger = document.getElementById(id).parentNode;
-    ui_logger.style.fontFamily = "monospace";
-    ui_logger.style.fontSize   = "13px";
+    ui_logger.className = "ui_logger";
     var stop = function() {
         if (self.timer) {
             clearTimeout(self.timer);

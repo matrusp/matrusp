@@ -7,8 +7,7 @@ function UI_materias(id, ui_combinacoes)
 
     var list = document.getElementById(id);
 
-    list.style.border = "1px solid black";
-    list.style.width  = "770px";
+    list.className = "ui_materias"
 
     var table;
     var tbody;
@@ -16,11 +15,6 @@ function UI_materias(id, ui_combinacoes)
     function create() {
         table = document.createElement("table");
         tbody = document.createElement("tbody");
-        table.style.backgroundColor = "black";
-        table.style.fontFamily = "monospace";
-        table.style.tableLayout = "fixed";
-        table.style.fontSize = "11px";
-        table.style.width="770px";
         table.cellPadding="1";
         table.cellSpacing="1";
         table.appendChild(tbody);
@@ -79,8 +73,7 @@ function UI_materias(id, ui_combinacoes)
         var div = document.createElement("div");
         div.style.overflow="hidden";
         var input = document.createElement("input");
-        input.style.fontFamily = "monospace";
-        input.style.fontSize   = "11px";
+        input.className = "ui_materias_edit_input";
         input.value = row.materia[attr];
         if (attr == "codigo")
             input.maxLength = "7";
@@ -101,8 +94,6 @@ function UI_materias(id, ui_combinacoes)
                 this.blur();
             }
         }
-        input.style.width = "100%";
-        input.style.height = "13px";
         self.input = input;
         div.appendChild(input);
         data.appendChild(div);
@@ -156,7 +147,6 @@ function UI_materias(id, ui_combinacoes)
         data.style.MozUserSelect = "none";
         data.style.KhtmlUserSelect = "none";
         data.onselectstart = function () { return false; };
-        data.style.color = "black";
         data.oldbg = materia.cor;
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
@@ -171,7 +161,6 @@ function UI_materias(id, ui_combinacoes)
         data.style.MozUserSelect = "none";
         data.style.KhtmlUserSelect = "none";
         data.onselectstart = function () { return false; };
-        data.style.color = "black";
         data.oldbg = materia.cor;
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
@@ -185,7 +174,6 @@ function UI_materias(id, ui_combinacoes)
         data.style.MozUserSelect = "none";
         data.style.KhtmlUserSelect = "none";
         data.onselectstart = function () { return false; };
-        data.style.color = "black";
         data.oldbg = materia.cor;
         data.onmouseout  = hover_off;
         data.onmouseover = hover_on;
