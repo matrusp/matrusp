@@ -72,40 +72,6 @@ function UI_turmas(id, height)
     }
     function hover_off() { this.style.backgroundColor = this.oldbg; this.style.color = "black"; };
     function hover_on()  { this.style.backgroundColor = "black"; this.style.color = this.oldbg; };
-    function finish_row(row) {
-        var data = document.createElement("td");
-        data.style.MozUserSelect = "none";
-        data.style.KhtmlUserSelect = "none";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
-        data.onselectstart = function () { return false; };
-        data.oldbg = current_materia.cor;
-        data.onmouseout  = hover_off;
-        data.onmouseover = hover_on;
-        data.onclick = editar;
-        data.innerHTML = "E";
-        data.title = "editar horário desta turma";
-        row.appendChild(data);
-
-        var data = document.createElement("td");
-        data.style.MozUserSelect = "none";
-        data.style.KhtmlUserSelect = "none";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
-        data.onselectstart = function () { return false; };
-        data.oldbg = current_materia.cor;
-        data.onmouseout  = hover_off;
-        data.onmouseover = hover_on;
-        data.onclick = remove;
-        data.innerHTML = "X";
-        data.title = "remover turma";
-        row.appendChild(data);
-
-        self.tbody.insertBefore(row, insert_before);
-
-        if (self.table.offsetHeight >= list.offsetHeight)
-            self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
-    };
     function new_turma(horario) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
@@ -159,7 +125,38 @@ function UI_turmas(id, height)
         data.innerHTML = innerHTML;
         row.appendChild(data);
 
-        finish_row(row);
+        var data = document.createElement("td");
+        data.style.MozUserSelect = "none";
+        data.style.KhtmlUserSelect = "none";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
+        data.onselectstart = function () { return false; };
+        data.oldbg = current_materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
+        data.onclick = editar;
+        data.innerHTML = "E";
+        data.title = "editar horário desta turma";
+        row.appendChild(data);
+
+        var data = document.createElement("td");
+        data.style.MozUserSelect = "none";
+        data.style.KhtmlUserSelect = "none";
+        data.style.width = "15px";
+        data.style.textAlign = "center";
+        data.onselectstart = function () { return false; };
+        data.oldbg = current_materia.cor;
+        data.onmouseout  = hover_off;
+        data.onmouseover = hover_on;
+        data.onclick = remove;
+        data.innerHTML = "X";
+        data.title = "remover turma";
+        row.appendChild(data);
+
+        self.tbody.insertBefore(row, insert_before);
+
+        if (self.table.offsetHeight >= list.offsetHeight)
+            self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
     }
     var create = function(materia) {
         list.innerHTML = "";
