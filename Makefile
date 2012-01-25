@@ -33,7 +33,7 @@ load2.cgi: load.c
 load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 
 save2.cgi load2.cgi header_gen header_gen_pdf:
-	gcc -Wall -O3 -std=c99 ${EXTRA_FLAGS} -o $@ $<
+	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
 
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
