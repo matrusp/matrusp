@@ -12,6 +12,13 @@ function UI_materias(id, ui_combinacoes)
     var table;
     var tbody;
 
+    var mouseover_materia = null;
+    var mouseout_materia = function() {
+        if (mouseover_materia) {
+            self.cb_onmouseout(mouseover_materia);
+            mouseover_materia = null;
+        }
+    };
     function create() {
         table = document.createElement("table");
         tbody = document.createElement("tbody");
@@ -20,6 +27,7 @@ function UI_materias(id, ui_combinacoes)
         table.appendChild(tbody);
         list.appendChild(table);
         var row  = document.createElement("tr");
+        row.onmouseover = mouseout_materia;
         row.style.backgroundColor = "#eeeeee";
         var data = document.createElement("td");
         data.style.width = "22px";
@@ -50,6 +58,21 @@ function UI_materias(id, ui_combinacoes)
         data.style.width = "15px";
         row.appendChild(data);
         tbody.appendChild(row);
+        table.onmouseout = function(e) {
+            if (!e) var e = window.event;
+            var t = (window.event) ? e.srcElement : e.target;
+            var rt = (e.relatedTarget) ? e.relatedTarget : e.toElement;
+            while ( t &&  t.nodeName != "TABLE")
+                 t =  t.parentNode;
+            while (rt && rt.nodeName != "TABLE")
+                rt = rt.parentNode;
+            if (rt && t && t == rt)
+                return;
+            if (mouseover_materia) {
+                self.cb_onmouseout(mouseover_materia);
+                mouseover_materia = null;
+            }
+        };
     }
     create();
 
@@ -102,8 +125,13 @@ function UI_materias(id, ui_combinacoes)
     function add(materia) {
         var row  = document.createElement("tr");
         row.editable_cell = new Object();
-        row.onmouseover = function() { self.cb_onmouseover(this.materia); };
-        row.onmouseout  = function() { self.cb_onmouseout(this.materia); };
+        row.onmouseover = function() {
+            if (mouseover_materia == this.materia)
+                return;
+            mouseout_materia();
+            self.cb_onmouseover(this.materia);
+            mouseover_materia = this.materia;
+        };
         row.style.backgroundColor = materia.cor;
         row.style.cursor="pointer";
         var data = document.createElement("td");

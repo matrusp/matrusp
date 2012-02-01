@@ -72,11 +72,24 @@ function UI_turmas(id, height)
     }
     function hover_off() { this.style.backgroundColor = this.oldbg; this.style.color = "black"; };
     function hover_on()  { this.style.backgroundColor = "black"; this.style.color = this.oldbg; };
+    var mouseover_turma = null;
+    var mouseout_turma = function() {
+        if (mouseover_turma) {
+            self.cb_onmouseout(mouseover_turma);
+            mouseover_turma = null;
+        }
+    };
     function new_turma(horario) {
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
-        row.onmouseover = function() { self.cb_onmouseover(this.turma); }
-        row.onmouseout  = function() { self.cb_onmouseout(this.turma); }
+        row.onmouseover = function() {
+            if (mouseover_turma == this.turma)
+                return;
+            mouseout_turma();
+            self.cb_onmouseover(this.turma);
+            mouseover_turma = this.turma;
+        };
+        mouseover_turma = null;
 
         var data = document.createElement("td");
         for (var j in horario.turmas) {
@@ -170,6 +183,22 @@ function UI_turmas(id, height)
         self.table.cellPadding="1";
         self.table.cellSpacing="1";
 
+        self.table.onmouseout = function(e) {
+            if (!e) var e = window.event;
+            var t = (window.event) ? e.srcElement : e.target;
+            var rt = (e.relatedTarget) ? e.relatedTarget : e.toElement;
+            while ( t &&  t.nodeName != "TABLE")
+                 t =  t.parentNode;
+            while (rt && rt.nodeName != "TABLE")
+                rt = rt.parentNode;
+            if (rt && t && t == rt)
+                return;
+            if (mouseover_turma) {
+                self.cb_onmouseout(mouseover_turma);
+                mouseover_turma = null;
+            }
+        };
+
         for (var i in current_materia.horarios) {
             var horario = current_materia.horarios[i];
             if (current_materia.agrupar == 1) {
@@ -187,6 +216,7 @@ function UI_turmas(id, height)
         var row  = document.createElement("tr");
         row.style.backgroundColor = current_materia.cor;
         row.materia = current_materia;
+        row.onmouseover = mouseout_turma;
 
         var data = document.createElement("td");
         data.colSpan = "5";
@@ -204,6 +234,7 @@ function UI_turmas(id, height)
 
         var row  = document.createElement("tr");
         row.style.backgroundColor = "#eeeeee";
+        row.onmouseover = mouseout_turma;
 
         var data = document.createElement("td");
         var input = document.createElement("input");
