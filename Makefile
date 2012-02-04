@@ -13,6 +13,7 @@ ui_materias.js \
 ui_turmas.js \
 ui_combinacoes.js \
 ui_horario.js \
+ui_ajuda_popup.js \
 combobox.js \
 database.js \
 main.js
