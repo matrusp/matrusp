@@ -595,7 +595,7 @@ window.onload = function() {
     var ui_grayout     = new UI_grayout("grayout");
     ui_grayout.cb_onclick = function() {
         if (ajuda_shown) {
-            fechar_ajuda_obj.onclick();
+            ui_ajuda_popup.cb_fechar();
         } else if (main.editando) {
             ui_turmas.cb_cancel();
         }
@@ -611,8 +611,7 @@ window.onload = function() {
         ajuda_shown = true;
     };
     ui_ajuda_popup.link.appendChild(a);
-    fechar_ajuda_obj = document.getElementById("fechar_ajuda");
-    fechar_ajuda_obj.onclick = function() {
+    ui_ajuda_popup.cb_fechar = function() {
         ui_grayout.hide();
         ui_ajuda_popup.hide();
         ajuda_shown = false;
@@ -638,7 +637,7 @@ window.onload = function() {
         if (elm.nodeType == 3) // defeat Safari bug
             elm = elm.parentNode;
         if (ajuda_shown && c == 27) {
-            fechar_ajuda_obj.onclick();
+            ui_ajuda_popup.cb_fechar();
             return;
         }
         if (main.editando) {
