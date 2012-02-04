@@ -587,7 +587,7 @@ window.onload = function() {
     var ui_materias    = new UI_materias("materias_list");
     var ui_combinacoes = new UI_combinacoes("combinacoes");
     var ui_horario     = new UI_horario("horario");
-    var ui_turmas      = new UI_turmas("turmas_list", ui_horario.height());
+    var ui_turmas      = new UI_turmas("turmas_list");
     var ui_logger      = new UI_logger("logger");
     var ui_campus      = new UI_campus("campus");
     var ui_saver       = new UI_saver("saver");
@@ -713,6 +713,11 @@ window.onload = function() {
     }
     if (combo.input.value == identificador)
         combo.input.value = "";
+
+    document.getElementById("ui_loading").style.display = "none";
+    document.getElementById("ui_main").style.display = "block";
+    document.getElementById("ui_fb").style.display = "block";
+    ui_turmas.set_height(ui_horario.height());
 }
 
 var database = new Database();

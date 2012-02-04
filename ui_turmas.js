@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function UI_turmas(id, height)
+function UI_turmas(id)
 {
     var self = this;
 
@@ -16,8 +16,6 @@ function UI_turmas(id, height)
 
     list.className = "ui_turmas";
     list.style.width  = thiswidth + "px";
-    list.style.height    = (height-2) + "px";
-    list.style.maxHeight = (height-2) + "px";
 
     function onmouseup() {
         var checkboxes = this.parentNode.getElementsByTagName("td")[0].getElementsByTagName("input");
@@ -57,8 +55,7 @@ function UI_turmas(id, height)
     function remove_turma(turma) {
         var row = turma.row;
         row.parentNode.removeChild(row);
-        if (self.table.offsetHeight < list.offsetHeight)
-            self.table.style.width = thiswidth + "px";
+        self.fix_height();
     }
     function remove() {
         var row = this.parentNode;
@@ -167,9 +164,7 @@ function UI_turmas(id, height)
         row.appendChild(data);
 
         self.tbody.insertBefore(row, insert_before);
-
-        if (self.table.offsetHeight >= list.offsetHeight)
-            self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
+        self.fix_height();
     }
     var create = function(materia) {
         list.innerHTML = "";
@@ -277,9 +272,7 @@ function UI_turmas(id, height)
 
         self.table.appendChild(self.tbody);
         list.appendChild(self.table);
-
-        if (self.table.offsetHeight >= list.offsetHeight)
-            self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
+        self.fix_height();
     }
 
     self.old_cb_onmouseover = null;
@@ -294,6 +287,17 @@ function UI_turmas(id, height)
     self.edit_end   = edit_end;
     /* functions */
     self.get_current = function() { return current_materia; };
+    self.set_height = function(height) {
+        list.style.height    = (height-2) + "px";
+        list.style.maxHeight = (height-2) + "px";
+        self.fix_height();
+    };
+    self.fix_height = function() {
+        if (self.table.offsetHeight < list.offsetHeight)
+            self.table.style.width = thiswidth + "px";
+        else
+            self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
+    };
     /* callbacks */
     self.cb_toggle_agrupar= null;
     self.cb_edit_turma   = null;
