@@ -726,7 +726,7 @@ var database = new Database();
 
 var f_pontos = ".&nbsp;&nbsp;";
 function loading() {
-    document.getElementById("ui_loading").innerHTML = "<br><br>CARREGANDO" + f_pontos;
+    document.getElementById("ui_loading").innerHTML = "<br><br>carregando" + f_pontos;
     if      (f_pontos == ".&nbsp;&nbsp;")
              f_pontos =  "..&nbsp;";
     else if (f_pontos == "..&nbsp;")
