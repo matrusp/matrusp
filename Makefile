@@ -49,6 +49,7 @@ clean::
 	rm -f full2_JOI.js
 	rm -f header_gen_pdf header_gen
 	rm -rf save2.cgi load2.cgi matrufsc.js install *~
+	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz full2_FLO.js.gz full2_JOI.js.gz
 
 install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz full2_FLO.js.gz full2_JOI.js.gz
 	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
