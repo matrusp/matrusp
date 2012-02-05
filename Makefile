@@ -36,6 +36,9 @@ load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 save2.cgi load2.cgi header_gen header_gen_pdf:
 	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
 
+%.gz: %
+	gzip --best -c $< > $@
+
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
 #	closure --compilation_level=SIMPLE_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
@@ -46,6 +49,11 @@ clean::
 	rm -f full2_JOI.js
 	rm -f header_gen_pdf header_gen
 	rm -rf save2.cgi load2.cgi matrufsc.js install *~
+
+install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz full2_FLO.js.gz full2_JOI.js.gz
+	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
+	cp full2_FLO.js.gz full2_JOI.js.gz install/
+	cp .htaccess install/
 
 install:: all
 	mkdir -p install/cgi-bin

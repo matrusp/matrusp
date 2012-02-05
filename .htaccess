@@ -1,0 +1,9 @@
+<FilesMatch "\.gz$">
+Header set Content-Encoding gzip
+</FilesMatch>
+RewriteEngine on
+#RewriteBase /~ramiro/matrufsc
+SetEnv no-gzip dont-vary
+RewriteCond %{HTTP:Accept-Encoding} gzip
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^(.+)\.(html|js|css)$ $1.$2.gz 
