@@ -10,6 +10,7 @@ function UI_materias(id, ui_combinacoes)
     list.className = "ui_materias"
 
     var table;
+    var thead;
     var tbody;
 
     var mouseover_materia = null;
@@ -21,43 +22,43 @@ function UI_materias(id, ui_combinacoes)
     };
     function create() {
         table = document.createElement("table");
-        tbody = document.createElement("tbody");
+        thead = document.createElement("thead");
         table.cellPadding="1";
         table.cellSpacing="1";
-        table.appendChild(tbody);
+        table.appendChild(thead);
         list.appendChild(table);
         var row  = document.createElement("tr");
         row.onmouseover = mouseout_materia;
         row.style.backgroundColor = "#eeeeee";
-        var data = document.createElement("td");
+        var data = document.createElement("th");
         data.style.width = "22px";
         row.appendChild(data);
-        var data = document.createElement("td");
+        var data = document.createElement("th");
         data.style.textAlign = "center";
         data.style.width = "60px";
         data.innerHTML = "C\u00f3digo";
         row.appendChild(data);
-        var data = document.createElement("td");
+        var data = document.createElement("th");
         data.style.textAlign = "center";
         data.style.width = "50px";
         data.innerHTML = "Turma";
         row.appendChild(data);
-        var data = document.createElement("td");
+        var data = document.createElement("th");
         data.id = "combinacoes";
         row.appendChild(data);
-        var data = document.createElement("td");
+        var data = document.createElement("th");
         data.innerHTML = "";
         data.style.width = "15px";
         row.appendChild(data);
-        var data = document.createElement("td");
+        var data = document.createElement("th");
         data.innerHTML = "";
         data.style.width = "15px";
         row.appendChild(data);
-        var data = document.createElement("td");
+        var data = document.createElement("th");
         data.innerHTML = "";
         data.style.width = "15px";
         row.appendChild(data);
-        tbody.appendChild(row);
+        thead.appendChild(row);
         table.onmouseout = function(e) {
             if (!e) var e = window.event;
             var t = (window.event) ? e.srcElement : e.target;
@@ -73,13 +74,15 @@ function UI_materias(id, ui_combinacoes)
                 mouseover_materia = null;
             }
         };
+        tbody = document.createElement("tbody");
+        table.appendChild(tbody);
     }
     create();
 
     function reset() {
         var rows = tbody.getElementsByTagName("tr");
-        while (rows[1])
-            tbody.removeChild(rows[1]);
+        while (rows[0])
+            tbody.removeChild(rows[0]);
     }
 
     self.input = null;
