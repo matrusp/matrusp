@@ -91,13 +91,13 @@ body {
 
 .ui_materias {
     border: 1px solid black;
-    width: 770px;
+    width: 772px;
 }
 .ui_materias table {
     background-color: black;
     table-layout: fixed;
     font-size: 11px;
-    width: 770px;
+    width: 772px;
 }
 .ui_materias_edit_input {
     font-size: 11px;
