@@ -103,7 +103,6 @@ function Combinacoes()
                 var combinacoes2 = new Array();
                 for (var c in new_combinacoes) {
                     var combinacao = new_combinacoes[c];
-                    var ok2 = 0;
 
                     for (var j in materia.horarios) {
                         var horario = materia.horarios[j];
@@ -141,17 +140,10 @@ function Combinacoes()
                         }
                         c2.horarios_combo.push(horario);
                         combinacoes2.push(c2);
-                        ok2 = 1;
                         ok3 = 1;
                     }
-//                    if (!ok2) {
-//                        if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
-//                        console.log("choque de horario, horario nao pode ser adicionado em nenhuma combinacao");
-//                    }
                 }
                 if (!ok3) {
-//                    if (navigator.userAgent.toLowerCase().indexOf("msie") < 0)
-//                    console.log("choque de horario, materia ", materia.codigo, " nao pode ser adicionado em nenhuma combinacao");
                     materia.selected = -1;
                 } else {
                     new_combinacoes = combinacoes2;
