@@ -53,29 +53,14 @@ function Combinacoes()
         var new_combinacoes = new Array();
         for (var i = 0; i < materias.length; i++) {
             var materia = materias[i];
-            var ok = 0;
 
-            if (materia.selected == 0)
+            materia.selected = ((materia.selected != 0) &&
+                                materia.turmas.some(function(turma){
+                                    return turma.selected;
+                                })) ? 1 : 0;
+            if (!materia.selected)
                 continue;
-            /* se nenhuma turma de nenhum horario da materia esta
-             * selecionada, pular materia */
-            for (var j in materia.horarios) {
-                var horario = materia.horarios[j];
-                for (var k in horario.turmas) {
-                    if (horario.turmas[k].selected) {
-                        ok = 1;
-                        break;
-                    }
-                }
-                if (ok)
-                    break;
-            }
-            if (!ok) {
-                materia.selected = 0;
-                continue;
-            }
 
-            materia.selected = 1;
             if (!new_combinacoes.length) {
                 for (var j in materia.horarios) {
                     var horario = materia.horarios[j];
