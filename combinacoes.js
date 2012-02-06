@@ -43,10 +43,8 @@ function Combinacoes()
         for (var i2 = 0; i2 < 6; i2++) {
             c2[i2] = new Array();
             for (var i3 = 0; i3 < 14; i3++) {
-                if (combinacao[i2][i3] && combinacao[i2][i3].horario.materia != except) {
-                    c2[i2][i3] = new Object();
-                    c2[i2][i3].horario = combinacao[i2][i3].horario;
-                }
+                if (combinacao[i2][i3] && combinacao[i2][i3].horario.materia != except)
+                    c2[i2][i3] = {horario:combinacao[i2][i3].horario};
             }
         }
         return c2;
@@ -93,10 +91,7 @@ function Combinacoes()
                     var combinacao = [[],[],[],[],[],[]];
                     for (var k = 0; k < horario.aulas.length; k++) {
                         var aula = horario.aulas[k];
-                        var dia  = aula.dia;
-                        var hora = aula.hora;
-                        combinacao[dia][hora] = new Object();
-                        combinacao[dia][hora].horario = horario;
+                        combinacao[aula.dia][aula.hora] = {horario:horario};
                     }
                     combinacao[materia.codigo] = horario;
                     combinacao.horarios_combo = new Array();
@@ -142,10 +137,7 @@ function Combinacoes()
                         }
                         for (var k = 0; k < horario.aulas.length; k++) {
                             var aula = horario.aulas[k];
-                            var dia  = aula.dia;
-                            var hora = aula.hora;
-                            c2[dia][hora] = new Object();
-                            c2[dia][hora].horario = horario;
+                            c2[aula.dia][aula.hora] = {horario:horario};
                         }
                         c2.horarios_combo.push(horario);
                         combinacoes2.push(c2);
