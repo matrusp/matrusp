@@ -238,7 +238,8 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 return;
             }
         }
-        turmas.undisplay_over(m_array[m_count]);
+        if (m_array)
+            turmas.undisplay_over(m_array[m_count]);
         if (m_timer)
             clearTimeout(m_timer);
         m_array = null;
