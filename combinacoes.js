@@ -90,10 +90,7 @@ function Combinacoes()
                     }
                     if (!ok)
                         continue;
-                    var combinacao = new Array();
-                    for (var i2 = 0; i2 < 6; i2++) {
-                        combinacao[i2] = new Array();
-                    }
+                    var combinacao = [[],[],[],[],[],[]];
                     for (var k = 0; k < horario.aulas.length; k++) {
                         var aula = horario.aulas[k];
                         var dia  = aula.dia;
