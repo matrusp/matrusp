@@ -10,9 +10,7 @@ function Combinacoes()
     var overlay = null;
 
     function clear_overlay() {
-        overlay = new Array();
-        for (var i = 0; i < 6; i++)
-            overlay[i] = new Array();
+        overlay = [[],[],[],[],[],[]];
     }
     clear_overlay();
     function closest(orig) {
@@ -39,22 +37,6 @@ function Combinacoes()
             }
         });
         return best_c+1;
-    }
-    function valor_combinacao(c) {
-        var sum = 0;
-        for (dia = 0; dia < 6; dia++) {
-            for (hora = 0; hora < 14; hora++) {
-                if (c[dia][hora]) {
-                    sum += hora;
-                }
-            }
-        }
-        return sum;
-    }
-    function comparar_combinacoes(a, b) {
-        var va = valor_combinacao(a);
-        var vb = valor_combinacao(b);
-        return va - vb;
     }
     function copy(combinacao, except) {
         var c2 = new Array();
@@ -187,7 +169,18 @@ function Combinacoes()
                 }
             }
         }
-        new_combinacoes.sort(comparar_combinacoes);
+        new_combinacoes.forEach(function(c){
+            var sum = 0;
+            c.forEach(function(dia){
+                dia.forEach(function(obj,hora){
+                    sum += hora;
+                });
+            });
+            c.sum = sum;
+        });
+        new_combinacoes.sort(function(a,b) {
+            return a.sum - b.sum;
+        });
         combinacoes = new_combinacoes;
     }
 
