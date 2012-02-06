@@ -21,7 +21,7 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<div id="ui_loading" style="text-align:center;font-size:32px;"><br><br>carregando&nbsp;&nbsp;&nbsp;</div>
+<div id="ui_loading" style="text-align:center;font-size:32px;"><br><br></div>
 <div id="ui_main" style="overflow:auto;width:780px;margin:0 auto;display:none;">
  <table><tr><td colspan=2>
   <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left">
@@ -64,15 +64,17 @@
 
 <script type="text/javascript">
 var page_loaded = false;
-var f_pontos = ".&nbsp;&nbsp;";
+var f_pontos = "&nbsp;&nbsp;&nbsp;";
 function loading() {
-    document.getElementById("ui_loading").innerHTML = "<br><br>carregando" + f_pontos;
-    if      (f_pontos == ".&nbsp;&nbsp;")
+    document.getElementById("ui_loading").innerHTML = "<br><br>carregando MatrUFSC" + f_pontos;
+    if      (f_pontos == "&nbsp;&nbsp;&nbsp;")
+             f_pontos =  ".&nbsp;&nbsp;";
+    else if (f_pontos == ".&nbsp;&nbsp;")
              f_pontos =  "..&nbsp;";
     else if (f_pontos == "..&nbsp;")
              f_pontos =  "...";
     else if (f_pontos == "...")
-             f_pontos =  ".&nbsp;&nbsp;";
+             f_pontos =  "&nbsp;&nbsp;&nbsp;";
     if (!page_loaded)
         setTimeout("loading()", 300);
 };
