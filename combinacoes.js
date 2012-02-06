@@ -23,8 +23,6 @@ function Combinacoes()
         for (var j = 0; j < combinacoes.length; j++) {
             var c = combinacoes[j];
             var p = 0;
-            var num = 0;
-            var den = 0;
             for (var i in c.horarios_combo) {
                 var t = c.horarios_combo[i].turma_representante;
                 for (var i2 in orig.horarios_combo) {
