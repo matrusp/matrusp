@@ -20,26 +20,24 @@ function Combinacoes()
             return 1;
         var best_c = null;
         var best_p = 0;
-        for (var j = 0; j < combinacoes.length; j++) {
-            var c = combinacoes[j];
-            var p = 0;
-            for (var i in c.horarios_combo) {
-                var t = c.horarios_combo[i].turma_representante;
-                for (var i2 in orig.horarios_combo) {
-                    var t2 = orig.horarios_combo[i2].turma_representante;
-                    if (t.materia == t2.materia) {
-                        p += 10;
-                        if (t == t2)
-                            p += 100;
-                        break;
-                    }
-                }
-            }
-            if (best_p < p) {
-                best_p = p;
+        combinacoes.forEach(function(c,j){
+            var sum = 0;
+            c.horarios_combo.forEach(function(horario){
+                var t = horario.turma_representante;
+                var t2 = null;
+                if (orig.horarios_combo.some(function(horario2){
+                        t2 = horario2.turma_representante;
+                        return t.materia == t2.materia;
+                    }))
+                    sum += 10;
+                if (t2 && t == t2)
+                    sum += 100;
+            });
+            if (best_p < sum) {
+                best_p = sum;
                 best_c = j;
             }
-        }
+        });
         return best_c+1;
     }
     function valor_combinacao(c) {
