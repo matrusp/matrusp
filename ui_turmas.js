@@ -293,6 +293,8 @@ function UI_turmas(id)
         self.fix_height();
     };
     self.fix_height = function() {
+        if (!self.table)
+            return;
         if (self.table.offsetHeight < list.offsetHeight)
             self.table.style.width = thiswidth + "px";
         else
