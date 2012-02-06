@@ -1,4 +1,4 @@
-all: full2_FLO.js full2_JOI.js save2.cgi load2.cgi matrufsc.js
+all: database.json save2.cgi load2.cgi matrufsc.js
 
 SRC=persistence.js \
 jsonxml.js \
@@ -20,13 +20,13 @@ main.js
 
 header_gen_pdf: header_gen_pdf.c
 header_gen_pdf: EXTRA_FLAGS=-lz
-full2_JOI.js: header_gen_pdf turmas.pdf
-	./header_gen_pdf turmas.pdf full2_JOI.js
+full2_JOI.json: header_gen_pdf turmas.pdf
+	./header_gen_pdf turmas.pdf full2_JOI.json
 
 header_gen: header_gen.c
 header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
-full2_FLO.js: header_gen turmas_db
-	./header_gen turmas_db full2_FLO.js
+full2_FLO.json: header_gen turmas_db
+	./header_gen turmas_db full2_FLO.json
 
 save2.cgi: save.c
 save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
@@ -39,25 +39,29 @@ save2.cgi load2.cgi header_gen header_gen_pdf:
 %.gz: %
 	gzip --best -c $< > $@
 
+database.json: full2_JOI.json full2_FLO.json
+#	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
+#	closure --compilation_level=SIMPLE_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
+	cat $^ > $@
+
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
 #	closure --compilation_level=SIMPLE_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
 	cat $^ > $@
 
 clean::
-	rm -f full2_FLO.js
-	rm -f full2_JOI.js
+	rm -f full2_FLO.json full2_JOI.json database.json
 	rm -f header_gen_pdf header_gen
 	rm -rf save2.cgi load2.cgi matrufsc.js install *~
-	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz full2_FLO.js.gz full2_JOI.js.gz
+	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz
 
-install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz full2_FLO.js.gz full2_JOI.js.gz
+install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz
 	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
-	cp full2_FLO.js.gz full2_JOI.js.gz install/
+	cp database.json.gz install/
 	cp .htaccess install/
 
 install:: all
 	mkdir -p install/cgi-bin
 	cp matrufsc.css matrufsc.js index.html install/
-	cp full2_FLO.js full2_JOI.js install/
+	cp database.json install/
 	cp save2.cgi load2.cgi install/cgi-bin/

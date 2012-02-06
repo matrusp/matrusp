@@ -62,9 +62,24 @@
 <div id="grayout" style="display:none;"></div>
 <div id="ajuda_popup" style="display:none;"></div>
 
+<script type="text/javascript">
+var page_loaded = false;
+var f_pontos = ".&nbsp;&nbsp;";
+function loading() {
+    document.getElementById("ui_loading").innerHTML = "<br><br>carregando" + f_pontos;
+    if      (f_pontos == ".&nbsp;&nbsp;")
+             f_pontos =  "..&nbsp;";
+    else if (f_pontos == "..&nbsp;")
+             f_pontos =  "...";
+    else if (f_pontos == "...")
+             f_pontos =  ".&nbsp;&nbsp;";
+    if (!page_loaded)
+        setTimeout("loading()", 300);
+};
+setTimeout("loading()", 300);
+</script>
 <script type="text/javascript" src="matrufsc.js"></script>
-<script type="text/javascript" src="full2_FLO.js"></script>
-<script type="text/javascript" src="full2_JOI.js"></script>
+<script type="text/javascript" src="database.json"></script>
 </body>
 
 </html>

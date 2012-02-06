@@ -578,7 +578,6 @@ function getScrollBarWidth () {
 
 ajuda_shown = false;
 mudancas = false;
-var page_loaded = false;
 window.onload = function() {
     document.scrollbar_width = getScrollBarWidth();
 
@@ -723,17 +722,3 @@ window.onload = function() {
 }
 
 var database = new Database();
-
-var f_pontos = ".&nbsp;&nbsp;";
-function loading() {
-    document.getElementById("ui_loading").innerHTML = "<br><br>carregando" + f_pontos;
-    if      (f_pontos == ".&nbsp;&nbsp;")
-             f_pontos =  "..&nbsp;";
-    else if (f_pontos == "..&nbsp;")
-             f_pontos =  "...";
-    else if (f_pontos == "...")
-             f_pontos =  ".&nbsp;&nbsp;";
-    if (!page_loaded)
-        setTimeout("loading()", 300);
-};
-setTimeout("loading()", 300);
