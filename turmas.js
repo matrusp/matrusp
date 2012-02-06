@@ -43,9 +43,9 @@ function Turmas(ui_logger, ui_horario, combinacoes)
 
         selected = turma;
     }
-    function normal_cell(d)  { return {strong:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
-    function red_cell(str)   { return {strong:true,text:str,bgcolor:"red",color:"black"}; }
-    function black_cell(str) { return {strong:false,text:str,bgcolor:"black",color:"white"}; }
+    function normal_cell(d)  { return {text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
+    function red_cell(str)   { return {text:str,bgcolor:"red",color:"black"}; }
+    function black_cell(str) { return {text:str,bgcolor:"black",color:"white"}; }
     function undisplay_over(turma)
     {
         if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */

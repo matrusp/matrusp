@@ -63,13 +63,7 @@ function UI_horario(id)
     }
     var display_cell = function(dia, hora, data) {
         var cell = array[dia][hora];
-        var innerHTML = new String();
-//        if (data.strong)
-//            innerHTML += "<strong>";
-        innerHTML += data.text;
-//        if (data.strong)
-//            innerHTML += "</strong>";
-        cell.innerHTML = innerHTML;
+        cell.innerHTML = data.text;
         cell.style.backgroundColor = data.bgcolor;
         cell.style.color = data.color;
     }

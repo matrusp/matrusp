@@ -191,37 +191,6 @@ function Combinacoes()
                 }
             }
         }
-        var comum = new Array();
-        for (var i4 = 0; i4 < 6; i4++) {
-            comum[i4] = new Array();
-            for (var j = 0; j < 14; j++) {
-                comum[i4][j] = 1;
-            }
-        }
-        for (var cc in new_combinacoes) {
-            var c = new_combinacoes[cc];
-            for (dia = 0; dia < 6; dia++) {
-                for (hora = 0; hora < 14; hora++) {
-                    if (comum[dia][hora] == 1 && c[dia][hora]) {
-                        comum[dia][hora] = c[dia][hora];
-                    } else if (!c[dia][hora] || !c[dia][hora].horario || !comum[dia][hora] || !comum[dia][hora].horario) {
-                        comum[dia][hora] = 0;
-                    } else if (c[dia][hora].horario.materia.codigo != comum[dia][hora].horario.materia.codigo) {
-                        comum[dia][hora] = 0;
-                    }
-                }
-            }
-        }
-        for (var cc in new_combinacoes) {
-            var c = new_combinacoes[cc];
-            for (dia = 0; dia < 6; dia++) {
-                for (hora = 0; hora < 14; hora++) {
-                    if (comum[dia][hora]) {
-                        c[dia][hora].fixed = 1;
-                    }
-                }
-            }
-        }
         new_combinacoes.sort(comparar_combinacoes);
         combinacoes = new_combinacoes;
     }
