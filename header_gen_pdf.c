@@ -168,6 +168,20 @@ print_materia(void)
     if (!full.codigo_disciplina)
         return;
 
+    if        (!strcmp(full.codigo_disciplina, "EMB5116") && !strcmp(full.nome_turma, "06601A")) {
+        free(full.nome_disciplina);
+        full.nome_disciplina = strdup("Eletrônica Analógica [Reservada Curso]");
+    } else if (!strcmp(full.codigo_disciplina, "EMB5016") && !strcmp(full.nome_turma, "03601B")) {
+        free(full.nome_disciplina);
+        full.nome_disciplina = strdup("Cálculo Numérico [Reservada Curso]");
+        free(full.horarios[0]);
+        free(full.horarios);
+        full.horarios = malloc(3*sizeof(char*));
+        full.horarios[0] = strdup("2.1620-2 / JOI-JOI012");
+        full.horarios[1] = strdup("5.1010-2 / JOI-AUD01");
+        full.horarios[2] = NULL;
+    }
+
     if (!full.horarios) {
         fprintf(stderr, "materia sem horarios! '%s' '%s'\n", full.codigo_disciplina, full.nome_turma);
         return;
@@ -207,24 +221,6 @@ print_materia(void)
     fprintf(fp_full, "\"%s\"", full.professores);
     fprintf(fp_full, "]");
     fprintf(fp_full, "]");
-
-    if        (!strcmp(full.codigo_disciplina, "EMB5010") && !strcmp(full.nome_turma, "02601B")) {
-    } else if (!strcmp(full.codigo_disciplina, "EMB5016") && !strcmp(full.nome_turma, "03601B")) {
-        free(full.nome_disciplina);
-        full.nome_disciplina = strdup("Cálculo Numérico [Reservada Curso]");
-        free(full.horarios[0]);
-        free(full.horarios);
-        full.horarios = malloc(3*sizeof(char*));
-        full.horarios[0] = strdup("2.1620-2 / JOI-JOI012");
-        full.horarios[1] = strdup("5.1010-2 / JOI-AUD01");
-        full.horarios[2] = NULL;
-    } else if (!strcmp(full.codigo_disciplina, "EMB5028") && !strcmp(full.nome_turma, "01601D")) {
-        free(full.nome_disciplina);
-        full.nome_disciplina = strdup("Comunicação e Expressão [Reservada Curso]");
-    } else if (!strcmp(full.codigo_disciplina, "EMB5115") && !strcmp(full.nome_turma, "06601A")) {
-        free(full.nome_disciplina);
-        full.nome_disciplina = strdup("Vibrações [Reservada Curso]");
-    }
 }
 static void
 freep(void *p2)
@@ -414,6 +410,7 @@ parse_line(char *line, size_t line_len)
                                 !strcmp(string, "CADASTRO DE TURMAS") ||
                                 !strcmp(string, "20121") ||
                                 !strcmp(string, "Semestre:") ||
+                                !strcmp(string, "TODOS") ||
                                 !strcmp(string, "Departamento:") ||
                                 !strcmp(string, "EMB - Campus Joinville, Diretoria EMB") ||
                                 !strcmp(string, "Curso:") ||
@@ -465,6 +462,9 @@ fprintf(stderr, "string: %s\n", string);
                         } else if (full.horarios) {
                             full.professores = strdup_to_utf8(string);
                         } else if (full.pedidos_sem_vaga) {
+                            if (!strcmp(string, "601")) {
+                            /* do nothing */
+                            } else
                             if (is_horario(string)) {
                                 full.horarios = split_horarios(string);
                             } else {
