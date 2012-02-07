@@ -183,9 +183,11 @@ print_materia(void)
         fprintf(fp_full, "\"%s\",", full.nome_disciplina);
         fprintf(fp_full, "[");
         strcpy(lastc, full.codigo_disciplina);
-        has_started = 1;
+        has_started = 0;
     }
 
+    if (has_started++)
+        fprintf(fp_full, ",");
     fprintf(fp_full, "[");
     fprintf(fp_full, "\"%s\",", full.nome_turma);
     fprintf(fp_full, "%s,", full.horas_aula);
@@ -195,13 +197,16 @@ print_materia(void)
     fprintf(fp_full, "%s,", full.saldo_vagas);
     fprintf(fp_full, "%s,", full.pedidos_sem_vaga);
     fprintf(fp_full, "[");
-    for (int j = 0; full.horarios[j]; j++)
-        fprintf(fp_full, "\"%s\",", full.horarios[j]);
+    for (int j = 0; full.horarios[j]; j++) {
+        if (j)
+            fprintf(fp_full, ",");
+        fprintf(fp_full, "\"%s\"", full.horarios[j]);
+    }
     fprintf(fp_full, "],");
     fprintf(fp_full, "[");
-    fprintf(fp_full, "\"%s\",", full.professores);
+    fprintf(fp_full, "\"%s\"", full.professores);
     fprintf(fp_full, "]");
-    fprintf(fp_full, "],");
+    fprintf(fp_full, "]");
 
     if        (!strcmp(full.codigo_disciplina, "EMB5010") && !strcmp(full.nome_turma, "02601B")) {
     } else if (!strcmp(full.codigo_disciplina, "EMB5016") && !strcmp(full.nome_turma, "03601B")) {
@@ -621,7 +626,7 @@ int main(int argc, char *argv[])
     print_materia();
 
     if (has_started)
-        fprintf(fp_full, "]],\n");
+        fprintf(fp_full, "]]\n");
     fprintf(fp_full, "]);\n");
 
     ret = 0;

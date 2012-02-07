@@ -199,9 +199,11 @@ extract_turmas(const char *content, int length)
             fprintf(fp_full, "\"%s\",", full.nome_disciplina);
             fprintf(fp_full, "[");
             strcpy(lastc, full.codigo_disciplina);
-            has_started = 1;
+            has_started = 0;
         }
 
+        if (has_started++)
+            fprintf(fp_full, ",");
         fprintf(fp_full, "[");
         fprintf(fp_full, "\"%s\",", full.nome_turma);
         fprintf(fp_full, "%s,", full.horas_aula);
@@ -214,14 +216,20 @@ extract_turmas(const char *content, int length)
             fprintf(fp_full, "%s,", full.saldo_vagas);
         fprintf(fp_full, "%s,", full.pedidos_sem_vaga);
         fprintf(fp_full, "[");
-        for (int j = 0; full.horarios[j]; j++)
-            fprintf(fp_full, "\"%s\",", full.horarios[j]);
+        for (int j = 0; full.horarios[j]; j++) {
+            if (j)
+                fprintf(fp_full, ",");
+            fprintf(fp_full, "\"%s\"", full.horarios[j]);
+        }
         fprintf(fp_full, "],");
         fprintf(fp_full, "[");
-        for (int j = 0; full.professores[j]; j++)
-            fprintf(fp_full, "\"%s\",", full.professores[j]);
+        for (int j = 0; full.professores[j]; j++) {
+            if (j)
+                fprintf(fp_full, ",");
+            fprintf(fp_full, "\"%s\"", full.professores[j]);
+        }
         fprintf(fp_full, "]");
-        fprintf(fp_full, "],");
+        fprintf(fp_full, "]");
 
         xmlFree(full.codigo_disciplina);
         xmlFree(full.nome_turma       );
@@ -299,7 +307,7 @@ int main(int argc, char *argv[])
     }
 
     if (has_started)
-        fprintf(fp_full, "]],\n");
+        fprintf(fp_full, "]]\n");
     fprintf(fp_full, "]);\n");
 
     ret = 0;
