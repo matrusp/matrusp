@@ -1,3 +1,8 @@
+/*
+ * made by bobince (at) gmail [dot] com
+ * obtained from (07-02-2012):
+ * http://stackoverflow.com/questions/2790001/fixing-javascript-array-functions-in-internet-explorer-indexof-foreach-etc
+ */
 if (!('forEach' in Array.prototype)) {
     Array.prototype.forEach= function(action, that /*opt*/) {
         for (var i= 0, n= this.length; i<n; i++)
