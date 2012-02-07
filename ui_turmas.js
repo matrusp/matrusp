@@ -12,7 +12,7 @@ function UI_turmas(id)
 
     list = document.getElementById(id);
 
-    var thiswidth = 328;
+    var thiswidth = 438;
 
     list.className = "ui_turmas";
     list.style.width  = thiswidth + "px";
