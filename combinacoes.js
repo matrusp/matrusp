@@ -86,9 +86,7 @@ function Combinacoes()
             } else {
                 var ok3 = 0;
                 var combinacoes2 = new Array();
-                for (var c in new_combinacoes) {
-                    var combinacao = new_combinacoes[c];
-
+                new_combinacoes.forEach(function(combinacao){
                     for (var j in materia.horarios) {
                         var horario = materia.horarios[j];
                         var ok = 0;
@@ -115,10 +113,10 @@ function Combinacoes()
                         var c2 = copy(combinacao);
                         c2[materia.codigo] = horario;
                         c2.horarios_combo = new Array();
-                        for (var k in combinacao.horarios_combo) {
-                            c2[combinacao.horarios_combo[k].materia.codigo] = combinacao.horarios_combo[k];
-                            c2.horarios_combo.push(combinacao.horarios_combo[k]);
-                        }
+                        combinacao.horarios_combo.forEach(function(horario){
+                            c2[horario.materia.codigo] = horario;
+                            c2.horarios_combo.push(horario);
+                        });
                         for (var k = 0; k < horario.aulas.length; k++) {
                             var aula = horario.aulas[k];
                             c2[aula.dia][aula.hora] = {horario:horario};
@@ -127,7 +125,7 @@ function Combinacoes()
                         combinacoes2.push(c2);
                         ok3 = 1;
                     }
-                }
+                });
                 if (!ok3) {
                     materia.selected = -1;
                 } else {

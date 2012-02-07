@@ -29,22 +29,22 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         if (!c) {
             cc = 0;
         } else {
-            for (var i in c.horarios_combo) {
-                for (var k in c.horarios_combo[i].turmas) {
-                    if (c.horarios_combo[i].turmas[k].selected) {
-                        var turma = c.horarios_combo[i].turmas[k];
+            c.horarios_combo.forEach(function(horario){
+                for (var k in horario.turmas) {
+                    if (horario.turmas[k].selected) {
+                        var turma = horario.turmas[k];
                         break;
                     }
                 }
                 if (!turma)
-                    var turma = c.horarios_combo[i].turma_representante;
+                    var turma = horario.turma_representante;
                 turma.materia.ui_turma.innerHTML = turma.nome;
                 turma.materia.ui_turma.style.textAlign = "left";
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
                 horas_aula += parseInt(turma.aulas.length);
                 turmas.display(turma, c);
-            }
+            });
         }
         combinacoes.set_current(cc);
         ui_combinacoes.set_current(cc);
@@ -216,13 +216,13 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         var c = combinacoes.get_current();
         if (!c)
             return;
-        for (var i in c.horarios_combo) {
-            var turma = c.horarios_combo[i].turma_representante;
+        c.horarios_combo.forEach(function(horario){
+            var turma = horario.turma_representante;
             if (turma.materia == materia) {
                 turmas.display_over(turma);
                 return;
             }
-        }
+        });
         m_array = materia.turmas;
         m_count = -1;
         self.m_update_turma();
@@ -231,13 +231,13 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         var c = combinacoes.get_current();
         if (!c)
             return;
-        for (var i in c.horarios_combo) {
-            var turma = c.horarios_combo[i].turma_representante;
+        c.horarios_combo.forEach(function(horario){
+            var turma = horario.turma_representante;
             if (turma.materia == materia) {
                 turmas.undisplay_over(turma);
                 return;
             }
-        }
+        });
         if (m_array)
             turmas.undisplay_over(m_array[m_count]);
         if (m_timer)
