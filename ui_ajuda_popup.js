@@ -69,7 +69,7 @@ function UI_ajuda_popup(id)
 
     var row = document.createElement("tr");
     var data = document.createElement("td");
-    data.align = "justify";
+    data.style.textAlign = "justify";
     data.innerHTML =
 "<br>" +
 "<strong>1- Adicionando matérias do CAGR:</strong><br>" +
