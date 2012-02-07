@@ -6,4 +6,4 @@ RewriteEngine on
 SetEnv no-gzip dont-vary
 RewriteCond %{HTTP:Accept-Encoding} gzip
 RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.+)\.(html|js|css)$ $1.$2.gz 
+RewriteRule ^(.+)\.(html|js|json|css)$ $1.$2.gz
