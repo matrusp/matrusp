@@ -35,7 +35,7 @@ function UI_combinacoes(id)
         button.ondblclick = function () { self.cb_next(); };
     }
     d2.appendChild(button);
-    d2.appendChild(document.createTextNode(" Horas aula: "));
+    d2.appendChild(document.createTextNode(" Horas por semana: "));
     var horas_aula = document.createTextNode("0");
     d2.appendChild(horas_aula);
 

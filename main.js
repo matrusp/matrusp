@@ -42,7 +42,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 turma.materia.ui_turma.style.textAlign = "left";
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
-                horas_aula += parseInt(turma.horas_aula);
+                horas_aula += parseInt(turma.aulas.length);
                 turmas.display(turma, c);
             }
         }
