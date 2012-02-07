@@ -41,8 +41,6 @@ save2.cgi load2.cgi header_gen header_gen_pdf:
 	gzip --best -c $< > $@
 
 database.json: full2_JOI.json full2_FLO.json
-#	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
-#	closure --compilation_level=SIMPLE_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
 	cat $^ > $@
 
 matrufsc.js: $(SRC)
