@@ -1,6 +1,7 @@
 all: database.json save2.cgi load2.cgi matrufsc.js
 
-SRC=persistence.js \
+SRC=json2.js \
+persistence.js \
 jsonxml.js \
 ui_campus.js \
 ui_saver.js \
