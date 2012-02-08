@@ -21,7 +21,6 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<br><br>
 <div id="ui_loading" style="text-align:center;font-size:32px;"></div>
 <div id="ui_main" style="overflow:auto;width:890px;margin:0 auto;display:none;">
  <table><tr><td colspan=2>
@@ -108,7 +107,7 @@ var loadFile = function(src, index) {
     req.send(null);
 };
 loading = function() {
-    var innerHTML = "carregando";
+    var innerHTML = "<br><br>carregando MatrUFSC";
     if (f_length[0] && f_length[1] && f_loaded[0] && f_loaded[1]) {
         var length = f_length[0] + f_length[1];
         var loaded = f_loaded[0] + f_loaded[1];
