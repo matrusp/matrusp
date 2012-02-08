@@ -94,7 +94,10 @@ var loadFile = function(src, index) {
     var req = new XMLHttpRequest();
     req.onreadystatechange = function() {
         switch (this.readyState) {
-            case 2: f_length[index] = parseInt(this.getResponseHeader("X-Uncompressed-Content-Length")); break;
+            case 2:
+                if (!(navigator.userAgent.toLowerCase().indexOf("msie") > -1))
+                    f_length[index] = parseInt(this.getResponseHeader("X-Uncompressed-Content-Length"));
+                break;
             case 4: fn_finish(this.responseText, index); break;
         }
     };
