@@ -537,7 +537,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         load_request.loadstr = identificador;
         load_request.onreadystatechange = function() {
             if (this.readyState == 4) {
-                if ((this.status != 200) || this.responseText == "") {
+                if ((this.status != 200) || this.responseText == "" || this.responseXML == null) {
                     ui_logger.set_text("erro ao abrir horário para '" + this.loadstr + "'", "lightcoral");
                 } else {
                     self.carregar(this.responseXML, identificador);
