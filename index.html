@@ -21,7 +21,8 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<div id="ui_loading" style="text-align:center;font-size:32px;"><br><br></div>
+<br><br>
+<div id="ui_loading" style="text-align:center;font-size:32px;"></div>
 <div id="ui_main" style="overflow:auto;width:890px;margin:0 auto;display:none;">
  <table><tr><td colspan=2>
   <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left">
@@ -63,25 +64,71 @@
 <div id="ajuda_popup" style="display:none;"></div>
 
 <script type="text/javascript">
-var page_loaded = false;
-var f_pontos = "&nbsp;&nbsp;&nbsp;";
-function loading() {
-    document.getElementById("ui_loading").innerHTML = "<br><br>carregando MatrUFSC" + f_pontos;
-    if      (f_pontos == "&nbsp;&nbsp;&nbsp;")
-             f_pontos =  ".&nbsp;&nbsp;";
-    else if (f_pontos == ".&nbsp;&nbsp;")
-             f_pontos =  "..&nbsp;";
-    else if (f_pontos == "..&nbsp;")
-             f_pontos =  "...";
-    else if (f_pontos == "...")
-             f_pontos =  "&nbsp;&nbsp;&nbsp;";
-    if (!page_loaded)
-        setTimeout("loading()", 300);
+var f_timeout;
+var f_loaded = [0,0];
+var f_length = [0,0];
+var f_finish = [0,0];
+var f_script = [0,0];
+var f_pontos = 0;
+var fn_finish = function(script, index) {
+    var globalEval = function(script) {
+        if (window.execScript) {
+            window.execScript(script);
+            return;
+        }
+        var fn = function() {
+            window.eval.call(window, script);
+        };
+        fn();
+    };
+    f_script[index] = script;
+    f_finish[index] = 1;
+    if (f_finish[0] && f_finish[1]) {
+        clearTimeout(f_timeout);
+        globalEval(f_script[0]);
+        globalEval(f_script[1]);
+        f_script = null;
+    }
 };
-setTimeout("loading()", 300);
+var loadFile = function(src, index) {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+        switch (this.readyState) {
+            case 2: f_length[index] = parseInt(this.getResponseHeader("X-Uncompressed-Content-Length")); break;
+            case 4: fn_finish(this.responseText, index); break;
+        }
+    };
+    req.onprogress = function(p) {
+        f_loaded[index] = p.loaded;
+    };
+    req.open("GET", src, true);
+    req.send(null);
+};
+loading = function() {
+    var innerHTML = "carregando";
+    if (f_length[0] && f_length[1] && f_loaded[0] && f_loaded[1]) {
+        var length = f_length[0] + f_length[1];
+        var loaded = f_loaded[0] + f_loaded[1];
+        var percent = Math.round((loaded/length)*100);
+        innerHTML += " (" + percent + "%)";
+    } else {
+        for (var i = 0; i < f_pontos; i++)
+            innerHTML += ".";
+        for (; i < 6; i++)
+            innerHTML += "&nbsp;";
+    }
+    document.getElementById("ui_loading").innerHTML = innerHTML;
+    f_pontos++;
+    if (f_pontos == 6)
+        f_pontos = 0;
+    if (f_script)
+        f_timeout = setTimeout("loading()", 200);
+};
+setTimeout("loading()", 200);
+
+loadFile("matrufsc.js"  , 0);
+loadFile("database.json", 1);
 </script>
-<script type="text/javascript" src="matrufsc.js"></script>
-<script type="text/javascript" src="database.json"></script>
 </body>
 
 </html>

@@ -34,8 +34,10 @@ save2.cgi: save.c
 save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 load2.cgi: load.c
 load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
+access.cgi: access.c
+access.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 
-save2.cgi load2.cgi header_gen header_gen_pdf:
+save2.cgi load2.cgi access.cgi header_gen header_gen_pdf:
 	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
 
 %.gz: %
@@ -52,16 +54,16 @@ matrufsc.js: $(SRC)
 clean::
 	rm -f full2_FLO.json full2_JOI.json database.json
 	rm -f header_gen_pdf header_gen
-	rm -rf save2.cgi load2.cgi matrufsc.js install *~
+	rm -rf save2.cgi load2.cgi access.cgi matrufsc.js install *~ .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz
 
-install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz
+install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz access.cgi
 	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
 	cp database.json.gz install/
-	cp .htaccess install/
+	cp access.cgi .htaccess install/
 
 install:: all
-	mkdir -p install/cgi-bin
+	mkdir -p install
 	cp matrufsc.css matrufsc.js index.html install/
 	cp database.json install/
-	cp save2.cgi load2.cgi install/cgi-bin/
+	cp save2.cgi load2.cgi install/

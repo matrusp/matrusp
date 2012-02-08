@@ -487,7 +487,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 }
             }
         };
-        save_request.open("POST", "cgi-bin/save2.cgi?q=" + encodeURIComponent(identificador), true);
+        save_request.open("POST", "save2.cgi?q=" + encodeURIComponent(identificador), true);
         save_request.send(ret);
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
@@ -545,7 +545,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 }
             }
         };
-        load_request.open("GET", "cgi-bin/load2.cgi?q=" + encodeURIComponent(identificador), true);
+        load_request.open("GET", "load2.cgi?q=" + encodeURIComponent(identificador), true);
         load_request.send(null);
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
@@ -579,7 +579,7 @@ function getScrollBarWidth () {
 
 ajuda_shown = false;
 mudancas = false;
-window.onload = function() {
+init_main = function() {
     document.scrollbar_width = getScrollBarWidth();
 
     var persistence = new Persistence();
@@ -719,7 +719,7 @@ window.onload = function() {
     document.getElementById("ui_main").style.display = "block";
     document.getElementById("ui_fb").style.display = "block";
     ui_turmas.set_height(ui_horario.height());
-    page_loaded = true;
 }
 
 var database = new Database();
+init_main();
