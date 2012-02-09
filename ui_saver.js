@@ -29,8 +29,8 @@ function UI_saver(id)
     self.enabled = true;
     self.disable = function() {
         if (!self.enabled) return;
-        self.button_save.style.backgroundColor = "lightgray";
-        self.button_load.style.backgroundColor = "lightgray";
+        self.button_save.style.backgroundColor = "lightgrey";
+        self.button_load.style.backgroundColor = "lightgrey";
         self.button_save.onclick = function () { return false; };
         self.button_load.onclick = function () { return false; };
         self.button_save.style.opacity = ".6";
