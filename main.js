@@ -216,13 +216,14 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         var c = combinacoes.get_current();
         if (!c)
             return;
-        c.horarios_combo.forEach(function(horario){
+        for (var i = 0; i < c.horarios_combo.length; i++) {
+            var horario = c.horarios_combo[i];
             var turma = horario.turma_representante;
             if (turma.materia == materia) {
                 turmas.display_over(turma);
                 return;
             }
-        });
+        }
         m_array = materia.turmas;
         m_count = -1;
         self.m_update_turma();
@@ -231,13 +232,14 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         var c = combinacoes.get_current();
         if (!c)
             return;
-        c.horarios_combo.forEach(function(horario){
+        for (var i = 0; i < c.horarios_combo.length; i++) {
+            var horario = c.horarios_combo[i];
             var turma = horario.turma_representante;
             if (turma.materia == materia) {
                 turmas.undisplay_over(turma);
                 return;
             }
-        });
+        }
         if (m_array)
             turmas.undisplay_over(m_array[m_count]);
         if (m_timer)
