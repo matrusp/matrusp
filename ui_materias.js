@@ -53,7 +53,7 @@ function UI_materias(id, ui_combinacoes)
 
         scroll_div = document.createElement("div");
         scroll_div.style.overflow = "auto";
-        scroll_div.style.maxHeight = "208px";
+        scroll_div.style.maxHeight = "231px";
         table = document.createElement("table");
         table.cellPadding="1";
         table.cellSpacing="1";
