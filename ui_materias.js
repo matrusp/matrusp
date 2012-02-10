@@ -9,9 +9,12 @@ function UI_materias(id, ui_combinacoes)
 
     list.className = "ui_materias"
 
+    var thiswidth = 882;
+
     var table;
     var thead;
     var tbody;
+    var scroll_div;
 
     var mouseover_materia = null;
     var mouseout_materia = function() {
@@ -46,19 +49,14 @@ function UI_materias(id, ui_combinacoes)
         var data = document.createElement("th");
         data.id = "combinacoes";
         row.appendChild(data);
-        var data = document.createElement("th");
-        data.innerHTML = "";
-        data.style.width = "15px";
-        row.appendChild(data);
-        var data = document.createElement("th");
-        data.innerHTML = "";
-        data.style.width = "15px";
-        row.appendChild(data);
-        var data = document.createElement("th");
-        data.innerHTML = "";
-        data.style.width = "15px";
-        row.appendChild(data);
         thead.appendChild(row);
+
+        scroll_div = document.createElement("div");
+        scroll_div.style.overflow = "auto";
+        scroll_div.style.maxHeight = "208px";
+        table = document.createElement("table");
+        table.cellPadding="1";
+        table.cellSpacing="1";
         table.onmouseout = function(e) {
             if (!e) var e = window.event;
             var t = (window.event) ? e.srcElement : e.target;
@@ -76,6 +74,8 @@ function UI_materias(id, ui_combinacoes)
         };
         tbody = document.createElement("tbody");
         table.appendChild(tbody);
+        scroll_div.appendChild(table);
+        list.appendChild(scroll_div);
     }
     create();
 
@@ -83,6 +83,7 @@ function UI_materias(id, ui_combinacoes)
         var rows = tbody.getElementsByTagName("tr");
         while (rows[0])
             tbody.removeChild(rows[0]);
+        self.fix_width();
     }
 
     self.input = null;
@@ -217,11 +218,18 @@ function UI_materias(id, ui_combinacoes)
         tbody.appendChild(row);
         row.materia = materia;
         materia.row = row;
+        self.fix_width();
     }
 
     /* functions */
     self.add = add;
     self.reset    = reset;
+    self.fix_width = function() {
+        if (table.offsetHeight <= scroll_div.offsetHeight)
+            table.style.width = thiswidth + "px";
+        else
+            table.style.width = (thiswidth - document.scrollbar_width) + "px";
+    };
     /* callbacks */
     self.cb_changed  = null;
     self.cb_select   = null;

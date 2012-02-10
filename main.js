@@ -197,6 +197,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_logger.set_text("'" + materia.codigo + "' removida", "lightgreen");
         materia.row.parentNode.removeChild(materia.row);
         materias.remove_item(materia);
+        ui_materias.fix_width();
         update_all();
     };
     var m_array = null;
@@ -721,6 +722,7 @@ init_main = function() {
     document.getElementById("ui_main").style.display = "block";
     document.getElementById("ui_fb").style.display = "block";
     ui_turmas.set_height(ui_horario.height());
+    ui_materias.fix_width();
 }
 
 var database = new Database();
