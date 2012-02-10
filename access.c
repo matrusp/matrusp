@@ -133,6 +133,19 @@ int main()
     goto end;
 
 _404:
+#if 0
+    printf("Content-Type: %s\n", content_type);
+    printf("\n");
+    printf("document_root: %s\n", document_root);
+    printf("uri: %s\n", uri);
+    printf("dir_str: %s\n", dir_str);
+    printf("base_str: %s\n", base_str);
+    snprintf(path, sizeof(path), "%s/%s", document_root, base_str);
+    printf("path: %s\n", path);
+    fflush(stdout);
+    system("env");
+    return 0;
+#endif
     printf("Status: 404 Not Found\n");
     printf("Content-type: text/html; charset=UTF-8\n");
     printf("\n");
