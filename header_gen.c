@@ -183,8 +183,9 @@ extract_turmas(const char *content, int length)
         full.vagas_ocupadas     = (char *) xmlNodeGetContent(vagas_ocupadas   ->children);
         full.alunos_especiais   = (char *) xmlNodeGetContent(alunos_especiais ->children);
         full.saldo_vagas        = (char *) xmlNodeGetContent(saldo_vagas      ->children);
-//        full.pedidos_sem_vaga   = (char *) xmlNodeGetContent(pedidos_sem_vaga );
-        full.pedidos_sem_vaga   = (char *) "0";
+        full.pedidos_sem_vaga   = (char *) xmlNodeGetContent(pedidos_sem_vaga );
+        if (!*full.pedidos_sem_vaga)
+            full.pedidos_sem_vaga = "0";
         full.horarios           = get_list(horarios   );
         full.professores        = get_list(professores);
 
@@ -211,7 +212,7 @@ extract_turmas(const char *content, int length)
         fprintf(fp_full, "%s,", full.vagas_ocupadas);
         fprintf(fp_full, "%s,", full.alunos_especiais);
         if (!strcmp(full.saldo_vagas, "LOTADA"))
-            fprintf(fp_full, "-1,");
+            fprintf(fp_full, "0,");
         else
             fprintf(fp_full, "%s,", full.saldo_vagas);
         fprintf(fp_full, "%s,", full.pedidos_sem_vaga);

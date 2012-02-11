@@ -471,7 +471,10 @@ fprintf(stderr, "string: %s\n", string);
                                 full.professores = strdup_to_utf8(string);
                             }
                         } else if (full.saldo_vagas) {
-                            full.pedidos_sem_vaga = strdup("0");
+                            if (!strcmp(string, "601"))
+                                full.pedidos_sem_vaga = strdup("0");
+                            else
+                                full.pedidos_sem_vaga = strdup(string);
                         } else if (full.alunos_especiais) {
                             full.saldo_vagas = strdup(string);
                         } else if (full.vagas_ocupadas) {
