@@ -12,6 +12,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#define PRINT_ENV 0
+
 int main()
 {
     /* envs */
@@ -36,6 +38,14 @@ int main()
     off_t content_length;
     struct stat st;
     FILE *fp;
+
+#if PRINT_ENV
+    printf("Content-Type: text/plain\n");
+    printf("\n");
+    fflush(stdout);
+    system("env");
+    return 0;
+#endif
 
     /* 1. get mandatory env (DOCUMENT_ROOT and REQUEST_URI). */
     document_root = getenv("DOCUMENT_ROOT");
@@ -133,19 +143,6 @@ int main()
     goto end;
 
 _404:
-#if 0
-    printf("Content-Type: %s\n", content_type);
-    printf("\n");
-    printf("document_root: %s\n", document_root);
-    printf("uri: %s\n", uri);
-    printf("dir_str: %s\n", dir_str);
-    printf("base_str: %s\n", base_str);
-    snprintf(path, sizeof(path), "%s/%s", document_root, base_str);
-    printf("path: %s\n", path);
-    fflush(stdout);
-    system("env");
-    return 0;
-#endif
     printf("Status: 404 Not Found\n");
     printf("Content-type: text/html; charset=UTF-8\n");
     printf("\n");
