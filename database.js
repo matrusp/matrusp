@@ -46,15 +46,55 @@ Database.prototype.fetch = function(string, page) {
             .replace(/Ø/g, "O").replace(/Ù/g, "U").replace(/Ú/g, "U")
             .replace(/Û/g, "U").replace(/Ü/g, "U").replace(/Ý/g, "Y")
             .replace(/ß/g, "B");
-    var search_exp = new RegExp(string, "g");
-    this.result = this.cur_db.filter(function(materia) {
-        var r = false;
-        search_exp.lastIndex = 0;
-        r |= search_exp.test(materia.codigo);
-        search_exp.lastIndex = 0;
-        r |= search_exp.test(materia.nome_ascii);
-        return r;
-        });
+    var search_whole = [];
+    var search_part = [];
+    string.split(" ").forEach(function(str) {
+        if (str != "") {
+            search_whole.push(new RegExp("\\b" + str + "\\b", "g"));
+            search_part.push(new RegExp(str, "g"));
+        }
+    });
+    this.result = [];
+    function search_score(haystack, needle, value) {
+        needle.lastIndex = 0;
+        var tmp = haystack.match(needle);
+        if (tmp === null)
+            return 0;
+        return tmp.length * value;
+    };
+    for (var i = 0; i < this.cur_db.length; i++) {
+        var haystack = this.cur_db[i];
+        var exactly = false;
+        var score = 0;
+        for (var j = 0; j < search_whole.length; j++) {
+            var expr_score = 0;
+            search_whole[j].lastIndex = 0;
+            if (search_whole[j].test(haystack.codigo)) {
+                exactly = true;
+                break;
+            }
+            expr_score += search_score(haystack.nome_ascii, search_whole[j], 100);
+            expr_score += search_score(haystack.nome_ascii, search_part[j], 10);
+            expr_score += search_score(haystack.codigo, search_part[j], 10);
+            if (expr_score) {
+                score += expr_score;
+            } else {
+                score = 0;
+                break;
+            }
+        }
+        if (exactly) {
+            this.result = [haystack];
+            break;
+        }
+        if (score) {
+            haystack.score = score;
+            this.result.push(haystack);
+        }
+    }
+    this.result.sort(function(a,b) {
+        return b.score - a.score;
+    });
 }
 Database.prototype.page = function(page) {
     return this.result.slice(page*10, (page+1)*10);

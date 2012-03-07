@@ -77,9 +77,6 @@ function UI_ajuda_popup(id)
 "esquerdo superior). Aparecerão no máximo 10 sugestões, nas quais você" +
 "pode clicar ou escolher com as teclas <strong>para baixo</strong> e <strong>para cima</strong> do" +
 "teclado e apertar <strong>enter</strong>.<br>" +
-"O sistema de buscas é meio burro: só são aceitos termos contínuos. Por" +
-"exemplo <strong>eletronica de potencia</strong> apresentará a matéria corretamente," +
-"mas <strong>eletronica potencia</strong> não apresentará resultados." +
 "Você pode selecionar matérias individualmente clicando na caixa se" +
 "seleção da matéria, selecionar a prioridade das matérias clicando nos botões <strong>^</strong>" +
 "e <strong>v</strong> e remover matérias clicando no botão <strong>X</strong>.<br>" +
