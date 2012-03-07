@@ -95,6 +95,9 @@ Database.prototype.fetch = function(string, page) {
     this.result.sort(function(a,b) {
         return b.score - a.score;
     });
+    this.result.forEach(function(t) {
+        delete t.score;
+    });
 }
 Database.prototype.page = function(page) {
     return this.result.slice(page*10, (page+1)*10);
