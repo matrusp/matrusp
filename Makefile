@@ -41,7 +41,7 @@ save2.cgi load2.cgi access.cgi header_gen header_gen_pdf:
 	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
 
 %.gz: %
-	gzip --best -c $< > $@
+	gzip --best --no-name -c $< > $@
 
 database.json: full2_JOI.json full2_FLO.json
 	cat $^ > $@
