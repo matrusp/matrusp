@@ -107,7 +107,6 @@ body {
 .ui_horario {
     border: 1px solid black;
     position: relative;
-    z-index: 2000;
     font-size: 11px;
 }
 .ui_horario_celula {

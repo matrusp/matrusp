@@ -85,6 +85,11 @@ function UI_horario(id)
                 array[dia][hora].hora = hora;
             }
         }
+        if (func) {
+            horario.style.zIndex = "2000";
+        } else {
+            horario.style.zIndex = "0";
+        }
     }
 
     /* procedures */
