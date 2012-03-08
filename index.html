@@ -119,6 +119,9 @@ loading = function() {
         for (; i < 6; i++)
             innerHTML += "&nbsp;";
     }
+    if (window.console && (window.console.firebug || window.console.exception)) {
+        innerHTML += "<br><font size=4><strong>Atenção:</strong> o uso do Firebug pode tornar o MatrUFSC consideravelmente mais lento</font>";
+    }
     document.getElementById("ui_loading").innerHTML = innerHTML;
     f_pontos++;
     if (f_pontos == 6)
