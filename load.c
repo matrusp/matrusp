@@ -8,27 +8,24 @@ int main()
     char *p, *e;
     char *prefix=HOME"/matrufsc/dados2/";
     char *name, *bigname, *data;
+    char *content_type;
     int l1, l2;
     int i;
 
-    printf("Content-type: text/xml\n"
-           "Expires: -1\n"
-           "\n");
-
     p = getenv("QUERY_STRING");
     if (!p)
-        return 0;
+        goto fail;
 
     if (p[0] != 'q' || p[1] != '=')
-        return 0;
+        goto fail;
     p += 2;
 
     l1 = strlen(p) + 1;
     name = malloc(l1);
-    bigname = malloc(strlen(prefix)+(l1<<2)-1);
+    bigname = malloc(strlen(prefix)+(l1<<2)+5-1);
 
     if (!bigname || !name)
-        return 0;
+        goto fail;
 
     strncpy(name, p, l1-1);
 
@@ -37,23 +34,39 @@ int main()
     for (i = 0; i < l1-1; i++) {
         sprintf(e+(i<<1), "%02x", name[i]);
     }
-    e[i<<1] = 0;
+    sprintf(e+(i<<1), ".json");
+    e[(i<<1)+5] = 0;
 
+    content_type = "application/json";
     fp = fopen(bigname, "r");
+    if (!fp) {
+        e[i<<1] = 0;
+        content_type = "text/xml";
+        fp = fopen(bigname, "r");
+    }
     if (!fp)
-        return 0;
+        goto fail;
     fseek(fp, 0, SEEK_END);
     l2 = ftell(fp);
     fseek(fp, 0, SEEK_SET);
     data = malloc(l2);
     if (!data) {
         fclose(fp);
-        return 0;
+        goto fail;
     }
     fread(data, l2, 1, fp);
     fclose(fp);
 
+    printf("Content-type: %s\n"
+           "Expires: -1\n"
+           "\n", content_type);
     fwrite(data, l2, 1, stdout);
 
+    return 0;
+
+fail:
+    printf("Content-type: text/plain\n"
+           "Expires: -1\n"
+           "\n");
     return 0;
 }

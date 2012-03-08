@@ -466,7 +466,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             state_materia.selected = materia.selected;
             state.materias.push(state_materia);
         }
-        return "<state>" + json_to_xml(state) + "</state>";
+        return JSON.stringify(state);
     }
     ui_saver.cb_salvar = function(identificador) {
         if (!identificador || identificador == "") {
@@ -494,9 +494,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         save_request.send(ret);
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
-    self.carregar = function(xml, identificador) {
-        var state = xml_to_state(xml);
-
+    self.carregar = function(state, identificador) {
         if (state.versao > 4) {
             ui_logger.set_text("erro ao tentar abrir horário de versão mais recente", "lightcoral");
             return;
@@ -540,10 +538,20 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         load_request.loadstr = identificador;
         load_request.onreadystatechange = function() {
             if (this.readyState == 4) {
-                if ((this.status != 200) || this.responseText == "" || this.responseXML == null) {
+                if (this.status == 200 && this.responseText != "") {
+                    if (this.responseXML != null) {
+                        var state = xml_to_state(this.responseXML);
+                    } else {
+                        try {
+                            var state = JSON.parse(this.responseText);
+                        } catch (e) {
+                        }
+                    }
+                }
+                if (!state) {
                     ui_logger.set_text("erro ao abrir horário para '" + this.loadstr + "'", "lightcoral");
                 } else {
-                    self.carregar(this.responseXML, identificador);
+                    self.carregar(state, identificador);
                     ui_logger.set_text("horário para '" + this.loadstr + "' foi carregado", "lightgreen");
                 }
             }
@@ -701,6 +709,13 @@ init_main = function() {
     ui_saver.identificar(identificador);
     var state = persistence.read_state();
     if (state && state != "") {
+        try {
+            var state2 = JSON.parse(state);
+        } catch (e) {
+        }
+        if (state2)
+            main.carregar(state2);
+        else {
         if (window.DOMParser) {
             var parser = new DOMParser();
             var xml = parser.parseFromString(state, "text/xml");
@@ -709,7 +724,8 @@ init_main = function() {
             xml.async = "false";
             xml.loadXML(state);
         }
-        main.carregar(xml);
+        main.carregar(xml_to_state(xml));
+        }
     } else {
         if (identificador != null && identificador != "") {
             ui_saver.cb_carregar(identificador);

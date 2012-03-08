@@ -26,7 +26,7 @@ int main()
 
     l1 = strlen(p) + 1;
     name = malloc(l1);
-    bigname = malloc(strlen(prefix)+(l1<<2)-1);
+    bigname = malloc(strlen(prefix)+(l1<<2)+5-1);
 
     if (!bigname || !name)
         return 0;
@@ -38,7 +38,8 @@ int main()
     for (i = 0; i < l1-1; i++) {
         sprintf(e+(i<<1), "%02x", name[i]);
     }
-    e[i<<1] = 0;
+    sprintf(e+(i<<1), ".json");
+    e[(i<<1)+5] = 0;
 
     fp = fopen(bigname, "w");
     if (!fp)
