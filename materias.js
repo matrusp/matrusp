@@ -1,3 +1,131 @@
+var Horas = {
+    "0730": 0,  0:"0730",
+    "0820": 1,  1:"0820",
+    "0910": 2,  2:"0910",
+    "1010": 3,  3:"1010",
+    "1100": 4,  4:"1100",
+    "1330": 5,  5:"1330",
+    "1420": 6,  6:"1420",
+    "1510": 7,  7:"1510",
+    "1620": 8,  8:"1620",
+    "1710": 9,  9:"1710",
+    "1830":10, 10:"1830",
+    "1920":11, 11:"1920",
+    "2020":12, 12:"2020",
+    "2110":13, 13:"2110"
+};
+
+/**
+ * @constructor
+ */
+function Aula(dia, hora, sala) {
+    this.dia  = dia;
+    this.hora = hora;
+    this.sala = sala;
+}
+Aula.prototype.toString = function() {
+    return (this.dia+2) + "." + Horas[this.hora] + "-1 / " + this.sala;
+}
+
+/**
+ * @constructor
+ */
+function Turma(turma) {
+    if (!turma) {
+        this.horas_aula       = "0";
+        this.vagas_ofertadas  = "0";
+        this.vagas_ocupadas   = "0";
+        this.alunos_especiais = "0";
+        this.saldo_vagas      = "0";
+        this.pedidos_sem_vaga = "0";
+        this.professores      = new Array();
+        this.aulas            = new Array();
+        this.selected         = 1;
+        return;
+    }
+
+    var self = this;
+
+    turma = JSON.parse(JSON.stringify(turma));
+
+    if (turma.selected == null)
+        turma.selected = 1;
+    this.nome             = turma.nome;
+    this.selected         = turma.selected;
+    this.horas_aula       = turma.horas_aula;
+    this.vagas_ofertadas  = turma.vagas_ofertadas;
+    this.vagas_ocupadas   = turma.vagas_ocupadas;
+    this.alunos_especiais = turma.alunos_especiais;
+    this.saldo_vagas      = turma.saldo_vagas;
+    this.pedidos_sem_vaga = turma.pedidos_sem_vaga;
+    this.professores      = turma.professores;
+    this.aulas            = new Array();
+
+    turma.horarios.forEach(function(horario){
+        var dia  = parseInt(horario.slice(0,1)) - 2;
+        var hora = Horas[horario.slice(2,6)];
+        var n    = parseInt(horario.slice(7));
+        var sala = horario.slice(11,21);
+        for (var j = 0; j < n; j++)
+            self.aulas.push(new Aula(dia, hora+j, sala));
+    });
+    /* order aulas */
+    var aulas = self.aulas;
+    for (var i = 0; i < aulas.length-1; i++) {
+        for (var j = i+1; j < aulas.length; j++) {
+            if ((aulas[j].dia < aulas[i].dia) || ((aulas[j].dia == aulas[i].dia) && (aulas[j].hora < aulas[i].hora))) {
+                var tmp  = aulas[i];
+                aulas[i] = aulas[j];
+                aulas[j] = tmp;
+            }
+        }
+    }
+}
+Turma.prototype.index = function(agrupar) {
+    var index = this.nome;
+    if (agrupar) {
+        var index = "";
+        for (var i = 0; i < this.aulas.length; i++)
+            index += (this.aulas[i].dia+2) + "." + Horas[this.aulas[i].hora];
+    }
+    return index;
+}
+
+/**
+ * @constructor
+ */
+function Materia(materia) {
+    if (!materia) {
+        this.turmas = new Array();
+        this.horarios = new Object();
+        this.agrupar  = 1;
+        this.selected = 1;
+        return;
+    }
+
+    var self = this;
+
+    materia = JSON.parse(JSON.stringify(materia));
+
+    if (materia.selected == null)
+        materia.selected = 1;
+    if (materia.agrupar  == null)
+        materia.agrupar  = 1;
+
+    this.agrupar  = materia.agrupar;
+    this.codigo   = materia.codigo;
+    this.cor      = materia.cor;
+    this.nome     = materia.nome;
+    this.selected = materia.selected;
+    this.turmas   = new Array();
+
+    materia.turmas.forEach(function(turma){
+        turma = new Turma(turma);
+        turma.materia = self;
+        self.turmas.push(turma);
+    });
+}
+
 /**
  * @constructor
  */
@@ -14,22 +142,6 @@ function Materias()
         for (var i = 0; i < cores.length; i++)
             cores[i].taken = 0;
     }
-
-    var horas = new Object();
-    horas["0730"] =  0; horas[ 0] = "0730";
-    horas["0820"] =  1; horas[ 1] = "0820";
-    horas["0910"] =  2; horas[ 2] = "0910";
-    horas["1010"] =  3; horas[ 3] = "1010";
-    horas["1100"] =  4; horas[ 4] = "1100";
-    horas["1330"] =  5; horas[ 5] = "1330";
-    horas["1420"] =  6; horas[ 6] = "1420";
-    horas["1510"] =  7; horas[ 7] = "1510";
-    horas["1620"] =  8; horas[ 8] = "1620";
-    horas["1710"] =  9; horas[ 9] = "1710";
-    horas["1830"] = 10; horas[10] = "1830";
-    horas["1920"] = 11; horas[11] = "1920";
-    horas["2020"] = 12; horas[12] = "2020";
-    horas["2110"] = 13; horas[13] = "2110";
 
     var cores = [ {cor:"lightblue",taken:0},
                   {cor:"lightcoral",taken:0},
@@ -72,44 +184,13 @@ function Materias()
 
     reset();
 
-    function criar_aulas(turma, str)
-    {
-        var dia  = parseInt(str.slice(0,1)) - 2;
-        var hora = horas[str.slice(2,6)];
-        var n    = parseInt(str.slice(7));
-        var sala = str.slice(11,21);
-        for (var j = 0; j < n; j++) {
-            var aula = new Object();
-            aula.dia = dia;
-            aula.hora = hora+j;
-            aula.sala = sala;
-            turma.aulas.push(aula);
-        }
-    }
-    function order_aulas(turma)
-    {
-        var aulas = turma.aulas;
-        for (var i = 0; i < aulas.length-1; i++) {
-            for (var j = i+1; j < aulas.length; j++) {
-                if ((aulas[j].dia < aulas[i].dia) || ((aulas[j].dia == aulas[i].dia) && (aulas[j].hora < aulas[i].hora))) {
-                    var tmp  = aulas[i];
-                    aulas[i] = aulas[j];
-                    aulas[j] = tmp;
-                }
-            }
-        }
-    }
     function new_item(codigo, nome) {
         if (materias[codigo])
             return null;
-        var materia = new Object();
+        var materia = new Materia();
         materia.codigo = codigo;
         materia.nome   = nome;
         materia.cor    = get_color();
-        materia.turmas = new Array();
-        materia.horarios = new Object();
-        materia.agrupar  = 1;
-        materia.selected = 1;
         materias[materia.codigo] = materia;
         list.push(materia);
         return materia;
@@ -131,12 +212,7 @@ function Materias()
         materia.horarios = new Object();
         for (var k = 0; k < materia.turmas.length; k++) {
             var turma = materia.turmas[k];
-            var index = turma.nome;
-            if (materia.agrupar) {
-                var index = "";
-                for (var i = 0; i < turma.aulas.length; i++)
-                    index += (turma.aulas[i].dia+2) + "." + horas[turma.aulas[i].hora];
-            }
+            var index = turma.index(materia.agrupar);
             if (!materia.horarios[index]) {
                 materia.horarios[index] = new Object();
                 materia.horarios[index].turmas = new Object();
@@ -159,17 +235,8 @@ function Materias()
                 nok = false;
         } while (nok);
 
-        var turma = new Object();
+        var turma = new Turma();
         turma.nome             = nome;
-        turma.horas_aula       = "0";
-        turma.vagas_ofertadas  = "0";
-        turma.vagas_ocupadas   = "0";
-        turma.alunos_especiais = "0";
-        turma.saldo_vagas      = "0";
-        turma.pedidos_sem_vaga = "0";
-        turma.professores      = new Array();
-        turma.aulas            = new Array();
-        turma.selected         = 1;
         turma.materia          = materia;
         materia.turmas.push(turma);
         fix_horarios(materia);
@@ -190,28 +257,11 @@ function Materias()
         if (materias[materia.codigo])
             return null;
 
-        materia = JSON.parse(JSON.stringify(materia));
-
-        if (materia.selected == null)
-            materia.selected = 1;
-        if (materia.agrupar  == null)
-            materia.agrupar  = 1;
+        materia = new Materia(materia);
         if (materia.cor      == null)
             materia.cor      = get_color();
         else
             color_taken(materia.cor);
-        for (var i = 0; i < materia.turmas.length; i++) {
-            var turma = materia.turmas[i];
-            turma.aulas = new Array();
-            for (var j = 0; j < turma.horarios.length; j++) {
-                var horario = turma.horarios[j];
-                criar_aulas(turma, horario);
-            }
-            order_aulas(turma);
-            if (turma.selected == null)
-                turma.selected = 1;
-            turma.materia   = materia;
-        }
         fix_horarios(materia);
 
         materias[materia.codigo] = materia;
@@ -267,7 +317,6 @@ function Materias()
         }
         return null;
     };
-    self.aulas_string = function(aula) { return (aula.dia+2) + "." + horas[aula.hora] + "-1 / " + aula.sala; };
     self.get = function(codigo) { return materias[codigo]; };
     self.get_selected = function() { return selected; };
     self.list = function() { return list; };

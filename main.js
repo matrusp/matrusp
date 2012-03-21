@@ -281,7 +281,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             for (dia = 0; dia < 6; dia++)
                 for (hora = 0; hora < 14; hora++)
                     if (overlay[dia][hora]) {
-                        var aula = {dia:dia,hora:hora,n:1};
+                        var aula = new Aula(dia, hora, "SALA");
                         for (var k = 0; k < editando.aulas.length; k++) {
                             var a2 = editando.aulas[k];
                             if (a2.dia == dia && a2.hora == hora) {
@@ -289,8 +289,6 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                                 break;
                             }
                         }
-                        if (aula.sala == null)
-                            aula.sala = "SALA";
                         aulas.push(aula);
                     }
             editando.horario.aulas = aulas;
@@ -458,7 +456,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                     state_turma.professores.push(turma.professores[k]);
                 state_turma.horarios         = new Array();
                 for (var k = 0; k < turma.aulas.length; k++)
-                    state_turma.horarios.push(materias.aulas_string(turma.aulas[k]));
+                    state_turma.horarios.push(turma.aulas[k].toString());
                 state_turma.selected         = turma.selected;
                 state_materia.turmas.push(state_turma);
             }
