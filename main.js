@@ -204,6 +204,8 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     var m_timer = null;
     var m_count = null;
     self.m_update_turma = function() {
+        if (!m_array.length)
+            return;
         if (m_count != -1)
             turmas.undisplay_over(m_array[m_count]);
         m_count++;
@@ -225,7 +227,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 return;
             }
         }
-        m_array = materia.turmas;
+        m_array = materia.turmas.filter(function(turma){return turma.selected;});
         m_count = -1;
         self.m_update_turma();
     };
@@ -241,7 +243,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 return;
             }
         }
-        if (m_array)
+        if (m_array && m_array.length)
             turmas.undisplay_over(m_array[m_count]);
         if (m_timer)
             clearTimeout(m_timer);
