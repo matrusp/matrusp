@@ -539,13 +539,9 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         load_request.onreadystatechange = function() {
             if (this.readyState == 4) {
                 if (this.status == 200 && this.responseText != "") {
-                    if (this.responseXML != null) {
-                        var state = xml_to_state(this.responseXML);
-                    } else {
-                        try {
-                            var state = JSON.parse(this.responseText);
-                        } catch (e) {
-                        }
+                    try {
+                        var state = JSON.parse(this.responseText);
+                    } catch (e) {
                     }
                 }
                 if (!state) {
@@ -710,21 +706,9 @@ init_main = function() {
     var state = persistence.read_state();
     if (state && state != "") {
         try {
-            var state2 = JSON.parse(state);
+            var state3 = JSON.parse(state);
+            main.carregar(state3);
         } catch (e) {
-        }
-        if (state2)
-            main.carregar(state2);
-        else {
-        if (window.DOMParser) {
-            var parser = new DOMParser();
-            var xml = parser.parseFromString(state, "text/xml");
-        } else {
-            var xml = new ActiveXObject("Microsoft.XMLDOM");
-            xml.async = "false";
-            xml.loadXML(state);
-        }
-        main.carregar(xml_to_state(xml));
         }
     } else {
         if (identificador != null && identificador != "") {

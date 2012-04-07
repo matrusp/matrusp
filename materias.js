@@ -269,13 +269,6 @@ function Materias()
 
         return materia;
     }
-    function add_xml(codigo, xml)
-    {
-        if (materias[codigo])
-            return null;
-
-        return add_json(xml_to_materia(xml));
-    }
     function changed(materia, attr, str) {
         if (attr == "nome") {
             materia.nome = str;
@@ -301,7 +294,6 @@ function Materias()
     self.reset = reset;
     self.set_selected = function(materia) { selected = materia; };
     self.add_json = add_json;
-    self.add_xml = add_xml;
     self.new_item = new_item;
     self.changed = changed;
     self.remove_item = remove_item;

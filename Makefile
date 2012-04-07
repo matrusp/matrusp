@@ -3,7 +3,6 @@ all: database.json save2.cgi load2.cgi matrufsc.js
 SRC=json2.js \
 compat.js \
 persistence.js \
-jsonxml.js \
 ui_campus.js \
 ui_saver.js \
 ui_logger.js \

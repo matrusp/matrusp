@@ -65,14 +65,14 @@ int main()
     if (!dir_str || !base_str)
         goto _404;
 
-    /* 2. accept /matrufsc/ as /matrufsc/index.html */
-    if (!strcmp(dir_str, "/") && !strcmp(base_str, "matrufsc")) {
-        dir_str  = "/matrufsc";
+    /* 2. accept /matrufsc2/ as /matrufsc2/index.html */
+    if (!strcmp(dir_str, "/") && !strcmp(base_str, "matrufsc2")) {
+        dir_str  = "/matrufsc2";
         base_str = "index.html";
     }
 
     /* 3. check if it's a file we have */
-    if      ( strcmp(dir_str, "/matrufsc"))
+    if      ( strcmp(dir_str, "/matrufsc2"))
         goto _404;
     else if (!strcmp(base_str, "index.html"))
         content_type = "text/html";
