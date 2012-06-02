@@ -7,12 +7,7 @@ function Combinacoes()
 
     var combinacoes = null;
     var current_int = 0;
-    var overlay = null;
 
-    function clear_overlay() {
-        overlay = [[],[],[],[],[],[]];
-    }
-    clear_overlay();
     function closest(orig) {
         if (!orig)
             return 1;
@@ -151,11 +146,9 @@ function Combinacoes()
     /* procedures */
     self.generate    = generate;
     self.set_current = function(n) { current_int = n; };
-    self.clear_overlay= clear_overlay;
     /* functions */
     self.get         = function(n) { if (combinacoes && n >= 1 && n <= combinacoes.length) return combinacoes[n-1]; };
     self.get_current = function( ) { if (current_int) return self.get(current_int); };
-    self.get_overlay = function( ) { return overlay; };
     self.current     = function( ) { return current_int; };
     self.length      = function( ) { return combinacoes ? combinacoes.length : 0; };
     self.copy        = function(c, e) { return copy(c, e); };

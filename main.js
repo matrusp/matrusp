@@ -275,10 +275,14 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_turmas.remove_turma(turma);
         update_all();
     };
+    var overlay = null;
+    function clear_overlay() {
+        overlay = [[],[],[],[],[],[]];
+    }
+    clear_overlay();
     function update_all(comb) {
         if (self.editando) {
             var editando = self.editando;
-            var overlay = combinacoes.get_overlay();
             var aulas = new Array();
             for (dia = 0; dia < 6; dia++)
                 for (hora = 0; hora < 14; hora++)
@@ -297,7 +301,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             for (var k in editando.horario.turmas)
                 editando.horario.turmas[k].aulas = aulas;
             materias.fix_horarios(editando.materia);
-            combinacoes.clear_overlay();
+            clear_overlay();
             ui_horario.set_toggle(null);
             ui_turmas.edit_end();
             ui_turmas.create(editando.materia);
@@ -342,8 +346,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             update_all();
         }
         var materia = materias.get_selected();
-        combinacoes.clear_overlay();
-        var overlay = combinacoes.get_overlay();
+        clear_overlay();
         var c       = combinacoes.get_current();
         var fake    = combinacoes.copy(c, turma.materia);
         for (var i = 0; i < turma.aulas.length; i++) {
@@ -419,7 +422,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     };
     ui_turmas.cb_cancel      = function() {
         ui_grayout.hide();
-        combinacoes.clear_overlay();
+        clear_overlay();
         ui_horario.set_toggle(null);
         ui_turmas.edit_end();
         self.editando = null;
