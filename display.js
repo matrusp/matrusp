@@ -42,7 +42,7 @@ function Display(ui_logger, ui_horario)
 
         selected = turma;
     }
-    function under(c, turma)
+    function out(c, turma)
     {
         if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
             return;
@@ -80,7 +80,7 @@ function Display(ui_logger, ui_horario)
 
     /* procedures */
     self.reset = function() { ui_horario.reset(); selected = null; };
-    self.under = under;
+    self.out   = out;
     self.over  = over;
     self.turma = turma;
     /* functions */
