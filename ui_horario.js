@@ -100,3 +100,8 @@ function UI_horario(id)
     /* functions */
     self.height       = function() { return horario.offsetHeight; };
 }
+var Cell = {
+    normal: function(  d) { return {text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; },
+    red   : function(str) { return {text:str,bgcolor:"red",color:"black"}; },
+    black : function(str) { return {text:str,bgcolor:"black",color:"white"}; }
+};

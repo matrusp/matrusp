@@ -333,9 +333,6 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         mudancas = combinacoes.get_current();
         persistence.write_state(self.save_state());
     }
-    function normal_cell(d)  { return {text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
-    function red_cell(str)   { return {text:str,bgcolor:"red",color:"black"}; }
-    function black_cell(str) { return {text:str,bgcolor:"black",color:"white"}; }
     self.editando = null;
     function edit_start(turma) {
         if (self.editando) {
@@ -365,10 +362,10 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             switch (tipo) {
                 case 0: ui_horario.clear_cell(dia, hora); break;
                 case 1: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:turma.materia.cor,color:"black"}); break;
-                case 2: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:"black",color:"white"}); break;
-                case 3: ui_horario.display_cell(dia, hora, normal_cell(fake[dia][hora])); break;
+                case 2: ui_horario.display_cell(dia, hora, Cell.black (turma.materia.codigo)); break;
+                case 3: ui_horario.display_cell(dia, hora, Cell.normal(fake[dia][hora])); break;
                 case 4: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:"black",color:"red"}); break;
-                case 5: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:"red",color:"black"}); break;
+                case 5: ui_horario.display_cell(dia, hora, Cell.red   (turma.materia.codigo)); break;
             }
         };
         function onover(dia, hora) {

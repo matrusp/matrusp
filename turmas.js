@@ -34,17 +34,14 @@ function Turmas(ui_logger, ui_horario)
         map_turma(turma, c, function(c, dia, hora) {
             if (c && c[dia][hora] && c[dia][hora].horario.materia != materia) {
                 ui_logger.set_text("choque de horario", "lightcoral");
-                ui_horario.display_cell(dia, hora, red_cell(materia.codigo));
+                ui_horario.display_cell(dia, hora, Cell.red(materia.codigo));
             } else {
-                ui_horario.display_cell(dia, hora, black_cell(materia.codigo));
+                ui_horario.display_cell(dia, hora, Cell.black(materia.codigo));
             }
         });
 
         selected = turma;
     }
-    function normal_cell(d)  { return {text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
-    function red_cell(str)   { return {text:str,bgcolor:"red",color:"black"}; }
-    function black_cell(str) { return {text:str,bgcolor:"black",color:"white"}; }
     function undisplay_over(c, turma)
     {
         if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
@@ -61,14 +58,14 @@ function Turmas(ui_logger, ui_horario)
         if (turma != current_turma)
             map_turma(turma, c, function(c, dia, hora) {
                 if (c[dia][hora] && c[dia][hora].horario)
-                    ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                    ui_horario.display_cell(dia, hora, Cell.normal(c[dia][hora]));
                 else
                     ui_horario.clear_cell(dia, hora);
             });
 
         if (current_turma)
             map_turma(current_turma, c, function(c, dia, hora) {
-                ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+                ui_horario.display_cell(dia, hora, Cell.normal(c[dia][hora]));
             });
 
         ui_logger.reset();
@@ -77,7 +74,7 @@ function Turmas(ui_logger, ui_horario)
     }
     function display(turma, c) {
         map_turma(turma, c, function(c, dia, hora) {
-            ui_horario.display_cell(dia, hora, normal_cell(c[dia][hora]));
+            ui_horario.display_cell(dia, hora, Cell.normal(c[dia][hora]));
         });
     }
 
