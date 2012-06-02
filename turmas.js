@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function Turmas(ui_logger, ui_horario, combinacoes)
+function Turmas(ui_logger, ui_horario)
 {
     var self = this;
     var selected = null;
@@ -16,11 +16,10 @@ function Turmas(ui_logger, ui_horario, combinacoes)
             func(priv, dia, hora);
         }
     }
-    function display_over(turma)
+    function display_over(c, turma)
     {
         if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
             return;
-        var c       = combinacoes.get_current();
         var materia = turma.materia;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
@@ -46,11 +45,10 @@ function Turmas(ui_logger, ui_horario, combinacoes)
     function normal_cell(d)  { return {text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; }
     function red_cell(str)   { return {text:str,bgcolor:"red",color:"black"}; }
     function black_cell(str) { return {text:str,bgcolor:"black",color:"white"}; }
-    function undisplay_over(turma)
+    function undisplay_over(c, turma)
     {
         if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
             return;
-        var c       = combinacoes.get_current();
         var materia = turma.materia;
         var current_turma = c && c[materia.codigo] ? c[materia.codigo].turma_representante : null;
 
