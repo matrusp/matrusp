@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function Turmas(ui_logger, ui_horario)
+function Display(ui_logger, ui_horario)
 {
     var self = this;
     var selected = null;
@@ -16,7 +16,7 @@ function Turmas(ui_logger, ui_horario)
             func(priv, dia, hora);
         }
     }
-    function display_over(c, turma)
+    function over(c, turma)
     {
         if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
             return;
@@ -42,7 +42,7 @@ function Turmas(ui_logger, ui_horario)
 
         selected = turma;
     }
-    function undisplay_over(c, turma)
+    function under(c, turma)
     {
         if ((navigator.userAgent.toLowerCase().indexOf("msie") > -1) && !turma) /* FIXME something wrong with IE when selecting turmas */
             return;
@@ -72,7 +72,7 @@ function Turmas(ui_logger, ui_horario)
 
         selected = null;
     }
-    function display(turma, c) {
+    function turma(c, turma) {
         map_turma(turma, c, function(c, dia, hora) {
             ui_horario.display_cell(dia, hora, Cell.normal(c[dia][hora]));
         });
@@ -80,9 +80,9 @@ function Turmas(ui_logger, ui_horario)
 
     /* procedures */
     self.reset = function() { ui_horario.reset(); selected = null; };
-    self.undisplay_over = undisplay_over;
-    self.display_over = display_over;
-    self.display = display;
+    self.under = under;
+    self.over  = over;
+    self.turma = turma;
     /* functions */
     self.get_selected = function() { return selected; }
 }

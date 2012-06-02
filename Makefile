@@ -9,7 +9,7 @@ ui_logger.js \
 dconsole.js \
 combinacoes.js \
 materias.js \
-turmas.js \
+display.js \
 ui_materias.js \
 ui_turmas.js \
 ui_combinacoes.js \

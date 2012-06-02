@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, materias, turmas, combinacoes, persistence)
+function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, materias, display, combinacoes, persistence)
 {
     var self = this;
 
@@ -24,7 +24,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             }
         }
 
-        turmas.reset();
+        display.reset();
         var c = combinacoes.get(cc);
         if (!c) {
             cc = 0;
@@ -43,7 +43,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
                 horas_aula += parseInt(turma.aulas.length);
-                turmas.display(turma, c);
+                display.turma(c, turma);
             });
         }
         combinacoes.set_current(cc);
@@ -207,11 +207,11 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         if (!m_array.length)
             return;
         if (m_count != -1)
-            turmas.undisplay_over(combinacoes.get_current(), m_array[m_count]);
+            display.under(combinacoes.get_current(), m_array[m_count]);
         m_count++;
         if (m_count >= m_array.length)
             m_count = 0;
-        turmas.display_over(combinacoes.get_current(), m_array[m_count]);
+        display.over(combinacoes.get_current(), m_array[m_count]);
         if (m_array.length != 1)
             m_timer = setTimeout((function(t){return function(){t.m_update_turma();}})(self), 1000);
     }
@@ -223,7 +223,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             var horario = c.horarios_combo[i];
             var turma = horario.turma_representante;
             if (turma.materia == materia) {
-                turmas.display_over(c, turma);
+                display.over(c, turma);
                 return;
             }
         }
@@ -239,12 +239,12 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             var horario = c.horarios_combo[i];
             var turma = horario.turma_representante;
             if (turma.materia == materia) {
-                turmas.undisplay_over(c, turma);
+                display.under(c, turma);
                 return;
             }
         }
         if (m_array && m_array.length)
-            turmas.undisplay_over(c, m_array[m_count]);
+            display.under(c, m_array[m_count]);
         if (m_timer)
             clearTimeout(m_timer);
         m_array = null;
@@ -402,16 +402,16 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     ui_turmas.cb_edit_turma  = function(turma) {
         edit_start(turma);
     };
-    ui_turmas.cb_onmouseover = function(turma) { turmas.display_over(combinacoes.get_current(), turma); };
-    ui_turmas.cb_onmouseout  = function(turma) { turmas.undisplay_over(combinacoes.get_current(), turma); };
+    ui_turmas.cb_onmouseover = function(turma) { display.over(combinacoes.get_current(), turma); };
+    ui_turmas.cb_onmouseout  = function(turma) { display.under(combinacoes.get_current(), turma); };
     ui_turmas.cb_changed     = function(turma, checked) {
         turma.selected = checked ? 1 : 0;
         turma.materia.selected = 1;
     };
     ui_turmas.cb_updated     = function() {
-        var turma = turmas.get_selected();
+        var turma = display.get_selected();
         update_all();
-        turmas.display_over(combinacoes.get_current(), turma);
+        display.over(combinacoes.get_current(), turma);
     };
     ui_turmas.cb_ok          = function() {
         ui_grayout.hide();
@@ -503,7 +503,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         materias.reset();
         ui_materias.reset();
         ui_logger.reset();
-        turmas.reset();
+        display.reset();
         ui_turmas.reset();
 
         for (var i = 0; i < state.materias.length; i++) {
@@ -627,11 +627,11 @@ init_main = function() {
 
     var combinacoes = new Combinacoes();
     var materias = new Materias();
-    var turmas = new Turmas(ui_logger, ui_horario);
+    var display = new Display(ui_logger, ui_horario);
 
     dconsole2 = new Dconsole("dconsole");
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
-    var main   = new Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, materias, turmas, combinacoes, persistence);
+    var main   = new Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, materias, display, combinacoes, persistence);
 
     combo.cb_add_materia = main.add_materia;
     combo.cb_new_materia = main.new_materia;
