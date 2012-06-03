@@ -8,25 +8,25 @@ function Persistence()
     if (window.sessionStorage) {
         self.read_state  = function( ) { return sessionStorage.state3; };
         self.write_state = function(d) { sessionStorage.state3 = d; return true; };
-        self.read_id     = function( ) { return localStorage.id; };
-        self.write_id    = function(d) { localStorage.id = d; return true; };
+        self.read_id     = function( ) { return localStorage.id2; };
+        self.write_id    = function(d) { localStorage.id2 = d; return true; };
     } else {
         var userdata = document.getElementById("userdata");
 
         if (userdata.addBehavior) {
-            function userdata_read(id) {
+            function userdata_read(id2) {
                 userdata.load("persistence");
-                return userdata.getAttribute(id);
+                return userdata.getAttribute(id2);
             }
-            function userdata_write(id, w) {
-                userdata.setAttribute(id, w);
+            function userdata_write(id2, w) {
+                userdata.setAttribute(id2, w);
                 userdata.save("persistence");
                 return true;
             }
             self.read_state  = function( ) { return userdata_read ("state3"   ); };
             self.write_state = function(d) { return userdata_write("state3", d); };
-            self.read_id     = function( ) { return userdata_read ("id"       ); };
-            self.write_id    = function(d) { return userdata_write("id"    , d); };
+            self.read_id     = function( ) { return userdata_read ("id2"      ); };
+            self.write_id    = function(d) { return userdata_write("id2"   , d); };
         } else {
             self.read_state  = function( ) { return undefined; };
             self.write_state = function(d) { return false; };
