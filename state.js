@@ -50,7 +50,7 @@ function State()
         return JSON.stringify(state_to_return);
     };
 
-    self.carregar = function(state_to_load) {
+    self.load = function(state_to_load) {
         if (state_to_load.versao > 4)
             return -2;
 

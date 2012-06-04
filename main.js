@@ -431,10 +431,10 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         display_combinacao(state.combinacoes.current());
     };
     /* UI_saver */
-    ui_saver.cb_salvar = function(identificador) {
+    ui_saver.cb_save = function(identificador) {
         self.save(identificador);
     };
-    ui_saver.cb_carregar = function(identificador) {
+    ui_saver.cb_load = function(identificador) {
         if (!identificador || identificador == "") {
             ui_logger.set_text("identificador invalido", "lightcoral");
             return;
@@ -499,7 +499,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_turmas.reset();
         display.reset();
 
-        var ret = state.carregar(state_to_load);
+        var ret = state.load(state_to_load);
         if      (ret === -1)
             ui_logger.set_text("houve algum erro ao importar as mat\u00e9rias!", "lightcoral");
         else if (ret === -2)
@@ -680,7 +680,7 @@ init_main = function() {
         }
     } else {
         if (identificador != null && identificador != "") {
-            ui_saver.cb_carregar(identificador);
+            ui_saver.cb_load(identificador);
         }
     }
     if (combo.input.value == identificador)

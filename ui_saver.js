@@ -45,8 +45,8 @@ function UI_saver(id)
         if (self.enabled) return;
         self.button_save.style.backgroundColor = "lightblue";
         self.button_load.style.backgroundColor = "lightblue";
-        self.button_save.onclick = function () { self.cb_salvar(input.value); return false; };
-        self.button_load.onclick = function () { self.cb_carregar(input.value); return false; };
+        self.button_save.onclick = function () { self.cb_save(input.value); return false; };
+        self.button_load.onclick = function () { self.cb_load(input.value); return false; };
         self.button_save.style.opacity = "";
         self.button_save.style.filter = "";
         self.button_load.style.opacity = "";
@@ -73,6 +73,6 @@ function UI_saver(id)
         }
     }
     /* callbacks */
-    self.cb_salvar   = null;
-    self.cb_carregar = null;
+    self.cb_save = null;
+    self.cb_load = null;
 }
