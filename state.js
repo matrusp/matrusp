@@ -35,6 +35,7 @@ function State()
             state_plano.combinacao = plano.combinacoes.current();
             state_plano.materias   = new Array();
             state_plano.materia    = plano.materias.selected
+            state_plano.nome       = plano.nome;
             for (var i = 0; i < list.length; i++) {
                 var state_materia = new Object();
                 var materia = list[i];
@@ -82,6 +83,8 @@ function State()
             plano.materias.selected = state_to_load.planos[p].materia;
             plano.combinacao        = state_to_load.planos[p].combinacao;
             plano.nome              = state_to_load.planos[p].nome;
+            if (!plano.nome)
+                plano.nome = "Plano X";
             for (var i = 0; i < state_to_load.planos[p].materias.length; i++) {
                 var materia = plano.materias.add_json(state_to_load.planos[p].materias[i]);
                 if (!materia)
