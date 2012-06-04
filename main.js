@@ -8,7 +8,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     function display_combinacao(cc)
     {
         var horas_aula = 0;
-        var m = state.materias.list();
+        var m = state.plano.materias.list();
         for (var i = 0; i < m.length; i++) {
             var materia = m[i];
             if (materia.selected == -1) {
@@ -25,7 +25,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         }
 
         display.reset();
-        var c = state.combinacoes.get(cc);
+        var c = state.plano.combinacoes.get(cc);
         if (!c) {
             cc = 0;
         } else {
@@ -46,9 +46,9 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 display.turma(c, turma);
             });
         }
-        state.combinacoes.set_current(cc);
+        state.plano.combinacoes.set_current(cc);
         ui_combinacoes.set_current(cc);
-        ui_combinacoes.set_total(state.combinacoes.length());
+        ui_combinacoes.set_total(state.plano.combinacoes.length());
         ui_combinacoes.set_horas_aula(horas_aula);
     }
 
@@ -69,40 +69,40 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         do {
             var str = new_atividade_name();
             var codigo = "XXX" + str;
-        } while (state.materias.get(codigo));
-        var materia = state.materias.new_item(codigo, nome);
-        state.materias.new_turma(materia);
+        } while (state.plano.materias.get(codigo));
+        var materia = state.plano.materias.new_item(codigo, nome);
+        state.plano.materias.new_turma(materia);
         ui_materias.add(materia);
         ui_turmas.create(materia);
-        state.materias.selected = materia.codigo;
+        state.plano.materias.selected = materia.codigo;
         ui_logger.set_text("'" + nome + "' adicionada", "lightgreen");
         update_all();
     };
     function add_materia(result) {
-        var materia = state.materias.add_json(result);
+        var materia = state.plano.materias.add_json(result);
         if (!materia) {
             ui_logger.set_text("'" + result.codigo + "' ja foi adicionada", "lightcoral");
             return;
         }
         ui_materias.add(materia);
         ui_turmas.create(materia);
-        state.materias.selected = materia.codigo;
+        state.plano.materias.selected = materia.codigo;
         ui_logger.set_text("'" + result.codigo + "' adicionada", "lightgreen");
         update_all();
     }
     function previous() {
-        if (!state.combinacoes.length())
+        if (!state.plano.combinacoes.length())
             return;
-        var c = state.combinacoes.current() - 1;
+        var c = state.plano.combinacoes.current() - 1;
         if (c < 1)
-            c = state.combinacoes.length();
+            c = state.plano.combinacoes.length();
         display_combinacao(c);
     };
     function next() {
-        if (!state.combinacoes.length())
+        if (!state.plano.combinacoes.length())
             return;
-        var c = state.combinacoes.current() + 1;
-        if (c > state.combinacoes.length())
+        var c = state.plano.combinacoes.current() + 1;
+        if (c > state.plano.combinacoes.length())
             c = 1;
         display_combinacao(c);
     };
@@ -117,9 +117,9 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     ui_combinacoes.cb_previous = self.previous;
     ui_combinacoes.cb_next     = self.next;
     ui_combinacoes.cb_changed  = function(val) {
-        if (!state.combinacoes.length())
+        if (!state.plano.combinacoes.length())
             return;
-        if (parseInt(val).toString() == val && val >= 1 && val <= state.combinacoes.length()) {
+        if (parseInt(val).toString() == val && val >= 1 && val <= state.plano.combinacoes.length()) {
             ui_logger.reset();
             display_combinacao(val);
         } else {
@@ -130,10 +130,10 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     ui_materias.cb_changed = function(materia, attr, str) {
         if (str == "") {
             ui_logger.set_text("o código não pode ser vazio", "lightcoral");
-        } else if (attr == "codigo" && state.materias.get(str)) {
+        } else if (attr == "codigo" && state.plano.materias.get(str)) {
             ui_logger.set_text("código '" + str + "' já está sendo usado", "lightcoral");
         } else {
-            state.materias.changed(materia, attr, str);
+            state.plano.materias.changed(materia, attr, str);
             update_all();
         }
     };
@@ -152,13 +152,13 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                     turma.selected = 1
                 }
                 ui_turmas.create(materia);
-                state.materias.selected = materia.codigo;
+                state.plano.materias.selected = materia.codigo;
             }
         }
         update_all();
     };
     ui_materias.cb_onmoveup    = function(materia) {
-        var m = state.materias.list();
+        var m = state.plano.materias.list();
         for (var i = 0; i < m.length; i++)
             if (m[i] == materia)
                 break;
@@ -175,7 +175,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         update_all();
     };
     ui_materias.cb_onmovedown  = function(materia) {
-        var m = state.materias.list();
+        var m = state.plano.materias.list();
         for (var i = 0; i < m.length; i++)
             if (m[i] == materia)
                 break;
@@ -192,13 +192,13 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         update_all();
     };
     ui_materias.cb_onremove    = function(materia) {
-        var selected = state.materias.get(state.materias.selected);
+        var selected = state.plano.materias.get(state.plano.materias.selected);
         if (selected && selected.codigo == materia.codigo)
             ui_turmas.reset();
         ui_logger.set_text("'" + materia.codigo + "' removida", "lightgreen");
         materia.row.parentNode.removeChild(materia.row);
-        state.materias.remove_item(materia);
-        state.materias.selected = "";
+        state.plano.materias.remove_item(materia);
+        state.plano.materias.selected = "";
         ui_materias.fix_width();
         update_all();
     };
@@ -209,16 +209,16 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         if (!m_array.length)
             return;
         if (m_count != -1)
-            display.out(state.combinacoes.get_current(), m_array[m_count]);
+            display.out(state.plano.combinacoes.get_current(), m_array[m_count]);
         m_count++;
         if (m_count >= m_array.length)
             m_count = 0;
-        display.over(state.combinacoes.get_current(), m_array[m_count]);
+        display.over(state.plano.combinacoes.get_current(), m_array[m_count]);
         if (m_array.length != 1)
             m_timer = setTimeout((function(t){return function(){t.m_update_turma();}})(self), 1000);
     }
     ui_materias.cb_onmouseover = function(materia) {
-        var c = state.combinacoes.get_current();
+        var c = state.plano.combinacoes.get_current();
         if (!c)
             return;
         for (var i = 0; i < c.horarios_combo.length; i++) {
@@ -234,7 +234,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         self.m_update_turma();
     };
     ui_materias.cb_onmouseout  = function(materia) {
-        var c = state.combinacoes.get_current();
+        var c = state.plano.combinacoes.get_current();
         if (!c)
             return;
         for (var i = 0; i < c.horarios_combo.length; i++) {
@@ -255,27 +255,27 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     };
     ui_materias.cb_onclick     = function(materia) {
         ui_turmas.create(materia);
-        state.materias.selected = materia.codigo;
+        state.plano.materias.selected = materia.codigo;
     }
     /* UI_turmas */
     ui_turmas.cb_toggle_agrupar = function() {
-        var materia = state.materias.get(state.materias.selected);
+        var materia = state.plano.materias.get(state.plano.materias.selected);
         materia.agrupar = materia.agrupar ? 0 : 1;
-        state.materias.fix_horarios(materia);
+        state.plano.materias.fix_horarios(materia);
         update_all();
         ui_turmas.create(materia);
-        state.materias.selected = materia.codigo;
+        state.plano.materias.selected = materia.codigo;
     };
     ui_turmas.cb_new_turma   = function() {
-        var materia = state.materias.get(state.materias.selected);
-        state.materias.new_turma(materia);
+        var materia = state.plano.materias.get(state.plano.materias.selected);
+        state.plano.materias.new_turma(materia);
         ui_turmas.create(materia);
-        state.materias.selected = materia.codigo;
+        state.plano.materias.selected = materia.codigo;
         update_all();
     };
     ui_turmas.cb_remove_turma = function(turma) {
         var materia = turma.materia;
-        state.materias.remove_turma(materia, turma);
+        state.plano.materias.remove_turma(materia, turma);
         ui_turmas.remove_turma(turma);
         update_all();
     };
@@ -304,24 +304,24 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             editando.horario.aulas = aulas;
             for (var k in editando.horario.turmas)
                 editando.horario.turmas[k].aulas = aulas;
-            state.materias.fix_horarios(editando.materia);
+            state.plano.materias.fix_horarios(editando.materia);
             clear_overlay();
             ui_horario.set_toggle(null);
             ui_turmas.edit_end();
             ui_turmas.create(editando.materia);
-            state.materias.selected = editando.materia.codigo;
+            state.plano.materias.selected = editando.materia.codigo;
             self.editando = null;
         }
         if (comb == null)
-            var current = state.combinacoes.get_current();
-        state.combinacoes.generate(state.materias.list());
+            var current = state.plano.combinacoes.get_current();
+        state.plano.combinacoes.generate(state.plano.materias.list());
         if (comb == null)
-            comb = state.combinacoes.closest(current)
-        if (comb < 1 || comb > state.combinacoes.length())
+            comb = state.plano.combinacoes.closest(current)
+        if (comb < 1 || comb > state.plano.combinacoes.length())
             comb = 1;
         display_combinacao(comb);
         var errmsg = new String();
-        var m = state.materias.list();
+        var m = state.plano.materias.list();
         for (var i = 0; i < m.length; i++) {
             var materia = m[i];
             if (materia.selected == -1) {
@@ -335,7 +335,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         }
         ui_logger.reset();
         current = null;
-        mudancas = state.combinacoes.get_current();
+        mudancas = state.plano.combinacoes.get_current();
         persistence.write_state(state.save());
     }
     self.editando = null;
@@ -347,10 +347,10 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             }
             update_all();
         }
-        var materia = state.materias.get(state.materias.selected);
+        var materia = state.plano.materias.get(state.plano.materias.selected);
         clear_overlay();
-        var c       = state.combinacoes.get_current();
-        var fake    = state.combinacoes.copy(c, turma.materia);
+        var c       = state.plano.combinacoes.get_current();
+        var fake    = state.plano.combinacoes.copy(c, turma.materia);
         for (var i = 0; i < turma.aulas.length; i++) {
             var dia  = turma.aulas[i].dia;
             var hora = turma.aulas[i].hora;
@@ -407,8 +407,8 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     ui_turmas.cb_edit_turma  = function(turma) {
         edit_start(turma);
     };
-    ui_turmas.cb_onmouseover = function(turma) { display.over(state.combinacoes.get_current(), turma); };
-    ui_turmas.cb_onmouseout  = function(turma) { display.out(state.combinacoes.get_current(), turma); };
+    ui_turmas.cb_onmouseover = function(turma) { display.over(state.plano.combinacoes.get_current(), turma); };
+    ui_turmas.cb_onmouseout  = function(turma) { display.out(state.plano.combinacoes.get_current(), turma); };
     ui_turmas.cb_changed     = function(turma, checked) {
         turma.selected = checked ? 1 : 0;
         turma.materia.selected = 1;
@@ -416,7 +416,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     ui_turmas.cb_updated     = function() {
         var turma = display.get_selected();
         update_all();
-        display.over(state.combinacoes.get_current(), turma);
+        display.over(state.plano.combinacoes.get_current(), turma);
     };
     ui_turmas.cb_ok          = function() {
         ui_grayout.hide();
@@ -428,7 +428,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_horario.set_toggle(null);
         ui_turmas.edit_end();
         self.editando = null;
-        display_combinacao(state.combinacoes.current());
+        display_combinacao(state.plano.combinacoes.current());
     };
     /* UI_saver */
     ui_saver.cb_save = function(identificador) {
@@ -464,7 +464,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     /* UI_campus */
     ui_campus.cb_changed = function(campus) {
         database.set_campus(campus);
-        state.campus = campus;
+        state.plano.campus = campus;
     }
     /* Save/Load */
     self.save = function(identificador) {
@@ -507,22 +507,22 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         if (ret != 0)
             return;
 
-        var materias = state.materias.list();
+        var materias = state.plano.materias.list();
         for (var i = 0; i < materias.length; i++)
             ui_materias.add(materias[i]);
 
-        var materia = state.materias.get(state.materias.selected);
+        var materia = state.plano.materias.get(state.plano.materias.selected);
         if (materia) {
             ui_turmas.create(materia);
-            state.materias.selected = materia.codigo;
+            state.plano.materias.selected = materia.codigo;
         } else {
-            state.materias.selected = "";
+            state.plano.materias.selected = "";
         }
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
-        ui_campus.set_selected(state_to_load.campus);
+        ui_campus.set_selected(state.campus);
         if (identificador)
             persistence.write_id(identificador);
-        update_all(state_to_load.combinacao);
+        update_all(state.plano.combinacao);
         mudancas = false;
     };
 }

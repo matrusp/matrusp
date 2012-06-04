@@ -134,14 +134,8 @@ function Materias()
     var self = this;
     self.selected = "";
 
-    var materias;
-    var list;
-    function reset() {
-        materias = new Object();
-        list = new Array();
-        for (var i = 0; i < cores.length; i++)
-            cores[i].taken = 0;
-    }
+    var materias = new Object();
+    var list = new Array();
 
     var cores = [ {cor:"lightblue",taken:0},
                   {cor:"lightcoral",taken:0},
@@ -181,8 +175,6 @@ function Materias()
         }
         return get_color(taken+1);
     };
-
-    reset();
 
     function new_item(codigo, nome) {
         if (materias[codigo])
@@ -291,7 +283,6 @@ function Materias()
     }
 
     /* procedures */
-    self.reset = reset;
     self.add_json = add_json;
     self.new_item = new_item;
     self.changed = changed;
