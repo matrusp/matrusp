@@ -132,7 +132,7 @@ function Materia(materia) {
 function Materias()
 {
     var self = this;
-    var selected = null;
+    self.selected = "";
 
     var materias;
     var list;
@@ -292,7 +292,6 @@ function Materias()
 
     /* procedures */
     self.reset = reset;
-    self.set_selected = function(materia) { selected = materia; };
     self.add_json = add_json;
     self.new_item = new_item;
     self.changed = changed;
@@ -310,6 +309,5 @@ function Materias()
         return null;
     };
     self.get = function(codigo) { return materias[codigo]; };
-    self.get_selected = function() { return selected; };
     self.list = function() { return list; };
 }

@@ -10,27 +10,23 @@ function UI_campus(id)
     ui_campus.appendChild(document.createTextNode("campus: "));
     var select = document.createElement("select");
     var option = document.createElement("option");
-    option.value = "Florianópolis";
+    option.value = "FLO";
     option.innerHTML = "Florianópolis";
     select.appendChild(option);
     var option = document.createElement("option");
-    option.value = "Joinville";
+    option.value = "JOI";
     option.innerHTML = "Joinville";
     select.appendChild(option);
     ui_campus.appendChild(select);
 
-    select.selectedIndex = 0;
+    select.value = "FLO";
 
     select.onchange = function() {
-        if      (this.selectedIndex == 0)
-            database.set_campus("FLO");
-        else if (this.selectedIndex == 1)
-            database.set_campus("JOI");
+        self.cb_changed(this.value);
     }
-    database.set_campus("FLO");
 
-    /* function */
-    self.get_selected = function( ) { return select.selectedIndex; };
+    /* callbacks */
+    self.cb_changed   = null;
     /* procedures */
-    self.set_selected = function(n) { select.selectedIndex = n; select.onchange(); };
+    self.set_selected = function(value) { select.value = value; };
 }

@@ -17,6 +17,7 @@ ui_horario.js \
 ui_ajuda_popup.js \
 combobox.js \
 database.js \
+state.js \
 main.js
 
 header_gen_pdf: header_gen_pdf.c
