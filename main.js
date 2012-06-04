@@ -464,7 +464,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     /* UI_campus */
     ui_campus.cb_changed = function(campus) {
         database.set_campus(campus);
-        state.plano.campus = campus;
+        state.campus = campus;
     }
     /* Save/Load */
     self.save = function(identificador) {

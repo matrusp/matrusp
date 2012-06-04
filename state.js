@@ -74,6 +74,7 @@ function State()
         if (state_to_load.versao > 4)
             return -2;
 
+        self.campus = state_to_load.campus;
         self.planos = [];
 
         for (var p = 0; p < state_to_load.planos.length; p++) {
