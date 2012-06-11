@@ -13,6 +13,13 @@
 #include <unistd.h>
 
 #define PRINT_ENV 0
+#define PRINT_ERR 0
+
+#if PRINT_ERR
+#define set_error(x) err = x;
+#else
+#define set_error(x)
+#endif
 
 int main()
 {
@@ -39,6 +46,10 @@ int main()
     struct stat st;
     FILE *fp;
 
+#if PRINT_ERR
+    char *err = NULL;
+#endif
+
 #if PRINT_ENV
     printf("Content-Type: text/plain\n");
     printf("\n");
@@ -49,21 +60,29 @@ int main()
 
     /* 1. get mandatory env (DOCUMENT_ROOT and REQUEST_URI). */
     document_root = getenv("DOCUMENT_ROOT");
-    if (!document_root)
+    if (!document_root) {
+        set_error("no document root\n");
         goto _404;
+    }
     uri = getenv("REQUEST_URI");
-    if (!uri)
+    if (!uri) {
+        set_error("no request_uri\n");
         goto _404;
+    }
 
     dir_str  = dir_str0  = strdup(uri);
     base_str = base_str0 = strdup(uri);
-    if (!dir_str || !base_str)
+    if (!dir_str || !base_str) {
+        set_error("no dir_str or base_str\n");
         goto _404;
+    }
 
     dir_str  = dirname (dir_str);
     base_str = basename(base_str);
-    if (!dir_str || !base_str)
+    if (!dir_str || !base_str) {
+        set_error("dirname() or basename() failed\n");
         goto _404;
+    }
 
     /* 2. accept /matrufsc2/ as /matrufsc2/index.html */
     if (!strcmp(dir_str, "/") && !strcmp(base_str, "matrufsc2")) {
@@ -72,8 +91,10 @@ int main()
     }
 
     /* 3. check if it's a file we have */
-    if      ( strcmp(dir_str, "/matrufsc2"))
+    if      ( strcmp(dir_str, "/matrufsc2")) {
+        set_error("not /matrufsc2\n");
         goto _404;
+    }
     else if (!strcmp(base_str, "index.html"))
         content_type = "text/html";
     else if (!strcmp(base_str, "matrufsc.js"))
@@ -82,13 +103,17 @@ int main()
         content_type = "text/css";
     else if (!strcmp(base_str, "database.json"))
         content_type = "application/json";
-    else
+    else {
+        set_error("not any file we can send\n");
         goto _404;
+    }
 
     /* 4. check file modification time */
     snprintf(path, sizeof(path), "%s%s/%s", document_root, dir_str, base_str);
-    if (stat(path, &st))
+    if (stat(path, &st)) {
+        set_error("file not found, really\n");
         goto _404;
+    }
     filename = path;
     content_length = st.st_size;
     uncompressed_length = st.st_size;
@@ -120,11 +145,14 @@ int main()
     }
 
     fp = fopen(filename, "r");
-    if (!fp)
+    if (!fp) {
+        set_error("could not open file\n");
         goto _404;
+    }
     data = malloc(content_length);
     if (!data) {
         fclose(fp);
+        set_error("could not alloc data for file\n");
         goto _404;
     }
     fread(data, content_length, 1, fp);
@@ -147,6 +175,9 @@ _404:
     printf("Content-type: text/html; charset=UTF-8\n");
     printf("\n");
     printf("<html><head><title>404</title></head><body><center>404 - Arquivo n\u00e3o encontrado</center></body></html>");
+#if PRINT_ERR
+    printf("err: %s\n", err);
+#endif
 
 end:
     if (dir_str0)
