@@ -3,21 +3,21 @@ all: database.json save2.cgi load2.cgi matrufsc.js
 SRC=json2.js \
 compat.js \
 persistence.js \
-ui_campus.js \
-ui_saver.js \
-ui_logger.js \
 dconsole.js \
 combinacoes.js \
 materias.js \
 display.js \
-ui_materias.js \
-ui_turmas.js \
-ui_combinacoes.js \
-ui_horario.js \
-ui_ajuda_popup.js \
 combobox.js \
 database.js \
 state.js \
+ui_ajuda_popup.js \
+ui_campus.js \
+ui_combinacoes.js \
+ui_horario.js \
+ui_logger.js \
+ui_materias.js \
+ui_saver.js \
+ui_turmas.js \
 main.js
 
 header_gen_pdf: header_gen_pdf.c
