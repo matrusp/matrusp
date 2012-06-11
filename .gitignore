@@ -1,8 +1,13 @@
+index.html.gz
+matrufsc.css.gz
 database.json
+database.json.gz
 full2_FLO.json
 full2_JOI.json
 header_gen
 header_gen_pdf
 load2.cgi
 matrufsc.js
+matrufsc.js.gz
 save2.cgi
+access.cgi
