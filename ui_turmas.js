@@ -57,21 +57,24 @@ function UI_turmas(id)
         row.parentNode.removeChild(row);
         self.fix_height();
     }
-    function remove() {
-        var row = this.parentNode;
-        var turma = row.turma;
-        self.cb_remove_turma(turma);
-    }
-    function editar() {
-        var row = this.parentNode;
-        var turma = row.turma;
-        self.cb_edit_turma(turma);
+    function stop_propagation(e)
+    {
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
     }
     function hover_off() { this.style.backgroundColor = this.oldbg; this.style.color = "black"; };
     function hover_on()  { this.style.backgroundColor = "black"; this.style.color = this.oldbg; };
     var mouseover_turma = null;
     var mouseout_turma = function() {
         if (mouseover_turma) {
+            mouseover_turma.row.menu_div.style.display = "none";
+            mouseover_turma.row.menu_v.style.borderBottom = "1px solid black";
+            mouseover_turma.row.menu_v.onmouseout  = hover_off;
+            mouseover_turma.row.menu_v.onmouseover = hover_on;
+            mouseover_turma.row.menu_v.style.backgroundColor = current_materia.cor;
+            mouseover_turma.row.menu_v.style.color = "black";
+            mouseover_turma.row.menu.style.display = "none";
             self.cb_onmouseout(mouseover_turma);
             mouseover_turma = null;
         }
@@ -83,6 +86,7 @@ function UI_turmas(id)
             if (mouseover_turma == this.turma)
                 return;
             mouseout_turma();
+            this.menu.style.display = "block";
             self.cb_onmouseover(this.turma);
             mouseover_turma = this.turma;
         };
@@ -150,6 +154,9 @@ function UI_turmas(id)
 
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
+        data.style.position = "relative";
+        data.style.zIndex = self.zIndex;
+        self.zIndex = self.zIndex - 1;
         var innerHTML = new String();
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
@@ -160,33 +167,74 @@ function UI_turmas(id)
         data.innerHTML = innerHTML;
         row.appendChild(data);
 
-        var data = document.createElement("td");
-        data.style.MozUserSelect = "none";
-        data.style.KhtmlUserSelect = "none";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
-        data.onselectstart = function () { return false; };
-        data.oldbg = current_materia.cor;
-        data.onmouseout  = hover_off;
-        data.onmouseover = hover_on;
-        data.onclick = editar;
-        data.innerHTML = "E";
-        data.title = "editar horário desta turma";
-        row.appendChild(data);
+        var menu = document.createElement("div");
+        menu.className = "ui_turmas_menu";
+        data.appendChild(menu);
 
-        var data = document.createElement("td");
-        data.style.MozUserSelect = "none";
-        data.style.KhtmlUserSelect = "none";
-        data.style.width = "15px";
-        data.style.textAlign = "center";
-        data.onselectstart = function () { return false; };
-        data.oldbg = current_materia.cor;
-        data.onmouseout  = hover_off;
-        data.onmouseover = hover_on;
-        data.onclick = remove;
-        data.innerHTML = "X";
-        data.title = "remover turma";
-        row.appendChild(data);
+        var menu_v = document.createElement("div");
+        menu_v.className = "ui_turmas_menu_v";
+        menu_v.innerHTML = "V";
+        menu_v.title = "clique aqui para editar ou remover turma";
+        menu_v.oldbg = current_materia.cor;
+        menu_v.onmouseout  = hover_off;
+        menu_v.onmouseover = hover_on;
+        menu_v.row = row;
+        menu_v.onmouseup = function(e) {
+            if (menu_div.style.display == "block") {
+                menu_div.style.display = "none";
+                menu_v.style.borderBottom = "1px solid black";
+                menu_v.onmouseout  = hover_off;
+                menu_v.onmouseover = hover_on;
+                menu_v.style.backgroundColor = current_materia.cor;
+                menu_v.style.color = "black";
+            } else {
+                menu_div.style.display = "block";
+                menu_v.style.borderBottom = "0";
+                menu_v.onmouseout  = function(){};
+                menu_v.onmouseover = function(){};
+                menu_v.style.backgroundColor = "black";
+                menu_v.style.color = current_materia.cor;
+            }
+            stop_propagation(e);
+        }
+        menu_v.onselectstart = function () { return false; };
+        menu.appendChild(menu_v);
+
+        var menu_div = document.createElement("div");
+        menu_div.className = "ui_turmas_menu_div";
+        menu_div.style.backgroundColor = current_materia.cor;
+        menu.appendChild(menu_div);
+
+        var menu_remover = document.createElement("div");
+        menu_remover.innerHTML = "remover";
+        menu_remover.title = "remover turma";
+        menu_remover.oldbg = current_materia.cor;
+        menu_remover.onmouseout  = hover_off;
+        menu_remover.onmouseover = hover_on;
+        menu_remover.onselectstart = function () { return false; };
+        menu_remover.turma = row.turma;
+        menu_remover.onmouseup = function(e) {
+            self.cb_remove_turma(row.turma);
+            stop_propagation(e);
+        }
+        menu_div.appendChild(menu_remover);
+        var menu_editar = document.createElement("div");
+        menu_editar.innerHTML = "editar";
+        menu_editar.title = "editar horário desta turma";
+        menu_editar.oldbg = current_materia.cor;
+        menu_editar.onmouseout  = hover_off;
+        menu_editar.onmouseover = hover_on;
+        menu_editar.onselectstart = function () { return false; };
+        menu_editar.turma = row.turma;
+        menu_editar.onmouseup = function(e) {
+            self.cb_edit_turma(row.turma);
+            stop_propagation(e);
+        }
+        menu_div.appendChild(menu_editar);
+
+        row.menu = menu;
+        row.menu_v = menu_v;
+        row.menu_div = menu_div;
 
         self.tbody.insertBefore(row, insert_before);
         self.fix_height();
@@ -213,12 +261,10 @@ function UI_turmas(id)
                 rt = rt.parentNode;
             if (rt && t && t == rt)
                 return;
-            if (mouseover_turma) {
-                self.cb_onmouseout(mouseover_turma);
-                mouseover_turma = null;
-            }
+            mouseout_turma();
         };
 
+        self.zIndex = 100;
         for (var i in current_materia.horarios) {
             var horario = current_materia.horarios[i];
             if (current_materia.agrupar == 1) {
@@ -239,7 +285,7 @@ function UI_turmas(id)
         row.onmouseover = mouseout_turma;
 
         var data = document.createElement("td");
-        data.colSpan = "6";
+        data.colSpan = "4";
         data.style.textAlign = "center";
         data.onmouseup = function() { self.cb_new_turma(); };
         data.style.fontSize = "13px"
@@ -269,7 +315,7 @@ function UI_turmas(id)
         row.appendChild(data);
 
         var data = document.createElement("td");
-        data.colSpan = "5";
+        data.colSpan = "3";
         data.onmouseup = function() { self.cb_toggle_agrupar(); };
         data.style.fontSize = "13px"
         data.innerHTML = "agrupar turmas com horários iguais";

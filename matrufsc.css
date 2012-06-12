@@ -88,6 +88,34 @@ body {
 .ui_turmas table tr {
     cursor: pointer;
 }
+.ui_turmas_menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+}
+.ui_turmas_menu_v {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    text-decoration: underline;
+    float: right;
+    top: 0;
+    right: 0;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 3px 5px 4px 5px;
+}
+.ui_turmas_menu_div {
+    padding: 1px;
+    border: 1px solid black;
+    clear: both;
+    display: none;
+}
+.ui_turmas_menu_div div {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    padding: 5px;
+}
 
 .ui_materias {
     border: 1px solid black;
