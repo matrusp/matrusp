@@ -30,7 +30,7 @@ function UI_turmas(id)
             self.cb_changed(checkboxes[i].turma, !at_least_one_selected);
             checkboxes[i].checked = !at_least_one_selected;
         }
-        self.cb_updated();
+        self.cb_updated(null);
     }
     function edit_start(turma) {
         current_turma = turma;
@@ -101,7 +101,7 @@ function UI_turmas(id)
             input.turma    = turma;
             input.onchange = function() {
                 self.cb_changed(this.turma, this.checked);
-                self.cb_updated();
+                self.cb_updated(null);
             };
             if (navigator.userAgent.toLowerCase().indexOf("msie") > -1) {
                 input.onclick = function() { this.blur() };
@@ -205,8 +205,38 @@ function UI_turmas(id)
         menu_div.style.backgroundColor = current_materia.cor;
         menu.appendChild(menu_div);
 
+        var menu_soessa = document.createElement("div");
+        menu_soessa.innerHTML = "selecionar só<br>essa turma";
+        menu_soessa.title = "seleciona só essa turma";
+        menu_soessa.oldbg = current_materia.cor;
+        menu_soessa.onmouseout  = hover_off;
+        menu_soessa.onmouseover = hover_on;
+        menu_soessa.onselectstart = function () { return false; };
+        menu_soessa.horario = row.turma.horario;
+        menu_soessa.onmouseup = function(e) {
+            var at_least_one_selected = false;
+            for (var i in current_materia.turmas) {
+                var turma = current_materia.turmas[i];
+                if (turma.horario == this.horario && turma.selected) {
+                    at_least_one_selected = true;
+                    break;
+                }
+            }
+            for (var i in current_materia.turmas) {
+                var turma = current_materia.turmas[i];
+                if (turma.horario == this.horario) {
+                    if (!at_least_one_selected)
+                        self.cb_changed(turma, true);
+                } else {
+                    self.cb_changed(turma, false);
+                }
+            }
+            stop_propagation(e);
+            self.cb_updated(current_materia);
+        }
+        menu_div.appendChild(menu_soessa);
         var menu_remover = document.createElement("div");
-        menu_remover.innerHTML = "remover";
+        menu_remover.innerHTML = "remover turma";
         menu_remover.title = "remover turma";
         menu_remover.oldbg = current_materia.cor;
         menu_remover.onmouseout  = hover_off;
@@ -219,7 +249,7 @@ function UI_turmas(id)
         }
         menu_div.appendChild(menu_remover);
         var menu_editar = document.createElement("div");
-        menu_editar.innerHTML = "editar";
+        menu_editar.innerHTML = "editar turma";
         menu_editar.title = "editar horário desta turma";
         menu_editar.oldbg = current_materia.cor;
         menu_editar.onmouseout  = hover_off;
