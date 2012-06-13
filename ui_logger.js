@@ -30,8 +30,8 @@ function UI_logger(id)
     var quick_text = "";
     var quick_color;
     var unset_quick_text = function() {
-        stop();
         if (quick_text) {
+            stop();
             self.set_text(quick_text, quick_color);
             quick_text = "";
         }
