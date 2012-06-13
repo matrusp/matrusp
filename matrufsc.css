@@ -101,6 +101,7 @@ body {
     border: 1px solid black;
     cursor: pointer;
     position: relative;
+    font-size: 13px;
     padding: 3px 6px 3px 6px;
     text-decoration: underline;
 }
@@ -114,7 +115,7 @@ body {
 }
 .ui_turmas_all_menu {
     left: -1px;
-    width: 120px;
+    width: 130px;
     display: none;
     background-color: #eeeeee;
     position: absolute;
