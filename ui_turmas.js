@@ -281,6 +281,33 @@ function UI_turmas(id)
         self.table.cellPadding="1";
         self.table.cellSpacing="1";
 
+        self.thead = document.createElement("thead");
+        self.table.style.width= thiswidth + "px";
+        self.table.cellPadding="1";
+        self.table.cellSpacing="1";
+        self.table.appendChild(self.thead);
+        var row  = document.createElement("tr");
+        row.style.backgroundColor = "#eeeeee";
+        var data = document.createElement("td");
+        data.style.width = "22px";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.style.textAlign = "center";
+        data.innerHTML = "Turma";
+        data.style.width = "44px";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.style.textAlign = "center";
+        data.title = "Ocupadas / Oferdatas (+ Pedidos sem vaga)";
+        data.innerHTML = "Vagas";
+        data.style.width = "70px";
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.style.textAlign = "center";
+        data.innerHTML = "Professores";
+        row.appendChild(data);
+        self.thead.appendChild(row);
+
         self.table.onmouseout = function(e) {
             if (!e) var e = window.event;
             var t = (window.event) ? e.srcElement : e.target;
