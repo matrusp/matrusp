@@ -75,6 +75,7 @@ function UI_turmas(id)
             mouseover_turma.row.menu_v.style.backgroundColor = current_materia.cor;
             mouseover_turma.row.menu_v.style.color = "black";
             mouseover_turma.row.menu.style.display = "none";
+            mouseover_turma.row.menu.style.top = "0px";
             self.cb_onmouseout(mouseover_turma);
             mouseover_turma = null;
         }
@@ -192,6 +193,7 @@ function UI_turmas(id)
                 menu_v.onmouseover = hover_on;
                 menu_v.style.backgroundColor = current_materia.cor;
                 menu_v.style.color = "black";
+                menu.style.top = "0px";
             } else {
                 menu_div.style.display = "block";
                 menu_v.style.borderBottom = "0";
@@ -199,6 +201,10 @@ function UI_turmas(id)
                 menu_v.onmouseover = function(){};
                 menu_v.style.backgroundColor = "black";
                 menu_v.style.color = current_materia.cor;
+                var goback = list.offsetHeight - (menu_div.offsetHeight + menu_v.offsetHeight + menu_v.row.offsetTop);
+                if (goback > 0)
+                    goback = 0;
+                menu.style.top = goback + "px";
             }
             stop_propagation(e);
         }
