@@ -114,16 +114,16 @@ function UI_turmas(id)
 
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
-        var innerHTML = new String();
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
-            innerHTML += turma.nome + "<br>";
+            var div = document.createElement("div");
+            div.innerHTML = turma.nome;
+            data.appendChild(div);
             if (!row.turma) {
                 row.turma = turma;
                 turma.row = row;
             }
         }
-        data.innerHTML = innerHTML;
         data.style.width = "44px";
         row.appendChild(data);
 
@@ -161,14 +161,15 @@ function UI_turmas(id)
         data.style.position = "relative";
         data.style.zIndex = self.zIndex;
         self.zIndex = self.zIndex - 1;
-        var innerHTML = new String();
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
             var prof = new String;
-            for (var p = 0; p < turma.professores.length; p++)
-                innerHTML += turma.professores[p] + "<br>";
+            for (var p = 0; p < turma.professores.length; p++) {
+                var div = document.createElement("div");
+                div.innerHTML = turma.professores[p];
+                data.appendChild(div);
+            }
         }
-        data.innerHTML = innerHTML;
         row.appendChild(data);
 
         var menu = document.createElement("div");
