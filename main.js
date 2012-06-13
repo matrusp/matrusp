@@ -433,6 +433,17 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         display_combinacao(state.plano.combinacoes.current());
     };
     /* UI_saver */
+    ui_saver.cb_cleanup = function() {
+        ui_combinacoes.reset();
+        ui_materias.reset();
+        ui_logger.reset();
+        ui_turmas.reset();
+        display.reset();
+
+        state.reset();
+        persistence.reset();
+        ui_saver.reset();
+    };
     ui_saver.cb_save = function(identificador) {
         self.save(identificador);
     };
@@ -496,6 +507,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
     self.load = function(state_to_load, identificador) {
+        ui_combinacoes.reset();
         ui_materias.reset();
         ui_logger.reset();
         ui_turmas.reset();

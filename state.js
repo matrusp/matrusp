@@ -17,10 +17,13 @@ function State()
 {
     var self = this;
 
-    self.planos = [new Plano()];
-    self.index  = 0;
-    self.plano  = self.planos[self.index];
-    self.campus = "FLO";
+    self.reset = function() {
+        self.planos = [new Plano()];
+        self.index  = 0;
+        self.plano  = self.planos[self.index];
+        self.campus = "FLO";
+    }
+    self.reset();
 
     self.save = function() {
         var list = self.plano.materias.list();

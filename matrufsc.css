@@ -19,6 +19,34 @@ body {
     border: 1px solid black;
     cursor: pointer;
 }
+.ui_saver_menu_v {
+    position: relative;
+    padding: 3px 6px 3px 6px;
+    text-decoration: underline;
+}
+.ui_saver_menu_v:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+.ui_saver_menu_v:hover .ui_saver_menu {
+    display: block;
+    color: black;
+}
+.ui_saver_menu {
+    display: none;
+    background-color: #eeeeee;
+    width: 170px;
+    left: -151px;
+    position: absolute;
+    border: 1px solid black;
+}
+.ui_saver_menu div {
+    padding: 2px;
+}
+.ui_saver_menu div:hover {
+    background-color: black;
+    color: #eeeeee;
+}
 
 .ui_combinacoes {
     font-size: 11px;

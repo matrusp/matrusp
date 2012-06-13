@@ -23,6 +23,32 @@ function UI_saver(id)
     button.onselectstart = function () { return false; };
     ui_saver.appendChild(button);
     self.button_save = button;
+    ui_saver.appendChild(document.createTextNode(" "));
+    var button = document.createElement("span");
+    button.className = "ui_saver_menu_v";
+    button.innerHTML = "V";
+    button.onselectstart = function () { return false; };
+    ui_saver.appendChild(button);
+    self.button_menu = button;
+
+    var menu = document.createElement("div");
+    menu.className = "ui_saver_menu";
+    button.appendChild(menu);
+
+    var menu_op = document.createElement("div");
+    menu_op.innerHTML = "limpar tudo";
+    menu_op.onclick = function() {
+        var really = confirm("Você tem certeza que quer limpar tudo?");
+        if (really)
+            self.cb_cleanup();
+    };
+    menu.appendChild(menu_op);
+    var menu_op = document.createElement("div");
+    menu_op.innerHTML = "download para seu HD";
+    menu.appendChild(menu_op);
+    var menu_op = document.createElement("div");
+    menu_op.innerHTML = "upload de seu HD";
+    menu.appendChild(menu_op);
 
     self.input = input;
 
@@ -72,7 +98,12 @@ function UI_saver(id)
             self.enable();
         }
     }
+    self.reset = function() {
+        self.input.value = "";
+        self.disable();
+    }
     /* callbacks */
+    self.cb_cleanup = null;
     self.cb_save = null;
     self.cb_load = null;
 }

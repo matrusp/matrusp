@@ -43,6 +43,11 @@ function UI_combinacoes(id)
     self.set_current = function(n) { self.selecao_atual.value = n; };
     self.set_total = function(n) { numero_selecoes.nodeValue = n; };
     self.set_horas_aula = function(n) { horas_aula.nodeValue = n; };
+    self.reset = function() {
+        self.set_current(0);
+        self.set_total(0);
+        self.set_horas_aula(0);
+    };
     /* callbacks */
     self.cb_previous = null;
     self.cb_next     = null;
