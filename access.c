@@ -21,6 +21,8 @@
 #define set_error(x)
 #endif
 
+#define MATRUFSC "matrufsc2"
+
 int main()
 {
     /* envs */
@@ -84,15 +86,15 @@ int main()
         goto _404;
     }
 
-    /* 2. accept /matrufsc2/ as /matrufsc2/index.html */
-    if (!strcmp(dir_str, "/") && !strcmp(base_str, "matrufsc2")) {
-        dir_str  = "/matrufsc2";
+    /* 2. accept /MATRUFSC/ as /MATRUFSC/index.html */
+    if (!strcmp(dir_str, "/") && !strcmp(base_str, MATRUFSC)) {
+        dir_str  = "/" MATRUFSC;
         base_str = "index.html";
     }
 
     /* 3. check if it's a file we have */
-    if      ( strcmp(dir_str, "/matrufsc2")) {
-        set_error("not /matrufsc2\n");
+    if      ( strcmp(dir_str, "/" MATRUFSC)) {
+        set_error("not /" MATRUFSC "\n");
         goto _404;
     }
     else if (!strcmp(base_str, "index.html"))
