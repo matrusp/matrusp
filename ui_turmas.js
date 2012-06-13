@@ -109,7 +109,6 @@ function UI_turmas(id)
             data.appendChild(input);
             input.checked  = turma.selected;
         }
-        data.style.width = "22px";
         row.appendChild(data);
 
         var data = document.createElement("td");
@@ -124,7 +123,6 @@ function UI_turmas(id)
                 turma.row = row;
             }
         }
-        data.style.width = "44px";
         row.appendChild(data);
 
         var twochars = function(n) {
@@ -139,9 +137,12 @@ function UI_turmas(id)
         for (var j in horario.turmas) {
             var div = document.createElement("div");
             var turma = horario.turmas[j];
-            var innerHTML = twochars(turma.vagas_ocupadas) + "/" + twochars(turma.vagas_ofertadas);
+            var innerHTML = "(" + twochars(turma.vagas_ocupadas);
             if (turma.pedidos_sem_vaga != 0)
-                innerHTML += " +" + twochars(turma.pedidos_sem_vaga);
+                innerHTML += "+" + twochars(turma.pedidos_sem_vaga);
+            else
+                innerHTML += "&nbsp;&nbsp;&nbsp;";
+            innerHTML += ")/" + twochars(turma.vagas_ofertadas);
             div.innerHTML = innerHTML;
             if (turma.vagas_ocupadas >= turma.vagas_ofertadas || turma.pedidos_sem_vaga)
                 div.style.color = "red";
@@ -153,7 +154,6 @@ function UI_turmas(id)
                 turma.row = row;
             }
         }
-        data.style.width = "70px";
         row.appendChild(data);
 
         var data = document.createElement("td");
@@ -305,7 +305,7 @@ function UI_turmas(id)
         data.style.textAlign = "center";
         data.title = "Ocupadas / Oferdatas (+ Pedidos sem vaga)";
         data.innerHTML = "Vagas Ocupadas";
-        data.style.width = "70px";
+        data.style.width = "72px";
         row.appendChild(data);
         var data = document.createElement("td");
         data.style.textAlign = "center";
