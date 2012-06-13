@@ -49,6 +49,7 @@ function UI_saver(id)
     menu.appendChild(menu_op);
     var menu_op = document.createElement("div");
     menu_op.innerHTML = "upload de seu HD";
+    menu_op.onclick = function() { self.cb_upload(); };
     menu.appendChild(menu_op);
 
     self.input = input;
@@ -105,6 +106,7 @@ function UI_saver(id)
     }
     /* callbacks */
     self.cb_download = null;
+    self.cb_upload = null;
     self.cb_cleanup = null;
     self.cb_save = null;
     self.cb_load = null;
