@@ -121,7 +121,7 @@ function UI_ajuda_popup(id)
 "não salve seu horário).<br>" +
 "<br>" +
 "Essa aplicativo web funciona nos principais navegadores que eu me importo:" +
-"Firefox, Safari, Google Chrome e Internet Explorer 7 ou maior. O" +
+"Firefox, Safari, Google Chrome e Internet Explorer 7 ou maior. O " +
 "programa fica meio devagar no Internet Explorer. Sugiro que um" +
 "navegador mais eficiente como o Google Chrome seja usado.";
     row.appendChild(data);
