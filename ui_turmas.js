@@ -294,6 +294,37 @@ function UI_turmas(id)
         var row  = document.createElement("tr");
         row.style.backgroundColor = "#eeeeee";
         var data = document.createElement("td");
+        var button = document.createElement("div");
+        button.className = "ui_turmas_all_menu_v";
+        button.innerHTML = "V";
+        button.onselectstart = function () { return false; };
+        data.appendChild(button);
+        self.button_menu = button;
+        var menu = document.createElement("div");
+        menu.className = "ui_turmas_all_menu";
+        button.appendChild(menu);
+        var menu_op = document.createElement("div");
+        menu_op.innerHTML = "selecionar tudo";
+        menu_op.onclick = function(e) {
+            for (var i in current_materia.turmas)
+                self.cb_changed(current_materia.turmas[i], true);
+            stop_propagation(e);
+            self.cb_updated(current_materia);
+        };
+        menu.appendChild(menu_op);
+        var menu_op = document.createElement("div");
+        menu_op.innerHTML = "selecionar nada";
+        menu_op.onclick = function(e) {
+            for (var i in current_materia.turmas)
+                self.cb_changed(current_materia.turmas[i], false);
+            stop_propagation(e);
+            self.cb_updated(current_materia);
+        };
+        menu.appendChild(menu_op);
+        var menu_op = document.createElement("div");
+        menu_op.innerHTML = "adicionar turma";
+        menu_op.onclick = function(e) { self.cb_new_turma(); };
+        menu.appendChild(menu_op);
         data.style.width = "22px";
         row.appendChild(data);
         var data = document.createElement("td");
@@ -342,25 +373,6 @@ function UI_turmas(id)
             }
         }
         var row  = document.createElement("tr");
-        row.style.backgroundColor = current_materia.cor;
-        row.materia = current_materia;
-        row.onmouseover = mouseout_turma;
-
-        var data = document.createElement("td");
-        data.colSpan = "4";
-        data.style.textAlign = "center";
-        data.onmouseup = function() { self.cb_new_turma(); };
-        data.style.fontSize = "13px"
-        data.innerHTML = ">>>> adicione turmas aqui <<<<";
-        data.oldbg = current_materia.cor;
-        data.onmouseout  = hover_off;
-        data.onmouseover = hover_on;
-        row.appendChild(data);
-
-        self.tbody.appendChild(row);
-        insert_before = row;
-
-        var row  = document.createElement("tr");
         row.style.backgroundColor = "#eeeeee";
         row.onmouseover = mouseout_turma;
 
@@ -384,8 +396,10 @@ function UI_turmas(id)
         row.appendChild(data);
 
         self.tbody.appendChild(row);
+        insert_before = row;
 
         var button = document.createElement("span");
+        button.className = "ui_turmas_big_button";
         button.style.marginLeft = ((thiswidth/2) - 100) + "px";
         button.style.display = "none";
         button.innerHTML = "<strong>OK</strong>";
@@ -395,6 +409,7 @@ function UI_turmas(id)
         self.ok_button = button;
 
         var button = document.createElement("span");
+        button.className = "ui_turmas_big_button";
         button.style.marginLeft = ((thiswidth/2)) + "px";
         button.style.display = "none";
         button.innerHTML = "<strong>Cancelar</strong>";

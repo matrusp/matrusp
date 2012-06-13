@@ -418,7 +418,8 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         update_all();
         if (materia)
             ui_turmas.create(materia);
-        display.over(state.plano.combinacoes.get_current(), turma);
+        if (turma)
+            display.over(state.plano.combinacoes.get_current(), turma);
     };
     ui_turmas.cb_ok          = function() {
         ui_grayout.hide();

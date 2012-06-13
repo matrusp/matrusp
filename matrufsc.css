@@ -95,7 +95,39 @@ body {
 .ui_turmas {
     border: 1px solid black;
 }
-.ui_turmas span {
+.ui_turmas_all_menu_v {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    cursor: pointer;
+    position: relative;
+    padding: 3px 6px 3px 6px;
+    text-decoration: underline;
+}
+.ui_turmas_all_menu_v:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+.ui_turmas_all_menu_v:hover .ui_turmas_all_menu {
+    display: block;
+    color: black;
+}
+.ui_turmas_all_menu {
+    left: -1px;
+    width: 120px;
+    display: none;
+    background-color: #eeeeee;
+    position: absolute;
+    border: 1px solid black;
+}
+.ui_turmas_all_menu div {
+    padding: 5px;
+}
+.ui_turmas_all_menu div:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+.ui_turmas_big_button {
     position: absolute;
     z-index: 2000;
     -moz-user-select: none;
