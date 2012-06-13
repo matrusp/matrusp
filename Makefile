@@ -22,13 +22,17 @@ main.js
 
 header_gen_pdf: header_gen_pdf.c
 header_gen_pdf: EXTRA_FLAGS=-lz
-full2_JOI.json: header_gen_pdf turmas.pdf
-	./header_gen_pdf turmas.pdf full2_JOI.json
+20121_JOI.json: header_gen_pdf 20121.pdf
+	./header_gen_pdf 20121.pdf 20121_JOI.json 20121
+20122_JOI.json: header_gen_pdf 20122.pdf
+	./header_gen_pdf 20122.pdf 20122_JOI.json 20122
 
 header_gen: header_gen.c
 header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
-full2_FLO.json: header_gen turmas_db
-	./header_gen turmas_db full2_FLO.json
+20121_FLO.json: header_gen 20121.db
+	./header_gen 20121.db 20121_FLO.json 20121
+20122_FLO.json: header_gen 20122.db
+	./header_gen 20122.db 20122_FLO.json 20122
 
 save2.cgi: save.c
 save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
@@ -45,7 +49,7 @@ save2.cgi load2.cgi ping.cgi access.cgi header_gen header_gen_pdf:
 %.gz: %
 	gzip --best --no-name -c $< > $@
 
-database.json: full2_JOI.json full2_FLO.json
+database.json: 20121_JOI.json 20121_FLO.json 20122_JOI.json 20122_FLO.json
 	cat $^ > $@
 
 matrufsc.js: $(SRC)
@@ -54,7 +58,9 @@ matrufsc.js: $(SRC)
 	cat $^ > $@
 
 clean::
-	rm -f full2_FLO.json full2_JOI.json database.json
+	rm -f 20121_FLO.json 20121_JOI.json
+	rm -f 20122_FLO.json 20122_JOI.json
+	rm -f database.json
 	rm -f header_gen_pdf header_gen
 	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js install *~ .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz

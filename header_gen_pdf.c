@@ -159,6 +159,7 @@ static int string_i, is_string;
 static int string_len;
 static char *string;
 
+static char *semestre;
 static int has_started = 0;
 static FILE *fp_full = NULL;
 static void
@@ -408,7 +409,7 @@ parse_line(char *line, size_t line_len)
                         } else if (full.professores) {
                             if (!strcmp(string, "de") ||
                                 !strcmp(string, "CADASTRO DE TURMAS") ||
-                                !strcmp(string, "20121") ||
+                                !strcmp(string, semestre) ||
                                 !strcmp(string, "Semestre:") ||
                                 !strcmp(string, "TODOS") ||
                                 !strcmp(string, "Departamento:") ||
@@ -428,6 +429,7 @@ parse_line(char *line, size_t line_len)
                                 !strcmp(string, "Professores") ||
                                 !strcmp(string, "Curso") ||
                                 !strcmp(string, "10") ||
+                                !strcmp(string, "11") ||
                                 !strncmp(string, "SeTIC", 5) ||
                                 (string[0] == 'P' && (unsigned char) string[1] == 0xe1) ||
                                 (string[0] == 'H' && string[1] == 'o' && string[2] == 'r') ||
@@ -542,8 +544,8 @@ int main(int argc, char *argv[])
     int fd_in = 0;
     int ret = -1;
 
-    if (argc < 3) {
-        fprintf(stderr, "usage: %s <input.pdf> <full.h>\n", argv[0]);
+    if (argc < 4) {
+        fprintf(stderr, "usage: %s <input.pdf> <full.json> <semestre>\n", argv[0]);
         goto end;
     }
 
@@ -569,7 +571,8 @@ int main(int argc, char *argv[])
         goto end;
     }
 
-    fprintf(fp_full, "database.add(\"JOI\",[\n");
+    semestre = argv[3];
+    fprintf(fp_full, "database.add(\"JOI\",\"%s\",[\n", argv[3]);
 
     for (int i = 0; i < st.st_size-11; i++) {
         if        (!strncmp(&buf_in[i], "Length"     , 6)) {

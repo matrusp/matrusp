@@ -528,9 +528,13 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
     /* UI_campus */
-    ui_campus.cb_changed = function(campus) {
-        database.set_campus(campus);
+    ui_campus.cb_campus = function(campus) {
+        database.set_db(campus, state.semestre);
         state.campus = campus;
+    }
+    ui_campus.cb_semestre = function(semestre) {
+        database.set_db(state.campus, semestre);
+        state.semestre = semestre;
     }
     /* Save/Load */
     self.save = function(identificador) {
@@ -586,7 +590,9 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             state.plano.materias.selected = "";
         }
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
-        ui_campus.set_selected(state.campus);
+        ui_campus.set_campus(state.campus);
+        ui_campus.set_semestre(state.semestre);
+        database.set_db(state.campus, state.semestre);
         if (identificador)
             persistence.write_id(identificador);
         update_all(state.plano.combinacao);
@@ -761,5 +767,4 @@ init_main = function() {
 }
 
 var database = new Database();
-database.set_campus("FLO");
 init_main();

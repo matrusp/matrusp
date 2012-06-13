@@ -4,12 +4,20 @@
 function Database() {
     this.db = new Object();
 }
-Database.prototype.set_campus = function(campus) {
-    this.cur_db = this.db[campus];
+Database.prototype.set_db = function(campus, semestre) {
+    if (this.db[campus])
+        this.cur_db = this.db[campus][semestre];
+    else {
+        this.cur_db = null;
+        this.campus = campus;
+        this.semestre = semestre;
+    }
 }
-Database.prototype.add = function(campus, array) {
+Database.prototype.add = function(campus, semestre, array) {
     var self = this;
-    this.db[campus] = new Array();
+    if (!this.db[campus])
+        this.db[campus] = new Array();
+    this.db[campus][semestre] = new Array();
     array.forEach(function(k) {
         var i = new Object();
         i.codigo     = k[0];
@@ -29,10 +37,10 @@ Database.prototype.add = function(campus, array) {
             n.professores       = m[8];
             i.turmas.push(n);
         });
-        self.db[campus][i.codigo] = i;
-        self.db[campus].push(i);
+        self.db[campus][semestre][i.codigo] = i;
+        self.db[campus][semestre].push(i);
     });
-    this.set_campus(campus);
+    this.set_db(campus, semestre);
 }
 Database.prototype.fetch = function(string, page) {
     string = string.toUpperCase().replace(/À/g, "A")
@@ -62,6 +70,8 @@ Database.prototype.fetch = function(string, page) {
             return 0;
         return tmp.length * value;
     };
+    if (!this.cur_db)
+        this.set_db(this.campus, this.semestre);
     for (var i = 0; i < this.cur_db.length; i++) {
         var haystack = this.cur_db[i];
         var exactly = false;
@@ -103,5 +113,7 @@ Database.prototype.page = function(page) {
     return this.result.slice(page*10, (page+1)*10);
 }
 Database.prototype.full = function(string) {
+    if (!this.cur_db)
+        this.set_db(this.campus, this.semestre);
     return this.cur_db[string];
 }

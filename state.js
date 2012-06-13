@@ -22,6 +22,7 @@ function State()
         self.index  = 0;
         self.plano  = self.planos[self.index];
         self.campus = "FLO";
+        self.semestre = "20121";
     }
     self.reset();
 
@@ -30,6 +31,7 @@ function State()
         var state_to_return = new Object();
         state_to_return.versao = 4;
         state_to_return.campus = self.campus;
+        state_to_return.semestre = self.semestre;
         state_to_return.planos = new Array();
         state_to_return.plano  = self.index;
         for (var p = 0; p < self.planos.length; p++) {
@@ -79,6 +81,7 @@ function State()
             return -2;
 
         self.campus = state_to_load.campus;
+        self.semestre = state_to_load.semestre;
         self.planos = [];
 
         for (var p = 0; p < state_to_load.planos.length; p++) {
