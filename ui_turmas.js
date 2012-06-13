@@ -76,6 +76,7 @@ function UI_turmas(id)
             mouseover_turma.row.menu_v.style.color = "black";
             mouseover_turma.row.menu.style.display = "none";
             mouseover_turma.row.menu.style.top = "0px";
+            mouseover_turma.row.menu_v.data.style.zIndex = 0;
             self.cb_onmouseout(mouseover_turma);
             mouseover_turma = null;
         }
@@ -160,8 +161,6 @@ function UI_turmas(id)
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
         data.style.position = "relative";
-        data.style.zIndex = self.zIndex;
-        self.zIndex = self.zIndex - 1;
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
             var prof = new String;
@@ -185,6 +184,7 @@ function UI_turmas(id)
         menu_v.onmouseout  = hover_off;
         menu_v.onmouseover = hover_on;
         menu_v.row = row;
+        menu_v.data = data;
         menu_v.onmouseup = function(e) {
             if (menu_div.style.display == "block") {
                 menu_div.style.display = "none";
@@ -194,6 +194,7 @@ function UI_turmas(id)
                 menu_v.style.backgroundColor = current_materia.cor;
                 menu_v.style.color = "black";
                 menu.style.top = "0px";
+                menu_v.data.style.zIndex = 0;
             } else {
                 menu_div.style.display = "block";
                 menu_v.style.borderBottom = "0";
@@ -205,6 +206,7 @@ function UI_turmas(id)
                 if (goback > 0)
                     goback = 0;
                 menu.style.top = goback + "px";
+                menu_v.data.style.zIndex = 100;
             }
             stop_propagation(e);
         }
@@ -363,7 +365,6 @@ function UI_turmas(id)
             mouseout_turma();
         };
 
-        self.zIndex = 100;
         for (var i in current_materia.horarios) {
             var horario = current_materia.horarios[i];
             if (current_materia.agrupar == 1) {
