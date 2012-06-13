@@ -45,6 +45,7 @@ function UI_saver(id)
     menu.appendChild(menu_op);
     var menu_op = document.createElement("div");
     menu_op.innerHTML = "download para seu HD";
+    menu_op.onclick = function() { self.cb_download(); };
     menu.appendChild(menu_op);
     var menu_op = document.createElement("div");
     menu_op.innerHTML = "upload de seu HD";
@@ -103,6 +104,7 @@ function UI_saver(id)
         self.disable();
     }
     /* callbacks */
+    self.cb_download = null;
     self.cb_cleanup = null;
     self.cb_save = null;
     self.cb_load = null;

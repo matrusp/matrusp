@@ -1,3 +1,3 @@
 RewriteEngine on
-RewriteCond %{REQUEST_URI} !^/matrufsc2/(save|load)2.cgi$
+RewriteCond %{REQUEST_URI} !^/matrufsc2/(save2|load2|ping).cgi$
 RewriteRule ^(.*)$ access.cgi
