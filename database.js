@@ -40,7 +40,6 @@ Database.prototype.add = function(campus, semestre, array) {
         self.db[campus][semestre][i.codigo] = i;
         self.db[campus][semestre].push(i);
     });
-    this.set_db(campus, semestre);
 }
 Database.prototype.fetch = function(string, page) {
     string = string.toUpperCase().replace(/À/g, "A")
