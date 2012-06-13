@@ -201,7 +201,7 @@ function UI_turmas(id)
                 menu_v.onmouseover = function(){};
                 menu_v.style.backgroundColor = "black";
                 menu_v.style.color = current_materia.cor;
-                var goback = list.offsetHeight - (menu_div.offsetHeight + menu_v.offsetHeight + menu_v.row.offsetTop);
+                var goback = (list.offsetHeight + list.scrollTop) - (menu_div.offsetHeight + menu_v.offsetHeight + menu_v.row.offsetTop);
                 if (goback > 0)
                     goback = 0;
                 menu.style.top = goback + "px";
