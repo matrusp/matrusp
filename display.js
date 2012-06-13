@@ -33,7 +33,7 @@ function Display(ui_logger, ui_horario)
 
         map_turma(turma, c, function(c, dia, hora) {
             if (c && c[dia][hora] && c[dia][hora].horario.materia != materia) {
-                ui_logger.set_text("choque de horario", "lightcoral");
+                ui_logger.set_quick_text("choque de horario", "lightcoral");
                 ui_horario.display_cell(dia, hora, Cell.red(materia.codigo));
             } else {
                 ui_horario.display_cell(dia, hora, Cell.black(materia.codigo));
@@ -68,7 +68,7 @@ function Display(ui_logger, ui_horario)
                 ui_horario.display_cell(dia, hora, Cell.normal(c[dia][hora]));
             });
 
-        ui_logger.reset();
+        ui_logger.unset_quick_text();
 
         selected = null;
     }

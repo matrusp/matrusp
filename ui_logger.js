@@ -27,6 +27,25 @@ function UI_logger(id)
         ui_logger.style.backgroundColor = color;
         self.timer = setTimeout((function(t){return function(){t.reset();}})(self), 5000);
     }
+    var quick_text = "";
+    var quick_color;
+    var unset_quick_text = function() {
+        stop();
+        if (quick_text) {
+            self.set_text(quick_text, quick_color);
+            quick_text = "";
+        }
+    };
+    var set_quick_text = function(str, color) {
+        if (!quick_text) {
+            quick_text = ui_logger.innerHTML;
+            quick_color = ui_logger.style.backgroundColor;
+        }
+        stop();
+        ui_logger.innerHTML = str;
+        ui_logger.style.backgroundColor = color;
+        self.timer = setTimeout((function(t){return function(){t.unset_quick_text()}})(self), 1000);
+    };
     var updatesearch = function() {
         self.pontos += ".";
         if (self.pontos == "....")
@@ -56,6 +75,8 @@ function UI_logger(id)
     self.reset        = reset;
     self.stop         = stop;
     self.set_text     = set_text;
+    self.set_quick_text= set_quick_text;
+    self.unset_quick_text= unset_quick_text;
     self.set_persistent = set_persistent;
     self.clear_persistent = clear_persistent;
     self.updatesearch = updatesearch;
