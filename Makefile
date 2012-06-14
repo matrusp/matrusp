@@ -40,9 +40,7 @@ save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 load2.cgi: load.c
 load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 ping.cgi: ping.c
-ping.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 access.cgi: access.c
-access.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 
 save2.cgi load2.cgi ping.cgi access.cgi header_gen header_gen_pdf:
 	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
