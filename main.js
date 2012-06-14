@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, state, display, persistence)
+function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout, state, display, persistence)
 {
     var self = this;
 
@@ -489,6 +489,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     ui_saver.cb_cleanup = function() {
         ui_combinacoes.reset();
         ui_materias.reset();
+        ui_planos.reset();
         ui_logger.reset();
         ui_turmas.reset();
         display.reset();
@@ -496,6 +497,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         state.reset();
         persistence.reset();
         ui_saver.reset();
+        ui_planos.startup(state);
     };
     ui_saver.cb_save = function(identificador) {
         self.save(identificador);
@@ -536,6 +538,43 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         database.set_db(state.campus, semestre);
         state.semestre = semestre;
     }
+    /* UI_planos */
+    ui_planos.cb_clean = function() {
+        var really = confirm("Você tem certeza que quer limpar este plano?");
+        if (really) {
+            ui_combinacoes.reset();
+            ui_materias.reset();
+            ui_logger.reset();
+            ui_turmas.reset();
+            display.reset();
+            state.plano.cleanup();
+            update_all();
+        }
+    };
+    ui_planos.cb_dup = function(n) {
+        var really = confirm("Você tem certeza que quer copiar este plano para o plano " + (n+1) + "?");
+        if (really) {
+            var state_plano = state.copy_plano(state.plano);
+            var plano_to_load = JSON.parse(JSON.stringify(state_plano));
+            state.planos[n] = state.new_plano(plano_to_load, n);
+            ui_combinacoes.reset();
+            ui_materias.reset();
+            ui_logger.reset();
+            ui_turmas.reset();
+            display.reset();
+            self.set_plano(state.planos[n]);
+            ui_planos.startup(state);
+        }
+    };
+    ui_planos.cb_changed = function(plano) {
+        ui_combinacoes.reset();
+        ui_materias.reset();
+        ui_logger.reset();
+        ui_turmas.reset();
+        display.reset();
+        self.set_plano(plano);
+        ui_planos.select(plano);
+    };
     /* Save/Load */
     self.save = function(identificador) {
         if (!identificador || identificador == "") {
@@ -566,6 +605,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     self.load = function(state_to_load, identificador) {
         ui_combinacoes.reset();
         ui_materias.reset();
+        ui_planos.reset();
         ui_logger.reset();
         ui_turmas.reset();
         display.reset();
@@ -578,24 +618,36 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         if (ret != 0)
             return;
 
-        var materias = state.plano.materias.list();
-        for (var i = 0; i < materias.length; i++)
-            ui_materias.add(materias[i]);
+        ui_planos.startup(state);
 
-        var materia = state.plano.materias.get(state.plano.materias.selected);
-        if (materia) {
-            ui_turmas.create(materia);
-            state.plano.materias.selected = materia.codigo;
-        } else {
-            state.plano.materias.selected = "";
-        }
+        self.set_plano();
+
         ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
         ui_campus.set_campus(state.campus);
         ui_campus.set_semestre(state.semestre);
         database.set_db(state.campus, state.semestre);
         if (identificador)
             persistence.write_id(identificador);
-        update_all(state.plano.combinacao);
+    };
+    self.set_plano = function(plano) {
+        if (!plano)
+            plano = state.planos[state.index];
+        if (!plano)
+            plano = state.planos[0];
+        state.set_plano(plano);
+
+        var materias = plano.materias.list();
+        for (var i = 0; i < materias.length; i++)
+            ui_materias.add(materias[i]);
+
+        var materia = plano.materias.get(plano.materias.selected);
+        if (materia) {
+            ui_turmas.create(materia);
+            plano.materias.selected = materia.codigo;
+        } else {
+            plano.materias.selected = "";
+        }
+        update_all(plano.combinacao);
         mudancas = false;
     };
 }
@@ -640,6 +692,7 @@ init_main = function() {
     var ui_turmas      = new UI_turmas("turmas_list");
     var ui_logger      = new UI_logger("logger");
     var ui_campus      = new UI_campus("campus");
+    var ui_planos      = new UI_planos("planos");
     var ui_saver       = new UI_saver("saver");
 
     var ui_grayout     = new UI_grayout("grayout");
@@ -672,7 +725,7 @@ init_main = function() {
 
     dconsole2 = new Dconsole("dconsole");
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
-    var main   = new Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_grayout, state, display, persistence);
+    var main   = new Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout, state, display, persistence);
 
     combo.cb_add_materia = main.add_materia;
     combo.cb_new_materia = main.new_materia;
@@ -743,13 +796,16 @@ init_main = function() {
         }
     };
 
+    ui_planos.startup(state);
+
     ui_saver.identificar(identificador);
-    var state = persistence.read_state();
-    if (state && state != "") {
+    var state2 = persistence.read_state();
+    if (state2 && state2 != "") {
         try {
-            var state3 = JSON.parse(state);
+            var state3 = JSON.parse(state2);
             main.load(state3);
         } catch (e) {
+            console.log("erro lendo estado");
         }
     } else {
         if (identificador != null && identificador != "") {

@@ -2,11 +2,47 @@ body {
     font-family: monospace;
 }
 
-.ui_campus, .ui_saver, .ui_logger {
+.ui_campus, .ui_saver, .ui_logger, .ui_planos {
     font-size: 13px;
 }
 .ui_campus select {
     font-size: 11px;
+}
+
+.ui_planos span {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.ui_planos_menu_v {
+    border: 1px solid black;
+    position: relative;
+    padding: 3px 6px 3px 6px;
+    text-decoration: underline;
+}
+.ui_planos_menu_v:hover {
+    background-color: black;
+    color: #eeeeee;
+    z-index: 1000;
+}
+.ui_planos_menu_v:hover .ui_planos_menu {
+    display: block;
+    color: black;
+}
+.ui_planos_menu {
+    display: none;
+    background-color: #eeeeee;
+    width: 180px;
+    position: absolute;
+    border: 1px solid black;
+}
+.ui_planos_menu div {
+    padding: 2px;
+}
+.ui_planos_menu div:hover {
+    background-color: black;
+    color: #eeeeee;
 }
 
 .ui_saver input {

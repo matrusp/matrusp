@@ -16,6 +16,7 @@ ui_combinacoes.js \
 ui_horario.js \
 ui_logger.js \
 ui_materias.js \
+ui_planos.js \
 ui_saver.js \
 ui_turmas.js \
 main.js
