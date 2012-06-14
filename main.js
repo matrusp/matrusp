@@ -47,6 +47,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             });
         }
         state.plano.combinacoes.set_current(cc);
+        state.plano.combinacao = cc;
         ui_combinacoes.set_current(cc);
         ui_combinacoes.set_total(state.plano.combinacoes.length());
         ui_combinacoes.set_horas_aula(horas_aula);
