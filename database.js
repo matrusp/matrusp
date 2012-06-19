@@ -5,6 +5,10 @@ function Database() {
     this.db = new Object();
 }
 Database.prototype.set_db = function(campus, semestre) {
+    if (!campus)
+        campus = "FLO";
+    if (!semestre)
+        semestre = "20122";
     if (this.db[campus])
         this.cur_db = this.db[campus][semestre];
     else {
