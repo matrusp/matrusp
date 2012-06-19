@@ -14,6 +14,7 @@
 
 #define PRINT_ENV 0
 #define PRINT_ERR 0
+#define ALWAYS_EXPIRE 0
 
 #if PRINT_ERR
 #define set_error(x) err = x;
@@ -161,7 +162,11 @@ int main()
     fclose(fp);
 
     printf("Content-Type: %s\n", content_type);
+#if ALWAYS_EXPIRE
+    printf("Expires: -1\n");
+#else
     printf("Last-Modified: %s\n", last_modified_str);
+#endif
     printf("X-Uncompressed-Content-Length: %"PRId64"\n", uncompressed_length);
     printf("Content-Length: %"PRId64"\n", content_length);
     if (content_encoding)
