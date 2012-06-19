@@ -76,7 +76,7 @@ function UI_turmas(id)
             mouseover_turma.row.menu_v.style.color = "black";
             mouseover_turma.row.menu.style.display = "none";
             mouseover_turma.row.menu.style.top = "0px";
-            mouseover_turma.row.menu_v.data.style.zIndex = 0;
+            mouseover_turma.row.inner_div.style.zIndex = 0;
             self.cb_onmouseout(mouseover_turma);
             mouseover_turma = null;
         }
@@ -160,24 +160,27 @@ function UI_turmas(id)
 
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
-        data.style.position = "relative";
+        var inner_div = document.createElement("div");
+        inner_div.style.position = "relative";
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
             var prof = new String;
             for (var p = 0; p < turma.professores.length; p++) {
                 var div = document.createElement("div");
                 div.innerHTML = turma.professores[p];
-                data.appendChild(div);
+                inner_div.appendChild(div);
             }
         }
+        data.appendChild(inner_div);
         row.appendChild(data);
 
         var menu = document.createElement("div");
         menu.className = "ui_turmas_menu";
-        data.appendChild(menu);
+        inner_div.appendChild(menu);
 
         var menu_v = document.createElement("div");
         menu_v.className = "ui_turmas_menu_v";
+        menu_v.style.backgroundColor = current_materia.cor;
         menu_v.innerHTML = "V";
         menu_v.title = "clique aqui para editar ou remover turma";
         menu_v.oldbg = current_materia.cor;
@@ -194,7 +197,7 @@ function UI_turmas(id)
                 menu_v.style.backgroundColor = current_materia.cor;
                 menu_v.style.color = "black";
                 menu.style.top = "0px";
-                menu_v.data.style.zIndex = 0;
+                inner_div.style.zIndex = 0;
             } else {
                 menu_div.style.display = "block";
                 menu_v.style.borderBottom = "0";
@@ -206,7 +209,7 @@ function UI_turmas(id)
                 if (goback > 0)
                     goback = 0;
                 menu.style.top = goback + "px";
-                menu_v.data.style.zIndex = 100;
+                inner_div.style.zIndex = 100;
             }
             stop_propagation(e);
         }
@@ -278,6 +281,7 @@ function UI_turmas(id)
         row.menu = menu;
         row.menu_v = menu_v;
         row.menu_div = menu_div;
+        row.inner_div = inner_div;
 
         self.tbody.insertBefore(row, insert_before);
         self.fix_height();

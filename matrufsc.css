@@ -198,8 +198,7 @@ body {
     float: right;
     top: 0;
     right: 0;
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
+    border: 1px solid black;
     padding: 3px 5px 4px 5px;
 }
 .ui_turmas_menu_div {
