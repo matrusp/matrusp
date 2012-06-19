@@ -56,7 +56,7 @@ function UI_planos(id)
         span.oldbg = "#eeeeee";
         span.onmouseout  = hover_off;
         span.onmouseover = hover_on;
-        span.style.padding = "3px";
+        span.style.padding = "1px";
         span.style.border = "1px solid black";
         span.onclick = function() { self.cb_changed(this.plano); };
         ui_planos.appendChild(span);
