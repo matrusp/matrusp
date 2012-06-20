@@ -29,9 +29,9 @@ function Dconsole(id)
 
         for (var i = 0; i < 8 && i < n-2; i++) {
             newstr += split[i+offset] + "\n";
-            innerHTML += split[i+offset] + "<br>";
+            innerHTML += split[i+offset] + "<br />";
         }
-        innerHTML += str + "<br>";
+        innerHTML += str + "<br />";
         newstr += str + "\n";
         dconsoletext = newstr;
         dconsole.innerHTML = innerHTML;

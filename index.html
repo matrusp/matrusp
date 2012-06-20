@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>MatrUFSC</title>
 <meta name="description" content="MatrUFSC é um combinador de horários para matrículas da UFSC" />
@@ -13,7 +12,7 @@
 <body style="background-color:#eeeeee;">
 
 <div id="fb-root"></div>
-<script>if(0)(function(d, s, id) {
+<script type="text/javascript">if(0)(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
   js = d.createElement(s); js.id = id;
@@ -23,27 +22,27 @@
 
 <div id="ui_loading" style="text-align:center;font-size:32px;"></div>
 <div id="ui_main" style="overflow:auto;width:890px;margin:0 auto;display:none;">
- <table><tr><td colspan=2>
+ <table><tr><td colspan="2">
   <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left">
    <div id="campus"></div>
-  </td><td align="left" width="280px">
+  </td><td align="left" style="width:280px;">
    <div id="planos"></div>
   </td><td align="right">
    <div id="saver"></div>
   </td></tr></table>
   <table cellpadding="0" cellspacing="0" width="100%"><tr><td>
-   <input type="text" id="materias_input"><br>
+   <input type="text" id="materias_input" /><br />
    <div id="materias_suggestions"></div>
-  </td><td style="border:1px solid lightblue;" width="100%">
+  </td><td style="border:1px solid lightblue;width:100%;">
    <div id="logger"></div>
   </td></tr></table>
- </td></tr><tr><td colspan=2>
+ </td></tr><tr><td colspan="2">
   <div id="materias_list" style="overflow:auto;"></div>
- </td></tr><tr><td width="440">
+ </td></tr><tr><td style="width:440px;">
   <div id="horario"></div>
- </td><td width="440" valign=top>
+ </td><td style="width:440px;" valign="top">
   <div id="turmas_list" style="overflow:auto;position:relative;"></div>
-  </td></tr><tr><td colspan=2>
+  </td></tr><tr><td colspan="2">
    <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" style="font-size:11px;">
     versão 2.0. bancos de dados atualizados em 19/06/12
    </td><td align="right" style="font-size:13px;">
@@ -59,7 +58,7 @@
 </div>
 
 <!--[if IE]>
-<input id="userdata" type="hidden" style="behavior:url('#default#userData')"></input>
+<input id="userdata" type="hidden" style="behavior:url('#default#userData')" />
 <![endif]-->
 <div id="grayout" style="display:none;"></div>
 <div id="ajuda_popup" style="display:none;"></div>
@@ -110,7 +109,7 @@ var loadFile = function(src, index) {
     req.send(null);
 };
 loading = function() {
-    var innerHTML = "<br><br>carregando MatrUFSC";
+    var innerHTML = "<br /><br />carregando MatrUFSC";
     if (f_length[0] && f_length[1] && f_loaded[0] && f_loaded[1]) {
         var length = f_length[0] + f_length[1];
         var loaded = f_loaded[0] + f_loaded[1];
@@ -123,7 +122,7 @@ loading = function() {
             innerHTML += "&nbsp;";
     }
     if (window.console && (window.console.firebug || window.console.exception)) {
-        innerHTML += "<br><font size=4><strong>Atenção:</strong> o uso do Firebug pode tornar o MatrUFSC consideravelmente mais lento</font>";
+        innerHTML += "<br /><font size=4><strong>Atenção:</strong> o uso do Firebug pode tornar o MatrUFSC consideravelmente mais lento</font>";
     }
     document.getElementById("ui_loading").innerHTML = innerHTML;
     f_pontos++;
@@ -139,9 +138,9 @@ loadFile("database.json", 1);
 //-->
 </script>
 <noscript>
- <center>
+ <div style="text-align:center;font-size:32px;">
  Sendo MatrUFSC um aplicativo Web, é necessário que Javascript esteja habilitado
- </center>
+ </div>
 </noscript>
 </body>
 

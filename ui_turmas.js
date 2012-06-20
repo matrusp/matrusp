@@ -222,7 +222,7 @@ function UI_turmas(id)
         menu.appendChild(menu_div);
 
         var menu_soessa = document.createElement("div");
-        menu_soessa.innerHTML = "selecionar só<br>essa turma";
+        menu_soessa.innerHTML = "selecionar só<br />essa turma";
         menu_soessa.title = "seleciona só essa turma";
         menu_soessa.oldbg = current_materia.cor;
         menu_soessa.onmouseout  = hover_off;
