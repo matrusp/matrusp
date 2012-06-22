@@ -806,7 +806,8 @@ init_main = function() {
             var state3 = JSON.parse(state2);
             main.load(state3);
         } catch (e) {
-            console.log("erro lendo estado");
+            ui_logger.set_text("erro lendo estado da cache do navegador", "lightcoral");
+            persistence.clear_state();
         }
     } else {
         if (identificador != null && identificador != "") {
