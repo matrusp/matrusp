@@ -813,6 +813,7 @@ init_main = function() {
         if (identificador != null && identificador != "") {
             ui_saver.cb_load(identificador);
         }
+        database.set_db("FLO", "20122");
     }
     if (combo.input.value == identificador)
         combo.input.value = "";
