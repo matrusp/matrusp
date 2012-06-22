@@ -530,7 +530,9 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                     }
                 }
                 if (!state_to_load) {
-                    ui_logger.set_text("erro ao abrir horário para '" + this.loadstr + "'", "lightcoral");
+                    ui_logger.set_text("erro ao abrir horário para '" + this.loadstr + "' " +
+                    "<span style='font-size:10px;'>(horários gravados para 2012-1 estão no" +
+                    " <a target='_blank' href='/matrufsc-20121'>MatrUFSC antigo</a>)</span>", "lightcoral");
                 } else {
                     self.load(state_to_load, identificador);
                     ui_logger.set_text("horário para '" + this.loadstr + "' foi carregado", "lightgreen");
