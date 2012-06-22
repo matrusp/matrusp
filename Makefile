@@ -1,6 +1,6 @@
 DBs=20121_JOI.json 20122_JOI.json 20121_FLO.json 20122_FLO.json
 
-all: $(DBs) save2.cgi load2.cgi ping.cgi matrufsc.js
+all: $(DBs) save2.cgi load2.cgi ping.cgi matrufsc.js index.html
 
 SRC=json2.js \
 compat.js \
@@ -50,15 +50,25 @@ save2.cgi load2.cgi ping.cgi access.cgi header_gen header_gen_pdf:
 %.gz: %
 	gzip --best --no-name -c $< > $@
 
+index.html: matrufsc.html
+ifdef RELEASE
+	cat matrufsc.html | sed s/"if(0)"/"if(1)"/ > index.html
+else
+	cp matrufsc.html index.html
+endif
+
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
-#	closure --compilation_level=SIMPLE_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
+ifdef RELEASE
+	closure --compilation_level=SIMPLE_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
+else
 	cat $^ > $@
+endif
 
 clean::
 	rm -f $(DBs) $(addsuffix .gz,$(DBs))
 	rm -f header_gen_pdf header_gen
-	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js install *~ .htaccess~
+	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js index.html install *~ .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
 install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs)) access.cgi
