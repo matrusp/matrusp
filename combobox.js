@@ -183,13 +183,12 @@ function Combobox(input, suggestions, ui_logger)
                 list_add_items(fetch_result);
                 var n = fetch_result.length;
                 var v = new String();
-                if (n == 1) {
+                if (n == 1)
                     v = "1 vez";
-                } else if (n == 10) {
-                    v = "10 vezes ou mais";
-                } else {
+                else
                     v = n + " vezes";
-                }
+                if (n == 10)
+                    v = v + " ou mais";
                 ui_logger.set_text("'" + fetch + "' encontrado " + v, "lightgreen");
             } else {
                 ui_logger.set_text("'" + fetch + "' n\u00e3o encontrado", "lightcoral");
