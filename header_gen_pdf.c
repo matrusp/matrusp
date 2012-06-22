@@ -572,7 +572,7 @@ int main(int argc, char *argv[])
     }
 
     semestre = argv[3];
-    fprintf(fp_full, "database.add(\"JOI\",\"%s\",[\n", argv[3]);
+    fprintf(fp_full, "[");
 
     for (int i = 0; i < st.st_size-11; i++) {
         if        (!strncmp(&buf_in[i], "Length"     , 6)) {
@@ -633,7 +633,7 @@ int main(int argc, char *argv[])
 
     if (has_started)
         fprintf(fp_full, "]]\n");
-    fprintf(fp_full, "]);\n");
+    fprintf(fp_full, "]");
 
     ret = 0;
 

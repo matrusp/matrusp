@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function Combobox(input, suggestions, ui_logger)
+function Combobox(input, suggestions, ui_logger, database)
 {
     function select_item(item)
     {

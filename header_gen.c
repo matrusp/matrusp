@@ -269,8 +269,8 @@ int main(int argc, char *argv[])
 
     LIBXML_TEST_VERSION
 
-    if (argc < 4) {
-        fprintf(stderr, "usage: %s <input> <full.json> <semestre>\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "usage: %s <input> <full.json>\n", argv[0]);
         goto end;
     }
 
@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
         goto end;
     }
 
-    fprintf(fp_full, "database.add(\"FLO\",\"%s\",[\n", argv[3]);
+    fprintf(fp_full, "[");
 
     for (int i = 0; i < st.st_size - lend; i++) {
         if        (!strncmp((char *) &buf_in[i], start, lstart)) {
@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 
     if (has_started)
         fprintf(fp_full, "]]\n");
-    fprintf(fp_full, "]);\n");
+    fprintf(fp_full, "]");
 
     ret = 0;
 

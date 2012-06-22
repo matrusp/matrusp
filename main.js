@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout, state, display, persistence)
+function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout, state, display, persistence, database)
 {
     var self = this;
 
@@ -532,11 +532,11 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     }
     /* UI_campus */
     ui_campus.cb_campus = function(campus) {
-        database.set_db(campus, state.semestre);
+        self.set_db(campus, state.semestre);
         state.campus = campus;
     }
     ui_campus.cb_semestre = function(semestre) {
-        database.set_db(state.campus, semestre);
+        self.set_db(state.campus, semestre);
         state.semestre = semestre;
     }
     /* UI_planos */
@@ -651,6 +651,74 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         update_all(plano.combinacao);
         mudancas = false;
     };
+    load_db = function(campus, semestre) {
+        var src = semestre + "_" + campus + ".json";
+        var oldval = combo.input.value;
+        var f_timeout;
+        var f_finish = 0;
+        var f_length = 0;
+        var f_loaded = 0;
+
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            switch (this.readyState) {
+                case 2:
+                    if (!(navigator.userAgent.toLowerCase().indexOf("msie") > -1))
+                        f_length = parseInt(this.getResponseHeader("X-Uncompressed-Content-Length"));
+                    break;
+                case 4:
+                    clearTimeout(f_timeout);
+                    f_timeout = null;
+                    if (this.status != 200) {
+                        ui_logger.set_text("erro ao carregar banco de dados", "lightcoral");
+                    } else {
+                        try {
+                            var dbjson = JSON.parse(this.responseText);
+                            database.add(campus, semestre, dbjson);
+                        } catch (e) {
+                            ui_logger.set_text("erro ao carregar banco de dados", "lightcoral");
+                        }
+                    }
+                    database.set_db(campus, semestre);
+                    combo.input.value = oldval;
+                    combo.input.disabled = false;
+                    combo.input.style.backgroundColor = "";
+                    break;
+            }
+        };
+        req.onprogress = function(p) {
+            f_loaded = p.loaded;
+        };
+        req.open("GET", src, true);
+        req.send(null);
+
+        var f_pontos = 0;
+        loading = function() {
+            var innerHTML = "carregando ";
+            if (f_length && f_loaded) {
+                var percent = Math.round((f_loaded/f_length)*100);
+                innerHTML += " (" + percent + "%)";
+            } else {
+                for (var i = 0; i < f_pontos; i++)
+                    innerHTML += ".";
+            }
+            combo.input.value = innerHTML;
+            f_pontos++;
+            if (f_pontos == 6)
+                f_pontos = 0;
+            if (f_timeout) {
+                f_timeout = setTimeout("loading()", 200);
+                combo.input.style.backgroundColor = "lightgray";
+            }
+        };
+        f_timeout = setTimeout("loading()", 200);
+        combo.input.disabled = true;
+    };
+    self.set_db = function(campus, semestre) {
+        var ret = database.set_db(campus, semestre);
+        if (ret == -1)
+            load_db(campus, semestre);
+    };
 }
 
 function getScrollBarWidth () {
@@ -681,10 +749,11 @@ function getScrollBarWidth () {
 
 ajuda_shown = false;
 mudancas = false;
-init_main = function() {
+window.onload = function() {
     document.scrollbar_width = getScrollBarWidth();
 
     var persistence = new Persistence();
+    var database = new Database();
 
     var ui_materias    = new UI_materias("materias_list");
     var ui_combinacoes = new UI_combinacoes("combinacoes");
@@ -724,8 +793,8 @@ init_main = function() {
     var display = new Display(ui_logger, ui_horario);
 
     dconsole2 = new Dconsole("dconsole");
-    var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger);
-    var main   = new Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout, state, display, persistence);
+    var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger, database);
+    var main   = new Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout, state, display, persistence, database);
 
     combo.cb_add_materia = main.add_materia;
     combo.cb_new_materia = main.new_materia;
@@ -813,8 +882,9 @@ init_main = function() {
         if (identificador != null && identificador != "") {
             ui_saver.cb_load(identificador);
         }
-        database.set_db("FLO", "20122");
     }
+    if (!database.cur_db)
+        main.set_db("FLO", "20122");
     if (combo.input.value == identificador)
         combo.input.value = "";
 
@@ -824,6 +894,3 @@ init_main = function() {
     ui_turmas.set_height(ui_horario.height());
     ui_materias.fix_width();
 }
-
-var database = new Database();
-init_main();

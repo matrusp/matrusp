@@ -1,4 +1,6 @@
-all: database.json save2.cgi load2.cgi ping.cgi matrufsc.js
+DBs=20121_JOI.json 20122_JOI.json 20121_FLO.json 20122_FLO.json
+
+all: $(DBs) save2.cgi load2.cgi ping.cgi matrufsc.js
 
 SRC=json2.js \
 compat.js \
@@ -31,9 +33,9 @@ header_gen_pdf: EXTRA_FLAGS=-lz
 header_gen: header_gen.c
 header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
 20121_FLO.json: header_gen 20121.db
-	./header_gen 20121.db 20121_FLO.json 20121
+	./header_gen 20121.db 20121_FLO.json
 20122_FLO.json: header_gen 20122.db
-	./header_gen 20122.db 20122_FLO.json 20122
+	./header_gen 20122.db 20122_FLO.json
 
 save2.cgi: save.c
 save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
@@ -48,29 +50,24 @@ save2.cgi load2.cgi ping.cgi access.cgi header_gen header_gen_pdf:
 %.gz: %
 	gzip --best --no-name -c $< > $@
 
-database.json: 20121_JOI.json 20121_FLO.json 20122_JOI.json 20122_FLO.json
-	cat $^ > $@
-
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
 #	closure --compilation_level=SIMPLE_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
 	cat $^ > $@
 
 clean::
-	rm -f 20121_FLO.json 20121_JOI.json
-	rm -f 20122_FLO.json 20122_JOI.json
-	rm -f database.json
+	rm -f $(DBs) $(addsuffix .gz,$(DBs))
 	rm -f header_gen_pdf header_gen
 	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js install *~ .htaccess~
-	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz
+	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
-install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz database.json.gz access.cgi
+install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs)) access.cgi
 	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
-	cp database.json.gz install/
+	cp $(addsuffix .gz,$(DBs)) install/
 	cp access.cgi .htaccess install/
 
 install:: all
 	mkdir -p install
 	cp matrufsc.css matrufsc.js index.html install/
-	cp database.json install/
+	cp $(DBs) install/
 	cp save2.cgi load2.cgi ping.cgi install/

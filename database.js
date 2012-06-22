@@ -12,13 +12,11 @@ function Database() {
     };
 }
 Database.prototype.set_db = function(campus, semestre) {
-    if (this.db[campus])
+    if (this.db[campus] && this.db[campus][semestre])
         this.cur_db = this.db[campus][semestre];
-    else {
-        this.cur_db = null;
-        this.campus = campus;
-        this.semestre = semestre;
-    }
+    else
+        return -1;
+    return 0;
 }
 Database.prototype.add = function(campus, semestre, array) {
     var self = this;
@@ -69,8 +67,6 @@ Database.prototype.fetch = function(string, page) {
         }
     });
     this.result = [];
-    if (!this.cur_db)
-        this.set_db(this.campus, this.semestre);
     for (var i = 0; i < this.cur_db.length; i++) {
         var haystack = this.cur_db[i];
         var exactly = false;
@@ -112,7 +108,5 @@ Database.prototype.page = function(page) {
     return this.result.slice(page*10, (page+1)*10);
 }
 Database.prototype.full = function(string) {
-    if (!this.cur_db)
-        this.set_db(this.campus, this.semestre);
     return this.cur_db[string];
 }
