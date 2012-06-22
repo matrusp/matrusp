@@ -685,7 +685,6 @@ init_main = function() {
     document.scrollbar_width = getScrollBarWidth();
 
     var persistence = new Persistence();
-    var identificador = persistence.read_id();
 
     var ui_materias    = new UI_materias("materias_list");
     var ui_combinacoes = new UI_combinacoes("combinacoes");
@@ -799,6 +798,7 @@ init_main = function() {
 
     ui_planos.startup(state);
 
+    var identificador = persistence.read_id();
     ui_saver.identificar(identificador);
     var state2 = persistence.read_state();
     if (state2 && state2 != "") {
