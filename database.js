@@ -3,6 +3,13 @@
  */
 function Database() {
     this.db = new Object();
+    this.search_score = function(haystack, needle, value) {
+        needle.lastIndex = 0;
+        var tmp = haystack.match(needle);
+        if (tmp === null)
+            return 0;
+        return tmp.length * value;
+    };
 }
 Database.prototype.set_db = function(campus, semestre) {
     if (!campus)
@@ -66,13 +73,6 @@ Database.prototype.fetch = function(string, page) {
         }
     });
     this.result = [];
-    function search_score(haystack, needle, value) {
-        needle.lastIndex = 0;
-        var tmp = haystack.match(needle);
-        if (tmp === null)
-            return 0;
-        return tmp.length * value;
-    };
     if (!this.cur_db)
         this.set_db(this.campus, this.semestre);
     for (var i = 0; i < this.cur_db.length; i++) {
@@ -86,9 +86,9 @@ Database.prototype.fetch = function(string, page) {
                 exactly = true;
                 break;
             }
-            expr_score += search_score(haystack.nome_ascii, search_whole[j], 100);
-            expr_score += search_score(haystack.nome_ascii, search_part[j], 10);
-            expr_score += search_score(haystack.codigo, search_part[j], 10);
+            expr_score += this.search_score(haystack.nome_ascii, search_whole[j], 100);
+            expr_score += this.search_score(haystack.nome_ascii, search_part[j], 10);
+            expr_score += this.search_score(haystack.codigo, search_part[j], 10);
             if (expr_score) {
                 score += expr_score;
             } else {
