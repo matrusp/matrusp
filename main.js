@@ -623,7 +623,6 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
 
         self.set_plano();
 
-        ui_logger.set_text("grade de mat\u00e9rias carregada", "lightgreen");
         ui_campus.set_campus(state.campus);
         ui_campus.set_semestre(state.semestre);
         database.set_db(state.campus, state.semestre);
@@ -711,7 +710,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 combo.input.style.backgroundColor = "lightgray";
             }
         };
-        f_timeout = setTimeout("loading()", 200);
+        f_timeout = setTimeout("loading()", 500);
         combo.input.disabled = true;
     };
     self.set_db = function(campus, semestre) {
