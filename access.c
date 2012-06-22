@@ -22,7 +22,7 @@
 #define set_error(x)
 #endif
 
-#define MATRUFSC "matrufsc2"
+#define MATRUFSC "matrufsc"
 
 int main()
 {
