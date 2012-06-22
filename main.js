@@ -139,6 +139,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         }
     };
     ui_materias.cb_select      = function(materia, checked) {
+        self.m_stop();
         materia.selected = checked ? 1 : 0;
         if (materia.selected) {
             var selected = 0;
@@ -159,6 +160,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         update_all();
     };
     ui_materias.cb_onmoveup    = function(materia) {
+        self.m_stop();
         var m = state.plano.materias.list();
         for (var i = 0; i < m.length; i++)
             if (m[i] == materia)
@@ -176,6 +178,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         update_all();
     };
     ui_materias.cb_onmovedown  = function(materia) {
+        self.m_stop();
         var m = state.plano.materias.list();
         for (var i = 0; i < m.length; i++)
             if (m[i] == materia)
@@ -193,6 +196,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         update_all();
     };
     ui_materias.cb_onremove    = function(materia) {
+        self.m_stop();
         var selected = state.plano.materias.get(state.plano.materias.selected);
         if (selected && selected.codigo == materia.codigo)
             ui_turmas.reset();
@@ -206,6 +210,18 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     var m_array = null;
     var m_timer = null;
     var m_count = null;
+    self.m_stop = function() {
+        var c = state.plano.combinacoes.get_current();
+        if (!c)
+            return;
+        if (m_array && m_array.length)
+            display.out(c, m_array[m_count]);
+        if (m_timer)
+            clearTimeout(m_timer);
+        m_timer = null;
+        m_array = null;
+        m_count = null;
+    }
     self.m_update_turma = function() {
         if (!m_array.length)
             return;
@@ -246,15 +262,10 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
                 return;
             }
         }
-        if (m_array && m_array.length)
-            display.out(c, m_array[m_count]);
-        if (m_timer)
-            clearTimeout(m_timer);
-        m_array = null;
-        m_timer = null;
-        m_count = null;
+        self.m_stop();
     };
     ui_materias.cb_onclick     = function(materia) {
+        self.m_stop();
         ui_turmas.create(materia);
         state.plano.materias.selected = materia.codigo;
     }
