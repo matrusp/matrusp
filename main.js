@@ -869,10 +869,12 @@ window.onload = function() {
     var identificador = persistence.read_id();
     ui_saver.identificar(identificador);
     var state2 = persistence.read_state();
+    var database_ok = false;
     if (state2 && state2 != "") {
         try {
             var state3 = JSON.parse(state2);
             main.load(state3);
+            database_ok = true;
         } catch (e) {
             ui_logger.set_text("erro lendo estado da cache do navegador", "lightcoral");
             persistence.clear_state();
@@ -882,7 +884,7 @@ window.onload = function() {
             ui_saver.cb_load(identificador);
         }
     }
-    if (!database.cur_db)
+    if (!database_ok)
         main.set_db("FLO", "20122");
     if (combo.input.value == identificador)
         combo.input.value = "";
