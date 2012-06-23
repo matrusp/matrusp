@@ -265,7 +265,6 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         self.m_stop();
     };
     ui_materias.cb_onclick     = function(materia) {
-        self.m_stop();
         ui_turmas.create(materia);
         state.plano.materias.selected = materia.codigo;
     }
