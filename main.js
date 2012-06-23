@@ -630,7 +630,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         else if (ret === -2)
             ui_logger.set_text("erro ao tentar abrir horário de versão mais recente", "lightcoral");
         if (ret != 0)
-            return;
+            return -1;
 
         ui_planos.startup(state);
 
@@ -641,6 +641,8 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         database.set_db(state.campus, state.semestre);
         if (identificador)
             persistence.write_id(identificador);
+
+        return 0;
     };
     self.set_plano = function(plano) {
         if (!plano)
@@ -886,8 +888,8 @@ window.onload = function() {
     if (state2 && state2 != "") {
         try {
             var state3 = JSON.parse(state2);
-            main.load(state3);
-            database_ok = true;
+            if (main.load(state3) == -1)
+                database_ok = true;
         } catch (e) {
             ui_logger.set_text("erro lendo estado da cache do navegador", "lightcoral");
             persistence.clear_state();
