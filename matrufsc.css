@@ -230,6 +230,7 @@ body {
 }
 
 .ui_horario {
+    background-color: #eeeeee;
     border: 1px solid black;
     position: relative;
     font-size: 11px;
