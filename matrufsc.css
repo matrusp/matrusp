@@ -75,6 +75,7 @@ body {
     left: -171px;
     position: absolute;
     border: 1px solid black;
+    z-index: 3001;
 }
 .ui_saver_menu div {
     padding: 2px;
