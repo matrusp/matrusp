@@ -265,6 +265,37 @@ body {
     left: 50%;
     border: 1px solid black;
     font-family: verdana;
-    font-size: 15px;
     overflow: auto;
+}
+.ui_ajuda_popup .fechar {
+    font-size: 15px;
+    position: absolute;
+    padding: 10px;
+    top: 0px;
+    right: 0px;
+}
+.ui_ajuda_popup .contato {
+    padding: 60px 40px 0px 60px;
+    font-size: 15px;
+    text-align: center;
+}
+.ui_ajuda_popup .contato div {
+    font-size: 10px;
+}
+.ui_ajuda_popup .main {
+    padding: 40px;
+}
+.ui_ajuda_popup .main .titulo {
+    padding-top: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.ui_ajuda_popup .main .subtitulo {
+    font-size: 15px;
+    font-weight: bold;
+}
+.ui_ajuda_popup .main p {
+    font-size: 13px;
+    text-indent: 2em;
+    text-align: justify;
 }
