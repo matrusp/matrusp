@@ -50,11 +50,12 @@ save2.cgi load2.cgi ping.cgi access.cgi header_gen header_gen_pdf:
 %.gz: %
 	gzip --best --no-name -c $< > $@
 
-index.html: matrufsc.html ajuda.html
-	sed -e "/include_ajuda/r ajuda.html" -e "/include_ajuda/d" matrufsc.html > index.html || rm -f index.html
 ifdef RELEASE
-	sed -i s/"if(0)"/"if(1)"/ index.html
+sed_RELEASE=-e "s/if(0)/if(1)/"
 endif
+
+index.html: matrufsc.html ajuda.html
+	sed -e "/include_ajuda/r ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} matrufsc.html | tee index.html > /dev/null
 
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
