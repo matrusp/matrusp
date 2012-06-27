@@ -53,7 +53,7 @@ save2.cgi load2.cgi ping.cgi access.cgi header_gen header_gen_pdf:
 index.html: matrufsc.html ajuda.html
 	sed -e "/include_ajuda/r ajuda.html" -e "/include_ajuda/d" matrufsc.html > index.html || rm -f index.html
 ifdef RELEASE
-	sed -i sed s/"if(0)"/"if(1)"/ index.html
+	sed -i s/"if(0)"/"if(1)"/ index.html
 endif
 
 matrufsc.js: $(SRC)
