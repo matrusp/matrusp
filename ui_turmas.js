@@ -171,6 +171,8 @@ function UI_turmas(id)
                 inner_div.appendChild(div);
             }
         }
+        if (!inner_div.innerHTML)
+            inner_div.innerHTML = "&nbsp;";
         data.appendChild(inner_div);
         row.appendChild(data);
 
