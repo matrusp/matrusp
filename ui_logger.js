@@ -16,8 +16,10 @@ function UI_logger(id)
             self.timer = null;
         }
     }
-    var reset = function() {
+    var reset = function(hard) {
         stop();
+        if (hard)
+            clear_persistent();
         ui_logger.innerHTML = persistent_str;
         ui_logger.style.backgroundColor = persistent_color;
     };

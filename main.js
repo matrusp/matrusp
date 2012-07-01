@@ -501,7 +501,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_combinacoes.reset();
         ui_materias.reset();
         ui_planos.reset();
-        ui_logger.reset();
+        ui_logger.reset(true);
         ui_turmas.reset();
         display.reset();
 
@@ -557,7 +557,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         if (really) {
             ui_combinacoes.reset();
             ui_materias.reset();
-            ui_logger.reset();
+            ui_logger.reset(true);
             ui_turmas.reset();
             display.reset();
             state.plano.cleanup();
@@ -572,7 +572,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             state.planos[n] = state.new_plano(plano_to_load, n);
             ui_combinacoes.reset();
             ui_materias.reset();
-            ui_logger.reset();
+            ui_logger.reset(true);
             ui_turmas.reset();
             display.reset();
             self.set_plano(state.planos[n]);
@@ -582,7 +582,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
     ui_planos.cb_changed = function(plano) {
         ui_combinacoes.reset();
         ui_materias.reset();
-        ui_logger.reset();
+        ui_logger.reset(true);
         ui_turmas.reset();
         display.reset();
         self.set_plano(plano);
@@ -619,7 +619,7 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         ui_combinacoes.reset();
         ui_materias.reset();
         ui_planos.reset();
-        ui_logger.reset();
+        ui_logger.reset(true);
         ui_turmas.reset();
         display.reset();
 
