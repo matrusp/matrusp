@@ -903,7 +903,6 @@ window.onload = function() {
     if (combo.input.value == identificador)
         combo.input.value = "";
 
-    document.getElementById("ui_loading").style.display = "none";
     document.getElementById("ui_main").style.display = "block";
     document.getElementById("ui_fb").style.display = "block";
     ui_turmas.set_height(ui_horario.height());
