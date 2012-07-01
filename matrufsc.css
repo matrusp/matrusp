@@ -299,3 +299,7 @@ body {
     text-indent: 2em;
     text-align: justify;
 }
+.ui_ajuda_popup .main ul {
+    font-size: 13px;
+    text-align: justify;
+}
