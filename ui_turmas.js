@@ -305,6 +305,7 @@ function UI_turmas(id)
         self.table.appendChild(self.thead);
         var row  = document.createElement("tr");
         row.style.backgroundColor = "#eeeeee";
+        row.onmouseover = mouseout_turma;
         var data = document.createElement("td");
         var button = document.createElement("div");
         button.className = "ui_turmas_all_menu_v";
