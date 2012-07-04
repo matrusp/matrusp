@@ -2,7 +2,7 @@ DBs=20121_JOI.json 20122_JOI.json 20121_FLO.json 20122_FLO.json
 
 all: $(DBs) save2.cgi load2.cgi ping.cgi matrufsc.js index.html
 
-SRC=json2.js \
+SRC:=json2.js \
 compat.js \
 persistence.js \
 dconsole.js \
@@ -22,6 +22,8 @@ ui_planos.js \
 ui_saver.js \
 ui_turmas.js \
 main.js
+
+SRC:=$(addprefix js/,$(SRC))
 
 header_gen_pdf: header_gen_pdf.c
 header_gen_pdf: EXTRA_FLAGS=-lz
