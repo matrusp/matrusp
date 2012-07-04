@@ -9,6 +9,7 @@ function UI_saver(id)
     ui_saver.className = "ui_saver";
     ui_saver.appendChild(document.createTextNode("identificador: "));
     var input = document.createElement("input");
+    self.input = input;
     input.title = "Escolha um identificador qualquer para salvar/abrir seus horários. O identificador pode ser qualquer coisa (por exemplo seu número de matrícula). Cuidado: qualquer um pode usar qualquer identificador.";
     ui_saver.appendChild(input);
     ui_saver.appendChild(document.createTextNode(" "));
@@ -24,6 +25,19 @@ function UI_saver(id)
     ui_saver.appendChild(button);
     self.button_save = button;
     ui_saver.appendChild(document.createTextNode(" "));
+
+    var form = document.createElement("form");
+    form.style.display = "none";
+    form.method = "POST";
+    form.enctype = "multipart/form-data";
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "ping";
+    form.appendChild(input);
+    ui_saver.appendChild(form);
+    self.form = form;
+    self.form_input = input;
+
     var button = document.createElement("span");
     button.className = "ui_saver_menu_v";
     button.innerHTML = "V";
@@ -56,8 +70,6 @@ function UI_saver(id)
     menu_op.onclick = function() { window.open("/matrufsc-20121", "_notab"); };
     menu.appendChild(menu_op);
 
-    self.input = input;
-
     self.enabled = true;
     self.disable = function() {
         if (!self.enabled) return;
@@ -77,8 +89,8 @@ function UI_saver(id)
         if (self.enabled) return;
         self.button_save.style.backgroundColor = "lightblue";
         self.button_load.style.backgroundColor = "lightblue";
-        self.button_save.onclick = function () { self.cb_save(input.value); return false; };
-        self.button_load.onclick = function () { self.cb_load(input.value); return false; };
+        self.button_save.onclick = function () { self.cb_save(self.input.value); return false; };
+        self.button_load.onclick = function () { self.cb_load(self.input.value); return false; };
         self.button_save.style.opacity = "";
         self.button_save.style.filter = "";
         self.button_load.style.opacity = "";

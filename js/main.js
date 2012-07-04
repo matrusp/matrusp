@@ -449,16 +449,9 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
         var identificador = ui_saver.input.value;
         if (!identificador)
             identificador = "matrufsc";
-        var form  = document.createElement("form");
-        form.method = "POST";
-        form.enctype = "multipart/form-data";
-        form.action = "ping.cgi?q=" + encodeURIComponent(identificador);
-        var input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "ping";
-        input.value = state.save();
-        form.appendChild(input);
-        form.submit();
+        ui_saver.form.action = "ping.cgi?q=" + encodeURIComponent(identificador);
+        ui_saver.form_input.value = state.save();
+        ui_saver.form.submit();
     };
     ui_saver.cb_upload = function() {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
