@@ -27,17 +27,17 @@ SRC:=$(addprefix js/,$(SRC))
 
 header_gen_pdf: c/header_gen_pdf.c
 header_gen_pdf: EXTRA_FLAGS=-lz
-20121_JOI.json: header_gen_pdf 20121.pdf
-	./header_gen_pdf 20121.pdf 20121_JOI.json 20121
-20122_JOI.json: header_gen_pdf 20122.pdf
-	./header_gen_pdf 20122.pdf 20122_JOI.json 20122
+20121_JOI.json: header_gen_pdf db/20121.pdf
+	./header_gen_pdf db/20121.pdf 20121_JOI.json 20121
+20122_JOI.json: header_gen_pdf db/20122.pdf
+	./header_gen_pdf db/20122.pdf 20122_JOI.json 20122
 
 header_gen: c/header_gen.c
 header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
-20121_FLO.json: header_gen 20121.db
-	./header_gen 20121.db 20121_FLO.json
-20122_FLO.json: header_gen 20122.db
-	./header_gen 20122.db 20122_FLO.json
+20121_FLO.json: header_gen db/20121.db
+	./header_gen db/20121.db 20121_FLO.json
+20122_FLO.json: header_gen db/20122.db
+	./header_gen db/20122.db 20122_FLO.json
 
 save2.cgi: c/save.c
 save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
