@@ -56,8 +56,8 @@ ifdef RELEASE
 sed_RELEASE=-e "s/if(0)/if(1)/"
 endif
 
-index.html: matrufsc.html ajuda.html
-	sed -e "/include_ajuda/r ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} matrufsc.html | tee index.html > /dev/null
+index.html: html/matrufsc.html html/ajuda.html
+	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee index.html > /dev/null
 
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
