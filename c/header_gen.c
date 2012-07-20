@@ -127,6 +127,23 @@ extract_turmas(const char *content, int length)
 
     tr = node->children;
     while (tr) {
+#ifdef CURSOS_TURMAS
+        char *codigo_disciplina = (char *)
+            xmlNodeGetContent(tr->children->next->next->next->children);
+        char *curso_str;
+        int curso_int;
+
+        curso_str = (char *) xmlGetProp(tr->children->next->next->children,
+                                        (const xmlChar *) "href");
+        if (! curso_str || strlen(curso_str) < 33 ||
+            !(curso_int = atoi(curso_str+33))) {
+            fprintf(stderr, "error getting curso\n");
+            exit(1);
+        }
+        fprintf(fp_full, "{ codigo:\"%s\", n:\"c%d\" },\n", codigo_disciplina, curso_int);
+        xmlFree(codigo_disciplina);
+        xmlFree(curso_str);
+#else
         static char lastc[10] = { 0 };
         struct {
             char *codigo_disciplina;
@@ -247,6 +264,7 @@ extract_turmas(const char *content, int length)
         for (i = 0; full.horarios[i]; i++)
             xmlFree(full.horarios[i]);
         free(full.horarios);
+#endif
 
         tr = tr->next;
     }
@@ -296,6 +314,9 @@ int main(int argc, char *argv[])
         goto end;
     }
 
+#ifdef CURSOS_TURMAS
+    fprintf(fp_full, "module.exports = {all:\n");
+#endif
     fprintf(fp_full, "[");
 
     for (int i = 0; i < st.st_size - lend; i++) {
@@ -310,6 +331,9 @@ int main(int argc, char *argv[])
     if (has_started)
         fprintf(fp_full, "]]\n");
     fprintf(fp_full, "]");
+#ifdef CURSOS_TURMAS
+    fprintf(fp_full, "};\n");
+#endif
 
     ret = 0;
 

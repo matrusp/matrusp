@@ -39,6 +39,12 @@ header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
 20122_FLO.json: header_gen db/20122.db
 	./header_gen db/20122.db 20122_FLO.json
 
+cursos_turmas: c/header_gen.c
+	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
+cursos_turmas: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2 -DCURSOS_TURMAS
+cursos_turmas.js: cursos_turmas db/20122.db
+	./cursos_turmas db/20122.db cursos_turmas.js
+
 save2.cgi: c/save.c
 save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 load2.cgi: c/load.c
@@ -69,6 +75,7 @@ endif
 
 clean::
 	rm -f $(DBs) $(addsuffix .gz,$(DBs))
+	rm -f cursos_turmas cursos_turmas.js
 	rm -f header_gen_pdf header_gen
 	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js index.html install *~ .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
