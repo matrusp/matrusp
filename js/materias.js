@@ -69,7 +69,10 @@ function Turma(turma) {
         for (var j = 0; j < n; j++)
             self.aulas.push(new Aula(dia, hora+j, sala));
     });
-    /* order aulas */
+    self.order_aulas();
+}
+Turma.prototype.order_aulas = function() {
+    var self = this;
     var aulas = self.aulas;
     for (var i = 0; i < aulas.length-1; i++) {
         for (var j = i+1; j < aulas.length; j++) {
