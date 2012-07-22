@@ -458,30 +458,37 @@ function Main(combo, ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horar
             var input = document.createElement("input");
             input.style.display = "none";
             input.type = "file";
+//            input.multiple = true;
             input.onchange = function(e) {
                 if (!e.target.files[0]) {
                     ui_logger.set_text("nenhum arquivo selecionado", "lightcoral");
                     document.body.removeChild(input);
                 } else {
-                    var fname = e.target.files[0];
-                    filereader = new FileReader();
-                    filereader.onload = function(file) {
-                        try {
-                            var statestr = file.target.result;
-                            var state3 = JSON.parse(statestr);
-                            self.load(state3);
-                            var nome = fname.name;
-                            ui_logger.set_text("horário carregado do arquivo " + nome, "lightgreen");
-                            var id = nome.substr(0, nome.lastIndexOf('.')) || nome;
-                            ui_saver.identificar(id);
-                            persistence.write_id(id);
-                            persistence.write_state(statestr);
-                        } catch (e) {
-                            ui_logger.set_text("erro ao carregar arquivo", "lightcoral");
-                        }
-                        document.body.removeChild(input);
-                    };
-                    filereader.readAsText(fname);
+                    for (var f = 0; f < e.target.files.length; f++) {
+                        var fname = e.target.files[f];
+                        var filereader = new FileReader();
+                        filereader.fname = fname;
+                        filereader.onload = function(file) {
+                            try {
+                                var statestr = file.target.result;
+                                var state3 = JSON.parse(statestr);
+                                self.load(state3);
+                                var nome = file.target.fname.name;
+                                ui_logger.set_text("horário carregado do arquivo " + nome, "lightgreen");
+                                var id = nome.substr(0, nome.lastIndexOf('.')) || nome;
+                                ui_saver.identificar(id);
+                                persistence.write_id(id);
+                                persistence.write_state(statestr);
+                            } catch (e) {
+                                ui_logger.set_text("erro ao carregar arquivo", "lightcoral");
+                            }
+                            if (input) {
+                                document.body.removeChild(input);
+                                input = null;
+                            }
+                        };
+                        filereader.readAsText(fname);
+                    }
                 }
             };
             document.body.appendChild(input);
