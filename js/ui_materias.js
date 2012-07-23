@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function UI_materias(id, ui_combinacoes)
+function UI_materias(id)
 {
     var self = this;
 
