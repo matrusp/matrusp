@@ -216,6 +216,7 @@ body {
 
 .ui_materias {
     border: 1px solid black;
+    overflow: auto;
 }
 .ui_materias table {
     background-color: black;
