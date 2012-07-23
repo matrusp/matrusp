@@ -128,6 +128,22 @@ function Materia(materia) {
         self.turmas.push(turma);
     });
 }
+Materia.prototype.fix_horarios = function() {
+    this.horarios = new Object();
+    for (var k = 0; k < this.turmas.length; k++) {
+        var turma = this.turmas[k];
+        var index = turma.index(this.agrupar);
+        if (!this.horarios[index]) {
+            this.horarios[index] = new Object();
+            this.horarios[index].turmas = new Object();
+            this.horarios[index].turma_representante = turma;
+            this.horarios[index].materia = this;
+            this.horarios[index].aulas = turma.aulas;
+        }
+        this.horarios[index].turmas[turma.nome] = turma;
+        turma.horario = this.horarios[index];
+    }
+}
 
 /**
  * @constructor
@@ -203,21 +219,10 @@ function Materias()
         n_turmas++;
         return nome;
     };
-    function fix_horarios(materia) {
-        materia.horarios = new Object();
-        for (var k = 0; k < materia.turmas.length; k++) {
-            var turma = materia.turmas[k];
-            var index = turma.index(materia.agrupar);
-            if (!materia.horarios[index]) {
-                materia.horarios[index] = new Object();
-                materia.horarios[index].turmas = new Object();
-                materia.horarios[index].turma_representante = turma;
-                materia.horarios[index].materia = materia;
-                materia.horarios[index].aulas = turma.aulas;
-            }
-            materia.horarios[index].turmas[turma.nome] = turma;
-            turma.horario = materia.horarios[index];
-        }
+    function update_add_turma(materia, turma) {
+        turma.materia = materia;
+        materia.turmas.push(turma);
+        materia.fix_horarios();
     }
     function new_turma(materia) {
         var nok = true;
@@ -234,7 +239,7 @@ function Materias()
         turma.nome             = nome;
         turma.materia          = materia;
         materia.turmas.push(turma);
-        fix_horarios(materia);
+        materia.fix_horarios();
         materia.selected = 1;
     }
     function remove_turma(materia, turma) {
@@ -245,7 +250,7 @@ function Materias()
                     materia.turmas.splice(i,1);
                     break;
                 }
-        fix_horarios(materia);
+        materia.fix_horarios();
     }
     function add_json(materia)
     {
@@ -257,7 +262,7 @@ function Materias()
             materia.cor      = get_color();
         else
             color_taken(materia.cor);
-        fix_horarios(materia);
+        materia.fix_horarios();
 
         materias[materia.codigo] = materia;
         list.push(materia);
@@ -291,8 +296,8 @@ function Materias()
     self.changed = changed;
     self.remove_item = remove_item;
     self.new_turma = new_turma;
+    self.update_add_turma = update_add_turma;
     self.remove_turma = remove_turma;
-    self.fix_horarios = fix_horarios;
     /* functions */
     self.get_nome = function(nome) {
         for (var i in materias) {

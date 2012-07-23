@@ -21,6 +21,7 @@ ui_materias.js \
 ui_planos.js \
 ui_saver.js \
 ui_turmas.js \
+ui_updates.js \
 main.js
 
 SRC:=$(addprefix js/,$(SRC))

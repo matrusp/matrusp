@@ -134,4 +134,119 @@ function State()
         self.index = i;
         self.plano = self.planos[self.index];
     };
+
+    self.issues = function(database, callback_yes, callback_no) {
+        var issues = [];
+        var materias = self.plano.materias.list();
+        for (var i = 0; i < materias.length; i++) {
+            var m_issues = [];
+            m_issues.materia = materias[i];
+            var state_materia = materias[i];
+            var db_materia = database.full(state_materia.codigo);
+            if (!db_materia) {
+                if (/^[A-Z]{3}[0-9]{4}$/.test(state_materia.codigo) &&
+                   !/^XXX[0-9]{4}$/.test(state_materia.codigo)) {
+                    var issue = {};
+                    issue.text = "Matéria não existe mais";
+                    issue.button = "Remover matéria";
+                    issue.action = function(materia) {
+                        return function() {
+                            self.plano.materias.remove_item(materia);
+                        };
+                    }(state_materia);
+                    m_issues.push(issue);
+                    issues.push(m_issues);
+                }
+                continue;
+            }
+            db_materia = new Materia(db_materia);
+            for (var j = 0; j < state_materia.turmas.length; j++) {
+                var state_turma = state_materia.turmas[j];
+                state_turma.order_aulas();
+                var db_turma = null;
+                for (var k = 0; k < db_materia.turmas.length; k++) {
+                    if (state_turma.nome == db_materia.turmas[k].nome) {
+                        db_turma = db_materia.turmas[k];
+                        break;
+                    }
+                }
+                if (!db_turma) {
+                    if (state_turma.nome.length != 4) {
+                        var issue = {};
+                        issue.text = "Turma " + state_turma.nome + " não existe mais!";
+                        issue.button = "Remover turma";
+                        issue.action = function(materia, turma) {
+                            return function() {
+                                self.plano.materias.remove_turma(materia, turma);
+                            };
+                        }(state_materia, state_turma);
+                        m_issues.push(issue);
+                    }
+                    continue;
+                }
+                state_turma.horas_aula       = db_turma.horas_aula;
+                state_turma.vagas_ofertadas  = db_turma.vagas_ofertadas;
+                state_turma.vagas_ocupadas   = db_turma.vagas_ocupadas;
+                state_turma.alunos_especiais = db_turma.alunos_especiais;
+                state_turma.saldo_vagas      = db_turma.saldo_vagas;
+                state_turma.pedidos_sem_vaga = db_turma.pedidos_sem_vaga;
+                if (JSON.stringify(state_turma.professores) != JSON.stringify(db_turma.professores)) {
+                    var issue = {};
+                    issue.text = "Turma " + state_turma.nome + ": mudança de professores.";
+                    issue.text_from = "";
+                    for (var p = 0; p < state_turma.professores.length; p++) {
+                        if (p) issue.text_from += ", ";
+                        issue.text_from += state_turma.professores[p];
+                    }
+                    issue.text_to = "";
+                    for (var p = 0; p < db_turma.professores.length; p++) {
+                        if (p) issue.text_to += ", ";
+                        issue.text_to += db_turma.professores[p];
+                    }
+                    issue.button = "Corrigir professores";
+                    issue.action = function(turma, professores) {
+                        return function() {
+                            turma.professores = professores;
+                        };
+                    }(state_turma, JSON.parse(JSON.stringify(db_turma.professores)));
+                    m_issues.push(issue);
+                }
+                for (var k = 0; k < state_turma.aulas.length; k++) {
+                    if ((state_turma.aulas[k].dia  != db_turma.aulas[k].dia ) ||
+                        (state_turma.aulas[k].hora != db_turma.aulas[k].hora)) {
+                        var issue = {};
+                        issue.text = "Turma " + state_turma.nome + ": horários de aula mudaram.";
+                        issue.button = "Corrigir horários de aula";
+                        issue.action = function(turma, aulas) {
+                            return function() {
+                                turma.aulas = aulas;
+                                turma.materia.fix_horarios();
+                            };
+                        }(state_turma, db_turma.aulas);
+                        m_issues.push(issue);
+                        break;
+                    }
+                }
+                db_materia.turmas.splice(db_materia.turmas.indexOf(db_turma), 1);
+            }
+            for (var j = 0; j < db_materia.turmas.length; j++) {
+                var db_turma = db_materia.turmas[j];
+                var issue = {};
+                issue.text = "Turma " + db_turma.nome + " é nova!";
+                issue.button = "Adicionar turma";
+                issue.action = function(materia, turma) {
+                    return function() {
+                        self.plano.materias.update_add_turma(materia, turma);
+                    };
+                }(state_materia, db_turma);
+                m_issues.push(issue);
+            }
+            if (m_issues[0])
+                issues.push(m_issues);
+        }
+        if (issues[0])
+            callback_yes(issues);
+        else
+            callback_no();
+    };
 }

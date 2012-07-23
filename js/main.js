@@ -2,7 +2,7 @@
  * @constructor
  */
 function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
-              ui_saver, ui_campus, ui_planos, ui_grayout, combo,
+              ui_saver, ui_campus, ui_planos, ui_grayout, ui_updates, combo,
               state, display, persistence, database)
 {
     var self = this;
@@ -208,6 +208,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         state.plano.materias.selected = "";
         ui_materias.fix_width();
         update_all();
+        self.issues();
     };
     var m_array = null;
     var m_timer = null;
@@ -274,7 +275,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     ui_turmas.cb_toggle_agrupar = function() {
         var materia = state.plano.materias.get(state.plano.materias.selected);
         materia.agrupar = materia.agrupar ? 0 : 1;
-        state.plano.materias.fix_horarios(materia);
+        materia.fix_horarios();
         update_all();
         ui_turmas.create(materia);
         state.plano.materias.selected = materia.codigo;
@@ -291,6 +292,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         state.plano.materias.remove_turma(materia, turma);
         ui_turmas.remove_turma(turma);
         update_all();
+        self.issues();
     };
     var overlay = null;
     function clear_overlay() {
@@ -317,7 +319,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             editando.horario.aulas = aulas;
             for (var k in editando.horario.turmas)
                 editando.horario.turmas[k].aulas = aulas;
-            state.plano.materias.fix_horarios(editando.materia);
+            editando.materia.fix_horarios();
             clear_overlay();
             ui_horario.set_toggle(null);
             ui_turmas.edit_end();
@@ -472,13 +474,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                         filereader.fname = fname;
                         filereader.onload = function(file) {
                             try {
+                                var nome = file.target.fname.name;
+                                var id = nome.substr(0, nome.lastIndexOf('.')) || nome;
                                 var statestr = file.target.result;
                                 var state3 = JSON.parse(statestr);
-                                self.load(state3);
-                                var nome = file.target.fname.name;
+                                self.load(state3, id);
                                 ui_logger.set_text("horário carregado do arquivo " + nome, "lightgreen");
-                                var id = nome.substr(0, nome.lastIndexOf('.')) || nome;
-                                ui_saver.identificar(id);
                                 persistence.write_id(id);
                                 persistence.write_state(statestr);
                             } catch (e) {
@@ -581,7 +582,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             ui_planos.startup(state);
         }
     };
-    ui_planos.cb_changed = function(plano) {
+    function redraw_plano(plano) {
         ui_combinacoes.reset();
         ui_materias.reset();
         ui_logger.reset(true);
@@ -589,6 +590,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         display.reset();
         self.set_plano(plano);
         ui_planos.select(plano);
+    };
+    ui_planos.cb_changed = function(plano) {
+        redraw_plano(plano);
+        self.issues();
     };
     /* Save/Load */
     self.save = function(identificador) {
@@ -617,6 +622,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         save_request.send(ret);
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
+    ui_updates.cb_update = function() {
+        redraw_plano(state.plano);
+    };
+    self.issues = function() {
+        state.issues(database, ui_updates.fill, ui_updates.hide);
+    };
     self.load = function(state_to_load, identificador) {
         ui_combinacoes.reset();
         ui_materias.reset();
@@ -639,7 +650,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
 
         ui_campus.set_campus(state.campus);
         ui_campus.set_semestre(state.semestre);
-        self.set_db(state.campus, state.semestre);
+        self.set_db(state.campus, state.semestre, self.issues);
         if (identificador)
             persistence.write_id(identificador);
 
@@ -666,7 +677,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         update_all(plano.combinacao);
         mudancas = false;
     };
-    load_db = function(campus, semestre) {
+    load_db = function(campus, semestre, callback) {
         var src = semestre + "_" + campus + ".json";
         var oldval = combo.input.value;
         var f_timeout;
@@ -698,6 +709,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                     combo.input.value = oldval;
                     combo.input.disabled = false;
                     combo.input.style.backgroundColor = "";
+                    if (callback)
+                        callback();
                     break;
             }
         };
@@ -729,10 +742,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         f_timeout = setTimeout("loading()", 500);
         combo.input.disabled = true;
     };
-    self.set_db = function(campus, semestre) {
+    self.set_db = function(campus, semestre, callback) {
         var ret = database.set_db(campus, semestre);
         if (ret == -1)
-            load_db(campus, semestre);
+            load_db(campus, semestre, callback);
+        else if (callback)
+            callback();
     };
 }
 
@@ -778,6 +793,7 @@ window.onload = function() {
     var ui_campus      = new UI_campus("campus");
     var ui_planos      = new UI_planos("planos");
     var ui_saver       = new UI_saver("saver");
+    var ui_updates     = new UI_updates("updates_list");
 
     var ui_grayout     = new UI_grayout("grayout");
     ui_grayout.cb_onclick = function() {
@@ -810,7 +826,8 @@ window.onload = function() {
     dconsole2 = new Dconsole("dconsole");
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger, database);
     var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes,
-                          ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout, combo,
+                          ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout,
+                          ui_updates, combo,
                           state, display, persistence, database);
 
     combo.cb_add_materia = main.add_materia;
