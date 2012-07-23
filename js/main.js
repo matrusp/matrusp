@@ -503,6 +503,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     ui_saver.cb_cleanup = function() {
         ui_combinacoes.reset();
         ui_materias.reset();
+        ui_updates.reset();
         ui_planos.reset();
         ui_logger.reset(true);
         ui_turmas.reset();
@@ -560,6 +561,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         if (really) {
             ui_combinacoes.reset();
             ui_materias.reset();
+            ui_updates.reset();
             ui_logger.reset(true);
             ui_turmas.reset();
             display.reset();
@@ -636,6 +638,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     self.load = function(state_to_load, identificador) {
         ui_combinacoes.reset();
         ui_materias.reset();
+        ui_updates.reset();
         ui_planos.reset();
         ui_logger.reset(true);
         ui_turmas.reset();
