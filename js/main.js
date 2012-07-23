@@ -626,7 +626,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         redraw_plano(state.plano);
     };
     self.issues = function() {
-        state.issues(database, ui_updates.fill, ui_updates.hide);
+        state.issues(database, function(issues){
+            var materia = state.plano.materias.get(state.plano.materias.selected);
+            if (materia)
+                ui_turmas.create(materia);
+            ui_updates.fill(issues);
+        }, ui_updates.hide);
     };
     self.load = function(state_to_load, identificador) {
         ui_combinacoes.reset();
