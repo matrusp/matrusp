@@ -917,7 +917,7 @@ window.onload = function() {
     if (state2 && state2 != "") {
         try {
             var state3 = JSON.parse(state2);
-            if (main.load(state3) == -1)
+            if (!main.load(state3))
                 database_ok = true;
         } catch (e) {
             ui_logger.set_text("erro lendo estado da cache do navegador", "lightcoral");
