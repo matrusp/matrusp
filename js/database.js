@@ -25,28 +25,28 @@ Database.prototype.add = function(semestre, array) {
     for (var campus in array) {
         var campus_array = array[campus];
         self.db[semestre][campus] = new Array();
-    campus_array.forEach(function(k) {
-        var i = new Object();
-        i.codigo     = k[0];
-        i.nome_ascii = k[1];
-        i.nome       = k[2];
-        i.turmas     = new Array();
-        k[3].forEach(function(m) {
-            var n = new Object();
-            n.nome              = m[0];
-            n.horas_aula        = m[1];
-            n.vagas_ofertadas   = m[2];
-            n.vagas_ocupadas    = m[3];
-            n.alunos_especiais  = m[4];
-            n.saldo_vagas       = m[5];
-            n.pedidos_sem_vaga  = m[6];
-            n.horarios          = m[7];
-            n.professores       = m[8];
-            i.turmas.push(n);
+        campus_array.forEach(function(k) {
+            var i = new Object();
+            i.codigo     = k[0];
+            i.nome_ascii = k[1];
+            i.nome       = k[2];
+            i.turmas     = new Array();
+            k[3].forEach(function(m) {
+                var n = new Object();
+                n.nome              = m[0];
+                n.horas_aula        = m[1];
+                n.vagas_ofertadas   = m[2];
+                n.vagas_ocupadas    = m[3];
+                n.alunos_especiais  = m[4];
+                n.saldo_vagas       = m[5];
+                n.pedidos_sem_vaga  = m[6];
+                n.horarios          = m[7];
+                n.professores       = m[8];
+                i.turmas.push(n);
+            });
+            self.db[semestre][campus][i.codigo] = i;
+            self.db[semestre][campus].push(i);
         });
-        self.db[semestre][campus][i.codigo] = i;
-        self.db[semestre][campus].push(i);
-    });
     }
 }
 Database.prototype.fetch = function(string, page) {

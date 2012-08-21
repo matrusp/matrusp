@@ -308,34 +308,34 @@ int main(int argc, char *argv[])
 
         fprintf(fp_full, "\"%.3s\":[", argv[i]+9);
 
-    /* Open and mmap() input file */
-    fd_in = open(fname_in, O_RDONLY);
-    if (fd_in == -1) {
-        fprintf(stderr, "could not open input file '%s'\n", fname_in);
-        goto end;
-    }
-    if (fstat(fd_in, &st) == -1) {
-        fprintf(stderr, "could not stat input file '%s'\n", fname_in);
-        goto end;
-    }
-    buf_in = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd_in, 0);
-    if (buf_in == MAP_FAILED) {
-        fprintf(stderr, "could not map input file '%s'\n", fname_in);
-        goto end;
-    }
-
-    for (int i = 0; i < st.st_size - lend; i++) {
-        if        (!strncmp((char *) &buf_in[i], start, lstart)) {
-            start_at = i;
-        } else if (!strncmp((char *) &buf_in[i], end, lend)) {
-            end_at = i;
-            extract_turmas((char *) &buf_in[start_at], end_at - start_at);
+        /* Open and mmap() input file */
+        fd_in = open(fname_in, O_RDONLY);
+        if (fd_in == -1) {
+            fprintf(stderr, "could not open input file '%s'\n", fname_in);
+            goto end;
         }
-    }
+        if (fstat(fd_in, &st) == -1) {
+            fprintf(stderr, "could not stat input file '%s'\n", fname_in);
+            goto end;
+        }
+        buf_in = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd_in, 0);
+        if (buf_in == MAP_FAILED) {
+            fprintf(stderr, "could not map input file '%s'\n", fname_in);
+            goto end;
+        }
 
-    if (has_started)
-        fprintf(fp_full, "]]\n");
-    fprintf(fp_full, "]");
+        for (int i = 0; i < st.st_size - lend; i++) {
+            if        (!strncmp((char *) &buf_in[i], start, lstart)) {
+                start_at = i;
+            } else if (!strncmp((char *) &buf_in[i], end, lend)) {
+                end_at = i;
+                extract_turmas((char *) &buf_in[start_at], end_at - start_at);
+            }
+        }
+
+        if (has_started)
+            fprintf(fp_full, "]]\n");
+        fprintf(fp_full, "]");
         if (i != argc-2)
             fprintf(fp_full, ",");
 
