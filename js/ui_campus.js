@@ -17,6 +17,14 @@ function UI_campus(id)
     option.value = "JOI";
     option.innerHTML = "Joinville";
     campus.appendChild(option);
+    var option = document.createElement("option");
+    option.value = "CBS";
+    option.innerHTML = "Curitibanos";
+    campus.appendChild(option);
+    var option = document.createElement("option");
+    option.value = "ARA";
+    option.innerHTML = "Araranguá";
+    campus.appendChild(option);
     ui_campus.appendChild(campus);
 
     campus.value = "FLO";

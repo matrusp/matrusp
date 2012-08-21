@@ -104,10 +104,8 @@ int main()
         content_type = "application/javascript";
     else if (!strcmp(base_str, "matrufsc.css"))
         content_type = "text/css";
-    else if (!strcmp(base_str, "20121_FLO.json") ||
-             !strcmp(base_str, "20122_FLO.json") ||
-             !strcmp(base_str, "20121_JOI.json") ||
-             !strcmp(base_str, "20122_JOI.json"))
+    else if (!strcmp(base_str, "20121.json") ||
+             !strcmp(base_str, "20122.json"))
         content_type = "application/json";
     else {
         set_error("not any file we can send\n");

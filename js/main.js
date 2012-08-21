@@ -548,11 +548,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     }
     /* UI_campus */
     ui_campus.cb_campus = function(campus) {
-        self.set_db(campus, state.semestre);
+        self.set_db(state.semestre, campus);
         state.campus = campus;
     }
     ui_campus.cb_semestre = function(semestre) {
-        self.set_db(state.campus, semestre);
+        self.set_db(semestre, state.campus);
         state.semestre = semestre;
     }
     /* UI_planos */
@@ -658,7 +658,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
 
         ui_campus.set_campus(state.campus);
         ui_campus.set_semestre(state.semestre);
-        self.set_db(state.campus, state.semestre, self.issues);
+        self.set_db(state.semestre, state.campus, self.issues);
         if (identificador)
             persistence.write_id(identificador);
 
@@ -685,14 +685,15 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         update_all(plano.combinacao);
         mudancas = false;
     };
-    load_db = function(campus, semestre, callback) {
-        var src = semestre + "_" + campus + ".json";
+    load_db = function(semestre, campus, callback) {
+        var src = semestre + ".json";
         var oldval = combo.input.value;
         var f_timeout;
         var f_finish = 0;
         var f_length = 0;
         var f_loaded = 0;
 
+console.log("source " + src);
         var req = new XMLHttpRequest();
         req.onreadystatechange = function() {
             switch (this.readyState) {
@@ -708,12 +709,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                     } else {
                         try {
                             var dbjson = JSON.parse(this.responseText);
-                            database.add(campus, semestre, dbjson);
+                            database.add(semestre, dbjson);
                         } catch (e) {
                             ui_logger.set_text("erro ao carregar banco de dados", "lightcoral");
                         }
                     }
-                    database.set_db(campus, semestre);
+                    database.set_db(semestre, campus);
                     combo.input.value = oldval;
                     combo.input.disabled = false;
                     combo.input.style.backgroundColor = "";
@@ -750,10 +751,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         f_timeout = setTimeout("loading()", 500);
         combo.input.disabled = true;
     };
-    self.set_db = function(campus, semestre, callback) {
-        var ret = database.set_db(campus, semestre);
+    self.set_db = function(semestre, campus, callback) {
+        var ret = database.set_db(semestre, campus);
         if (ret == -1)
-            load_db(campus, semestre, callback);
+            load_db(semestre, campus, callback);
         else if (callback)
             callback();
     };
@@ -928,7 +929,7 @@ window.onload = function() {
         }
     }
     if (!database_ok)
-        main.set_db("FLO", "20122");
+        main.set_db("20122", "FLO");
     if (combo.input.value == identificador)
         combo.input.value = "";
 

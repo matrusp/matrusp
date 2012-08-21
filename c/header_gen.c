@@ -279,11 +279,9 @@ int main(int argc, char *argv[])
     const char *const end = "------------------------------------------------------------------";
     const int lend = strlen(end);
     int start_at, end_at;
-    const uint8_t *buf_in = NULL;
-    char *fname_in = argv[1];
-    struct stat st;
     int fd_in = 0;
     int ret = -1;
+    int i;
 
     LIBXML_TEST_VERSION
 
@@ -291,6 +289,24 @@ int main(int argc, char *argv[])
         fprintf(stderr, "usage: %s <input> <full.json>\n", argv[0]);
         goto end;
     }
+
+    fp_full = fopen(argv[argc-1], "wb");
+    if (!fp_full) {
+        fprintf(stderr, "could not open output file '%s'\n", argv[argc-1]);
+        goto end;
+    }
+
+#ifdef CURSOS_TURMAS
+    fprintf(fp_full, "module.exports = {all:\n");
+#endif
+    fprintf(fp_full, "{");
+
+    for (i = 1; i < argc-1; i++) {
+        const uint8_t *buf_in = NULL;
+        char *fname_in = argv[i];
+        struct stat st;
+
+        fprintf(fp_full, "\"%.3s\":[", argv[i]+9);
 
     /* Open and mmap() input file */
     fd_in = open(fname_in, O_RDONLY);
@@ -308,17 +324,6 @@ int main(int argc, char *argv[])
         goto end;
     }
 
-    fp_full = fopen(argv[2], "wb");
-    if (!fp_full) {
-        fprintf(stderr, "could not open output file '%s'\n", argv[2]);
-        goto end;
-    }
-
-#ifdef CURSOS_TURMAS
-    fprintf(fp_full, "module.exports = {all:\n");
-#endif
-    fprintf(fp_full, "[");
-
     for (int i = 0; i < st.st_size - lend; i++) {
         if        (!strncmp((char *) &buf_in[i], start, lstart)) {
             start_at = i;
@@ -331,6 +336,18 @@ int main(int argc, char *argv[])
     if (has_started)
         fprintf(fp_full, "]]\n");
     fprintf(fp_full, "]");
+        if (i != argc-2)
+            fprintf(fp_full, ",");
+
+        has_started = 0;
+
+        munmap((void*)buf_in, st.st_size);
+
+        close(fd_in);
+        fd_in = 0;
+    }
+
+    fprintf(fp_full, "}");
 #ifdef CURSOS_TURMAS
     fprintf(fp_full, "};\n");
 #endif
@@ -339,7 +356,6 @@ int main(int argc, char *argv[])
 
 end:
     if (fp_full) fclose(fp_full);
-    if (buf_in) munmap((void*)buf_in, st.st_size);
     if (fd_in ) close(fd_in);
 
     xmlCleanupParser();

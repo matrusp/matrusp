@@ -1,4 +1,4 @@
-DBs=20121_JOI.json 20122_JOI.json 20121_FLO.json 20122_FLO.json
+DBs=20121.json 20122.json
 
 all: $(DBs) save2.cgi load2.cgi ping.cgi matrufsc.js index.html
 
@@ -26,19 +26,11 @@ main.js
 
 SRC:=$(addprefix js/,$(SRC))
 
-header_gen_pdf: c/header_gen_pdf.c
-header_gen_pdf: EXTRA_FLAGS=-lz
-20121_JOI.json: header_gen_pdf db/20121.pdf
-	./header_gen_pdf db/20121.pdf 20121_JOI.json 20121
-20122_JOI.json: header_gen_pdf db/20122.pdf
-	./header_gen_pdf db/20122.pdf 20122_JOI.json 20122
-
 header_gen: c/header_gen.c
 header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
-20121_FLO.json: header_gen db/20121.db
-	./header_gen db/20121.db 20121_FLO.json
-20122_FLO.json: header_gen db/20122.db
-	./header_gen db/20122.db 20122_FLO.json
+
+%.json: header_gen db/%*.txt
+	./$^ $@
 
 cursos_turmas: c/header_gen.c
 	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
@@ -53,7 +45,7 @@ load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 ping.cgi: c/ping.c
 access.cgi: c/access.c
 
-save2.cgi load2.cgi ping.cgi access.cgi header_gen header_gen_pdf:
+save2.cgi load2.cgi ping.cgi access.cgi header_gen:
 	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
 
 %.gz: %
@@ -75,9 +67,8 @@ else
 endif
 
 clean::
-	rm -f $(DBs) $(addsuffix .gz,$(DBs))
+	rm -f header_gen $(DBs) $(addsuffix .gz,$(DBs))
 	rm -f cursos_turmas cursos_turmas.js
-	rm -f header_gen_pdf header_gen
 	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js index.html install *~ .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 

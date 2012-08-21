@@ -11,19 +11,21 @@ function Database() {
         return tmp.length * value;
     };
 }
-Database.prototype.set_db = function(campus, semestre) {
-    if (this.db[campus] && this.db[campus][semestre])
-        this.cur_db = this.db[campus][semestre];
+Database.prototype.set_db = function(semestre, campus) {
+    if (this.db[semestre] && this.db[semestre][campus])
+        this.cur_db = this.db[semestre][campus];
     else
         return -1;
     return 0;
 }
-Database.prototype.add = function(campus, semestre, array) {
+Database.prototype.add = function(semestre, array) {
     var self = this;
-    if (!this.db[campus])
-        this.db[campus] = new Array();
-    this.db[campus][semestre] = new Array();
-    array.forEach(function(k) {
+    self.db[semestre] = new Array();
+
+    for (var campus in array) {
+        var campus_array = array[campus];
+        self.db[semestre][campus] = new Array();
+    campus_array.forEach(function(k) {
         var i = new Object();
         i.codigo     = k[0];
         i.nome_ascii = k[1];
@@ -42,9 +44,10 @@ Database.prototype.add = function(campus, semestre, array) {
             n.professores       = m[8];
             i.turmas.push(n);
         });
-        self.db[campus][semestre][i.codigo] = i;
-        self.db[campus][semestre].push(i);
+        self.db[semestre][campus][i.codigo] = i;
+        self.db[semestre][campus].push(i);
     });
+    }
 }
 Database.prototype.fetch = function(string, page) {
     string = string.toUpperCase().replace(/À/g, "A")
