@@ -693,7 +693,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         var f_length = 0;
         var f_loaded = 0;
 
-console.log("source " + src);
         var req = new XMLHttpRequest();
         req.onreadystatechange = function() {
             switch (this.readyState) {
