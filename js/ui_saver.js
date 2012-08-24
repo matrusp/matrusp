@@ -65,10 +65,10 @@ function UI_saver(id)
     menu_op.innerHTML = "upload de seu HD";
     menu_op.onclick = function() { self.cb_upload(); };
     menu.appendChild(menu_op);
-    var menu_op = document.createElement("div");
+ /* var menu_op = document.createElement("div");
     menu_op.innerHTML = "abrir MatrUFSC 2012-1";
     menu_op.onclick = function() { window.open("/matrufsc-20121", "_notab"); };
-    menu.appendChild(menu_op);
+    menu.appendChild(menu_op); */
 
     self.enabled = true;
     self.disable = function() {
