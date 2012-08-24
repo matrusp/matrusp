@@ -517,7 +517,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     ui_saver.cb_save = function(identificador) {
         self.save(identificador);
     };
-    ui_saver.cb_load = function(identificador) {
+    ui_saver.cb_load = function(identificador, cb_error) {
         if (!identificador || identificador == "") {
             ui_logger.set_text("identificador invalido", "lightcoral");
             return;
@@ -536,6 +536,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                     ui_logger.set_text("erro ao abrir horário para '" + this.loadstr + "' " +
                     "<span style='font-size:10px;'>(horários gravados para 2012-1 estão no" +
                     " <a target='_blank' href='/matrufsc-20121'>MatrUFSC antigo</a>)</span>", "lightcoral");
+                    if (cb_error)
+                        cb_error();
                 } else {
                     self.load(state_to_load, identificador);
                     ui_logger.set_text("horário para '" + this.loadstr + "' foi carregado", "lightgreen");
@@ -922,9 +924,11 @@ window.onload = function() {
             ui_logger.set_text("erro lendo estado da cache do navegador", "lightcoral");
             persistence.clear_state();
         }
-    } else {
+    }
+    if (!database_ok) {
         if (identificador != null && identificador != "") {
-            ui_saver.cb_load(identificador);
+            ui_saver.cb_load(identificador, function(){ main.set_db("20122", "FLO"); });
+            database_ok = true;
         }
     }
     if (!database_ok)
