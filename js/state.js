@@ -46,6 +46,8 @@ function State()
             state_materia.codigo   = materia.codigo.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/&/g,"&amp;");
             state_materia.nome     = materia.nome.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/&/g,"&amp;");
             state_materia.cor      = materia.cor;
+            state_materia.campus   = materia.campus;
+            state_materia.semestre = materia.semestre;
             state_materia.turmas   = new Array();
             for (var j = 0; j < materia.turmas.length; j++) {
                 var state_turma = new Object();
@@ -75,7 +77,7 @@ function State()
 
     self.save = function() {
         var state_to_return = new Object();
-        state_to_return.versao = 4;
+        state_to_return.versao = 5;
         state_to_return.campus = self.campus;
         state_to_return.semestre = self.semestre;
         state_to_return.planos = new Array();
@@ -95,6 +97,10 @@ function State()
             var materia = plano.materias.add_json(plano_to_load.materias[i]);
             if (!materia)
                 return -1;
+            if (!materia.semestre)
+                materia.semestre = self.semestre;
+            if (!materia.campus)
+                materia.campus   = self.campus;
             materia.codigo = materia.codigo.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
             materia.nome   = materia.nome.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
         }
@@ -102,7 +108,7 @@ function State()
     };
 
     self.load = function(state_to_load) {
-        if (state_to_load.versao > 4)
+        if (state_to_load.versao > 5)
             return -2;
 
         self.campus = state_to_load.campus;
