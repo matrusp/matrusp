@@ -148,7 +148,10 @@ function State()
             var m_issues = [];
             m_issues.materia = materias[i];
             var state_materia = materias[i];
-            var db_materia = database.full(state_materia.codigo);
+            var db_materia;
+            if (database.db[state_materia.semestre] &&
+                database.db[state_materia.semestre][state_materia.campus])
+                db_materia = database.db[state_materia.semestre][state_materia.campus][state_materia.codigo];
             if (!db_materia) {
                 if (/^[A-Z]{3}[0-9]{4}$/.test(state_materia.codigo) &&
                    !/^XXX[0-9]{4}$/.test(state_materia.codigo)) {
