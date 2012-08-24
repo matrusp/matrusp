@@ -12,7 +12,7 @@ function UI_updates(id)
     /* functions */
     self.show = function() { panel.style.display = "block"; };
     self.hide = function() { panel.style.display = "none"; };
-    self.reset = function() { panel.innerHTML = ""; };
+    self.reset = function() { panel.innerHTML = ""; self.hide(); };
     self.fill = function(issues) {
         self.reset();
 
