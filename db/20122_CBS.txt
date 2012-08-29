@@ -3,14 +3,14 @@ Host: www.cagr.ufsc.br
 Connection: keep-alive
 Content-Length: 495
 Origin: https://www.cagr.ufsc.br
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1
 Content-Type: application/x-www-form-urlencoded; charset=UTF-8
 Accept: */*
 Referer: https://www.cagr.ufsc.br/modules/aluno/cadastroTurmas/
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
-Cookie: __utma=80547414.523060316.1341696159.1341696159.1341696159.1; __utmz=80547414.1341696159.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=01AC2F3242A87798E44E52D7D16AD057; __utma=130377680.1816309015.1321197055.1345427822.1345524618.49; __utmb=130377680.4.10.1345524618; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+Cookie: __utma=189210164.170773516.1327636408.1345745597.1346265147.4; __utmb=189210164.1.10.1346265147; __utmz=189210164.1346265147.4.4.utmcsr=ufsc.br|utmccn=(referral)|utmcmd=referral|utmcct=/; JSESSIONID=ED7BBC4342A11C1277E1CA8BE3471864; __utma=130377680.1816309015.1321197055.1345745943.1346265431.52; __utmb=130377680.6.10.1346265431; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
 
 AJAXREQUEST=_viewRoot&formBusca%3AselectSemestre=20122&formBusca%3AselectDepartamento=&formBusca%3AselectCampus=3&formBusca%3AselectCursosGraduacao=0&formBusca%3AcodigoDisciplina=&formBusca%3Aj_id135_selection=&formBusca%3AfilterDisciplina=&formBusca%3Aj_id139=&formBusca%3Aj_id143_selection=&formBusca%3AfilterProfessor=&formBusca%3AselectDiaSemana=0&formBusca%3AselectHorarioSemana=&formBusca=formBusca&autoScroll=&javax.faces.ViewState=j_id3&formBusca%3AdataScroller1=1&AJAX%3AEVENTS_COUNT=1&
 HTTP/1.1 200 OK
@@ -23,7 +23,7 @@ Expires: 0
 Pragma: no-cache
 Content-Type: text/xml;charset=UTF-8
 Vary: Accept-Encoding
-Date: Tue, 21 Aug 2012 04:58:07 GMT
+Date: Wed, 29 Aug 2012 18:44:15 GMT
 Content-Length: 135923
 
 <?xml version="1.0"?>
@@ -72,14 +72,14 @@ Host: www.cagr.ufsc.br
 Connection: keep-alive
 Content-Length: 495
 Origin: https://www.cagr.ufsc.br
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1
 Content-Type: application/x-www-form-urlencoded; charset=UTF-8
 Accept: */*
 Referer: https://www.cagr.ufsc.br/modules/aluno/cadastroTurmas/
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
-Cookie: __utma=80547414.523060316.1341696159.1341696159.1341696159.1; __utmz=80547414.1341696159.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=01AC2F3242A87798E44E52D7D16AD057; __utma=130377680.1816309015.1321197055.1345427822.1345524618.49; __utmb=130377680.4.10.1345524618; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+Cookie: __utma=189210164.170773516.1327636408.1345745597.1346265147.4; __utmb=189210164.1.10.1346265147; __utmz=189210164.1346265147.4.4.utmcsr=ufsc.br|utmccn=(referral)|utmcmd=referral|utmcct=/; JSESSIONID=ED7BBC4342A11C1277E1CA8BE3471864; __utma=130377680.1816309015.1321197055.1345745943.1346265431.52; __utmb=130377680.6.10.1346265431; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
 
 AJAXREQUEST=_viewRoot&formBusca%3AselectSemestre=20122&formBusca%3AselectDepartamento=&formBusca%3AselectCampus=3&formBusca%3AselectCursosGraduacao=0&formBusca%3AcodigoDisciplina=&formBusca%3Aj_id135_selection=&formBusca%3AfilterDisciplina=&formBusca%3Aj_id139=&formBusca%3Aj_id143_selection=&formBusca%3AfilterProfessor=&formBusca%3AselectDiaSemana=0&formBusca%3AselectHorarioSemana=&formBusca=formBusca&autoScroll=&javax.faces.ViewState=j_id3&formBusca%3AdataScroller1=2&AJAX%3AEVENTS_COUNT=1&
 HTTP/1.1 200 OK
@@ -92,7 +92,7 @@ Expires: 0
 Pragma: no-cache
 Content-Type: text/xml;charset=UTF-8
 Vary: Accept-Encoding
-Date: Tue, 21 Aug 2012 04:58:09 GMT
+Date: Wed, 29 Aug 2012 18:44:16 GMT
 Content-Length: 134111
 
 <?xml version="1.0"?>
@@ -141,14 +141,14 @@ Host: www.cagr.ufsc.br
 Connection: keep-alive
 Content-Length: 495
 Origin: https://www.cagr.ufsc.br
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1
 Content-Type: application/x-www-form-urlencoded; charset=UTF-8
 Accept: */*
 Referer: https://www.cagr.ufsc.br/modules/aluno/cadastroTurmas/
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
-Cookie: __utma=80547414.523060316.1341696159.1341696159.1341696159.1; __utmz=80547414.1341696159.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=01AC2F3242A87798E44E52D7D16AD057; __utma=130377680.1816309015.1321197055.1345427822.1345524618.49; __utmb=130377680.4.10.1345524618; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+Cookie: __utma=189210164.170773516.1327636408.1345745597.1346265147.4; __utmb=189210164.1.10.1346265147; __utmz=189210164.1346265147.4.4.utmcsr=ufsc.br|utmccn=(referral)|utmcmd=referral|utmcct=/; JSESSIONID=ED7BBC4342A11C1277E1CA8BE3471864; __utma=130377680.1816309015.1321197055.1345745943.1346265431.52; __utmb=130377680.6.10.1346265431; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
 
 AJAXREQUEST=_viewRoot&formBusca%3AselectSemestre=20122&formBusca%3AselectDepartamento=&formBusca%3AselectCampus=3&formBusca%3AselectCursosGraduacao=0&formBusca%3AcodigoDisciplina=&formBusca%3Aj_id135_selection=&formBusca%3AfilterDisciplina=&formBusca%3Aj_id139=&formBusca%3Aj_id143_selection=&formBusca%3AfilterProfessor=&formBusca%3AselectDiaSemana=0&formBusca%3AselectHorarioSemana=&formBusca=formBusca&autoScroll=&javax.faces.ViewState=j_id3&formBusca%3AdataScroller1=3&AJAX%3AEVENTS_COUNT=1&
 HTTP/1.1 200 OK
@@ -161,7 +161,7 @@ Expires: 0
 Pragma: no-cache
 Content-Type: text/xml;charset=UTF-8
 Vary: Accept-Encoding
-Date: Tue, 21 Aug 2012 04:58:10 GMT
+Date: Wed, 29 Aug 2012 18:44:19 GMT
 Content-Length: 133731
 
 <?xml version="1.0"?>
@@ -210,14 +210,14 @@ Host: www.cagr.ufsc.br
 Connection: keep-alive
 Content-Length: 495
 Origin: https://www.cagr.ufsc.br
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1
 Content-Type: application/x-www-form-urlencoded; charset=UTF-8
 Accept: */*
 Referer: https://www.cagr.ufsc.br/modules/aluno/cadastroTurmas/
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
-Cookie: __utma=80547414.523060316.1341696159.1341696159.1341696159.1; __utmz=80547414.1341696159.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=01AC2F3242A87798E44E52D7D16AD057; __utma=130377680.1816309015.1321197055.1345427822.1345524618.49; __utmb=130377680.4.10.1345524618; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+Cookie: __utma=189210164.170773516.1327636408.1345745597.1346265147.4; __utmb=189210164.1.10.1346265147; __utmz=189210164.1346265147.4.4.utmcsr=ufsc.br|utmccn=(referral)|utmcmd=referral|utmcct=/; JSESSIONID=ED7BBC4342A11C1277E1CA8BE3471864; __utma=130377680.1816309015.1321197055.1345745943.1346265431.52; __utmb=130377680.6.10.1346265431; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
 
 AJAXREQUEST=_viewRoot&formBusca%3AselectSemestre=20122&formBusca%3AselectDepartamento=&formBusca%3AselectCampus=3&formBusca%3AselectCursosGraduacao=0&formBusca%3AcodigoDisciplina=&formBusca%3Aj_id135_selection=&formBusca%3AfilterDisciplina=&formBusca%3Aj_id139=&formBusca%3Aj_id143_selection=&formBusca%3AfilterProfessor=&formBusca%3AselectDiaSemana=0&formBusca%3AselectHorarioSemana=&formBusca=formBusca&autoScroll=&javax.faces.ViewState=j_id3&formBusca%3AdataScroller1=4&AJAX%3AEVENTS_COUNT=1&
 HTTP/1.1 200 OK
@@ -230,7 +230,7 @@ Expires: 0
 Pragma: no-cache
 Content-Type: text/xml;charset=UTF-8
 Vary: Accept-Encoding
-Date: Tue, 21 Aug 2012 04:58:12 GMT
+Date: Wed, 29 Aug 2012 18:44:20 GMT
 Content-Length: 134199
 
 <?xml version="1.0"?>
@@ -279,14 +279,14 @@ Host: www.cagr.ufsc.br
 Connection: keep-alive
 Content-Length: 495
 Origin: https://www.cagr.ufsc.br
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1
 Content-Type: application/x-www-form-urlencoded; charset=UTF-8
 Accept: */*
 Referer: https://www.cagr.ufsc.br/modules/aluno/cadastroTurmas/
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
-Cookie: __utma=80547414.523060316.1341696159.1341696159.1341696159.1; __utmz=80547414.1341696159.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=01AC2F3242A87798E44E52D7D16AD057; __utma=130377680.1816309015.1321197055.1345427822.1345524618.49; __utmb=130377680.4.10.1345524618; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+Cookie: __utma=189210164.170773516.1327636408.1345745597.1346265147.4; __utmb=189210164.1.10.1346265147; __utmz=189210164.1346265147.4.4.utmcsr=ufsc.br|utmccn=(referral)|utmcmd=referral|utmcct=/; JSESSIONID=ED7BBC4342A11C1277E1CA8BE3471864; __utma=130377680.1816309015.1321197055.1345745943.1346265431.52; __utmb=130377680.6.10.1346265431; __utmc=130377680; __utmz=130377680.1321197055.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
 
 AJAXREQUEST=_viewRoot&formBusca%3AselectSemestre=20122&formBusca%3AselectDepartamento=&formBusca%3AselectCampus=3&formBusca%3AselectCursosGraduacao=0&formBusca%3AcodigoDisciplina=&formBusca%3Aj_id135_selection=&formBusca%3AfilterDisciplina=&formBusca%3Aj_id139=&formBusca%3Aj_id143_selection=&formBusca%3AfilterProfessor=&formBusca%3AselectDiaSemana=0&formBusca%3AselectHorarioSemana=&formBusca=formBusca&autoScroll=&javax.faces.ViewState=j_id3&formBusca%3AdataScroller1=5&AJAX%3AEVENTS_COUNT=1&
 HTTP/1.1 200 OK
@@ -299,7 +299,7 @@ Expires: 0
 Pragma: no-cache
 Content-Type: text/xml;charset=UTF-8
 Vary: Accept-Encoding
-Date: Tue, 21 Aug 2012 04:58:12 GMT
+Date: Wed, 29 Aug 2012 18:44:21 GMT
 Content-Length: 41049
 
 <?xml version="1.0"?>
