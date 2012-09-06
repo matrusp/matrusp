@@ -26,17 +26,8 @@ main.js
 
 SRC:=$(addprefix js/,$(SRC))
 
-header_gen: c/header_gen.c
-header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
-
-%.json: header_gen db/%*.xml
+%.json: py/parse_turmas.py db/%*.xml
 	./$^ $@
-
-cursos_turmas: c/header_gen.c
-	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
-cursos_turmas: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2 -DCURSOS_TURMAS
-cursos_turmas.js: cursos_turmas db/20122.db
-	./cursos_turmas db/20122.db cursos_turmas.js
 
 save2.cgi: c/save.c
 save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
@@ -45,7 +36,7 @@ load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
 ping.cgi: c/ping.c
 access.cgi: c/access.c
 
-save2.cgi load2.cgi ping.cgi access.cgi header_gen:
+save2.cgi load2.cgi ping.cgi access.cgi:
 	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
 
 %.gz: %
@@ -67,8 +58,7 @@ else
 endif
 
 clean::
-	rm -f header_gen $(DBs) $(addsuffix .gz,$(DBs))
-	rm -f cursos_turmas cursos_turmas.js
+	rm -f $(DBs) $(addsuffix .gz,$(DBs))
 	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js index.html install *~ .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
