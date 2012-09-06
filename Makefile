@@ -29,7 +29,7 @@ SRC:=$(addprefix js/,$(SRC))
 header_gen: c/header_gen.c
 header_gen: EXTRA_FLAGS=-I/usr/include/libxml2 -lxml2
 
-%.json: header_gen db/%*.txt
+%.json: header_gen db/%*.xml
 	./$^ $@
 
 cursos_turmas: c/header_gen.c

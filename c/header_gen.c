@@ -276,9 +276,6 @@ int main(int argc, char *argv[])
 {
     const char *const start = "<?xml version=\"1.0\"?>";
     const int lstart = strlen(start);
-    const char *const end = "------------------------------------------------------------------";
-    const int lend = strlen(end);
-    int start_at, end_at;
     int fd_in = 0;
     int ret = -1;
     int i;
@@ -302,6 +299,7 @@ int main(int argc, char *argv[])
     fprintf(fp_full, "{");
 
     for (i = 1; i < argc-1; i++) {
+        int start_at = -1, end_at;
         const uint8_t *buf_in = NULL;
         char *fname_in = argv[i];
         struct stat st;
@@ -324,14 +322,16 @@ int main(int argc, char *argv[])
             goto end;
         }
 
-        for (int i = 0; i < st.st_size - lend; i++) {
+        for (int i = 0; i < st.st_size - lstart; i++) {
             if        (!strncmp((char *) &buf_in[i], start, lstart)) {
-                start_at = i;
-            } else if (!strncmp((char *) &buf_in[i], end, lend)) {
                 end_at = i;
-                extract_turmas((char *) &buf_in[start_at], end_at - start_at);
+                if (start_at != -1)
+                    extract_turmas((char *) &buf_in[start_at], end_at - start_at);
+                start_at = i;
             }
         }
+        end_at = st.st_size;
+        extract_turmas((char *) &buf_in[start_at], end_at - start_at);
 
         if (has_started)
             fprintf(fp_full, "]]\n");
