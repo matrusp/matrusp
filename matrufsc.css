@@ -243,6 +243,7 @@ body {
     text-align: center;
     padding: 2px;
     color: red;
+    font-weight: bold;
 }
 
 .ui_horario {
