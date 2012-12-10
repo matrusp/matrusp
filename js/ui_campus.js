@@ -36,11 +36,11 @@ function UI_campus(id)
     var semestre = document.createElement("select");
     var option = document.createElement("option");
     option.value = "20121";
-    option.innerHTML = "20121";
+    option.innerHTML = "2012-1";
     semestre.appendChild(option);
     var option = document.createElement("option");
     option.value = "20122";
-    option.innerHTML = "20122";
+    option.innerHTML = "2012-2";
     semestre.appendChild(option);
     ui_campus.appendChild(semestre);
 
