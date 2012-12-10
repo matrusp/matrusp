@@ -59,7 +59,9 @@ endif
 
 clean::
 	rm -f $(DBs) $(addsuffix .gz,$(DBs))
-	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js index.html install *~ .htaccess~
+	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js index.html
+	rm -rf install
+	rm -f *~ .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
 install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs)) access.cgi
