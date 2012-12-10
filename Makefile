@@ -1,4 +1,4 @@
-DBs=20121.json 20122.json
+DBs=20121.json 20122.json 20131.json
 
 all: $(DBs) save2.cgi load2.cgi ping.cgi matrufsc.js index.html
 
@@ -13,6 +13,7 @@ combobox.js \
 database.js \
 state.js \
 ui_ajuda_popup.js \
+ui_avisos.js \
 ui_campus.js \
 ui_combinacoes.js \
 ui_horario.js \

@@ -237,6 +237,14 @@ body {
     overflow: auto;
 }
 
+.ui_avisos {
+    border: 1px solid black;
+    font-size: 15px;
+    text-align: center;
+    padding: 2px;
+    color: red;
+}
+
 .ui_horario {
     background-color: #eeeeee;
     border: 1px solid black;

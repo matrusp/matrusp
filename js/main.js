@@ -2,8 +2,8 @@
  * @constructor
  */
 function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
-              ui_saver, ui_campus, ui_planos, ui_grayout, ui_updates, combo,
-              state, display, persistence, database)
+              ui_saver, ui_campus, ui_planos, ui_grayout, ui_updates, ui_avisos,
+              combo, state, display, persistence, database)
 {
     var self = this;
 
@@ -556,6 +556,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     ui_campus.cb_semestre = function(semestre) {
         self.set_db(semestre, state.campus);
         state.semestre = semestre;
+        avisar_semestre();
     }
     /* UI_planos */
     ui_planos.cb_clean = function() {
@@ -637,6 +638,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             ui_updates.fill(issues);
         }, ui_updates.hide);
     };
+    function avisar_semestre() {
+        if (state.semestre == "20131")
+            ui_avisos.set_text("As disciplinas de 2013-1 ainda estão sujeitas a alterações!");
+        else
+            ui_avisos.reset();
+    };
     self.load = function(state_to_load, identificador) {
         ui_combinacoes.reset();
         ui_materias.reset();
@@ -660,6 +667,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
 
         ui_campus.set_campus(state.campus);
         ui_campus.set_semestre(state.semestre);
+        avisar_semestre();
         self.set_db(state.semestre, state.campus, self.issues);
         if (identificador)
             persistence.write_id(identificador);
@@ -804,6 +812,7 @@ window.onload = function() {
     var ui_planos      = new UI_planos("planos");
     var ui_saver       = new UI_saver("saver");
     var ui_updates     = new UI_updates("updates_list");
+    var ui_avisos      = new UI_avisos("avisos");
 
     var ui_grayout     = new UI_grayout("grayout");
     ui_grayout.cb_onclick = function() {
@@ -837,7 +846,7 @@ window.onload = function() {
     var combo   = new Combobox("materias_input", "materias_suggestions", ui_logger, database);
     var main   = new Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes,
                           ui_horario, ui_saver, ui_campus, ui_planos, ui_grayout,
-                          ui_updates, combo,
+                          ui_updates, ui_avisos, combo,
                           state, display, persistence, database);
 
     combo.cb_add_materia = main.add_materia;

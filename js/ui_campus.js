@@ -42,6 +42,10 @@ function UI_campus(id)
     option.value = "20122";
     option.innerHTML = "2012-2";
     semestre.appendChild(option);
+    var option = document.createElement("option");
+    option.value = "20131";
+    option.innerHTML = "2013-1";
+    semestre.appendChild(option);
     ui_campus.appendChild(semestre);
 
     semestre.value = "20122";
