@@ -195,10 +195,12 @@ function Materias()
         return get_color(taken+1);
     };
 
-    function new_item(codigo, nome) {
+    function new_item(codigo, nome, campus, semestre) {
         if (materias[codigo])
             return null;
         var materia = new Materia();
+        materia.campus = campus;
+        materia.semestre = semestre;
         materia.codigo = codigo;
         materia.nome   = nome;
         materia.cor    = get_color();
@@ -252,7 +254,7 @@ function Materias()
                 }
         materia.fix_horarios();
     }
-    function add_json(materia)
+    function add_json(materia, campus, semestre)
     {
         if (materias[materia.codigo])
             return null;
@@ -262,6 +264,10 @@ function Materias()
             materia.cor      = get_color();
         else
             color_taken(materia.cor);
+        if (!materia.campus)
+            materia.campus   = campus;
+        if (!materia.semestre)
+            materia.semestre = semestre;
         materia.fix_horarios();
 
         materias[materia.codigo] = materia;

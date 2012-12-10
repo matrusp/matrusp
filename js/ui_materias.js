@@ -47,6 +47,11 @@ function UI_materias(id)
         data.innerHTML = "Turma";
         row.appendChild(data);
         var data = document.createElement("th");
+        data.style.textAlign = "center";
+        data.style.width = "60px";
+        data.innerHTML = "Semestre";
+        row.appendChild(data);
+        var data = document.createElement("th");
         data.id = "combinacoes";
         row.appendChild(data);
         thead.appendChild(row);
@@ -166,6 +171,14 @@ function UI_materias(id)
         data.onclick = onclick;
         data.style.width = "50px";
         materia.ui_turma = data;
+        row.appendChild(data);
+        var data = document.createElement("td");
+        data.onclick = onclick;
+        data.style.textAlign = "center";
+        data.style.width = "60px";
+        data.innerHTML = "";
+        var semestre_str = materia.semestre.substring(0, 4) + "-" + materia.semestre.substring(4, 5);
+        data.appendChild(document.createTextNode(semestre_str));
         row.appendChild(data);
         var data = document.createElement("td");
         data.ondblclick = function() { edit_start(this.parentNode, "nome"); };

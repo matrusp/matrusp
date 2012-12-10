@@ -94,13 +94,9 @@ function State()
         plano.materias.selected = plano_to_load.materia;
         plano.combinacao        = plano_to_load.combinacao;
         for (var i = 0; i < plano_to_load.materias.length; i++) {
-            var materia = plano.materias.add_json(plano_to_load.materias[i]);
+            var materia = plano.materias.add_json(plano_to_load.materias[i], self.campus, self.semestre);
             if (!materia)
                 return -1;
-            if (!materia.semestre)
-                materia.semestre = self.semestre;
-            if (!materia.campus)
-                materia.campus   = self.campus;
             materia.codigo = materia.codigo.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
             materia.nome   = materia.nome.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
         }

@@ -73,7 +73,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             var str = new_atividade_name();
             var codigo = "XXX" + str;
         } while (state.plano.materias.get(codigo));
-        var materia = state.plano.materias.new_item(codigo, nome);
+        var materia = state.plano.materias.new_item(codigo, nome, state.campus, state.semestre);
         state.plano.materias.new_turma(materia);
         ui_materias.add(materia);
         ui_turmas.create(materia);
@@ -82,7 +82,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         update_all();
     };
     function add_materia(result) {
-        var materia = state.plano.materias.add_json(result);
+        var materia = state.plano.materias.add_json(result, state.campus, state.semestre);
         if (!materia) {
             ui_logger.set_text("'" + result.codigo + "' ja foi adicionada", "lightcoral");
             return;
@@ -510,6 +510,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         display.reset();
 
         state.reset();
+        ui_campus.set_campus(state.campus);
+        ui_campus.set_semestre(state.semestre);
         persistence.reset();
         ui_saver.reset();
         ui_planos.startup(state);
