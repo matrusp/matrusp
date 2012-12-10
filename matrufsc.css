@@ -71,6 +71,7 @@ body {
 .ui_saver_menu {
     display: none;
     background-color: #eeeeee;
+    top: 20px;
     width: 190px;
     left: -171px;
     position: absolute;
