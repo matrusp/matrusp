@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/home/caldo_de_cana/env/bin/python
 
-from bs4 import BeautifulSoup
+from BeautifulSoup import BeautifulSoup
 import cookielib
 import urllib2
 import urllib
