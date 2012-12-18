@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import gzip
 from email.utils import formatdate
 import os
 
@@ -85,14 +86,30 @@ def run(environ, start_response):
 
     elif path0 == 'load2.cgi':
         fname = encoded_fname(environ)
-        fp = open(dados_prefix + fname, 'rb')
-        data = fp.read()
-        start_response('200 OK', [('Content-Type', 'application/json'), ('Expires', '-1')])
+        data = None
+        headers = [('Content-Type', 'application/json'), ('Expires', '-1')]
+        if use_gzip:
+            try:
+                fp = open(dados_prefix + fname + '.gz', 'rb')
+                data = fp.read()
+                headers.append(('Content-Encoding', 'gzip'))
+            except IOError:
+                pass
+        if data is None:
+            fp = open(dados_prefix + fname, 'rb')
+            data = fp.read()
+        fp.close()
+        start_response('200 OK', headers)
         return [data]
     elif path0 == 'save2.cgi':
         fname = encoded_fname(environ)
+        data = environ['wsgi.input'].read()
         fp = open(dados_prefix + fname, 'wb')
-        fp.write(environ['wsgi.input'].read())
+        fp.write(data)
+        fp.close()
+        fp = gzip.open(dados_prefix + fname + '.gz', 'wb')
+        fp.write(data)
+        fp.close()
         start_response('200 OK', [('Content-Type', 'text/html'), ('Expires', '-1')])
         return ['OK']
     elif path0 == 'ping.cgi':
