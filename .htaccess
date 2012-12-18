@@ -1,3 +1,4 @@
-RewriteEngine on
-RewriteCond %{REQUEST_URI} !^/matrufsc/(save2|load2|ping).cgi$
-RewriteRule ^(.*)$ access.cgi
+RewriteEngine On
+RewriteBase /matrufsc
+RewriteRule ^dispatch\.fcgi/ - [L]
+RewriteRule ^(.*)$ dispatch.fcgi/$1 [L]

@@ -1,6 +1,6 @@
 DBs=20121.json 20122.json 20131.json
 
-all: $(DBs) save2.cgi load2.cgi ping.cgi matrufsc.js index.html
+all: $(DBs) matrufsc.py matrufsc.js index.html
 
 SRC:=json2.js \
 compat.js \
@@ -30,22 +30,15 @@ SRC:=$(addprefix js/,$(SRC))
 %.json: py/parse_turmas.py db/%*.xml
 	./$^ $@
 
-save2.cgi: c/save.c
-save2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
-load2.cgi: c/load.c
-load2.cgi: EXTRA_FLAGS=-DHOME=\"${HOME}\"
-ping.cgi: c/ping.c
-access.cgi: c/access.c
-
-save2.cgi load2.cgi ping.cgi access.cgi:
-	gcc -Wall -O3 -std=c99 -o $@ $< ${EXTRA_FLAGS}
-
 %.gz: %
 	gzip --best --no-name -c $< > $@
 
 ifdef RELEASE
 sed_RELEASE=-e "s/if(0)/if(1)/"
 endif
+
+matrufsc.py: py/matrufsc.py
+	sed "s|\$$HOME|${HOME}|" py/matrufsc.py | tee matrufsc.py > /dev/null
 
 index.html: html/matrufsc.html html/ajuda.html
 	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee index.html > /dev/null
@@ -60,18 +53,18 @@ endif
 
 clean::
 	rm -f $(DBs) $(addsuffix .gz,$(DBs))
-	rm -rf save2.cgi load2.cgi ping.cgi access.cgi matrufsc.js index.html
+	rm -rf matrufsc.js index.html
 	rm -rf install
 	rm -f $(addsuffix /*~,. c db html js py) .htaccess~
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
-install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs)) access.cgi
+install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs))
 	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
 	cp $(addsuffix .gz,$(DBs)) install/
-	cp access.cgi .htaccess install/
 
 install:: all
 	mkdir -p install
-	cp matrufsc.css matrufsc.js index.html install/
+	cp matrufsc.css matrufsc.js matrufsc.py index.html install/
 	cp $(DBs) install/
-	cp save2.cgi load2.cgi ping.cgi install/
+	cp py/dispatch.fcgi install/
+	cp .htaccess install/

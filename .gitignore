@@ -11,9 +11,6 @@ cursos_turmas
 cursos_turmas.js
 header_gen
 header_gen_pdf
-load2.cgi
 matrufsc.js
 matrufsc.js.gz
-save2.cgi
-access.cgi
-ping.cgi
+matrufsc.py
