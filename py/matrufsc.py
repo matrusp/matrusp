@@ -103,13 +103,19 @@ def run(environ, start_response):
             try:
                 fp = open(dados_prefix + fname + '.gz', 'rb')
                 data = fp.read()
+                fp.close()
                 headers.append(('Content-Encoding', 'gzip'))
             except IOError:
                 pass
         if data is None:
-            fp = open(dados_prefix + fname, 'rb')
-            data = fp.read()
-        fp.close()
+            try:
+                fp = open(dados_prefix + fname, 'rb')
+                data = fp.read()
+                fp.close()
+            except IOError:
+                pass
+        if data is None:
+            data = ''
         start_response('200 OK', headers)
         return [data]
     elif path0 == 'save2.cgi':
