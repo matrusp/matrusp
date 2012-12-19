@@ -1,6 +1,6 @@
 DBs=20121.json 20122.json 20131.json
 
-all: $(DBs) matrufsc.py matrufsc.js index.html
+all: $(DBs) matrufsc.py dispatch.fcgi matrufsc.js index.html
 
 SRC:=json2.js \
 compat.js \
@@ -40,6 +40,9 @@ endif
 matrufsc.py: py/matrufsc.py
 	sed "s|\$$HOME|${HOME}|" py/matrufsc.py | tee matrufsc.py > /dev/null
 
+dispatch.fcgi: py/dispatch.fcgi
+	sed "s|\$$HOME|${HOME}|" py/dispatch.fcgi | tee dispatch.fcgi > /dev/null
+
 index.html: html/matrufsc.html html/ajuda.html
 	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee index.html > /dev/null
 
@@ -64,7 +67,6 @@ install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .g
 
 install:: all
 	mkdir -p install
-	cp matrufsc.css matrufsc.js matrufsc.py index.html install/
+	cp matrufsc.css matrufsc.js dispatch.fcgi matrufsc.py index.html install/
 	cp $(DBs) install/
-	cp py/dispatch.fcgi install/
 	cp .htaccess install/
