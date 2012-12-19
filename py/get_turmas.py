@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from bs4 import BeautifulSoup
+from xml.etree import cElementTree
 from StringIO import StringIO
 import cookielib
 import urllib2
@@ -65,6 +66,22 @@ page_form = {
 'AJAX:EVENTS_COUNT': '1',
         }
 
+def find_id(xml, id):
+    for x in xml:
+        if x.get('id') == id:
+            return x
+        else:
+            y = find_id(x, id)
+            if y is not None:
+                return y
+    return None
+def go_on(xml):
+    for x in find_id(xml, 'formBusca:dataScroller1_table')[0][0]:
+        onclick = x.get('onclick')
+        if onclick is not None and 'next' in onclick:
+            return True
+    return False
+
 campus_str = [ 'EaD', 'FLO', 'JOI', 'CBS', 'ARA' ]
 for campus in range(1, 5):
     print('campus ' + campus_str[campus])
@@ -82,8 +99,8 @@ for campus in range(1, 5):
         else:
             data = resp.read()
         outfile.write(data)
-        soup = BeautifulSoup(data)
-        if not 'next' in str(soup.find(id='formBusca:dataScroller1_table').tr):
+        xml = cElementTree.fromstring(data)
+        if not go_on(xml):
             break
         pagina = pagina + 1
     outfile.close()
