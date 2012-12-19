@@ -2,6 +2,8 @@
 
 import gzip
 from email.utils import formatdate
+from email.utils import parsedate
+import calendar
 import os
 
 arquivos = { 'index.html'   : { 'content_type': 'text/html'              },
@@ -54,7 +56,16 @@ def run(environ, start_response):
             fp = open(fname, 'rb')
             arquivo['uncompressed_data'  ] = fp.read()
             arquivo['uncompressed_length'] = str(os.path.getsize(fname))
-            arquivo['last_modified_time' ] = formatdate(timeval=os.path.getmtime(fname), localtime=False, usegmt=True)
+            arquivo['last_modified_time' ] = os.path.getmtime(fname)
+            arquivo['last_modified_str'  ] = formatdate(arquivo['last_modified_time'], False, True)
+
+        try:
+            since_time = calendar.timegm(parsedate(environ['HTTP_IF_MODIFIED_SINCE']))
+            if arquivo['last_modified_time'] <= since_time:
+                start_response('304 Not Modified', [])
+                return ['']
+        except KeyError:
+            pass
 
         content_length = arquivo['uncompressed_length']
         content = arquivo['uncompressed_data']
@@ -73,7 +84,7 @@ def run(environ, start_response):
 
         headers = [('Content-Type', arquivo['content_type']),
 #                  ('Expires', '-1'),
-                   ('Last-Modified', arquivo['last_modified_time']),
+                   ('Last-Modified', arquivo['last_modified_str']),
                    ('X-Uncompressed-Content-Length', arquivo['uncompressed_length']),
                    ('Content-Length', content_length),
                   ]
