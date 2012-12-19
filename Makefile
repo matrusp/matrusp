@@ -70,5 +70,6 @@ install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .g
 install:: all
 	mkdir -p install
 	cp matrufsc.css matrufsc.js dispatch.fcgi matrufsc.py index.html install/
+	chmod 755 install/dispatch.fcgi install/matrufsc.py
 	cp $(DBs) install/
 	cp .htaccess install/
