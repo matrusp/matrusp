@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
 from bs4 import BeautifulSoup
+from StringIO import StringIO
 import cookielib
 import urllib2
 import urllib
+import gzip
 import sys
 
 if len(sys.argv) < 3:
@@ -41,6 +43,7 @@ viewState = soup.find(id='javax.faces.ViewState')['value']
 
 print('- Pegando banco de dados')
 request = urllib2.Request('https://www.cagr.ufsc.br/modules/aluno/cadastroTurmas/index.xhtml')
+request.add_header('Accept-encoding', 'gzip')
 page_form = {
 'AJAXREQUEST': '_viewRoot',
 'formBusca:selectSemestre': semestre,
@@ -71,9 +74,15 @@ for campus in range(1, 5):
     while 1:
         print(' pagina %02d' % pagina)
         page_form['formBusca:dataScroller1'] = pagina
-        resp = opener.open(request, urllib.urlencode(page_form)).read()
-        outfile.write(resp)
-        soup = BeautifulSoup(resp)
+        resp = opener.open(request, urllib.urlencode(page_form))
+        if resp.info().get('Content-Encoding') == 'gzip':
+            buf = StringIO(resp.read())
+            f = gzip.GzipFile(fileobj=buf)
+            data = f.read()
+        else:
+            data = resp.read()
+        outfile.write(data)
+        soup = BeautifulSoup(data)
         if not 'next' in str(soup.find(id='formBusca:dataScroller1_table').tr):
             break
         pagina = pagina + 1
