@@ -24,6 +24,7 @@ def dispatch(environ, start_response):
     except:
         now = datetime.datetime.now()
         fp = open(logs_prefix + str(now.year) + '_' + str(now.month) + '_' + str(now.day) + '.log', 'a')
+        fp.write('============================================================\n')
         fp.write(str(now))
         fp.write('\n')
         fp.write(str(environ))
