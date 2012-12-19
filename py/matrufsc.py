@@ -55,6 +55,7 @@ def run(environ, start_response):
             fname = path0
             fp = open(fname, 'rb')
             arquivo['uncompressed_data'  ] = fp.read()
+            fp.close()
             arquivo['uncompressed_length'] = str(os.path.getsize(fname))
             arquivo['last_modified_time' ] = os.path.getmtime(fname)
             arquivo['last_modified_str'  ] = formatdate(arquivo['last_modified_time'], False, True)
@@ -76,6 +77,7 @@ def run(environ, start_response):
                 fname = path0 + '.gz'
                 fp = open(fname, 'rb')
                 arquivo['compressed_data'  ] = fp.read()
+                fp.close()
                 arquivo['compressed_length'] = str(os.path.getsize(fname))
 
             content_length = arquivo['compressed_length']
