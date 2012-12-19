@@ -42,6 +42,7 @@ matrufsc.py: py/matrufsc.py
 
 dispatch.fcgi: py/dispatch.fcgi
 	sed "s|\$$HOME|${HOME}|" py/dispatch.fcgi | tee dispatch.fcgi > /dev/null
+	-[ -f pythonpath ] && sed "s|/usr/bin/python|$$(cat pythonpath)|" dispatch.fcgi > dispatch.fcgi2 && mv dispatch.fcgi2 dispatch.fcgi
 
 index.html: html/matrufsc.html html/ajuda.html
 	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee index.html > /dev/null
@@ -59,6 +60,7 @@ clean::
 	rm -rf matrufsc.js index.html
 	rm -rf install
 	rm -f $(addsuffix /*~,. c db html js py) .htaccess~
+	rm -f matrufsc.py dispatch.fcgi
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
 install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs))
