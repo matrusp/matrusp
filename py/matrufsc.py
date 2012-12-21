@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 
 import gzip
 from email.utils import formatdate
@@ -101,21 +102,18 @@ def run(environ, start_response):
         fname = encoded_fname(environ)
         data = None
         headers = [('Content-Type', 'application/json'), ('Expires', '-1')]
-        if use_gzip:
-            try:
+        try:
+            # os arquivos estão em gzip. se gzip for pedido, o arquivo é
+            # aberto normalmente e não é decodificado
+            if use_gzip:
                 fp = open(dados_prefix + fname + '.gz', 'rb')
-                data = fp.read()
-                fp.close()
                 headers.append(('Content-Encoding', 'gzip'))
-            except IOError:
-                pass
-        if data is None:
-            try:
-                fp = open(dados_prefix + fname, 'rb')
-                data = fp.read()
-                fp.close()
-            except IOError:
-                pass
+            else:
+                fp = gzip.open(dados_prefix + fname + '.gz', 'rb')
+            data = fp.read()
+            fp.close()
+        except IOError:
+            pass
         if data is None:
             data = ''
         start_response('200 OK', headers)
@@ -123,9 +121,6 @@ def run(environ, start_response):
     elif path0 == 'save2.cgi':
         fname = encoded_fname(environ)
         data = environ['wsgi.input'].read()
-        fp = open(dados_prefix + fname, 'wb')
-        fp.write(data)
-        fp.close()
         fp = gzip.open(dados_prefix + fname + '.gz', 'wb')
         fp.write(data)
         fp.close()
