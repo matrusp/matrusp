@@ -309,37 +309,22 @@ function UI_turmas(id)
         row.style.backgroundColor = "#eeeeee";
         row.onmouseover = mouseout_turma;
         var data = document.createElement("td");
-        var button = document.createElement("div");
-        button.className = "ui_turmas_all_menu_v";
-        button.innerHTML = "V";
-        button.onselectstart = function () { return false; };
-        data.appendChild(button);
-        self.button_menu = button;
-        var menu = document.createElement("div");
-        menu.className = "ui_turmas_all_menu";
-        button.appendChild(menu);
-        var menu_op = document.createElement("div");
-        menu_op.innerHTML = "selecionar tudo";
-        menu_op.onclick = function(e) {
+
+        var dropdown_menu = new widget_dropdown_menu(data, 130, 5, false);
+        dropdown_menu.add("selecionar tudo", function(e) {
             for (var i in current_materia.turmas)
                 self.cb_changed(current_materia.turmas[i], true);
             stop_propagation(e);
             self.cb_updated(current_materia);
-        };
-        menu.appendChild(menu_op);
-        var menu_op = document.createElement("div");
-        menu_op.innerHTML = "selecionar nada";
-        menu_op.onclick = function(e) {
+        });
+        dropdown_menu.add("selecionar nada", function(e) {
             for (var i in current_materia.turmas)
                 self.cb_changed(current_materia.turmas[i], false);
             stop_propagation(e);
             self.cb_updated(current_materia);
-        };
-        menu.appendChild(menu_op);
-        var menu_op = document.createElement("div");
-        menu_op.innerHTML = "adicionar turma";
-        menu_op.onclick = function(e) { self.cb_new_turma(); };
-        menu.appendChild(menu_op);
+        });
+        dropdown_menu.add("adicionar turma", function(e) { self.cb_new_turma(); });
+
         data.style.width = "22px";
         row.appendChild(data);
         var data = document.createElement("td");

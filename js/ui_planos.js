@@ -11,37 +11,11 @@ function UI_planos(id)
     var ui_planos = document.getElementById(id).parentNode;
     ui_planos.className = "ui_planos";
 
-    var button = document.createElement("span");
-    button.className = "ui_planos_menu_v";
-    button.innerHTML = "V";
-    button.onselectstart = function () { return false; };
-    ui_planos.appendChild(button);
-    self.button_menu = button;
-
-    var menu = document.createElement("div");
-    menu.className = "ui_planos_menu";
-    button.appendChild(menu);
-
-    var menu_op = document.createElement("div");
-    self.menu_limpar = menu_op;
-    menu_op.innerHTML = "Limpar plano atual";
-    menu_op.onclick = function() { self.cb_clean(); };
-    menu.appendChild(menu_op);
-    var menu_op = document.createElement("div");
-    self.menu_copiar1 = menu_op;
-    menu_op.innerHTML = "Copiar plano atual";
-    menu_op.onclick = function() { self.cb_dup(this.ix); };
-    menu.appendChild(menu_op);
-    var menu_op = document.createElement("div");
-    self.menu_copiar2 = menu_op;
-    menu_op.innerHTML = "Copiar plano atual";
-    menu_op.onclick = function() { self.cb_dup(this.ix); };
-    menu.appendChild(menu_op);
-    var menu_op = document.createElement("div");
-    self.menu_copiar3 = menu_op;
-    menu_op.innerHTML = "Copiar plano atual";
-    menu_op.onclick = function() { self.cb_dup(this.ix); };
-    menu.appendChild(menu_op);
+    var dropdown_menu = new widget_dropdown_menu(ui_planos, 180, 2, false);
+    dropdown_menu.add("Limpar plano atual", function() { self.cb_clean();      });
+    dropdown_menu.add("Copiar plano atual", function() { self.cb_dup(this.ix); });
+    dropdown_menu.add("Copiar plano atual", function() { self.cb_dup(this.ix); });
+    dropdown_menu.add("Copiar plano atual", function() { self.cb_dup(this.ix); });
 
     function reset() {
         self.planos.forEach(function(plano) {
@@ -70,16 +44,16 @@ function UI_planos(id)
                 index = i;
                 break;
             }
-        self.menu_limpar.innerHTML = "Limpar \"" + plano.nome + "\"";
+        dropdown_menu.opcoes[0].innerHTML = "Limpar \"" + plano.nome + "\"";
         if (i == o) o++;
-        self.menu_copiar1.ix = o;
-        self.menu_copiar1.innerHTML = "Copiar para \"" + self.planos[o].nome + "\"";
+        dropdown_menu.opcoes[1].ix = o;
+        dropdown_menu.opcoes[1].innerHTML = "Copiar para \"" + self.planos[o].nome + "\"";
         o++; if (i == o) o++;
-        self.menu_copiar2.ix = o;
-        self.menu_copiar2.innerHTML = "Copiar para \"" + self.planos[o].nome + "\"";
+        dropdown_menu.opcoes[2].ix = o;
+        dropdown_menu.opcoes[2].innerHTML = "Copiar para \"" + self.planos[o].nome + "\"";
         o++; if (i == o) o++;
-        self.menu_copiar3.ix = o;
-        self.menu_copiar3.innerHTML = "Copiar para \"" + self.planos[o].nome + "\"";
+        dropdown_menu.opcoes[3].ix = o;
+        dropdown_menu.opcoes[3].innerHTML = "Copiar para \"" + self.planos[o].nome + "\"";
         plano.span.style.backgroundColor = "black";
         plano.span.style.color = "#eeeeee";
         plano.span.onmouseout  = function() { };

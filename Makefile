@@ -12,6 +12,7 @@ display.js \
 combobox.js \
 database.js \
 state.js \
+widgets.js \
 ui_ajuda_popup.js \
 ui_avisos.js \
 ui_campus.js \

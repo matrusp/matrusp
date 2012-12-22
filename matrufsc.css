@@ -15,35 +15,6 @@ body {
     border: 1px solid black;
     cursor: pointer;
 }
-.ui_planos_menu_v {
-    border: 1px solid black;
-    position: relative;
-    padding: 2px 6px 2px 6px;
-    text-decoration: underline;
-}
-.ui_planos_menu_v:hover {
-    background-color: black;
-    color: #eeeeee;
-    z-index: 1000;
-}
-.ui_planos_menu_v:hover .ui_planos_menu {
-    display: block;
-    color: black;
-}
-.ui_planos_menu {
-    display: none;
-    background-color: #eeeeee;
-    width: 180px;
-    position: absolute;
-    border: 1px solid black;
-}
-.ui_planos_menu div {
-    padding: 2px;
-}
-.ui_planos_menu div:hover {
-    background-color: black;
-    color: #eeeeee;
-}
 
 .ui_saver input {
     font-size: 11px;
@@ -54,36 +25,6 @@ body {
     -khtml-user-select: none;
     border: 1px solid black;
     cursor: pointer;
-}
-.ui_saver_menu_v {
-    position: relative;
-    padding: 3px 6px 3px 6px;
-    text-decoration: underline;
-}
-.ui_saver_menu_v:hover {
-    background-color: black;
-    color: #eeeeee;
-}
-.ui_saver_menu_v:hover .ui_saver_menu {
-    display: block;
-    color: black;
-}
-.ui_saver_menu {
-    display: none;
-    background-color: #eeeeee;
-    top: 20px;
-    width: 190px;
-    left: -171px;
-    position: absolute;
-    border: 1px solid black;
-    z-index: 3001;
-}
-.ui_saver_menu div {
-    padding: 2px;
-}
-.ui_saver_menu div:hover {
-    background-color: black;
-    color: #eeeeee;
 }
 
 .ui_combinacoes {
@@ -132,39 +73,6 @@ body {
 
 .ui_turmas {
     border: 1px solid black;
-}
-.ui_turmas_all_menu_v {
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    border: 1px solid black;
-    cursor: pointer;
-    position: relative;
-    font-size: 13px;
-    padding: 3px 6px 3px 6px;
-    text-decoration: underline;
-}
-.ui_turmas_all_menu_v:hover {
-    background-color: black;
-    color: #eeeeee;
-}
-.ui_turmas_all_menu_v:hover .ui_turmas_all_menu {
-    display: block;
-    color: black;
-}
-.ui_turmas_all_menu {
-    left: -1px;
-    width: 130px;
-    display: none;
-    background-color: #eeeeee;
-    position: absolute;
-    border: 1px solid black;
-}
-.ui_turmas_all_menu div {
-    padding: 5px;
-}
-.ui_turmas_all_menu div:hover {
-    background-color: black;
-    color: #eeeeee;
 }
 .ui_turmas_big_button {
     position: absolute;
@@ -329,4 +237,36 @@ body {
     background-color: lightblue;
     margin-left: 10px;
     cursor: pointer;
+}
+
+/* widgets */
+.widget_dropdown_menu_button {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    position: relative;
+    cursor: pointer;
+    padding: 2px 6px 2px 6px;
+    text-decoration: underline;
+    font-size: 13px;
+}
+.widget_dropdown_menu_button:hover {
+    background-color: black;
+    color: #eeeeee;
+    z-index: 3001;
+}
+.widget_dropdown_menu_button:hover .widget_dropdown_menu {
+    display: block;
+    color: black;
+}
+.widget_dropdown_menu {
+    left: -1px;
+    display: none;
+    background-color: #eeeeee;
+    position: absolute;
+    border: 1px solid black;
+}
+.widget_dropdown_menu_op:hover {
+    background-color: black;
+    color: #eeeeee;
 }
