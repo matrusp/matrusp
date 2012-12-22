@@ -1,0 +1,332 @@
+body {
+    font-family: monospace;
+}
+
+.ui_campus, .ui_saver, .ui_logger, .ui_planos {
+    font-size: 13px;
+}
+.ui_campus select {
+    font-size: 11px;
+}
+
+.ui_planos span {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.ui_planos_menu_v {
+    border: 1px solid black;
+    position: relative;
+    padding: 2px 6px 2px 6px;
+    text-decoration: underline;
+}
+.ui_planos_menu_v:hover {
+    background-color: black;
+    color: #eeeeee;
+    z-index: 1000;
+}
+.ui_planos_menu_v:hover .ui_planos_menu {
+    display: block;
+    color: black;
+}
+.ui_planos_menu {
+    display: none;
+    background-color: #eeeeee;
+    width: 180px;
+    position: absolute;
+    border: 1px solid black;
+}
+.ui_planos_menu div {
+    padding: 2px;
+}
+.ui_planos_menu div:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+
+.ui_saver input {
+    font-size: 11px;
+    width: 90px;
+}
+.ui_saver span {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.ui_saver_menu_v {
+    position: relative;
+    padding: 3px 6px 3px 6px;
+    text-decoration: underline;
+}
+.ui_saver_menu_v:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+.ui_saver_menu_v:hover .ui_saver_menu {
+    display: block;
+    color: black;
+}
+.ui_saver_menu {
+    display: none;
+    background-color: #eeeeee;
+    top: 20px;
+    width: 190px;
+    left: -171px;
+    position: absolute;
+    border: 1px solid black;
+    z-index: 3001;
+}
+.ui_saver_menu div {
+    padding: 2px;
+}
+.ui_saver_menu div:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+
+.ui_combinacoes {
+    font-size: 11px;
+    text-align: center;
+}
+.ui_combinacoes input {
+    width: 30px;
+    height: 13px;
+}
+.ui_combinacoes span {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.combobox_suggestions {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 300px;
+    border: 1px solid black;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    min-width: 300px;
+    font-size: 11px;
+    z-index: 3000;
+}
+.combobox_suggestions div {
+    background-color: white;
+    padding: 0;
+    z-index: 1;
+}
+.combobox_suggestions div div {
+    white-space: nowrap;
+    background-color: white;
+    display: block;
+    width: 110%;
+}
+.combobox_input {
+    font-size: 11px;
+}
+
+.ui_turmas {
+    border: 1px solid black;
+}
+.ui_turmas_all_menu_v {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    cursor: pointer;
+    position: relative;
+    font-size: 13px;
+    padding: 3px 6px 3px 6px;
+    text-decoration: underline;
+}
+.ui_turmas_all_menu_v:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+.ui_turmas_all_menu_v:hover .ui_turmas_all_menu {
+    display: block;
+    color: black;
+}
+.ui_turmas_all_menu {
+    left: -1px;
+    width: 130px;
+    display: none;
+    background-color: #eeeeee;
+    position: absolute;
+    border: 1px solid black;
+}
+.ui_turmas_all_menu div {
+    padding: 5px;
+}
+.ui_turmas_all_menu div:hover {
+    background-color: black;
+    color: #eeeeee;
+}
+.ui_turmas_big_button {
+    position: absolute;
+    z-index: 2000;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    background-color: lightblue;
+    top: 50%;
+    text-align: center;
+    font-size: 20px;
+    width: 100px;
+    cursor: pointer;
+}
+.ui_turmas table {
+    background-color: black;
+    table-layout: fixed;
+    font-size: 11px;
+}
+.ui_turmas table tr {
+    cursor: pointer;
+}
+.ui_turmas_menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+}
+.ui_turmas_menu_v {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    text-decoration: underline;
+    float: right;
+    top: 0;
+    right: 0;
+    border: 1px solid black;
+    padding: 3px 5px 4px 5px;
+}
+.ui_turmas_menu_div {
+    padding: 1px;
+    border: 1px solid black;
+    clear: both;
+    display: none;
+}
+.ui_turmas_menu_div div {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    padding: 5px;
+}
+
+.ui_materias {
+    border: 1px solid black;
+    overflow: auto;
+}
+.ui_materias table {
+    background-color: black;
+    table-layout: fixed;
+    font-size: 11px;
+    width: 882px;
+}
+.ui_materias_edit_input {
+    font-size: 11px;
+    width: 100%;
+    height: 13px;
+}
+
+.ui_update {
+    border: 1px solid black;
+    padding: 2px;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.ui_avisos {
+    border: 1px solid black;
+    font-size: 15px;
+    text-align: center;
+    padding: 2px;
+    color: red;
+    font-weight: bold;
+}
+
+.ui_horario {
+    background-color: #eeeeee;
+    border: 1px solid black;
+    position: relative;
+    font-size: 11px;
+}
+.ui_horario_celula {
+    background-color: white;
+    border: 1px solid black;
+    height: 18px;
+    width: 60px;
+    text-align: center;
+}
+
+.ui_grayout {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #666666;
+    opacity: .7;
+    filter: alpha(opacity=70);
+    z-index: 1000;
+}
+
+.ui_ajuda_popup {
+    position: absolute;
+    background-color: #eeeeee;
+    width: 600px;
+    height: 480px;
+    z-index: 2000;
+    top: 10%;
+    left: 50%;
+    border: 1px solid black;
+    font-family: verdana;
+    overflow: auto;
+}
+.ui_ajuda_popup .fechar {
+    font-size: 15px;
+    position: absolute;
+    padding: 10px;
+    top: 0px;
+    right: 0px;
+}
+.ui_ajuda_popup .contato {
+    padding: 60px 40px 0px 60px;
+    font-size: 15px;
+    text-align: center;
+}
+.ui_ajuda_popup .contato div {
+    font-size: 10px;
+}
+.ui_ajuda_popup .main {
+    padding: 40px;
+}
+.ui_ajuda_popup .main .titulo {
+    padding-top: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.ui_ajuda_popup .main .subtitulo {
+    font-size: 15px;
+    font-weight: bold;
+}
+.ui_ajuda_popup .main p {
+    font-size: 13px;
+    text-indent: 2em;
+    text-align: justify;
+}
+.ui_ajuda_popup .main ul {
+    font-size: 13px;
+    text-align: justify;
+}
+
+.simple_button {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    border: 1px solid black;
+    background-color: lightblue;
+    margin-left: 10px;
+    cursor: pointer;
+}

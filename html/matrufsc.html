@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MatrUFSC</title>
+<meta name="description" content="MatrUFSC é um combinador de horários para matrículas da UFSC" />
+<meta name="keywords" content="combinador,grade,horários,matrícula,UFSC,CAGR" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta property="fb:page_id" content="234395573293479" />
+<link rel="stylesheet" type="text/css" href="matrufsc.css" />
+</head>
+
+<body style="background-color:#eeeeee;">
+
+<div id="fb-root"></div>
+<script type="text/javascript">if(0)(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script type="text/javascript">
+if(0){
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37160597-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+}
+</script>
+
+<div id="ui_main" style="overflow:auto;width:890px;margin:0 auto;display:none;">
+ <div style="font-size:24px;text-align:left;">MatrUFSC</div>
+ <table><tr><td colspan="2">
+  <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left">
+   <div id="campus"></div>
+  </td><td align="left" style="width:280px;">
+   <div id="planos"></div>
+  </td><td align="right">
+   <div id="saver"></div>
+  </td></tr></table>
+  <table cellpadding="0" cellspacing="0" width="100%"><tr><td>
+   <input type="text" id="materias_input" /><br />
+   <div id="materias_suggestions"></div>
+  </td><td style="border:1px solid lightblue;width:100%;">
+   <div id="logger"></div>
+  </td></tr></table>
+ </td></tr><tr><td colspan="2">
+  <div id="avisos"></div>
+  <div id="updates_list"></div>
+ </td></tr><tr><td colspan="2">
+  <div id="materias_list"></div>
+ </td></tr><tr><td style="width:440px;">
+  <div id="horario"></div>
+ </td><td style="width:440px;" valign="top">
+  <div id="turmas_list" style="overflow:auto;position:relative;"></div>
+  </td></tr><tr><td colspan="2">
+   <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" style="font-size:11px;">
+    Não se esqueça de fazer sua matrícula no <a target="_blank" href="http://cagr.ufsc.br/">CAGR</a>! Este aplicativo não tem nenhum vínculo com a UFSC.
+   </td><td align="right" style="font-size:13px;">
+   <div id="ajuda"></div>
+   </td></tr><tr><td colspan="2" align="left" style="font-size:11px;">
+    versão 2.5.1. bancos de dados atualizados em 21/12/12
+   </td></tr></table>
+ </td></tr></table>
+</div>
+<div id="ui_fb" style="overflow:visible;width:890px;margin:0 auto;display:none;">
+<div class="fb-like" data-href="http://www.facebook.com/MatrUFSC" data-send="false" data-width="700" data-show-faces="false" data-font="lucida grande"></div>
+</div>
+
+<div id="dconsole" style="font-size:11px;">
+</div>
+
+<!--[if IE]>
+<input id="userdata" type="hidden" style="behavior:url('#default#userData')" />
+<![endif]-->
+<div id="grayout" style="display:none;"></div>
+<div id="ajuda_popup" style="display:none;">
+include_ajuda
+</div>
+
+<script type="text/javascript" src="matrufsc.js"></script>
+<noscript>
+ <div style="text-align:center;font-size:32px;">
+ O MatrUFSC é um aplicativo Web: você tem que habilitar Javascript no seu navegador.
+ </div>
+</noscript>
+</body>
+
+</html>
