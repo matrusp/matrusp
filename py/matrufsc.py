@@ -131,5 +131,9 @@ def run(environ, start_response):
         data = environ['wsgi.input'].read().split('\r\n\r\n')[1].split('\r\n')[0]
         start_response('200 OK', [('Content-Type', 'application/octet-stream'), ('Content-Disposition', content_disposition), ('Expires', '-1')])
         return [data]
+    elif path0 == 'robots.txt':
+        start_response('200 OK', [('Content-Type', 'text/plain')])
+        data = "User-agent: *\nDisallow: /\n"
+        return [data]
 
     raise IOError
