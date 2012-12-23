@@ -27,6 +27,8 @@ main.js
 
 SRC:=$(addprefix js/,$(SRC))
 
+HOMEDIR=/home/pedrovc
+
 %.json: py/parse_turmas.py db/%*.xml
 	./$^ $@
 
@@ -38,10 +40,10 @@ sed_RELEASE=-e "s/if(0)/if(1)/"
 endif
 
 matrufsc.py: py/matrufsc.py
-	sed "s|\$$HOME|${HOME}|" py/matrufsc.py | tee matrufsc.py > /dev/null
+	sed "s|\$$HOME|${HOMEDIR}|" py/matrufsc.py | tee matrufsc.py > /dev/null
 
 dispatch.cgi: py/dispatch.fcgi
-	sed "s|\$$HOME|${HOME}|" py/dispatch.fcgi | tee dispatch.cgi > /dev/null
+	sed "s|\$$HOME|${HOMEDIR}|" py/dispatch.fcgi | tee dispatch.cgi > /dev/null
 	-[ -f pythonpath ] && sed "s|/usr/bin/python|$$(cat pythonpath)|" dispatch.cgi > dispatch.cgi2 && mv dispatch.cgi2 dispatch.cgi
 
 index.html: html/matrufsc.html html/ajuda.html
