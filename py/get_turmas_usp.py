@@ -71,8 +71,10 @@ for unidade, materias_unidade in materias.iteritems():
 	print " - Iniciando processamento da unidade %s - " % (unidade)
 	
 	for materia, nome in materias_unidade:
+		if len(materia) != 7:
+			continue
 		response = urllib2.urlopen('https://uspdigital.usp.br/jupiterweb/obterTurma?print=true&sgldis=' + materia).read()
-		if nao_existe_oferecimento.search(response)
+		if nao_existe_oferecimento.search(response):
 			print "   - Pulando     %s - %s" % (materia, nome)
 			continue
 		print "   - Armazenando %s - %s" % (materia, nome)
