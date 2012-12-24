@@ -546,6 +546,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         };
         load_request.open("GET", "load2.cgi?q=" + encodeURIComponent(identificador), true);
         load_request.send(null);
+        _gaq.push(['_trackEvent', 'state', 'load', identificador])
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
     /* UI_campus */
@@ -625,6 +626,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         };
         save_request.open("POST", "save2.cgi?q=" + encodeURIComponent(identificador), true);
         save_request.send(ret);
+        _gaq.push(['_trackEvent', 'state', 'save', identificador])
         ui_logger.waiting("salvando horário para '" + identificador + "'");
     };
     ui_updates.cb_update = function() {
@@ -737,6 +739,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         };
         req.open("GET", src, true);
         req.send(null);
+
+        _gaq.push(['_trackEvent', 'db', 'load', semestre])
 
         var f_pontos = 0;
         loading = function() {

@@ -41,11 +41,13 @@ function UI_saver(id)
     var dropdown_menu = new widget_dropdown_menu(ui_saver, 175, 2, true);
     dropdown_menu.add("limpar tudo", function(e) {
         var really = confirm("Você tem certeza que quer limpar tudo?");
-        if (really)
+        if (really) {
             self.cb_cleanup();
+            _gaq.push(['_trackEvent', 'state', 'reset', self.input.value]);
+        }
     });
-    dropdown_menu.add("download para seu HD", function(e) { self.cb_download(); });
-    dropdown_menu.add("upload de seu HD", function(e) { self.cb_upload(); });
+    dropdown_menu.add("download para seu HD", function(e) { self.cb_download(); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
+    dropdown_menu.add("upload de seu HD", function(e) { self.cb_upload(); _gaq.push(['_trackEvent', 'state', 'upload', self.input.value]); });
 
     self.enabled = true;
     self.disable = function() {
