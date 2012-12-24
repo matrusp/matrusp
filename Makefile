@@ -39,14 +39,14 @@ sed_RELEASE=-e "s/if(0)/if(1)/"
 endif
 
 matrufsc.py: py/matrufsc.py
-	sed "s|\$$HOME|${HOME}|" py/matrufsc.py | tee matrufsc.py > /dev/null
+	sed "s|\$$HOME|${HOME}|" $^ | tee $@ > /dev/null
 
 dispatch.fcgi: py/dispatch.fcgi
-	sed "s|\$$HOME|${HOME}|" py/dispatch.fcgi | tee dispatch.fcgi > /dev/null
-	-[ -f pythonpath ] && sed "s|/usr/bin/python|$$(cat pythonpath)|" dispatch.fcgi > dispatch.fcgi2 && mv dispatch.fcgi2 dispatch.fcgi
+	sed "s|\$$HOME|${HOME}|" $^ | tee $@ > /dev/null
+	-[ -f pythonpath ] && sed "s|/usr/bin/python|$$(cat pythonpath)|" $@ > $@.2 && mv $@.2 $@
 
 index.html: html/matrufsc.html html/ajuda.html
-	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee index.html > /dev/null
+	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee $@ > /dev/null
 
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@
@@ -60,7 +60,7 @@ clean::
 	rm -f $(DBs) $(addsuffix .gz,$(DBs))
 	rm -rf matrufsc.js index.html
 	rm -rf install
-	rm -f $(addsuffix /*~,. c db html js py) .htaccess~
+	rm -f $(addsuffix /*~,. c db html js py) .htaccess~ .gitignore~
 	rm -f matrufsc.py dispatch.fcgi
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
