@@ -453,7 +453,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         var identificador = ui_saver.input.value;
         if (!identificador)
             identificador = "matrufsc";
-        ui_saver.form.action = "ping.cgi?q=" + encodeURIComponent(identificador);
+        ui_saver.form.action = "ping.php?q=" + encodeURIComponent(identificador);
         ui_saver.form_input.value = state.save();
         ui_saver.form.submit();
     };
@@ -546,7 +546,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                 }
             }
         };
-        load_request.open("GET", "load2.cgi?q=" + encodeURIComponent(identificador), true);
+        load_request.open("GET", "load2.php?q=" + encodeURIComponent(identificador), true);
         load_request.send(null);
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
@@ -625,9 +625,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                 }
             }
         };
-        save_request.open("POST", "save2.cgi?q=" + encodeURIComponent(identificador), true);
-        save_request.send(ret);
+        save_request.open("POST", "save2.php?q=" + encodeURIComponent(identificador), true);
+        save_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        save_request.send("data="+ret);
         ui_logger.waiting("salvando horário para '" + identificador + "'");
+
     };
     ui_updates.cb_update = function() {
         redraw_plano(state.plano);

@@ -42,8 +42,8 @@ endif
 matrufsc.py: py/matrufsc.py
 	sed "s|\$$HOME|${HOMEDIR}|" py/matrufsc.py | tee matrufsc.py > /dev/null
 
-dispatch.cgi: py/dispatch.fcgi
-	sed "s|\$$HOME|${HOMEDIR}|" py/dispatch.fcgi | tee dispatch.cgi > /dev/null
+dispatch.cgi: py/dispatch.cgi
+	sed "s|\$$HOME|${HOMEDIR}|" py/dispatch.cgi | tee dispatch.cgi > /dev/null
 	-[ -f pythonpath ] && sed "s|/usr/bin/python|$$(cat pythonpath)|" dispatch.cgi > dispatch.cgi2 && mv dispatch.cgi2 dispatch.cgi
 
 index.html: html/matrufsc.html html/ajuda.html
@@ -68,10 +68,15 @@ clean::
 install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs))
 	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
 	cp $(addsuffix .gz,$(DBs)) install/
+	
 
 install:: all
 	mkdir -p install
-	cp matrufsc.css matrufsc.js dispatch.cgi matrufsc.py index.html install/
-	chmod 755 install/dispatch.cgi install/matrufsc.py
+	mkdir -p install/data
+	touch install/data/index.html
+	cp matrufsc.css matrufsc.js dispatch.cgi matrufsc.py index.html php/* install/
+	chmod 755 install/dispatch.cgi install/matrufsc.py install/*.php
 	cp $(DBs) install/
 	cp .htaccess install/
+	cp robots.txt install/
+	
