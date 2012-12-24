@@ -1,0 +1,45 @@
+#!/bin/sh
+
+show_help(){
+    echo "modo de usar: configure --base-path=* [opcoes]"
+    echo
+    echo "  --python-bin=<caminho>  caminho do executável do python no servidor"
+    echo "  --release               habilita otimização, facebook e google analytics"
+    echo "  --base-path=<caminho>   caminho da pasta principal do matrufsc no servidor"
+    echo "  --subdir=<caminho>      subdiretório em que o matrufsc se encontra no site"
+    echo "  --cgi                   usar cgi no lugar de fcgi"
+    exit 1
+}
+
+PYTHON_BIN=/usr/bin/python
+RELEASE=0
+SUBDIR=
+CGI=fcgi
+
+for opt do
+    optval="${opt#*=}"
+    case "$opt" in
+        --python-bin=*) PYTHON_BIN=$optval ;;
+        --release)      RELEASE=1          ;;
+        --base-path=*)  BASE_PATH=$optval  ;;
+        --subdir=*)     SUBDIR=$optval     ;;
+        --cgi)          CGI=cgi            ;;
+        *)              show_help          ;;
+    esac
+done
+
+[ -z "$BASE_PATH" ] && show_help
+
+cat > config.mak << EOF
+PYTHON_BIN=${PYTHON_BIN}
+RELEASE=${RELEASE}
+BASE_PATH=${BASE_PATH}
+CGI=${CGI}
+EOF
+
+cat > .htaccess << EOF
+RewriteEngine On
+RewriteBase /${SUBDIR}
+RewriteRule ^dispatch\.${CGI}/ - [L]
+RewriteRule ^(.*)$ dispatch.${CGI}/\$1 [L]
+EOF

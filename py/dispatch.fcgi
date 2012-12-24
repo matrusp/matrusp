@@ -5,7 +5,7 @@ import time, os
 import datetime
 import traceback
 
-logs_prefix = '$HOME/matrufsc/logs/'
+logs_prefix = '$HOME/logs/'
 
 def matrufsc_mtime():
     return time.ctime(os.path.getmtime('matrufsc.py'))
@@ -35,5 +35,10 @@ def dispatch(environ, start_response):
         return ['<html><head><title>404</title></head><body><center>404 - Arquivo não encontrado</center></body></html>']
 
 if __name__ == '__main__':
-    from flup.server.fcgi_fork import WSGIServer
-    WSGIServer(dispatch).run()
+    ext = __file__.split('.')[-1]
+    if ext == 'fcgi':
+        from flup.server.fcgi_fork import WSGIServer
+        WSGIServer(dispatch).run()
+    else:
+        from wsgiref.handlers import CGIHandler
+        CGIHandler().run(dispatch)

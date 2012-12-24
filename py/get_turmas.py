@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from bs4 import BeautifulSoup
+from BeautifulSoup import BeautifulSoup
 from xml.etree import cElementTree
 from StringIO import StringIO
 import cookielib

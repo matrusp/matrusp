@@ -131,11 +131,20 @@ final.
   (provavelmente por causa do código do state que não permite renomear os
   campos aleatoriamente)
 
-6. Makefile
-Para compilar o MatrUFSC, basta rodar 'make'. Para compilar em modo release
-(que habilita o facebook, google analytics e roda closure no javascript), use
-RELEASE=1 make <...>
+6. build system
+Para compilar o MatrUFSC, é necessário primeiro configurá-lo. Use o script
+configure, passando as seguintes opções:
+  --python-bin=<caminho>  caminho do executável do python no servidor
+  --release               habilita otimização, facebook e google analytics
+  --base-path=<caminho>   caminho da pasta principal do matrufsc no servidor
+  --subdir=<caminho>      subdiretório em que o matrufsc se encontra no site
+  --cgi                   usar cgi no lugar de fcgi
+
+Somente a opção --base-path é obrigatório, sendo o resto opcional. Em seguida,
+basta rodar 'make'.
+
 O que eu faço para instalar o MatrUFSC é:
-make -j3 install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
+$ ./configure --base-path=$HOME/matrufsc --subdir=matrufsc
+$ make -j3 install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
 tendo "matrufsc-<versao>" um symlink para "matrufsc", que vai ser acessado
 pelo usuário.

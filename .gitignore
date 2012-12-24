@@ -14,4 +14,6 @@ header_gen_pdf
 matrufsc.js
 matrufsc.js.gz
 matrufsc.py
+.htaccess
+dispatch.cgi
 dispatch.fcgi
