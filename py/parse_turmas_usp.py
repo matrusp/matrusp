@@ -3,6 +3,7 @@
 
 import os
 import re
+import json
 from bs4 import BeautifulSoup
 
 DB_DIR = "db/"
@@ -11,6 +12,7 @@ class Turma:
 	def __init__(self):
 		self.info = {}
 		self.horario = []
+		self.vagas = []
 	
 	def inserir_informacoes(self, tabela):
 		for tr in tabela.find_all("tr"):
@@ -53,17 +55,39 @@ class Turma:
 		pass
 
 	def inserir_vagas(self, tabela):
+		accum = None
 		for tr in tabela.find_all("tr"):
-			for td in tr.find_all("td"):
-				print repr("".join(td.stripped_strings).strip())
-				print "-----------------"
-				
-			print "\n\n"
-		print "=========================="
+			tds = tr.find_all("td")
+			tds = map(lambda x: u"".join(x.stripped_strings).strip(), tds)
+			
+			if len(tds) == 5 and tds[0] == u"": #Cabecalho
+				continue
+			elif len(tds) == 5 and tds[0] != u"":
+				if accum != None:
+					self.vagas.append(accum)
+				accum = {}
+				accum["nome"] = tds[0]
+				accum["vagas"] = int(tds[1])
+				accum["inscritos"] = int(tds[2])
+				accum["pendentes"] = int(tds[3])
+				accum["matriculados"] = int(tds[4])
+				accum["detalhamento"] = []
+			elif len(tds) == 6:
+				detalhamento = {}
+				detalhamento["nome"] = tds[1]
+				detalhamento["vagas"] = int(tds[2])
+				detalhamento["inscritos"] = int(tds[3])
+				detalhamento["pendentes"] = int(tds[4])
+				detalhamento["matriculados"] = int(tds[5])
+				accum["detalhamento"].append(detalhamento)
+		if accum != None:
+			self.vagas.append(accum)
+#		import pprint
+#		pp = pprint.PrettyPrinter(indent=2)
+#		pp.pprint(self.vagas)
 
 class Materia:
-	def __init__(self, codigo):
-		self.codigo = codigo
+	def __init__(self):
 		self.turmas = []
 	
 
@@ -71,16 +95,21 @@ class Materia:
 def eh_tabela_folha(tag):
 	return tag.name == "table" and tag.table == None
 
-codigo = "LZT0430"
+codigo = "0060006"
 html = open(DB_DIR + codigo + ".html", "r")
 soup = BeautifulSoup(html.read())
 html.close()
 tabelas_folha = soup.find_all(eh_tabela_folha)
 
 turma = None
-materia = Materia(codigo)
+materia = Materia()
+materia.codigo = codigo
 
 for folha in tabelas_folha:
+	if folha.find_all(text=re.compile("Disciplina:\s+" + codigo, flags=re.UNICODE)):
+		nome = list(folha.stripped_strings)[-1]
+		nome = re.match("Disciplina:\s+%s - (.+)" % (codigo), nome).group(1) 
+		materia.nome = nome
 	if folha.find_all(text=re.compile(u"Código\s+da\s+Turma", flags=re.UNICODE)):
 		if turma != None:
 			materia.turmas.append(turma)
@@ -95,4 +124,4 @@ for folha in tabelas_folha:
 
 if turma != None:
 	materia.turmas.append(turma)
-		
+
