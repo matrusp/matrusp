@@ -5,7 +5,7 @@ import time, os
 import datetime
 import traceback
 
-logs_prefix = '$HOME/logs/'
+logs_prefix = '$BASE_PATH/logs/'
 
 def matrufsc_mtime():
     return time.ctime(os.path.getmtime('matrufsc.py'))

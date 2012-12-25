@@ -15,7 +15,7 @@ arquivos = { 'index.html'   : { 'content_type': 'text/html'              },
              '20131.json'   : { 'content_type': 'application/json'       },
            }
 
-dados_prefix = '$HOME/dados3/'
+dados_prefix = '$BASE_PATH/dados3/'
 
 # based on urlparse.py:parse_qs
 def get_q(qs):
