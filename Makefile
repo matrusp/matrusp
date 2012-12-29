@@ -1,6 +1,6 @@
 DBs=20121.json 20122.json 20131.json
 
-all: $(DBs) matrufsc.py dispatch.cgi matrufsc.js index.html
+all: $(DBs) matrufsc.js index.html
 
 SRC:=json2.js \
 compat.js \
@@ -39,13 +39,6 @@ ifdef RELEASE
 sed_RELEASE=-e "s/if(0)/if(1)/"
 endif
 
-matrufsc.py: py/matrufsc.py
-	sed "s|\$$HOME|${HOMEDIR}|" py/matrufsc.py | tee matrufsc.py > /dev/null
-
-dispatch.cgi: py/dispatch.cgi
-	sed "s|\$$HOME|${HOMEDIR}|" py/dispatch.cgi | tee dispatch.cgi > /dev/null
-	-[ -f pythonpath ] && sed "s|/usr/bin/python|$$(cat pythonpath)|" dispatch.cgi > dispatch.cgi2 && mv dispatch.cgi2 dispatch.cgi
-
 index.html: html/matrufsc.html html/ajuda.html
 	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee index.html > /dev/null
 
@@ -62,7 +55,6 @@ clean::
 	rm -rf matrufsc.js index.html
 	rm -rf install
 	rm -f $(addsuffix /*~,. c db html js py) .htaccess~
-	rm -f matrufsc.py dispatch.cgi
 	rm -f matrufsc.css.gz matrufsc.js.gz index.html.gz
 
 install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs))
@@ -74,9 +66,9 @@ install:: all
 	mkdir -p install
 	mkdir -p install/data
 	touch install/data/index.html
-	cp matrufsc.css matrufsc.js dispatch.cgi matrufsc.py index.html php/* install/
-	chmod 755 install/dispatch.cgi install/matrufsc.py install/*.php
+	cp matrufsc.css matrufsc.js index.html php/* install/
+	chmod 755 install/*.php
 	cp $(DBs) install/
-	cp .htaccess install/
+#	cp .htaccess install/
 	cp robots.txt install/
 	

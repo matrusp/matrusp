@@ -6,19 +6,21 @@ function UI_horario(id)
     var self = this;
     var dias  = [ "Segunda", "Ter\u00e7a", "Quarta", "Quinta", "Sexta", "S\u00e1bado" ];
     var horas = [ "07:30", "08:20", "09:10", "10:10", "11:00",
-                  "13:30", "14:20", "15:10", "16:20", "17:10",
-                  "18:30", "19:20", "20:20", "21:10"];
+                    "13:30", "14:20", "15:10", "16:20", "17:10",
+                    "18:30", "19:20", "20:20", "21:10", "22:00"];
+
+    //td_day[0] é a célula da tabela correspondente à segunda feira
+    var td_day = [];
+    //materias[dia + "-" + hora_inicio + "-" + hora_fim] é o div da matéria
+    var materias = {};
+    
     var horario = document.getElementById(id);
     horario.className = "ui_horario";
 
-    array = new Array();
-    for (var i = 0; i < 6; i++) {
-        array[i] = new Array();
-    }
-
     var table = document.createElement("table");
     var thead = document.createElement("thead");
-
+    
+    //Cabeçalho da tabela com os dias da semana
     var row = document.createElement("tr");
     row.appendChild(document.createElement("th"));
     for (var i = 0; i < dias.length; i++) {
@@ -27,62 +29,116 @@ function UI_horario(id)
         row.appendChild(head);
     }
     thead.appendChild(row);
-
     table.appendChild(thead);
-
+    
+    //Corpo da tabela: Uma única linha onde serão inseridas as matérias como divs
     var tbody = document.createElement("tbody");
-    for (var j = 0; j < horas.length; j++) {
-        var row = document.createElement("tr");
-        var hora = document.createElement("td");
-        hora.innerHTML = horas[j];
-        row.appendChild(hora);
-        for (var i = 0; i < dias.length; i++) {
-            var data = document.createElement("td");
-            data.className = "ui_horario_celula";
-            data.innerHTML = "&nbsp;";
-            array[i][j] = data;
-            row.appendChild(data);
-        }
-        tbody.appendChild(row);
+    var row_content = document.createElement("tr");
+    
+    var td_hour = document.createElement("td");
+    row_content.appendChild(td_hour);
+    
+    for (var i = 0; i < dias.length; i++) {
+        td_day[i] = document.createElement("td");
+        td_day[i].className = "ui_horario_celula";
+        td_day[i].innerHTML = "&nbsp;";
+        row_content.appendChild(td_day[i]);
     }
+    
+    tbody.appendChild(row_content);
 
+    //Linhas tracejadas das horas
+    for (var i = 0; i <= 18; i++){
+        var div_hour = document.createElement("div");
+        div_hour.className = "ui_horario_hora";
+        var hour = ((i + 6) % 24).toString();
+        if (hour.length == 1)
+            hour = "0" + hour;
+        div_hour.innerHTML = hour + ":00";
+        td_hour.appendChild(div_hour);
+        
+        var div_line = document.createElement("div");
+        div_line.className = "ui_horario_linha";
+        div_line.style.top = i * 23 + 15 + "px";
+        
+        for (var j = 0; j < dias.length; j++) {
+            td_day[j].appendChild(div_line.cloneNode(true));
+        }
+    }
+    
     table.appendChild(tbody);
     horario.appendChild(table);
-
+    
+    var hash_materia = function(dia, hora_inicio, hora_fim) {
+        return dia + "-" + hora_inicio + "-" + hora_fim;
+    }
+    
+    var remove_node = function(hash) {
+        var cell = materias[hash];
+        if (cell != null && cell.parentNode != null) {
+            cell.parentNode.removeChild(cell);
+            delete materias[hash];
+        }
+    }
+    
     var reset = function() {
-        for (var dia = 0; dia < 6; dia++)
-            for (var hora = 0; hora < 14; hora++)
-                clear_cell(dia, hora);
+        for (var m in materias){
+            remove_node(m);
+        }
     }
+    
+    var clear_cell2 = function(dia, hora_inicio, hora_fim) {
+        remove_node(hash_materia(dia, hora_inicio, hora_fim));
+    }
+    
+    var display_cell2 = function(dia, hora_inicio, hora_fim, info) {
+        var hash = hash_materia(dia, hora_inicio, hora_fim);
+        var cell = materias[hash];
+        
+        if(cell == null){
+            cell = document.createElement("div");
+            cell.id = "ui_horario_materia";
+            cell.style.height = "25px";
+            cell.style.top = hora_inicio * 23 + 15 + "px";
+            td_day[dia].appendChild(cell);
+            materias[hash] = cell;
+        }
+        
+        cell.innerHTML = info.text;
+        cell.style.backgroundColor = info.bgcolor;
+        cell.style.color = info.color;
+    }
+    
+    //TODO: Remover após troca das chamadas antigas para clear_cell2
     var clear_cell = function(dia, hora) {
-        var cell = array[dia][hora];
-        cell.innerHTML = "&nbsp;";
-        cell.style.backgroundColor = "white";
-        cell.style.border = "1px solid black";
-        cell.style.color = "black";
+        console.log("clear_cell " + dia + ", " + hora);
+        clear_cell2(dia, hora, hora + 1);
     }
+
+    //TODO: Remover após troca das chamadas antigas para display_cell2
     var display_cell = function(dia, hora, data) {
-        var cell = array[dia][hora];
-        cell.innerHTML = data.text;
-        cell.style.backgroundColor = data.bgcolor;
-        cell.style.color = data.color;
+        display_cell2(dia, hora, hora + 1, data);
     }
+    
+    //TODO: Implementar
     function set_toggle(func, onover, onout) {
+/*
         for (var dia = 0; dia < 6; dia++) {
             for (var hora = 0; hora < 14; hora++) {
+                var materia = materias[dia + "-" + hora];
                 if (func) {
-                    array[dia][hora].style.cursor = "pointer";
-                    array[dia][hora].onclick     = function() { func(this.dia, this.hora); };
-                    array[dia][hora].onmouseover = function() { onover(this.dia, this.hora); };
-                    array[dia][hora].onmouseout  = function() { onout(this.dia, this.hora); };
+                    materia.style.cursor = "pointer";
+                    materia.onclick     = function() { func(this.dia, this.hora); };
+                    materia.onmouseover = function() { onover(this.dia, this.hora); };
+                    materia.onmouseout  = function() { onout(this.dia, this.hora); };
                 } else {
-                    array[dia][hora].style.cursor = "";
-                    array[dia][hora].onclick = null;
-                    array[dia][hora].onmouseover = null;
-                    array[dia][hora].onmouseout = null;
+                    materia.style.cursor = "";
+                    materia.onclick = null;
+                    materia.onmouseover = null;
+                    materia.onmouseout = null;
                 }
-                array[dia][hora].dia = dia;
-                array[dia][hora].hora = hora;
+                materia.dia = dia;
+                materia.hora = hora;
             }
         }
         if (func) {
@@ -90,16 +146,23 @@ function UI_horario(id)
         } else {
             horario.style.zIndex = "0";
         }
+*/
     }
 
     /* procedures */
-    self.set_toggle   = set_toggle;
-    self.display_cell = display_cell;
-    self.clear_cell   = clear_cell;
-    self.reset        = reset;
+    self.set_toggle    = set_toggle;
+    self.reset         = reset;
+    self.remove_node   = remove_node;
+    self.display_cell2 = display_cell2;
+    self.clear_cell2   = clear_cell2;
+    self.display_cell  = display_cell;
+    self.clear_cell    = clear_cell;
+    
     /* functions */
-    self.height       = function() { return horario.offsetHeight; };
+    self.height        = function() { return horario.offsetHeight; };
+    self.hash_materia  = hash_materia;
 }
+
 var Cell = {
     normal: function(  d) { return {text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; },
     red   : function(str) { return {text:str,bgcolor:"red",color:"black"}; },

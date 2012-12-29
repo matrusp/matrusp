@@ -253,12 +253,31 @@ body {
     position: relative;
     font-size: 11px;
 }
+
 .ui_horario_celula {
+	position: relative;
     background-color: white;
     border: 1px solid black;
-    height: 18px;
     width: 60px;
     text-align: center;
+}
+
+.ui_horario_hora {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.ui_horario_linha {
+	position: absolute;
+	border: thin dashed rgb(221, 221, 221);
+	width: 59px;
+}
+
+#ui_horario_materia {
+	position: absolute;
+	border: 1px solid black;
+	left: -1px;
+	width: 62px;
 }
 
 .ui_grayout {
