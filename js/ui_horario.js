@@ -93,6 +93,8 @@ function UI_horario(id)
     
     //hora_inicio e hora_fim devem ter o formato "hh:mm"
     var display_cell2 = function(dia, inicio, fim, info) {
+        var str_inicio = inicio;
+        var str_fim = fim;
         var hash = hash_materia(dia, inicio, fim);
         var cell = materias[hash];
         
@@ -112,7 +114,10 @@ function UI_horario(id)
             materias[hash] = cell;
         }
         
-        cell.innerHTML = info.text;
+        cell.innerHTML = 
+            "<div class=\"ui_horario_inicio\">" + str_inicio + "</div>" + 
+            "<div>" + info.text + "</div>" + 
+            "<div class=\"ui_horario_fim\">" + str_fim + "</div>";
         cell.style.backgroundColor = info.bgcolor;
         cell.style.color = info.color;
     }

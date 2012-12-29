@@ -268,9 +268,23 @@ body {
 }
 
 .ui_horario_linha {
+	text-align: left;
+	font-size: 11px;
 	position: absolute;
 	border: thin dashed rgb(221, 221, 221);
 	width: 59px;
+}
+
+.ui_horario_inicio {
+	font-size: 10px;
+	text-align: left;
+}
+
+.ui_horario_fim {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	font-size: 10px;
 }
 
 #ui_horario_materia {
