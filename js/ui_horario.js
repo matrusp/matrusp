@@ -91,15 +91,23 @@ function UI_horario(id)
         remove_node(hash_materia(dia, hora_inicio, hora_fim));
     }
     
-    var display_cell2 = function(dia, hora_inicio, hora_fim, info) {
-        var hash = hash_materia(dia, hora_inicio, hora_fim);
+    //hora_inicio e hora_fim devem ter o formato "hh:mm"
+    var display_cell2 = function(dia, inicio, fim, info) {
+        var hash = hash_materia(dia, inicio, fim);
         var cell = materias[hash];
         
         if(cell == null){
             cell = document.createElement("div");
             cell.id = "ui_horario_materia";
-            cell.style.height = "25px";
-            cell.style.top = hora_inicio * 23 + 15 + "px";
+            
+            inicio = inicio.split(":");
+            fim = fim.split(":");
+            inicio = parseInt(inicio[0]) + 1.0 * parseInt(inicio[1])/60;
+            fim = parseInt(fim[0]) + 1.0 * parseInt(fim[1])/60;
+            
+            cell.style.top = (inicio - 6) * 23 + 15 + "px";
+            cell.style.height = (fim - inicio) * 23 + "px";
+
             td_day[dia].appendChild(cell);
             materias[hash] = cell;
         }
@@ -111,17 +119,17 @@ function UI_horario(id)
     
     //TODO: Remover após troca das chamadas antigas para clear_cell2
     var clear_cell = function(dia, hora) {
-        console.log("clear_cell " + dia + ", " + hora);
-        clear_cell2(dia, hora, hora + 1);
+        clear_cell2(dia, horas[hora], horas[hora + 1]);
     }
 
     //TODO: Remover após troca das chamadas antigas para display_cell2
     var display_cell = function(dia, hora, data) {
-        display_cell2(dia, hora, hora + 1, data);
+        display_cell2(dia, horas[hora], horas[hora + 1], data);
     }
     
     //TODO: Implementar
     function set_toggle(func, onover, onout) {
+        
 /*
         for (var dia = 0; dia < 6; dia++) {
             for (var hora = 0; hora < 14; hora++) {
