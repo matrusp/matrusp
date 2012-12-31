@@ -37,13 +37,13 @@ function Combinacoes()
         var c2 = new Array();
         for (var i2 = 0; i2 < 6; i2++) {
             c2[i2] = new Array();
-            for (var i3 = 0; i3 < 14; i3++) {
-                if (combinacao[i2][i3] && combinacao[i2][i3].horario.materia != except)
-                    c2[i2][i3] = {horario:combinacao[i2][i3].horario};
+            for (var i3 in combinacao[i2]) {
+                c2[i2].push(combinacao[i2][i3]);
             }
         }
         return c2;
     }
+    
     var generate = function(materias) {
         var new_combinacoes = new Array();
         for (var i = 0; i < materias.length; i++) {
@@ -69,15 +69,18 @@ function Combinacoes()
                     if (!ok)
                         continue;
                     var combinacao = [[],[],[],[],[],[]];
+
                     for (var k = 0; k < horario.aulas.length; k++) {
                         var aula = horario.aulas[k];
-                        combinacao[aula.dia][aula.hora] = {horario:horario};
+                        combinacao[aula.dia].push(aula);
+//                        combinacao[aula.dia].horario = [horario];
                     }
-                    combinacao[materia.codigo] = horario;
+                    combinacao["'" + materia.codigo + "'"] = horario; //
                     combinacao.horarios_combo = new Array();
                     combinacao.horarios_combo.push(horario);
                     new_combinacoes.push(combinacao);
                 }
+                
             } else {
                 var ok3 = 0;
                 var combinacoes2 = new Array();
@@ -94,8 +97,8 @@ function Combinacoes()
                         for (var k = 0; k < horario.aulas.length; k++) {
                             var aula = horario.aulas[k];
                             var dia  = aula.dia;
-                            var hora = aula.hora;
-                            if (combinacao[dia][hora]) {
+                            
+                            if (aula.tem_conflito(combinacao[dia].ocupado)) {
                                 ok = 0;
                                 break;
                             }
@@ -106,15 +109,15 @@ function Combinacoes()
                         if (!ok)
                             continue;
                         var c2 = copy(combinacao);
-                        c2[materia.codigo] = horario;
+                        c2["'" + materia.codigo + "'"] = horario; //FIXME
                         c2.horarios_combo = new Array();
                         combinacao.horarios_combo.forEach(function(horario){
-                            c2[horario.materia.codigo] = horario;
+                            c2["'" + horario.materia.codigo + "'"] = horario;
                             c2.horarios_combo.push(horario);
                         });
                         for (var k = 0; k < horario.aulas.length; k++) {
                             var aula = horario.aulas[k];
-                            c2[aula.dia][aula.hora] = {horario:horario};
+    	                    c2[aula.dia].push(aula);
                         }
                         c2.horarios_combo.push(horario);
                         combinacoes2.push(c2);
@@ -131,9 +134,7 @@ function Combinacoes()
         new_combinacoes.forEach(function(c){
             var sum = 0;
             c.forEach(function(dia){
-                dia.forEach(function(obj,hora){
-                    sum += hora;
-                });
+               	sum += dia.length;
             });
             c.sum = sum;
         });
@@ -141,6 +142,7 @@ function Combinacoes()
             return a.sum - b.sum;
         });
         combinacoes = new_combinacoes;
+        console.log(combinacoes);
     }
 
     /* procedures */

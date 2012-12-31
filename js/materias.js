@@ -15,16 +15,40 @@ var Horas = {
     "2110":13, 13:"2110"
 };
 
+var Dias = {
+	"seg": 0, "ter": 1, "qua": 2, "qui": 3, "sex": 4, "sab": 5
+}
+
 /**
  * @constructor
  */
-function Aula(dia, hora, sala) {
+function Aula(dia, hora_inicio, hora_fim) {
     this.dia  = dia;
-    this.hora = hora;
-    this.sala = sala;
+    this.hora_inicio = hora_inicio;
+    this.hora_fim = hora_fim;
 }
+
 Aula.prototype.toString = function() {
-    return (this.dia+2) + "." + Horas[this.hora] + "-1 / " + this.sala;
+    return (this.dia+2) + "." + this.hora_inicio + " - " + this.hora_fim;
+}
+
+Aula.prototype.equals = function(outra){
+	return this.dia == outra.dia && this.hora_inicio == outra.hora_inicio && this.hora_fim == outra.hora_fim;
+}
+
+Aula.prototype.tem_conflito = function(lista_aulas) {
+	for (i in lista_aulas){
+		var i1 = this.hora_inicio;
+		var i2 = lista_aulas[i].hora_inicio;
+		var f1 = this.hora_fim;
+		var f2 = lista_aulas[i].hora_fim;
+	
+		if(this.dia != lista_aulas[i].dia)
+			console.log("ERRO: Verificando conflito de aulas de dias diferentes");
+		if((i2 >= i1 && i2 < f1) || (i1 >= i2 && i1 < f2))
+			return true;
+	}
+	return false;
 }
 
 /**
@@ -45,51 +69,57 @@ function Turma(turma) {
     }
 
     var self = this;
-
+	
     turma = JSON.parse(JSON.stringify(turma));
 
     if (turma.selected == null)
         turma.selected = 1;
-    this.nome             = turma.nome;
+    this.nome             = turma.nome.slice(5);
     this.selected         = turma.selected;
-    this.horas_aula       = turma.horas_aula;
-    this.vagas_ofertadas  = turma.vagas_ofertadas;
-    this.vagas_ocupadas   = turma.vagas_ocupadas;
-    this.alunos_especiais = turma.alunos_especiais;
-    this.saldo_vagas      = turma.saldo_vagas;
-    this.pedidos_sem_vaga = turma.pedidos_sem_vaga;
-    this.professores      = turma.professores;
+    this.horas_aula       = 0;
+    this.vagas_ofertadas  = 0;
+    this.vagas_ocupadas   = 0;
+    this.alunos_especiais = 0;
+    this.saldo_vagas      = 0;
+    this.pedidos_sem_vaga = 0;
+    this.professores      = new Array();
     this.aulas            = new Array();
 
-    turma.horarios.forEach(function(horario){
-        var dia  = parseInt(horario.slice(0,1)) - 2;
-        var hora = Horas[horario.slice(2,6)];
-        var n    = parseInt(horario.slice(7));
-        var sala = horario.slice(11,21);
-        for (var j = 0; j < n; j++)
-            self.aulas.push(new Aula(dia, hora+j, sala));
-    });
-    self.order_aulas();
-}
-Turma.prototype.order_aulas = function() {
-    var self = this;
-    var aulas = self.aulas;
-    for (var i = 0; i < aulas.length-1; i++) {
-        for (var j = i+1; j < aulas.length; j++) {
-            if ((aulas[j].dia < aulas[i].dia) || ((aulas[j].dia == aulas[i].dia) && (aulas[j].hora < aulas[i].hora))) {
-                var tmp  = aulas[i];
-                aulas[i] = aulas[j];
-                aulas[j] = tmp;
-            }
+	professores_tmp = {};
+    turma.horario.forEach(function(aula){
+        var dia  = Dias[aula.dia];
+        var hora_inicio = aula.hora_inicio;
+        var hora_fim = aula.hora_fim;
+        for (p in aula.professores){
+        	professores_tmp[aula.professores[p]] = true; //Garante que não haverá profs repetidos
         }
+        self.aulas.push(new Aula(dia, hora_inicio, hora_fim));
+    });
+    
+    for (professor in professores_tmp){
+    	this.professores.push(professor);
     }
+    
+    var compara_aulas = function(a,b) {
+    	if(a.dia != b.dia)
+    		return a.dia > b.dia;
+    	var a_h = parseInt(a.slice(0,2));
+    	var a_m = parseInt(a.slice(2,4));
+    	var b_h = parseInt(b.slice(0,2));
+    	var b_m = parseInt(b.slice(2,4));
+    	if(a_h != b_h)
+    		return a_h > b_h;
+    	return a_m > b_m;
+    };
+    
+    this.aulas.sort(compara_aulas);
 }
 Turma.prototype.index = function(agrupar) {
     var index = this.nome;
     if (agrupar) {
         var index = "";
         for (var i = 0; i < this.aulas.length; i++)
-            index += (this.aulas[i].dia+2) + "." + Horas[this.aulas[i].hora];
+            index += (this.aulas[i].dia+2) + "." + this.aulas[i].hora_inicio + "-" + this.aulas[i].hora_fim;
     }
     return index;
 }

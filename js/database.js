@@ -18,36 +18,54 @@ Database.prototype.set_db = function(semestre, campus) {
         return -1;
     return 0;
 }
+//("MAC0315", "Programação Linear", [(codigo_t1, data_inicio_t1, data_fim_t1, tipo_t1, horario_t1, vagas_t1), ...])
+
+//(codigo, data_inicio, data_fim, tipo) = ("2013102", "25/02/2013", "29/06/2013", "Teórica")
+
+//horario = [("seg", "10:00", "11:40", ["Marcelo Gomes de Queiroz"]),
+//           ("qua", "08:00", "09:40", ["Marcelo Gomes de Queiroz"])]
+
+//vagas = [("Obrigatória", 70, 65, 0, 0, [("IME - Ciência da Computação", 70, 65, 0, 0)]), 
+//         ("Optativa Eletiva", 10, 16, 0, 0, [("IME - Matemática Bacharelado", 5, 6, 0, 0), ("IME - Estatística", 5, 10, 0, 0)]),
+//         ("Optativa Livre", 2, 3, 0, 0, [("Qualquer Unidade da USP", 2, 3, 0, 0)]), 
+//         ("Alunos Especiais", 1, 0, 0, 0, [])]
 Database.prototype.add = function(semestre, array) {
     var self = this;
-    self.db[semestre] = new Array();
+    self.db[semestre] = {};
 
     for (var campus in array) {
         var campus_array = array[campus];
-        self.db[semestre][campus] = new Array();
+        self.db[semestre][campus] = {};
         campus_array.forEach(function(k) {
             var i = new Object();
             i.codigo     = k[0];
-            i.nome_ascii = k[1];
-            i.nome       = k[2];
-            i.turmas     = new Array();
-            k[3].forEach(function(m) {
+            i.nome       = k[1];
+            i.turmas     = [];
+            k[2].forEach(function(m) {
                 var n = new Object();
                 n.nome              = m[0];
-                n.horas_aula        = m[1];
-                n.vagas_ofertadas   = m[2];
-                n.vagas_ocupadas    = m[3];
-                n.alunos_especiais  = m[4];
-                n.saldo_vagas       = m[5];
-                n.pedidos_sem_vaga  = m[6];
-                n.horarios          = m[7];
-                n.professores       = m[8];
+                n.data_inicio        = m[1];
+                n.data_fim   = m[2];
+                n.tipo    = m[3];
+                n.horario  = [];
+                if (m[4] != null) {
+                    m[4].forEach(function (o) {
+                        var p = new Object();
+                        p.dia = o[0];
+                        p.hora_inicio = o[1];
+                        p.hora_fim = o[2];
+                        p.professores = o[3];
+                        n.horario.push(p);
+                    });
+                }
+                n.vagas = m[5];
                 i.turmas.push(n);
             });
             self.db[semestre][campus][i.codigo] = i;
-            self.db[semestre][campus].push(i);
+//            self.db[semestre][campus].push(i);
         });
     }
+    
 }
 Database.prototype.fetch = function(string, page) {
     string = string.toUpperCase().replace(/À/g, "A")
@@ -70,8 +88,8 @@ Database.prototype.fetch = function(string, page) {
         }
     });
     this.result = [];
-    for (var i = 0; i < this.cur_db.length; i++) {
-        var haystack = this.cur_db[i];
+    for (var codigo in this.cur_db) {
+        var haystack = this.cur_db[codigo];
         var exactly = false;
         var score = 0;
         for (var j = 0; j < search_whole.length; j++) {
@@ -81,8 +99,8 @@ Database.prototype.fetch = function(string, page) {
                 exactly = true;
                 break;
             }
-            expr_score += this.search_score(haystack.nome_ascii, search_whole[j], 100);
-            expr_score += this.search_score(haystack.nome_ascii, search_part[j], 10);
+            expr_score += this.search_score(haystack.nome, search_whole[j], 100);
+            expr_score += this.search_score(haystack.nome, search_part[j], 10);
             expr_score += this.search_score(haystack.codigo, search_part[j], 10);
             if (expr_score) {
                 score += expr_score;

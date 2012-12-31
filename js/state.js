@@ -29,8 +29,8 @@ function State()
         self.planos.push(new Plano(3));
         self.index  = 0;
         self.plano  = self.planos[self.index];
-        self.campus = "FLO";
-        self.semestre = "20122";
+        self.campus = "TODOS";
+        self.semestre = "20131";
     }
     self.reset();
 

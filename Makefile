@@ -1,5 +1,8 @@
 DBs=20121.json 20122.json 20131.json
 
+DB_USP=./db/db_usp.txt
+SEMESTRE=20131
+
 all: $(DBs) matrufsc.js index.html
 
 SRC:=json2.js \
@@ -70,5 +73,14 @@ install:: all
 	chmod 755 install/*.php
 	cp $(DBs) install/
 #	cp .htaccess install/
+	cp robots.txt install/
+
+install-matrusp::index.html matrufsc.js
+	mkdir -p install
+	mkdir -p install/data
+	touch install/data/index.html
+	cp matrufsc.css matrufsc.js index.html php/* install/
+	chmod 755 install/*.php
+	cp $(DB_USP) install/$(SEMESTRE).txt
 	cp robots.txt install/
 	

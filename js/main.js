@@ -700,7 +700,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         mudancas = false;
     };
     load_db = function(semestre, campus, callback) {
-        var src = semestre + ".json";
+        var src = semestre + ".txt";
         var oldval = combo.input.value;
         var f_timeout;
         var f_finish = 0;
@@ -717,13 +717,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                 case 4:
                     clearTimeout(f_timeout);
                     f_timeout = null;
-                    if (this.status != 200) {
+                    if (this.status != 200 && this.status != 304) {
                         ui_logger.set_text("erro ao carregar banco de dados", "lightcoral");
                     } else {
                         try {
                             var dbjson = JSON.parse(this.responseText);
                             database.add(semestre, dbjson);
                         } catch (e) {
+                        	console.log(e.message);
                             ui_logger.set_text("erro ao carregar banco de dados", "lightcoral");
                         }
                     }
@@ -940,12 +941,12 @@ window.onload = function() {
     }
     if (!database_ok) {
         if (identificador != null && identificador != "") {
-            ui_saver.cb_load(identificador, function(){ main.set_db("20122", "FLO"); });
+            ui_saver.cb_load(identificador, function(){ main.set_db("20131", "TODOS"); });
             database_ok = true;
         }
     }
     if (!database_ok)
-        main.set_db("20122", "FLO");
+        main.set_db("20131", "TODOS");
     if (combo.input.value == identificador)
         combo.input.value = "";
 
