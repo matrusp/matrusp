@@ -44,7 +44,7 @@ Aula.prototype.tem_conflito = function(lista_aulas) {
 		var f2 = lista_aulas[i].hora_fim;
 	
 		if(this.dia != lista_aulas[i].dia)
-			console.log("ERRO: Verificando conflito de aulas de dias diferentes");
+			continue;
 		if((i2 >= i1 && i2 < f1) || (i1 >= i2 && i1 < f2))
 			return true;
 	}
@@ -90,8 +90,8 @@ function Turma(turma) {
         var dia  = Dias[aula.dia];
         var hora_inicio = aula.hora_inicio;
         var hora_fim = aula.hora_fim;
-        for (p in aula.professores){
-        	professores_tmp[aula.professores[p]] = true; //Garante que não haverá profs repetidos
+        for (var i = 0; i < aula.professores.length; i++){
+        	professores_tmp[aula.professores[i]] = true; //Garante que não haverá profs repetidos
         }
         self.aulas.push(new Aula(dia, hora_inicio, hora_fim));
     });
@@ -100,19 +100,8 @@ function Turma(turma) {
     	this.professores.push(professor);
     }
     
-    var compara_aulas = function(a,b) {
-    	if(a.dia != b.dia)
-    		return a.dia > b.dia;
-    	var a_h = parseInt(a.slice(0,2));
-    	var a_m = parseInt(a.slice(2,4));
-    	var b_h = parseInt(b.slice(0,2));
-    	var b_m = parseInt(b.slice(2,4));
-    	if(a_h != b_h)
-    		return a_h > b_h;
-    	return a_m > b_m;
-    };
     
-    this.aulas.sort(compara_aulas);
+    
 }
 Turma.prototype.index = function(agrupar) {
     var index = this.nome;
@@ -122,6 +111,18 @@ Turma.prototype.index = function(agrupar) {
             index += (this.aulas[i].dia+2) + "." + this.aulas[i].hora_inicio + "-" + this.aulas[i].hora_fim;
     }
     return index;
+}
+
+Turma.prototype.order_aulas = function() {
+	this.aulas.sort(function(a,b) {
+    	if(a.dia != b.dia)
+    		return a.dia - b.dia;
+		if (a.hora_inicio < b.hora_inicio)
+			return -1;
+		if (a.hora_inicio > b.hora_inicio)
+			return 1;
+		return 0;
+    });
 }
 
 /**

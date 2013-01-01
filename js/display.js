@@ -33,8 +33,17 @@ function Display(ui_logger, ui_horario)
             });
 
         map_turma(turma, c, function(turma, c, dia, hora_inicio, hora_fim) {
-            //if (c && c[dia][hora] && c[dia][hora].horario.materia != materia) { //FIXME: Bolar condição de choque de matérias
-            if(false){
+        	var sem_current_turma = null;
+        	var aula_tmp = new Aula(dia, hora_inicio, hora_fim);
+        	
+        	if(c && c[dia]){
+            	sem_current_turma = c[dia];
+            	if (current_turma)
+            	    sem_current_turma = sem_current_turma.diff(current_turma.aulas);
+        	}
+            
+            if (sem_current_turma && aula_tmp.tem_conflito(sem_current_turma)) {
+                //Garantimos que o conflito é entre matérias distintas
                 ui_logger.set_quick_text("choque de horario", "lightcoral");
                 ui_horario.display_cell2(dia, hora_inicio, hora_fim, Cell.red(materia.codigo));
             } else {
@@ -51,27 +60,21 @@ function Display(ui_logger, ui_horario)
         var materia = turma.materia;
         var current_turma = c && c["'" + materia.codigo + "'"] ? c["'" + materia.codigo + "'"].turma_representante : null;
 
-        if (!c) {
-            selected = "";
-            ui_horario.reset();
+		self.reset();
+        if (!c)
             return;
-        }
 
-/*        if (turma != current_turma)
-            map_turma(turma, c, function(turma, c, dia, hora_inicio, hora_fim) {
-                if(c[dia][hora] && c[dia][hora].horario)
-                    ui_horario.display_cell2(dia, hora_inicio, hora_fim, Cell.normal(turma));
-                else
-                    ui_horario.clear_cell2(dia, hora_inicio, hora_fim);
-            });
-*/
-		ui_horario.reset();
-		
-
-        if (current_turma)
-            map_turma(current_turma, c, function(turma, c, dia, hora_inicio, hora_fim) {
-                ui_horario.display_cell2(dia, hora_inicio, hora_fim, Cell.normal(turma));
-            });
+        c.horarios_combo.forEach(function(horario){
+            for (var k in horario.turmas) {
+                if (horario.turmas[k].selected) {
+                    var turma = horario.turmas[k];
+                    break;
+                }
+            }
+            if (!turma)
+                var turma = horario.turma_representante;
+            self.turma(c, turma);
+        });
 
         ui_logger.unset_quick_text();
 

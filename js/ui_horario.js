@@ -75,7 +75,7 @@ function UI_horario(id)
     
     var remove_node = function(hash) {
         var cell = materias[hash];
-        if (cell != null && cell.parentNode != null) {
+        if (cell != null && cell != undefined && cell.parentNode != null) {
             cell.parentNode.removeChild(cell);
             delete materias[hash];
         }
@@ -90,6 +90,32 @@ function UI_horario(id)
     var clear_cell2 = function(dia, hora_inicio, hora_fim) {
         remove_node(hash_materia(dia, hora_inicio, hora_fim));
     }
+
+	var clear_materia = function(codigo){
+		var to_remove = []
+    	for (var m in materias){
+    		if(materias[m].innerHTML.indexOf(codigo) != -1)
+    			to_remove.push(m);
+    	}
+    	
+    	to_remove.forEach(function(r) { 
+    		remove_node(r);	
+    	});
+	}
+    var display_day = function(day, day_combination, mode){
+    	if(!c.length)
+    		return;
+    		
+    	clear_day(day);
+    	
+    	for (a in day_combination){
+    		var aula = day_combination[a];
+    		display_cell2(aula.dia, aula.hora_inicio, aula.hora_fim, mode(aula))
+    		
+    	}
+    	console.log(c);
+
+    }
     
     //hora_inicio e hora_fim devem ter o formato "hh:mm"
     var display_cell2 = function(dia, inicio, fim, info) {
@@ -100,7 +126,7 @@ function UI_horario(id)
         
         if(cell == null){
             cell = document.createElement("div");
-            cell.id = "ui_horario_materia";
+            cell.className = "ui_horario_materia";
             
             inicio = inicio.split(":");
             fim = fim.split(":");
@@ -170,6 +196,7 @@ function UI_horario(id)
     self.clear_cell2   = clear_cell2;
     self.display_cell  = display_cell;
     self.clear_cell    = clear_cell;
+    self.clear_materia = clear_materia;
     
     /* functions */
     self.height        = function() { return horario.offsetHeight; };

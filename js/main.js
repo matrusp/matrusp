@@ -41,7 +41,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                 if (!turma)
                     var turma = horario.turma_representante;
                 turma.materia.ui_turma.innerHTML = turma.nome;
-                turma.materia.ui_turma.style.textAlign = "left";
+                turma.materia.ui_turma.style.textAlign = "center";
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
                 horas_aula += parseInt(turma.aulas.length);

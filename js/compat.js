@@ -45,47 +45,42 @@ if (!('some' in Array.prototype)) {
     };
 }
 
-if (!Array.prototype.reduce)
-{
-  Array.prototype.reduce = function(fun /*, initial*/)
-  {
-    var len = this.length;
-    if (typeof fun != "function")
-      throw new TypeError();
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
+        "use strict";
+        if (this == null) {
+            throw new TypeError();
+        }
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (len === 0) {
+            return -1;
+        }
+        var n = 0;
+        if (arguments.length > 1) {
+            n = Number(arguments[1]);
+            if (n != n) { // shortcut for verifying if it's NaN
+                n = 0;
+            } else if (n != 0 && n != Infinity && n != -Infinity) {
+                n = (n > 0 || -1) * Math.floor(Math.abs(n));
+            }
+        }
+        if (n >= len) {
+            return -1;
+        }
+        var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+        for (; k < len; k++) {
+            if (k in t && t[k] === searchElement) {
+                return k;
+            }
+        }
+        return -1;
+    }
+}
 
-    // no value to return if no initial value and an empty array
-    if (len == 0 && arguments.length == 1)
-      throw new TypeError();
-
-    var i = 0;
-    if (arguments.length >= 2)
-    {
-      var rv = arguments[1];
-    }
-    else
-    {
-      do
-      {
-        if (i in this)
-        {
-          rv = this[i++];
-          break;
-        }
-
-        // if array contains no values, no initial value to return
-        if (++i >= len)
-          throw new TypeError();
-      }
-      while (true);
-    }
-
-    for (; i < len; i++)
-    {
-      if (i in this)
-        rv = fun.call(null, rv, this[i], i, this);
-    }
-
-    return rv;
-  };
+if (!('diff' in Array.prototype)) {
+	Array.prototype.diff = function(a) {
+		return this.filter(function(i) {return !(a.indexOf(i) > -1);});
+	};
 }
 
