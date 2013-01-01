@@ -70,7 +70,12 @@ def parsear_horario(tabela):
 			if accum != None:
 				horario.append(accum)
 			accum = (tds[0], tds[1], tds[2], [tds[3]])
-		if tds[0] == u"": #Apenas mais professores (Ex. ||||Elisabeti Kira|)
+		if tds[0] == u"": #Mais professores (Ex. ||||Elisabeti Kira|) ou um horário maior:
+			if tds[2] > accum[2]: 
+			#Ex: |qui|14:00|16:00|Sonia Regina Leite Garcia
+			#    |   |     |18:00|Artur Simões Rozestraten
+			#    |   |     |     |Eduardo Colli
+				accum = (accum[0], accum[1], tds[2], accum[3])
 			accum[3].append(tds[3])
 	if accum != None:
 		horario.append(accum)
