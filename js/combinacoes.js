@@ -98,7 +98,7 @@ function Combinacoes()
                             var aula = horario.aulas[k];
                             var dia  = aula.dia;
                             
-                            if (aula.tem_conflito(combinacao[dia].ocupado)) {
+                            if (aula.tem_conflito(combinacao[dia])) {
                                 ok = 0;
                                 break;
                             }
@@ -109,7 +109,7 @@ function Combinacoes()
                         if (!ok)
                             continue;
                         var c2 = copy(combinacao);
-                        c2["'" + materia.codigo + "'"] = horario; //FIXME
+                        c2["'" + materia.codigo + "'"] = horario;
                         c2.horarios_combo = new Array();
                         combinacao.horarios_combo.forEach(function(horario){
                             c2["'" + horario.materia.codigo + "'"] = horario;
