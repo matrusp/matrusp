@@ -452,7 +452,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     ui_saver.cb_download = function() {
         var identificador = ui_saver.input.value;
         if (!identificador)
-            identificador = "matrufsc";
+            identificador = "matrusp";
         ui_saver.form.action = "ping.php?q=" + encodeURIComponent(identificador);
         ui_saver.form_input.value = state.save();
         ui_saver.form.submit();
@@ -530,7 +530,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             if (this.readyState == 4) {
                 if (this.status == 200 && this.responseText != "") {
                     try {
-                        var state_to_load = JSON.parse(this.responseText);
+                        var state_to_load = JSON.parse(decodeURIComponent(this.responseText));
                     } catch (e) {
                     }
                 }
@@ -627,7 +627,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         };
         save_request.open("POST", "save2.php?q=" + encodeURIComponent(identificador), true);
         save_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        save_request.send("data="+ret);
+        console.log(encodeURIComponent(ret));
+        save_request.send("data="+encodeURIComponent(ret));
         ui_logger.waiting("salvando horário para '" + identificador + "'");
 
     };
