@@ -75,7 +75,7 @@ function Combinacoes()
                         combinacao[aula.dia].push(aula);
 //                        combinacao[aula.dia].horario = [horario];
                     }
-                    combinacao["'" + materia.codigo + "'"] = horario; //
+                    combinacao["'" + materia.codigo + "'"] = horario;
                     combinacao.horarios_combo = new Array();
                     combinacao.horarios_combo.push(horario);
                     new_combinacoes.push(combinacao);

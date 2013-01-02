@@ -627,7 +627,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         };
         save_request.open("POST", "save2.php?q=" + encodeURIComponent(identificador), true);
         save_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        console.log(encodeURIComponent(ret));
         save_request.send("data="+encodeURIComponent(ret));
         ui_logger.waiting("salvando horário para '" + identificador + "'");
 

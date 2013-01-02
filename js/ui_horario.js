@@ -102,21 +102,7 @@ function UI_horario(id)
     		remove_node(r);	
     	});
 	}
-    var display_day = function(day, day_combination, mode){
-    	if(!c.length)
-    		return;
-    		
-    	clear_day(day);
-    	
-    	for (a in day_combination){
-    		var aula = day_combination[a];
-    		display_cell2(aula.dia, aula.hora_inicio, aula.hora_fim, mode(aula))
-    		
-    	}
-    	console.log(c);
 
-    }
-    
     //hora_inicio e hora_fim devem ter o formato "hh:mm"
     var display_cell2 = function(dia, inicio, fim, info) {
         var str_inicio = inicio;

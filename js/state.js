@@ -149,7 +149,7 @@ function State()
                 database.db[state_materia.semestre][state_materia.campus])
                 db_materia = database.db[state_materia.semestre][state_materia.campus][state_materia.codigo];
             if (!db_materia) {
-                if (/^[A-Z]{3}[0-9]{4}$/.test(state_materia.codigo) &&
+                if (/^[A-Z0-9]{3}[0-9]{4}$/.test(state_materia.codigo) &&
                    !/^XXX[0-9]{4}$/.test(state_materia.codigo)) {
                     var issue = {};
                     issue.text = "Matéria não existe mais";
@@ -189,6 +189,7 @@ function State()
                     }
                     continue;
                 }
+                db_turma.order_aulas();
                 state_turma.horas_aula       = db_turma.horas_aula;
                 state_turma.vagas_ofertadas  = db_turma.vagas_ofertadas;
                 state_turma.vagas_ocupadas   = db_turma.vagas_ocupadas;
@@ -217,8 +218,7 @@ function State()
                     m_issues.push(issue);
                 }
                 for (var k = 0; k < state_turma.aulas.length; k++) {
-                    if ((state_turma.aulas[k].dia  != db_turma.aulas[k].dia ) ||
-                        (state_turma.aulas[k].hora != db_turma.aulas[k].hora)) {
+                    if (!state_turma.aulas[k].equals(db_turma.aulas[k])) {
                         var issue = {};
                         issue.text = "Turma " + state_turma.nome + ": horários de aula mudaram.";
                         issue.button = "Corrigir horários de aula";

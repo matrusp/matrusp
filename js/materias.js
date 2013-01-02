@@ -300,7 +300,6 @@ function Materias()
     }
     function add_json(materia, campus, semestre)
     {
-    	console.log(materia);
         if (materias[materia.codigo])
             return null;
 
