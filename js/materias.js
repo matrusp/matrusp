@@ -23,13 +23,13 @@ var Dias = {
  * @constructor
  */
 function Aula(dia, hora_inicio, hora_fim) {
-    this.dia  = dia;
+    this.dia = dia;
     this.hora_inicio = hora_inicio;
     this.hora_fim = hora_fim;
 }
 
 Aula.prototype.toString = function() {
-    return (this.dia+2) + "." + this.hora_inicio + " - " + this.hora_fim;
+    return (this.dia+2) + "." + this.hora_inicio + "." + this.hora_fim;
 }
 
 Aula.prototype.equals = function(outra){
@@ -82,9 +82,24 @@ function Turma(turma) {
     this.alunos_especiais = 0;
     this.saldo_vagas      = 0;
     this.pedidos_sem_vaga = 0;
-    this.professores      = new Array();
     this.aulas            = new Array();
 
+	//Trecho para fazer a cópia de uma matéria lida de outro plano ou do usuário
+	if(turma.professores)
+		this.professores = turma.professores;
+	
+	if(turma.horarios){
+		turma.horarios.forEach(function(horario) {
+			var splitted = horario.split(".");
+			self.aulas.push(new Aula(parseInt(splitted[0]) - 2, splitted[1], splitted[2]));
+		});
+	}
+	
+	if(turma.professores || turma.horarios)
+		return;
+	
+	//Trecho para fazer o tratamento de uma matéria lida do BD
+    this.professores      = new Array();
 	professores_tmp = {};
     turma.horario.forEach(function(aula){
         var dia  = Dias[aula.dia];
@@ -99,8 +114,6 @@ function Turma(turma) {
     for (professor in professores_tmp){
     	this.professores.push(professor);
     }
-    
-    
     
 }
 Turma.prototype.index = function(agrupar) {
@@ -287,6 +300,7 @@ function Materias()
     }
     function add_json(materia, campus, semestre)
     {
+    	console.log(materia);
         if (materias[materia.codigo])
             return null;
 
