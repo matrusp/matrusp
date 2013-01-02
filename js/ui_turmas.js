@@ -118,7 +118,20 @@ function UI_turmas(id)
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
             var div = document.createElement("div");
-            div.innerHTML = turma.nome;
+            var content = turma.nome;
+            var index_plus = content.indexOf("+");
+            if (index_plus == -1)
+            	content = "<a href=\"https://uspdigital.usp.br/jupiterweb/jupTurma?sgldis=" + 
+            	turma.materia.codigo + "&codtur="+ content + "\" target=\"_blank\">" + content.slice(5) + "</a>";
+            else
+            	content = "<a href=\"https://uspdigital.usp.br/jupiterweb/jupTurma?sgldis=" + 
+            	turma.materia.codigo + "&codtur="+ content.slice(0,index_plus) + "\" target=\"_blank\">" + 
+            	content.slice(5, index_plus) + "</a>+<a href=\"https://uspdigital.usp.br/jupiterweb/jupTurma?sgldis=" + 
+            	turma.materia.codigo + "&codtur="+ content.slice(0, 5) + content.slice(index_plus + 1) + 
+            	"\" target=\"_blank\">" + content.slice(index_plus + 1) + "</a>";
+            
+            div.innerHTML = content;
+            div.style.textAlign = "center";
             data.appendChild(div);
             if (!row.turma) {
                 row.turma = turma;
@@ -127,7 +140,7 @@ function UI_turmas(id)
         }
         row.appendChild(data);
 
-        var twochars = function(n) {
+/*        var twochars = function(n) {
             var str = "";
             if (n < 10)
                 str += "&nbsp;";
@@ -157,7 +170,7 @@ function UI_turmas(id)
             }
         }
         row.appendChild(data);
-
+*/
         var data = document.createElement("td");
         data.onmouseup = onmouseup;
         var inner_div = document.createElement("div");
@@ -347,13 +360,13 @@ function UI_turmas(id)
         data.innerHTML = "Turma";
         data.style.width = "44px";
         row.appendChild(data);
-        var data = document.createElement("td");
+/*        var data = document.createElement("td");
         data.style.textAlign = "center";
         data.title = "Ocupadas / Oferdatas (+ Pedidos sem vaga)";
         data.innerHTML = "Vagas Ocupadas";
         data.style.width = "72px";
         row.appendChild(data);
-        var data = document.createElement("td");
+*/        var data = document.createElement("td");
         data.style.textAlign = "center";
         data.innerHTML = "Professores";
         row.appendChild(data);
@@ -403,7 +416,7 @@ function UI_turmas(id)
         row.appendChild(data);
 
         var data = document.createElement("td");
-        data.colSpan = "3";
+        data.colSpan = "2";
         data.onmouseup = function() { self.cb_toggle_agrupar(); };
         data.style.fontSize = "13px"
         data.innerHTML = "agrupar turmas com horários iguais";

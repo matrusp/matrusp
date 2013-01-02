@@ -74,7 +74,7 @@ function Turma(turma) {
 
     if (turma.selected == null)
         turma.selected = 1;
-    this.nome             = turma.nome.slice(5);
+    this.nome             = turma.nome;
     this.selected         = turma.selected;
     this.horas_aula       = 0;
     this.vagas_ofertadas  = 0;
