@@ -299,23 +299,19 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         overlay = [[],[],[],[],[],[]];
     }
     clear_overlay();
+    
     function update_all(comb) {
         if (self.editando) {
             var editando = self.editando;
-            var aulas = new Array();
-            for (dia = 0; dia < 6; dia++)
-                for (hora = 0; hora < 14; hora++)
-                    if (overlay[dia][hora]) {
-                        var aula = new Aula(dia, hora, "SALA");
-                        for (var k = 0; k < editando.aulas.length; k++) {
-                            var a2 = editando.aulas[k];
-                            if (a2.dia == dia && a2.hora == hora) {
-                                aula.sala = a2.sala;
-                                break;
-                            }
-                        }
-                        aulas.push(aula);
-                    }
+            var aulas_user = ui_turmas.get_aulas();
+            var aulas = Array();
+			for (var i = 0; i < aulas_user.length; i++){
+				var aula_user = aulas_user[i];
+				var aula = state.plano.materias.parsear_aula(aula_user[0], aula_user[1], aula_user[2]);
+				if (aula == null || aula.tem_conflito(aulas))
+					continue;
+				aulas.push(aula);
+			}
             editando.horario.aulas = aulas;
             for (var k in editando.horario.turmas)
                 editando.horario.turmas[k].aulas = aulas;
@@ -363,62 +359,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             update_all();
         }
         var materia = state.plano.materias.get(state.plano.materias.selected);
-        clear_overlay();
-        var c       = state.plano.combinacoes.get_current();
-        var fake    = state.plano.combinacoes.copy(c, turma.materia);
-        for (var i = 0; i < turma.aulas.length; i++) {
-            var dia  = turma.aulas[i].dia;
-            var hora = turma.aulas[i].hora;
-            overlay[dia][hora] = true;
-        }
-        function display(dia, hora, tipo, fake) {
-            /* 0 clear
-             * 1 normal
-             * 2 over
-             * 3 comb
-             * 4 choque 1
-             * 5 choque 2
-             */
-            switch (tipo) {
-                case 0: ui_horario.clear_cell(dia, hora); break;
-                case 1: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:turma.materia.cor,color:"black"}); break;
-                case 2: ui_horario.display_cell(dia, hora, Cell.black (turma.materia.codigo)); break;
-                case 3: ui_horario.display_cell(dia, hora, Cell.normal(fake[dia][hora])); break;
-                case 4: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:"black",color:"red"}); break;
-                case 5: ui_horario.display_cell(dia, hora, Cell.red   (turma.materia.codigo)); break;
-            }
-        };
-        function onover(dia, hora) {
-            var eq = fake   [dia][hora] ? fake[dia][hora].horario == turma.horario : 0;
-            var a1 = overlay[dia][hora] ? 0 : 1;
-            var a2 = fake   [dia][hora] ? 0 : 1;
-            var a3 = eq                 ? 0 : 1;
-            var todisplay = [ [ [ 2, 5 ], [ 1, 1 ] ], [ [ 3, 4 ], [ 2, 2 ] ] ];
-            display(dia, hora, todisplay[a1][a2][a3], fake);
-        };
-        function onout(dia, hora) {
-            var eq = fake   [dia][hora] ? fake[dia][hora].horario == turma.horario : 0;
-            var a1 = overlay[dia][hora] ? 0 : 1;
-            var a2 = fake   [dia][hora] ? 0 : 1;
-            var a3 = eq                 ? 0 : 1;
-            var todisplay = [ [ [ 0, 5 ], [ 1, 1 ] ], [ [ 3, 3 ], [ 0, 0 ] ] ];
-            display(dia, hora, todisplay[a1][a2][a3], fake);
-        };
-        function toggle(dia, hora) {
-            if (overlay[dia][hora])
-                overlay[dia][hora] = false;
-            else
-                overlay[dia][hora] = true;
-            onover(dia, hora);
-        };
+
         ui_grayout.show();
-        ui_horario.set_toggle(toggle, onover, onout);
         ui_turmas.edit_start(turma);
         self.editando = turma;
-        for (var dia = 0; dia < 6; dia++)
-            for (var hora = 0; hora < 14; hora++)
-                onout(dia, hora);
-    }
+	}
     ui_turmas.cb_edit_turma  = function(turma) {
         edit_start(turma);
     };

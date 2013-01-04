@@ -32,24 +32,143 @@ function UI_turmas(id)
         }
         self.cb_updated(null);
     }
+    
+    function add_row_horario(table, dia, hora_inicio, hora_fim, before){
+			var tr = document.createElement("tr");
+			
+			var td = document.createElement("td");
+			var div = document.createElement("div");
+	        div.style.overflow="hidden";
+			var select = document.createElement("select");
+			var dias = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
+			for (var i = 0; i < 6; i++){
+				var option = document.createElement("option");
+				if (i == dia)
+					option.selected = "selected";
+				option.value = i
+				option.innerHTML = dias[i];
+				select.appendChild(option);
+			}
+			div.appendChild(select);
+			td.appendChild(div);
+			tr.appendChild(td);
+			
+			var td = document.createElement("td");
+			var div = document.createElement("div");
+	        div.style.overflow="hidden";
+			var input = document.createElement("input");
+	        input.className = "ui_materias_edit_input";
+	        input.value = hora_inicio;
+			div.appendChild(input);
+			td.appendChild(div);
+			tr.appendChild(td);
+			
+			var td = document.createElement("td");
+			var div = document.createElement("div");
+	        div.style.overflow="hidden";
+			var input = document.createElement("input");
+	        input.className = "ui_materias_edit_input";
+	        input.value = hora_fim;
+			div.appendChild(input);
+			td.appendChild(div);
+			tr.appendChild(td);
+	        
+	        var td = document.createElement("td");
+		    td.style.MozUserSelect = "none";
+		    td.style.KhtmlUserSelect = "none";
+		    td.onselectstart = function () { return false; };
+			td.oldbg = "#EEEEEE";
+		    td.onmouseout  = function() { this.style.backgroundColor = this.oldbg; this.style.color = "black"; };
+		    td.onmouseover = function() { this.style.backgroundColor = "black"; this.style.color = this.oldbg; };
+		    td.onclick = function() { this.parentNode.parentNode.removeChild(this.parentNode); };
+		    td.innerHTML = "X";
+		    td.title = "remover horário";
+		    td.style.width = "15px";
+			tr.appendChild(td);
+			if(before)
+			    table.insertBefore(tr, before);
+			else
+    			table.appendChild(tr);
+    }
+    
     function edit_start(turma) {
         current_turma = turma;
         var row = current_turma.row;
         row.style.backgroundColor = "black";
         row.style.color           = "white";
-        self.ok_button.style.display = "";
-        self.cancel_button.style.display = "";
+        
+        var horarios = self.edit_horario.tBodies[0];
+        horarios.innerHTML = "";
+		
+		turma.aulas.forEach(function (aula) {
+			add_row_horario(horarios, aula.dia, aula.hora_inicio, aula.hora_fim);
+		});
+		
+		var buttons_tr = document.createElement("tr");
+		var buttons_td = document.createElement("td");
+		buttons_td.colSpan = "4";
+		buttons_td.style.padding = "10px";
+		
+		var new_aula = document.createElement("span");
+		new_aula.className = "ui_turmas_big_button";
+		new_aula.innerHTML = "nova aula";
+        new_aula.onselectstart = function () { return false; };
+		new_aula.onclick   = function () { add_row_horario(horarios, 0, "06:00", "07:00", buttons_tr); return false;};
+		buttons_td.appendChild(new_aula);
+		
+		var save = document.createElement("span");
+		save.className = "ui_turmas_big_button";
+		save.marginLeft = (thiswidth/3);
+		save.innerHTML = "salvar";
+        save.onselectstart = function () { return false; };
+		save.onclick   = function () { self.cb_ok(); return false;};
+		buttons_td.appendChild(save);
+		
+		var cancel = document.createElement("span");
+		cancel.className = "ui_turmas_big_button";
+		cancel.marginLeft = 2 * (thiswidth/3);
+		cancel.innerHTML = "cancelar";
+        cancel.onselectstart = function () { return false; };
+        cancel.onclick = function () { self.cb_cancel(); return false; };
+		buttons_td.appendChild(cancel);
+		
+		buttons_tr.appendChild(buttons_td);
+		horarios.appendChild(buttons_tr);
+        
+        self.edit_horario.style.display = "table";
+        self.table.style.display = "none";
+//        self.ok_button.style.display = "";
+//        self.cancel_button.style.display = "";
         old_cb_onmouseout = self.cb_onmouseout;
         self.cb_onmouseout = function() {};
     }
+    
+    function get_aulas() {
+        var aulas = [];
+        var tabela = self.edit_horario.tBodies[0];
+        for (var i = 0; i < tabela.rows.length - 1; i++) {
+            var row = tabela.rows[i];
+            var aula = []
+            for (var j = 0; j < row.cells.length - 1; j++) {
+                var cell = row.cells[j];
+                aula.push(cell.firstChild.firstChild.value);
+            }
+            aulas.push(aula);
+        }
+        return aulas;
+    }
+    
     function edit_end() {
         if (current_turma) {
             var row = current_turma.row;
             row.style.backgroundColor = current_materia.cor;
             row.style.color           = "black";
-            self.ok_button.style.display = "none";
-            self.cancel_button.style.display = "none";
+//            self.ok_button.style.display = "none";
+//            self.cancel_button.style.display = "none";
+	        self.edit_horario.style.display = "none";
+	        self.table.style.display = "table";
             self.cb_onmouseout = old_cb_onmouseout;
+            
         }
     }
     function remove_turma(turma) {
@@ -302,7 +421,11 @@ function UI_turmas(id)
         self.fix_height();
     }
     var create = function(materia) {
-        list.innerHTML = "";
+        list.innerHTML = "<table id=\"edit_horario\"><thead><tr><td>Dia</td>\
+        <td>Hora início</td><td>Hora fim</td><td class=\"edit_horario_remover\"></td></tr></thead><tbody>\
+        </tbody></table>";
+        
+		self.edit_horario = document.getElementById("edit_horario");
         insert_before = null;
 
         current_materia = materia;
@@ -425,6 +548,7 @@ function UI_turmas(id)
         self.tbody.appendChild(row);
         insert_before = row;
 
+/*
         var button = document.createElement("span");
         button.className = "ui_turmas_big_button";
         button.style.marginLeft = ((thiswidth/2) - 100) + "px";
@@ -444,6 +568,7 @@ function UI_turmas(id)
         button.onclick = function () { self.cb_cancel(); return false; };
         list.appendChild(button);
         self.cancel_button = button;
+*/
 
         self.table.appendChild(self.tbody);
         list.appendChild(self.table);
@@ -467,13 +592,18 @@ function UI_turmas(id)
         list.style.maxHeight = (height-2) + "px";
         self.fix_height();
     };
+    self.get_aulas = get_aulas;
     self.fix_height = function() {
-        if (!self.table)
+        if (!self.table || !self.edit_horarios)
             return;
-        if (self.table.offsetHeight < list.offsetHeight)
+        if (self.table.offsetHeight < list.offsetHeight) {
+        	self.edit_horarios.style.width = thiswidth + "px";
             self.table.style.width = thiswidth + "px";
-        else
+        }
+        else {
+        	self.edit_horarios.style.width = (thiswidth - document.scrollbar_width) + "px";
             self.table.style.width = (thiswidth - document.scrollbar_width) + "px";
+        }
     };
     /* callbacks */
     self.cb_toggle_agrupar= null;

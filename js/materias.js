@@ -51,6 +51,41 @@ Aula.prototype.tem_conflito = function(lista_aulas) {
 	return false;
 }
 
+	function parsear_aula(dia, hora_inicio, hora_fim){
+	try {
+		dia = parseInt(dia);
+		inicio = hora_inicio.split(":");
+		fim = hora_fim.split(":");
+		if(inicio.length < 2 || fim.length < 2)
+			return null;
+		inicio[0] = parseInt(inicio[0]);
+		inicio[1] = parseInt(inicio[1]);
+		fim[0] = parseInt(fim[0]);
+		fim[1] = parseInt(fim[1]);
+	} catch (e) {
+		return null;
+	}
+	
+	if(dia < 0 || dia > 5 || inicio[0] < 6 || fim[0] < 6 || inicio[0] > 23 ||
+	   fim[0] > 23 || inicio[1] < 0 || fim[1] < 0 || inicio[1] > 59 || fim[1] > 59)
+		return null;
+		
+	inicio[0] = inicio[0].toString();
+	inicio[1] = inicio[1].toString();
+	fim[0] = fim[0].toString();
+	fim[1] = fim[1].toString();
+	if(inicio[0].length < 2)
+		inicio[0] = "0" + inicio[0];
+	if(inicio[1].length < 2)
+		inicio[1] = "0" + inicio[1];
+	if(fim[0].length < 2)
+		fim[0] = "0" + fim[0];
+	if(fim[1].length < 2)
+		fim[1] = "0" + fim[1];
+	
+	return new Aula(dia, inicio[0] + ":" + inicio[1], fim[0] + ":" + fim[1]);
+}
+
 /**
  * @constructor
  */
@@ -254,7 +289,7 @@ function Materias()
     }
     var n_turmas = 1;
     function new_turma_name() {
-        var nome = new String();
+        var nome = "000"
         if (n_turmas < 1000)
             nome += "0";
         if (n_turmas <  100)
@@ -359,4 +394,5 @@ function Materias()
     };
     self.get = function(codigo) { return materias[codigo]; };
     self.list = function() { return list; };
+    self.parsear_aula = parsear_aula;
 }

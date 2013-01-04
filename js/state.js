@@ -176,7 +176,7 @@ function State()
                     }
                 }
                 if (!db_turma) {
-                    if (state_turma.nome.length != 4) {
+                    if (state_turma.nome.indexOf("000") != 0) {
                         var issue = {};
                         issue.text = "Turma " + state_turma.nome + " não existe mais!";
                         issue.button = "Remover turma";

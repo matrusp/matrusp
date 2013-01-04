@@ -142,6 +142,7 @@ body {
     font-size: 13px;
     padding: 3px 6px 3px 6px;
     text-decoration: underline;
+    z-index: 2;
 }
 .ui_turmas_all_menu_v:hover {
     background-color: black;
@@ -167,7 +168,8 @@ body {
     color: #eeeeee;
 }
 .ui_turmas_big_button {
-    position: absolute;
+	padding: 2px;
+	margin: 10px;
     z-index: 2000;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -175,7 +177,7 @@ body {
     background-color: lightblue;
     top: 50%;
     text-align: center;
-    font-size: 20px;
+    font-size: 15px;
     width: 100px;
     cursor: pointer;
 }
@@ -213,6 +215,27 @@ body {
     -moz-user-select: none;
     -khtml-user-select: none;
     padding: 5px;
+}
+
+#edit_horario {
+	position: absolute;
+	display: none;
+	text-align: center;
+	border-spacing: 1px;
+	z-index: 2000;
+	width: 100%;
+}
+
+#edit_horario tr {
+	background-color: #EEEEEE;
+}
+
+#edit_horario thead td {
+	padding: 5px;
+}
+
+.edit_horario_remover {
+	width: 15px;
 }
 
 .ui_materias {
