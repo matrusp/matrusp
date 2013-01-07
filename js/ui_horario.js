@@ -37,12 +37,25 @@ function UI_horario(id)
     
     var td_hour = document.createElement("td");
     row_content.appendChild(td_hour);
-    
+
+	/*
+	    
     for (var i = 0; i < dias.length; i++) {
         td_day[i] = document.createElement("td");
         td_day[i].className = "ui_horario_celula";
         td_day[i].innerHTML = "&nbsp;";
         row_content.appendChild(td_day[i]);
+    }
+    
+    */
+        
+    for (var i = 0; i < dias.length; i++) {
+    	var td = document.createElement("td");
+        td.className = "ui_horario_celula";
+        td_day[i] = document.createElement("div");
+        td_day[i].className = "ui_horario_container";
+        td.appendChild(td_day[i]);
+        row_content.appendChild(td);
     }
     
     tbody.appendChild(row_content);
@@ -116,8 +129,8 @@ function UI_horario(id)
             
             inicio = inicio.split(":");
             fim = fim.split(":");
-            inicio = parseInt(inicio[0]) + 1.0 * parseInt(inicio[1])/60;
-            fim = parseInt(fim[0]) + 1.0 * parseInt(fim[1])/60;
+            inicio = +inicio[0] + 1.0 * +inicio[1]/60;
+            fim = +fim[0] + 1.0 * +fim[1]/60;
             
             cell.style.top = (inicio - 6) * 23 + 15 + "px";
             cell.style.height = (fim - inicio) * 23 + "px";

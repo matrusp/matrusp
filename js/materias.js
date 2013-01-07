@@ -53,15 +53,15 @@ Aula.prototype.tem_conflito = function(lista_aulas) {
 
 	function parsear_aula(dia, hora_inicio, hora_fim){
 	try {
-		dia = parseInt(dia);
+		dia = +(dia);
 		inicio = hora_inicio.split(":");
 		fim = hora_fim.split(":");
 		if(inicio.length < 2 || fim.length < 2)
 			return null;
-		inicio[0] = parseInt(inicio[0]);
-		inicio[1] = parseInt(inicio[1]);
-		fim[0] = parseInt(fim[0]);
-		fim[1] = parseInt(fim[1]);
+		inicio[0] = +(inicio[0]);
+		inicio[1] = +(inicio[1]);
+		fim[0] = +(fim[0]);
+		fim[1] = +(fim[1]);
 	} catch (e) {
 		return null;
 	}
@@ -126,7 +126,7 @@ function Turma(turma) {
 	if(turma.horarios){
 		turma.horarios.forEach(function(horario) {
 			var splitted = horario.split(".");
-			self.aulas.push(new Aula(parseInt(splitted[0]) - 2, splitted[1], splitted[2]));
+			self.aulas.push(new Aula(+(splitted[0]) - 2, splitted[1], splitted[2]));
 		});
 	}
 	

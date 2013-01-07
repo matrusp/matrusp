@@ -44,7 +44,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                 turma.materia.ui_turma.style.textAlign = "center";
                 turma.materia.ui_selected.checked = true;
                 turma.materia.ui_selected.disabled = "";
-                horas_aula += parseInt(turma.aulas.length);
+                horas_aula += +(turma.aulas.length);
                 display.turma(c, turma);
             });
         }
@@ -122,7 +122,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     ui_combinacoes.cb_changed  = function(val) {
         if (!state.plano.combinacoes.length())
             return;
-        if (parseInt(val).toString() == val && val >= 1 && val <= state.plano.combinacoes.length()) {
+        if (+(val).toString() == val && val >= 1 && val <= state.plano.combinacoes.length()) {
             ui_logger.reset();
             display_combinacao(val);
         } else {
@@ -657,7 +657,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             switch (this.readyState) {
                 case 2:
                     if (!(navigator.userAgent.toLowerCase().indexOf("msie") > -1))
-                        f_length = parseInt(this.getResponseHeader("X-Uncompressed-Content-Length"));
+                        f_length = +(this.getResponseHeader("X-Uncompressed-Content-Length"));
                     break;
                 case 4:
                     clearTimeout(f_timeout);

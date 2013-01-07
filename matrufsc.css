@@ -290,6 +290,12 @@ body {
 	margin-bottom: 10px;
 }
 
+.ui_horario_container {
+	position: relative;
+	top: -223px;
+	left: -1px;
+}
+
 .ui_horario_linha {
 	text-align: left;
 	font-size: 11px;
