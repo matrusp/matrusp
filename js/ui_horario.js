@@ -9,8 +9,8 @@ function UI_horario(id)
                     "13:30", "14:20", "15:10", "16:20", "17:10",
                     "18:30", "19:20", "20:20", "21:10", "22:00"];
 
-    //td_day[0] é a célula da tabela correspondente à segunda feira
-    var td_day = [];
+    //div_day[0] é a célula da tabela correspondente à segunda feira
+    var div_day = [];
     //materias[dia + "-" + hora_inicio + "-" + hora_fim] é o div da matéria
     var materias = {};
     
@@ -42,10 +42,10 @@ function UI_horario(id)
 	/*
 	    
     for (var i = 0; i < dias.length; i++) {
-        td_day[i] = document.createElement("td");
-        td_day[i].className = "ui_horario_celula";
-        td_day[i].innerHTML = "&nbsp;";
-        row_content.appendChild(td_day[i]);
+        div_day[i] = document.createElement("td");
+        div_day[i].className = "ui_horario_celula";
+        div_day[i].innerHTML = "&nbsp;";
+        row_content.appendChild(div_day[i]);
     }
     
     */
@@ -53,9 +53,9 @@ function UI_horario(id)
     for (var i = 0; i < dias.length; i++) {
     	var td = document.createElement("td");
         td.className = "ui_horario_celula";
-        td_day[i] = document.createElement("div");
-        td_day[i].className = "ui_horario_container";
-        td.appendChild(td_day[i]);
+        div_day[i] = document.createElement("div");
+        div_day[i].className = "ui_horario_container";
+        td.appendChild(div_day[i]);
         row_content.appendChild(td);
     }
     
@@ -71,12 +71,12 @@ function UI_horario(id)
         div_hour.innerHTML = hour + ":00";
         td_hour.appendChild(div_hour);
         
-        var div_line = document.createElement("div");
-        div_line.className = "ui_horario_linha";
-        div_line.style.top = i * 23 + 15 + "px";
+        var hr = document.createElement("hr");
+        hr.className = "ui_horario_linha";
+        hr.style.top = i * 23 + 15 + "px";
         
         for (var j = 0; j < dias.length; j++) {
-            td_day[j].appendChild(div_line.cloneNode(true));
+            div_day[j].appendChild(hr.cloneNode(true));
         }
     }
     
@@ -136,7 +136,7 @@ function UI_horario(id)
             cell.style.top = (inicio - 6) * 23 + 15 + "px";
             cell.style.height = (fim - inicio) * 23 + "px";
 
-            td_day[dia].appendChild(cell);
+            div_day[dia].appendChild(cell);
             materias[hash] = cell;
         }
         

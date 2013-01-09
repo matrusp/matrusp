@@ -295,14 +295,29 @@ body {
 	position: relative;
 	top: -223px;
 	left: -1px;
+	zoom: 1;
 }
 
 .ui_horario_linha {
+	position: absolute;
+	border-top: 2px dashed #DDD;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	color: #FFF;
+	background-color: #FFF;
+	height: 1px;
+	width: 62px;
+	margin: 0px;
+	
+/*
 	text-align: left;
 	font-size: 11px;
 	position: absolute;
 	border: thin dashed rgb(221, 221, 221);
 	width: 59px;
+	zoom: 1;
+*/
 }
 
 .ui_horario_inicio {
