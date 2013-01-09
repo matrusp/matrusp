@@ -36,6 +36,7 @@ function UI_horario(id)
     var row_content = document.createElement("tr");
     
     var td_hour = document.createElement("td");
+    td_hour.style.padding = "0px";
     row_content.appendChild(td_hour);
 
 	/*

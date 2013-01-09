@@ -288,6 +288,7 @@ body {
 .ui_horario_hora {
 	margin-top: 10px;
 	margin-bottom: 10px;
+	height: 13px;
 }
 
 .ui_horario_container {
