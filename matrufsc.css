@@ -16,6 +16,7 @@ body {
     cursor: pointer;
 }
 .ui_planos_menu_v {
+	background-color: #eee;
     border: 1px solid black;
     position: relative;
     padding: 2px 6px 2px 6px;
@@ -56,6 +57,7 @@ body {
     cursor: pointer;
 }
 .ui_saver_menu_v {
+	background-color: #eeeeee;
     position: relative;
     padding: 3px 6px 3px 6px;
     text-decoration: underline;

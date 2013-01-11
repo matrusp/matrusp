@@ -142,7 +142,6 @@ function Combinacoes()
             return a.sum - b.sum;
         });
         combinacoes = new_combinacoes;
-        console.log(combinacoes);
     }
 
     /* procedures */
