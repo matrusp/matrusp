@@ -7,7 +7,7 @@ import json
 import codecs
 from bs4 import BeautifulSoup
 
-DB_DIR = "../db/usp/"
+DB_DIR = "./db/"
 #O arquivo final está codificado em UTF-8
 arq_saida = "db_usp.txt" 
 
@@ -39,7 +39,7 @@ def parsear_informacoes(tabela):
 		if re.search(u"Código\s+da\s+Turma\s+Teórica", tds[0].string, flags=re.U):
 			codigo_teorica = tds[1].string.strip()
 		elif re.search(u"Código\s+da\s+Turma", tds[0].string, flags=re.U):
-			codigo = tds[1].string.strip()
+			codigo = re.match(u"^(\w+)", tds[1].string.strip(), flags=re.U).group(1)
 		elif re.search(u"Início", tds[0].string, flags=re.U):
 			inicio = tds[1].string.strip()
 		elif re.search(u"Fim", tds[0].string, flags=re.U):
