@@ -68,17 +68,7 @@ Database.prototype.add = function(semestre, array) {
     
 }
 Database.prototype.fetch = function(string, page) {
-    string = string.toUpperCase().replace(/À/g, "A")
-            .replace(/Á/g, "A").replace(/Â/g, "A").replace(/Ã/g, "A")
-            .replace(/Ä/g, "A").replace(/Å/g, "A").replace(/Ç/g, "C")
-            .replace(/È/g, "E").replace(/É/g, "E").replace(/Ê/g, "E")
-            .replace(/Ë/g, "E").replace(/Ì/g, "I").replace(/Í/g, "I")
-            .replace(/Î/g, "I").replace(/Ï/g, "I").replace(/Ð/g, "D")
-            .replace(/Ñ/g, "N").replace(/Ò/g, "O").replace(/Ó/g, "O")
-            .replace(/Ô/g, "O").replace(/Õ/g, "O").replace(/Ö/g, "O")
-            .replace(/Ø/g, "O").replace(/Ù/g, "U").replace(/Ú/g, "U")
-            .replace(/Û/g, "U").replace(/Ü/g, "U").replace(/Ý/g, "Y")
-            .replace(/ß/g, "B");
+	string = string.toUpperCase();
     var search_whole = [];
     var search_part = [];
     string.split(" ").forEach(function(str) {
@@ -99,8 +89,8 @@ Database.prototype.fetch = function(string, page) {
                 exactly = true;
                 break;
             }
-            expr_score += this.search_score(haystack.nome, search_whole[j], 100);
-            expr_score += this.search_score(haystack.nome, search_part[j], 10);
+            expr_score += this.search_score(haystack.nome.toUpperCase(), search_whole[j], 100);
+            expr_score += this.search_score(haystack.nome.toUpperCase(), search_part[j], 10);
             expr_score += this.search_score(haystack.codigo, search_part[j], 10);
             if (expr_score) {
                 score += expr_score;
