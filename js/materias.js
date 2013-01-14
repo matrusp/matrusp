@@ -51,6 +51,17 @@ Aula.prototype.tem_conflito = function(lista_aulas) {
 	return false;
 }
 
+Aula.prototype.quantidade_horas = function(){
+	inicio = this.hora_inicio.split(":");
+	fim = this.hora_fim.split(":");
+	inicio[0] = +(inicio[0]);
+	inicio[1] = +(inicio[1]);
+	fim[0] = +(fim[0]);
+	fim[1] = +(fim[1]);
+	
+	return (fim[0] + fim[1]/60) - (inicio[0] + inicio[1]/60);
+}
+
 	function parsear_aula(dia, hora_inicio, hora_fim){
 	try {
 		dia = +(dia);

@@ -294,15 +294,19 @@ function UI_turmas(id)
         data.onmouseup = onmouseup;
         var inner_div = document.createElement("div");
         inner_div.style.position = "relative";
+        var professores = {};
         for (var j in horario.turmas) {
             var turma = horario.turmas[j];
-            var prof = new String;
             for (var p = 0; p < turma.professores.length; p++) {
-                var div = document.createElement("div");
-                div.innerHTML = turma.professores[p];
-                inner_div.appendChild(div);
+                professores[turma.professores[p]] = true;
             }
         }
+        for (professor in professores){
+            var div = document.createElement("div");
+            div.innerHTML = professor;
+            inner_div.appendChild(div);
+        }
+        
         if (!inner_div.innerHTML)
             inner_div.innerHTML = "&nbsp;";
         data.appendChild(inner_div);
