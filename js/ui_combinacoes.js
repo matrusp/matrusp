@@ -36,7 +36,7 @@ function UI_combinacoes(id)
     }
     d2.appendChild(button);
     d2.appendChild(document.createTextNode(" Horas por semana: "));
-    var horas_aula = document.createTextNode("0");
+    var horas_aula = document.createTextNode("00:00");
     d2.appendChild(horas_aula);
 
     /* procedures */

@@ -58,7 +58,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         ui_combinacoes.set_total(state.plano.combinacoes.length());
         var horas = Math.floor(horas_aula) + ":" + 
         	Math.ceil((horas_aula - Math.floor(horas_aula)) * 60);
-        if (horas.length == 4)
+        if (horas.length < 5)
         	horas += "0";
         ui_combinacoes.set_horas_aula(horas);
     }

@@ -62,7 +62,7 @@ Aula.prototype.quantidade_horas = function(){
 	return (fim[0] + fim[1]/60) - (inicio[0] + inicio[1]/60);
 }
 
-	function parsear_aula(dia, hora_inicio, hora_fim){
+function parsear_aula(dia, hora_inicio, hora_fim){
 	try {
 		dia = +(dia);
 		inicio = hora_inicio.split(":");
