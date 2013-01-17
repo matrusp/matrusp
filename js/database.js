@@ -67,8 +67,24 @@ Database.prototype.add = function(semestre, array) {
     }
     
 }
+
+function normalizar_string(string) {
+	return string.toUpperCase()
+			.replace(/[ÀÁÂÃÄÅ]/g, "A")
+			.replace(/Ç/g, "C")
+            .replace(/[ÈÉÊË]/g, "E")
+            .replace(/[ÌÎÍÏ]/g, "I")
+            .replace(/Ð/g, "D")
+            .replace(/Ñ/g, "N")
+            .replace(/[ÒÓÔÕÖØ]/g, "O")
+            .replace(/[ÙÚÛÜ]/g, "U")
+            .replace(/Ý/g, "Y")
+            .replace(/ß/g, "B");
+}
+
 Database.prototype.fetch = function(string, page) {
-	string = string.toUpperCase();
+    string = normalizar_string(string);
+
     var search_whole = [];
     var search_part = [];
     string.split(" ").forEach(function(str) {
@@ -89,8 +105,9 @@ Database.prototype.fetch = function(string, page) {
                 exactly = true;
                 break;
             }
-            expr_score += this.search_score(haystack.nome.toUpperCase(), search_whole[j], 100);
-            expr_score += this.search_score(haystack.nome.toUpperCase(), search_part[j], 10);
+            var nome_normalizado = normalizar_string(haystack.nome);
+            expr_score += this.search_score(nome_normalizado, search_whole[j], 100);
+            expr_score += this.search_score(nome_normalizado, search_part[j], 10);
             expr_score += this.search_score(haystack.codigo, search_part[j], 10);
             if (expr_score) {
                 score += expr_score;
