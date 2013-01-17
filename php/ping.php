@@ -7,8 +7,10 @@ if(!$_GET['q'] || !$_POST['ping']){
         exit;
 }
 
+$query = preg_replace('/[^\w]/', '', $_GET['q']);
+
 header('Content-type: application/octet-stream');
-header('Content-Disposition: attachment; filename="' . $_GET['q'] .'.json"');
+header('Content-Disposition: attachment; filename="' . $query .'.json"');
 
 echo $_POST['ping']
 ?>

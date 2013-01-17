@@ -6,7 +6,9 @@ if(!$_GET['q'] || !$_POST['data']){
         exit;
 }
 
-$arq = fopen("./data/" . $_GET['q'] . ".txt", "w");
+$query = preg_replace('/[^\w]/', '', $_GET['q']);
+
+$arq = fopen("./data/" . $query . ".txt", "w");
 fwrite($arq, $_POST['data']);
 fclose($arq);
 
