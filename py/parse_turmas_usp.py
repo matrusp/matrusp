@@ -2,25 +2,95 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import re
 import json
 import codecs
+from datetime import datetime
 from bs4 import BeautifulSoup
 
-DB_DIR = "./db/"
-#O arquivo final está codificado em UTF-8
-arq_saida = "db_usp.txt" 
+def main(db_dir, arq_saida, arq_antigo=None):
+	db_dir = os.path.abspath(db_dir)
+	arq_saida = os.path.abspath(arq_saida)
 
-def main():
-	db = []	
-	for arq in os.listdir(os.path.abspath(DB_DIR)):
-		db.append(parsear_materia(arq))
 
+	if not os.path.isdir(db_dir):
+		print " - %s não é um diretório válido. Encerrando. - " % (db_dir)
+		return 1;
+		
+	db_antigo = {}
+	try:
+		if arq_antigo != None:
+			db_antigo = ler_db_antigo(os.path.abspath(arq_antigo))
+	except Exception, e:
+		print " - %s não pôde ser aberto. Encerrando. - " % (arq_antigo)
+		sys.exit(1);
+
+	db_novo = {}
+	for arq in os.listdir(db_dir):
+		parseado = parsear_materia(os.path.join(db_dir, arq))
+		codigo = parseado[0]
+		db_novo[codigo] = parseado
+	
+	resultado = fundir_dbs(db_novo, db_antigo)
+	
 	print " - Gravando resultados - "
-	saida = codecs.open(arq_saida, "w", encoding='utf-8')
-	saida.write(json.dumps({u"TODOS":db}, separators=(',',':')))
+	try:
+		saida = codecs.open(arq_saida, "w", encoding='utf-8')
+	except Exception, e:
+		print " - %s não pôde ser aberto. Encerrando. - " % (arq_saida)
+		return 1;
+	saida.write(json.dumps({u"TODOS":resultado.values()}, separators=(',',':')))
 	saida.close()
 	print " - FIM! - "
+	return 0
+
+#Abre o arquivo com o DB antigo e retorna um dicionário da forma
+#db = {"AAA000": info_aaa000, "AAA0001": info_aaa0001, ...}
+def ler_db_antigo(arq_antigo):
+	antigo = json.loads(codecs.open(arq_antigo, "r", encoding='utf-8').read())
+	
+	db = {}
+	for materia in antigo[u"TODOS"]:
+		codigo = materia[0]
+		db[codigo] = materia
+		
+	return db	
+
+#Recebe dois DBs, um antigo e um novo, ambos da forma
+#db = {"AAA000": info_aaa000, "AAA0001": info_aaa0001, ...}
+#e retorna todo o conteúdo do DB novo mais quaisquer matérias do DB antigo que
+#não estão no DB novo, já estão em andamento mas que ainda não tenham terminado.
+#Exemplo: Matérias anuais não tem oferecimento no segundo semestre mas ainda
+# devem continuar aparecendo durante todo o ano.
+def fundir_dbs(db_novo, db_antigo):
+	print " - Fundindo DBs antigo e novo - "
+	for codigo, materia in db_antigo.iteritems():
+		if codigo not in db_novo:
+			inicio_mais_passado = obter_inicio_mais_passado(materia)
+			termino_mais_futuro = obter_termino_mais_futuro(materia)
+			if inicio_mais_passado < datetime.today() and datetime.today() < termino_mais_futuro:
+				print u" - Recuperando %s do DB antigo (Término em %s). - " % (codigo, termino_mais_futuro.strftime("%d/%m/%Y"))
+				db_novo[codigo] = materia
+
+	print " - Fim da fusão dos DBs antigo e novo - "
+	return db_novo
+
+#Dada uma descrição de uma matéria da forma que parsear_materia retorna, 
+#devolve o datetime correspondente à data de térimino mais no futuro de todas
+#as turmas dela.
+def obter_termino_mais_futuro(materia):
+	turmas = materia[2]
+	datas_termino = map(lambda t: datetime.strptime(t[2], u"%d/%m/%Y"), turmas)
+	return max(datas_termino)
+
+#Dada uma descrição de uma matéria da forma que parsear_materia retorna, 
+#devolve o datetime correspondente à data de início mais no passado de todas
+#as turmas dela.
+def obter_inicio_mais_passado(materia):
+	turmas = materia[2]
+	datas_inicio = map(lambda t: datetime.strptime(t[1], u"%d/%m/%Y"), turmas)
+	return min(datas_inicio)
 
 
 #Retorna uma tupla da forma:
@@ -142,10 +212,10 @@ def eh_tabela_folha(tag):
 #Exemplo:
 #("MAC0315", "Programação Linear", [(..., ..., ..., ..., ..., ...)])
 def parsear_materia(arquivo):
-	print " - Parseando arquivo %s - " % (arquivo)
+	print " - Parseando arquivo %s - " % (os.path.basename(arquivo))
 	
-	codigo = arquivo[:-5]
-	html = open(DB_DIR + arquivo, "r")
+	codigo = os.path.basename(arquivo).split(".")[0]
+	html = open(arquivo, "r")
 	soup = BeautifulSoup(html.read())
 	html.close()
 	tabelas_folha = soup.find_all(eh_tabela_folha)
@@ -153,9 +223,9 @@ def parsear_materia(arquivo):
 	turmas = []
 	info = horario = vagas = None
 	for folha in tabelas_folha:
-		if folha.find_all(text=re.compile("Disciplina:\s+" + codigo, flags=re.UNICODE)):
+		if folha.find_all(text=re.compile(u"Disciplina:\s+" + codigo, flags=re.UNICODE)):
 			nome = list(folha.stripped_strings)[-1]
-			nome = re.search("Disciplina:\s+%s - (.+)" % (codigo), nome).group(1)
+			nome = re.search(u"Disciplina:\s+%s - (.+)" % (codigo), nome).group(1)
 		if folha.find_all(text=re.compile(u"Código\s+da\s+Turma", flags=re.UNICODE)):
 			if info != None:
 				turmas.append((info, horario, vagas))
@@ -228,5 +298,14 @@ def filtrar_turmas(turmas):
 	return turmas
 	
 if __name__ == "__main__":
-	main()
+	if len(sys.argv) < 3:
+		print " - Forneça o diretório de entrada o nome do arquivo de saída e o"
+		print "   nome do banco antigo (Opcional)."
+		print "   Ex: %s ./db ./db_usp.txt ./db_usp_antigo.txt" % (sys.argv[0])
+		print "   Encerrando. - "
+		sys.exit(1)
+	elif len(sys.argv) == 3:
+		main(sys.argv[1], sys.argv[2])
+	else:
+		main(sys.argv[1], sys.argv[2], sys.argv[3])
 
