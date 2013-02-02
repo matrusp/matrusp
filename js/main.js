@@ -389,10 +389,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
              */
             switch (tipo) {
                 case 0: ui_horario.clear_cell(dia, hora); break;
-                case 1: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:turma.materia.cor,color:"black"}); break;
+                case 1: ui_horario.display_cell(dia, hora, {fixed:false,text:turma.materia.codigo,bgcolor:turma.materia.cor,color:"black"}); break;
                 case 2: ui_horario.display_cell(dia, hora, Cell.black (turma.materia.codigo)); break;
                 case 3: ui_horario.display_cell(dia, hora, Cell.normal(fake[dia][hora])); break;
-                case 4: ui_horario.display_cell(dia, hora, {text:turma.materia.codigo,bgcolor:"black",color:"red"}); break;
+                case 4: ui_horario.display_cell(dia, hora, {fixed:false,text:turma.materia.codigo,bgcolor:"black",color:"red"}); break;
                 case 5: ui_horario.display_cell(dia, hora, Cell.red   (turma.materia.codigo)); break;
             }
         };
