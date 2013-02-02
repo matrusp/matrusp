@@ -40,6 +40,14 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
                 }
                 if (!turma)
                     var turma = horario.turma_representante;
+                var turmas_selecionadas = 0;
+                turma.materia.turmas.forEach(function(t){
+                    turmas_selecionadas += t.selected;
+                });
+                if (turmas_selecionadas == 1)
+                    turma.materia.ui_turma.style.fontWeight = "bold";
+                else
+                    turma.materia.ui_turma.style.fontWeight = "";
                 turma.materia.ui_turma.innerHTML = turma.nome;
                 turma.materia.ui_turma.style.textAlign = "left";
                 turma.materia.ui_selected.checked = true;
