@@ -92,7 +92,10 @@ function State()
     self.new_plano = function(plano_to_load, n) {
         var plano = new Plano(n);
         plano.materias.selected = plano_to_load.materia;
-        plano.combinacao        = plano_to_load.combinacao;
+        /* não deveria ser necessário o parseInt aqui mas, por causa de um bug
+         * no código, vários horários foram salvos com a combinação como
+         * string. */
+        plano.combinacao        = parseInt(plano_to_load.combinacao);
         for (var i = 0; i < plano_to_load.materias.length; i++) {
             var materia = plano.materias.add_json(plano_to_load.materias[i], self.campus, self.semestre);
             if (!materia)

@@ -142,7 +142,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             return;
         if (parseInt(val).toString() == val && val >= 1 && val <= state.plano.combinacoes.length()) {
             ui_logger.reset();
-            display_combinacao(val);
+            display_combinacao(parseInt(val));
         } else {
             ui_logger.set_text("Combina\u00e7\u00e3o inv\u00e1lida", "lightcoral");
         }
