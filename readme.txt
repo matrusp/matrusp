@@ -61,6 +61,13 @@ instalados no servidor:
 - python2
 - flup
 
+No ubuntu, os comandos são:
+$ sudo apt-get install apache2 libapache2-mod-fcgid python-flup
+$ sudo a2enmod rewrite
+
+Certifique-se que na configuração de seu site no apache2 ExecCGI esteja
+habilitado e os arquivos .htaccess também (AllowOverride All).
+
 2. Python
 
 Se o seu executável python não reside em /usr/bin/python, você deve criar
