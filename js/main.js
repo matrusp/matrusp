@@ -850,12 +850,14 @@ window.onload = function() {
     a.href = "#";
     a.innerHTML = "Ajuda?";
     a.onclick = function() {
+        _gaq.push(['_trackEvent', 'ajuda', 'show', identificador]);
         ui_ajuda_popup.show();
         ui_grayout.show();
         ajuda_shown = true;
     };
     ui_ajuda_popup.link.appendChild(a);
     ui_ajuda_popup.cb_fechar = function() {
+        _gaq.push(['_trackEvent', 'ajuda', 'hide', identificador]);
         ui_grayout.hide();
         ui_ajuda_popup.hide();
         ajuda_shown = false;
