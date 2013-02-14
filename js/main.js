@@ -530,6 +530,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         state.reset();
         ui_campus.set_campus(state.campus);
         ui_campus.set_semestre(state.semestre);
+        self.set_db(state.semestre, state.campus);
         persistence.reset();
         ui_saver.reset();
         ui_planos.startup(state);
@@ -575,7 +576,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     ui_campus.cb_semestre = function(semestre) {
         self.set_db(semestre, state.campus);
         state.semestre = semestre;
-        avisar_semestre();
     }
     /* UI_planos */
     ui_planos.cb_clean = function() {
@@ -658,12 +658,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
             ui_updates.fill(issues);
         }, ui_updates.hide);
     };
-    function avisar_semestre() {
-        if (state.semestre == "20131")
-            ui_avisos.set_text("As disciplinas de 2013-1 ainda estão sujeitas a alterações!");
-        else
-            ui_avisos.reset();
-    };
     self.load = function(state_to_load, identificador) {
         ui_combinacoes.reset();
         ui_materias.reset();
@@ -687,7 +681,6 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
 
         ui_campus.set_campus(state.campus);
         ui_campus.set_semestre(state.semestre);
-        avisar_semestre();
         self.set_db(state.semestre, state.campus, self.issues);
         if (identificador)
             persistence.write_id(identificador);
@@ -783,6 +776,10 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         combo.input.disabled = true;
     };
     self.set_db = function(semestre, campus, callback) {
+        if (semestre == "20131")
+            ui_avisos.set_text("As disciplinas de 2013-1 ainda estão sujeitas a alterações!");
+        else
+            ui_avisos.reset();
         var ret = database.set_db(semestre, campus);
         if (ret == -1)
             load_db(semestre, campus, callback);
@@ -960,12 +957,12 @@ window.onload = function() {
     }
     if (!database_ok) {
         if (identificador != null && identificador != "") {
-            ui_saver.cb_load(identificador, function(){ main.set_db("20122", "FLO"); });
+            ui_saver.cb_load(identificador, function(){ main.set_db("20131", "FLO"); });
             database_ok = true;
         }
     }
     if (!database_ok)
-        main.set_db("20122", "FLO");
+        main.set_db("20131", "FLO");
     if (combo.input.value == identificador)
         combo.input.value = "";
 
