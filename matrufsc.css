@@ -2,6 +2,10 @@ body {
     font-family: monospace;
 }
 
+th {
+    font-weight: normal;
+}
+
 .ui_campus, .ui_saver, .ui_logger, .ui_planos {
     font-size: 13px;
 }
