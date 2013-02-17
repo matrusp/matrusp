@@ -49,7 +49,7 @@ function UI_materias(id)
         var data = document.createElement("th");
         data.style.textAlign = "center";
         data.style.width = "60px";
-        data.innerHTML = "Semestre";
+        data.innerHTML = "Período";
         row.appendChild(data);
         var data = document.createElement("th");
         data.id = "combinacoes";
