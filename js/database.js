@@ -50,16 +50,16 @@ Database.prototype.add = function(semestre, array) {
     }
 }
 Database.prototype.fetch = function(string, page) {
-    string = string.toUpperCase().replace(/À/g, "A")
-            .replace(/Á/g, "A").replace(/Â/g, "A").replace(/Ã/g, "A")
-            .replace(/Ä/g, "A").replace(/Å/g, "A").replace(/Ç/g, "C")
-            .replace(/È/g, "E").replace(/É/g, "E").replace(/Ê/g, "E")
-            .replace(/Ë/g, "E").replace(/Ì/g, "I").replace(/Í/g, "I")
-            .replace(/Î/g, "I").replace(/Ï/g, "I").replace(/Ð/g, "D")
-            .replace(/Ñ/g, "N").replace(/Ò/g, "O").replace(/Ó/g, "O")
-            .replace(/Ô/g, "O").replace(/Õ/g, "O").replace(/Ö/g, "O")
-            .replace(/Ø/g, "O").replace(/Ù/g, "U").replace(/Ú/g, "U")
-            .replace(/Û/g, "U").replace(/Ü/g, "U").replace(/Ý/g, "Y")
+    string = string.toUpperCase()
+            .replace(/[ÀÁÂÃÄÅ]/g, "A")
+            .replace(/[ÈÉÊË]/g, "E")
+            .replace(/[ÌÍÎÏ]/g, "I")
+            .replace(/[ÒÓÔÕÖØ]/g, "O")
+            .replace(/[ÙÚÛÜ]/g, "U")
+            .replace(/Ç/g, "C")
+            .replace(/Ð/g, "D")
+            .replace(/Ñ/g, "N")
+            .replace(/Ý/g, "Y")
             .replace(/ß/g, "B");
     var search_whole = [];
     var search_part = [];
