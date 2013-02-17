@@ -579,7 +579,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     }
     /* UI_planos */
     ui_planos.cb_clean = function() {
-        var really = confirm("Você tem certeza que quer limpar este plano?");
+        var really = confirm("Você quer mesmo limpar este plano?");
         if (really) {
             ui_combinacoes.reset();
             ui_materias.reset();
@@ -592,7 +592,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         }
     };
     ui_planos.cb_dup = function(n) {
-        var really = confirm("Você tem certeza que quer copiar este plano para o plano " + (n+1) + "?");
+        var really = confirm("Você quer mesmo copiar este plano para o plano " + (n+1) + "?");
         if (really) {
             var state_plano = state.copy_plano(state.plano);
             var plano_to_load = JSON.parse(JSON.stringify(state_plano));

@@ -40,7 +40,7 @@ function UI_saver(id)
 
     var dropdown_menu = new widget_dropdown_menu(ui_saver, 175, 2, true);
     dropdown_menu.add("limpar tudo", function(e) {
-        var really = confirm("Você tem certeza que quer limpar tudo?");
+        var really = confirm("Você quer mesmo limpar tudo?");
         if (really) {
             self.cb_cleanup();
             _gaq.push(['_trackEvent', 'state', 'reset', self.input.value]);
