@@ -22,11 +22,13 @@ function UI_logger(id)
             clear_persistent();
         ui_logger.innerHTML = persistent_str;
         ui_logger.style.backgroundColor = persistent_color;
+        ui_logger.style.textAlign = "left";
     };
     var set_text = function(str, color) {
         stop();
         ui_logger.innerHTML = str;
         ui_logger.style.backgroundColor = color;
+        ui_logger.style.textAlign = "left";
         self.timer = setTimeout((function(t){return function(){t.reset();}})(self), 5000);
     }
     var quick_text = "";
@@ -46,7 +48,8 @@ function UI_logger(id)
         stop();
         ui_logger.innerHTML = str;
         ui_logger.style.backgroundColor = color;
-        self.timer = setTimeout((function(t){return function(){t.unset_quick_text()}})(self), 1000);
+        ui_logger.style.textAlign = "center";
+        self.timer = setTimeout((function(t){return function(){t.unset_quick_text()}})(self), 2000);
     };
     var updatesearch = function() {
         self.pontos += ".";
@@ -61,6 +64,7 @@ function UI_logger(id)
         self.pontos = "";
         self.updatesearch();
         ui_logger.style.backgroundColor = "lightyellow";
+        ui_logger.style.textAlign = "left";
     }
     var set_persistent = function(str, color) {
         persistent_str = str;
