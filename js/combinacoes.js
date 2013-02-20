@@ -129,16 +129,25 @@ function Combinacoes()
             }
         }
         new_combinacoes.forEach(function(c){
-            var sum = 0;
+            var peso = 0;
+            var dias = 0;
+            var janelas = 0;
             c.forEach(function(dia){
+                var items = dia.filter(function(x){return x !== undefined;});
+                if (items.length > 0) {
+                    janelas += 1+dia.indexOf(items[items.length-1])-dia.indexOf(items[0])-items.length;
+                    dias += 1;
+                }
                 dia.forEach(function(obj,hora){
-                    sum += hora;
+                    peso += hora;
                 });
             });
-            c.sum = sum;
+            c.sort_peso = peso;
+            c.sort_dias = dias;
+            c.sort_janelas = janelas
         });
         new_combinacoes.sort(function(a,b) {
-            return a.sum - b.sum;
+            return a.sort_peso - b.sort_peso;
         });
         var comum = [[],[],[],[],[],[]];
         for (var i4 = 0; i4 < 6; i4++)
