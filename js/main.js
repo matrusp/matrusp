@@ -73,24 +73,12 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         ui_combinacoes.set_horas_aula(horas_aula);
     }
 
-    var atividades = 1;
-    function new_atividade_name() {
-        var str = new String();
-        if (atividades < 1000)
-            str += "0";
-        if (atividades <  100)
-            str += "0";
-        if (atividades <   10)
-            str += "0";
-        str += atividades;
-        atividades++;
-        return str;
-    }
     function new_materia(nome) {
-        do {
-            var str = new_atividade_name();
-            var codigo = "XXX" + str;
-        } while (state.plano.materias.get(codigo));
+        codigo = nome.substr(0,7).toUpperCase();
+        if (state.plano.materias.get(codigo)) {
+            ui_logger.set_text("'" + codigo + "' ja foi adicionado", "lightcoral");
+            return;
+        }
         var materia = state.plano.materias.new_item(codigo, nome, state.campus, state.semestre);
         state.plano.materias.new_turma(materia);
         ui_materias.add(materia);
