@@ -68,6 +68,7 @@ function Combobox(input, suggestions, ui_logger, database)
     }
     function list_add_item(str, title) {
         var li = document.createElement("div");
+        li.style.cursor = "pointer";
         if (title)
             li.title = title;
 
