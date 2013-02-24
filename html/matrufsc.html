@@ -36,7 +36,12 @@ if(0){
 </script>
 
 <div id="ui_main" style="overflow:auto;width:890px;margin:0 auto;display:none;">
+ <table width="100%"><tr><td>
  <div style="font-size:24px;text-align:left;">MatrUFSC</div>
+ </td><td align="left" style="font-size:11px;width:40px;">
+ <div id="sobre"></div>
+ </td>
+ </tr></table>
  <table><tr><td colspan="2">
   <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left">
    <div id="campus"></div>
@@ -64,7 +69,9 @@ if(0){
    <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" style="font-size:11px;">
     Não se esqueça de fazer sua matrícula no <a target="_blank" href="http://cagr.ufsc.br/">CAGR</a>! Este aplicativo não tem nenhum vínculo com a UFSC.
    </td><td align="right" style="font-size:13px;">
-   <div id="ajuda"></div>
+   <div id="comousar"><a target="_blank" href="http://facebook.com/MatrUFSC">Como usar</a></div>
+   </td><td align="right" style="font-size:13px;">
+   <div id="sobre"></div>
    </td></tr><tr><td colspan="2" align="left" style="font-size:11px;">
     versão 2.5.6. bancos de dados atualizados em 22/02/13
    </td></tr></table>
@@ -81,8 +88,8 @@ if(0){
 <input id="userdata" type="hidden" style="behavior:url('#default#userData')" />
 <![endif]-->
 <div id="grayout" style="display:none;"></div>
-<div id="ajuda_popup" style="display:none;">
-include_ajuda
+<div id="sobre_popup" style="display:none;">
+include_sobre
 </div>
 
 <script type="text/javascript" src="matrufsc.js"></script>

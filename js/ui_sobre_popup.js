@@ -20,12 +20,12 @@ function UI_grayout(id)
 /**
  * @constructor
  */
-function UI_ajuda_popup(id)
+function UI_sobre_popup(id)
 {
     var self = this;
 
     self.popup = document.getElementById(id);
-    self.popup.className = "ui_ajuda_popup";
+    self.popup.className = "ui_sobre_popup";
 
     self.hide = function() { self.popup.style.display = "none"; };
     self.show = function() {
@@ -34,5 +34,5 @@ function UI_ajuda_popup(id)
     };
     self.hide();
 
-    document.getElementById("fechar_ajuda").onclick = function() { self.cb_fechar(); };
+    document.getElementById("fechar_sobre").onclick = function() { self.cb_fechar(); };
 }

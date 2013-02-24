@@ -15,7 +15,7 @@ combobox.js \
 database.js \
 state.js \
 widgets.js \
-ui_ajuda_popup.js \
+ui_sobre_popup.js \
 ui_avisos.js \
 ui_campus.js \
 ui_combinacoes.js \
@@ -46,8 +46,8 @@ matrufsc.py: py/matrufsc.py
 dispatch.$(CGI): py/dispatch.fcgi
 	sed -e "s|\$$BASE_PATH|${BASE_PATH}|" -e "s|/usr/bin/python|${PYTHON_BIN}|" $^ | tee $@ > /dev/null
 
-index.html: html/matrufsc.html html/ajuda.html
-	sed -e "/include_ajuda/r html/ajuda.html" -e "/include_ajuda/d" ${sed_RELEASE} html/matrufsc.html | tee $@ > /dev/null
+index.html: html/matrufsc.html html/sobre.html
+	sed -e "/include_sobre/r html/sobre.html" -e "/include_sobre/d" ${sed_RELEASE} html/matrufsc.html | tee $@ > /dev/null
 
 matrufsc.js: $(SRC)
 #	closure --compilation_level=ADVANCED_OPTIMIZATIONS $(addprefix --js=,$(SRC)) --js_output_file=$@

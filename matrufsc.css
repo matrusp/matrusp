@@ -185,7 +185,7 @@ th {
     z-index: 1000;
 }
 
-.ui_ajuda_popup {
+.ui_sobre_popup {
     position: absolute;
     background-color: #eeeeee;
     width: 600px;
@@ -197,39 +197,39 @@ th {
     font-family: verdana;
     overflow: auto;
 }
-.ui_ajuda_popup .fechar {
+.ui_sobre_popup .fechar {
     font-size: 15px;
     position: absolute;
     padding: 10px;
     top: 0px;
     right: 0px;
 }
-.ui_ajuda_popup .contato {
+.ui_sobre_popup .contato {
     padding: 60px 40px 0px 60px;
     font-size: 15px;
     text-align: center;
 }
-.ui_ajuda_popup .contato div {
+.ui_sobre_popup .contato div {
     font-size: 10px;
 }
-.ui_ajuda_popup .main {
+.ui_sobre_popup .main {
     padding: 40px;
 }
-.ui_ajuda_popup .main .titulo {
+.ui_sobre_popup .main .titulo {
     padding-top: 10px;
     font-size: 15px;
     font-weight: bold;
 }
-.ui_ajuda_popup .main .subtitulo {
+.ui_sobre_popup .main .subtitulo {
     font-size: 15px;
     font-weight: bold;
 }
-.ui_ajuda_popup .main p {
+.ui_sobre_popup .main p {
     font-size: 13px;
     text-indent: 2em;
     text-align: justify;
 }
-.ui_ajuda_popup .main ul {
+.ui_sobre_popup .main ul {
     font-size: 13px;
     text-align: justify;
 }

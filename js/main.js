@@ -805,7 +805,7 @@ function getScrollBarWidth () {
   return (w1 - w2);
 };
 
-ajuda_shown = false;
+sobre_shown = false;
 mudancas = false;
 window.onload = function() {
     document.scrollbar_width = getScrollBarWidth();
@@ -826,29 +826,29 @@ window.onload = function() {
 
     var ui_grayout     = new UI_grayout("grayout");
     ui_grayout.cb_onclick = function() {
-        if (ajuda_shown) {
-            ui_ajuda_popup.cb_fechar();
+        if (sobre_shown) {
+            ui_sobre_popup.cb_fechar();
         } else if (main.editando) {
             ui_turmas.cb_cancel();
         }
     };
-    var ui_ajuda_popup = new UI_ajuda_popup("ajuda_popup");
-    ui_ajuda_popup.link = document.getElementById("ajuda");
+    var ui_sobre_popup = new UI_sobre_popup("sobre_popup");
+    ui_sobre_popup.link = document.getElementById("sobre");
     var a = document.createElement("a");
     a.href = "#";
-    a.innerHTML = "Ajuda?";
+    a.innerHTML = "Sobre";
     a.onclick = function() {
-        _gaq.push(['_trackEvent', 'ajuda', 'show', identificador]);
-        ui_ajuda_popup.show();
+        _gaq.push(['_trackEvent', 'sobre', 'show', identificador]);
+        ui_sobre_popup.show();
         ui_grayout.show();
-        ajuda_shown = true;
+        sobre_shown = true;
     };
-    ui_ajuda_popup.link.appendChild(a);
-    ui_ajuda_popup.cb_fechar = function() {
-        _gaq.push(['_trackEvent', 'ajuda', 'hide', identificador]);
+    ui_sobre_popup.link.appendChild(a);
+    ui_sobre_popup.cb_fechar = function() {
+        _gaq.push(['_trackEvent', 'sobre', 'hide', identificador]);
         ui_grayout.hide();
-        ui_ajuda_popup.hide();
-        ajuda_shown = false;
+        ui_sobre_popup.hide();
+        sobre_shown = false;
     }
 
     var state = new State();
@@ -872,8 +872,8 @@ window.onload = function() {
             elm = ev.srcElement;
         if (elm.nodeType == 3) // defeat Safari bug
             elm = elm.parentNode;
-        if (ajuda_shown && c == 27) {
-            ui_ajuda_popup.cb_fechar();
+        if (sobre_shown && c == 27) {
+            ui_sobre_popup.cb_fechar();
             return;
         }
         if (main.editando) {
