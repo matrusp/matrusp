@@ -43,7 +43,7 @@ soup = BeautifulSoup(resp)
 viewState = soup.find(id='javax.faces.ViewState')['value']
 
 print('- Pegando banco de dados')
-request = urllib2.Request('https://www.cagr.ufsc.br/modules/aluno/cadastroTurmas/index.xhtml')
+request = urllib2.Request('https://cagr.sistemas.ufsc.br/modules/aluno/cadastroTurmas/index.xhtml')
 request.add_header('Accept-encoding', 'gzip')
 page_form = {
 'AJAXREQUEST': '_viewRoot',
