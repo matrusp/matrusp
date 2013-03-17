@@ -111,7 +111,14 @@ Database.prototype.fetch = function(string, page) {
         }
     }
     this.result.sort(function(a,b) {
-        return b.score - a.score;
+        var diff = b.score - a.score;
+        if (!diff) {
+            if      (b.nome_ascii < a.nome_ascii)
+                diff =  1;
+            else if (a.nome_ascii < b.nome_ascii)
+                diff = -1;
+        }
+        return diff;
     });
 }
 Database.prototype.page = function(page) {
