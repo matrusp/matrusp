@@ -91,7 +91,7 @@ Database.prototype.fetch = function(string, page) {
             search_whole[j].lastIndex = 0;
             if (search_whole[j].test(haystack.codigo)) {
                 exactly = true;
-                break;
+                continue;
             }
             if (firstword == needles[j])
                 expr_score += 200;
