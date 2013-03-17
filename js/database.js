@@ -70,7 +70,8 @@ Database.prototype.fetch = function(string, page) {
             .replace(/ß/g, "B");
     var search_whole = [];
     var search_part = [];
-    string.split(" ").forEach(function(str) {
+    var needles = string.split(" ");
+    needles.forEach(function(str) {
         if (str != "") {
             search_whole.push(new RegExp("\\b" + str + "\\b", "g"));
             search_part.push(new RegExp(str, "g"));
@@ -82,6 +83,7 @@ Database.prototype.fetch = function(string, page) {
     });
     for (var i = 0; i < this.cur_db.length; i++) {
         var haystack = this.cur_db[i];
+        var firstword = haystack.nome_ascii.split(" ")[0];
         var exactly = false;
         var score = 0;
         for (var j = 0; j < search_whole.length; j++) {
@@ -91,6 +93,8 @@ Database.prototype.fetch = function(string, page) {
                 exactly = true;
                 break;
             }
+            if (firstword == needles[j])
+                expr_score += 200;
             expr_score += this.search_score(haystack.nome_ascii, search_whole[j], 100);
             expr_score += this.search_score(haystack.nome_ascii, search_part[j], 10);
             expr_score += this.search_score(haystack.codigo, search_part[j], 10);
