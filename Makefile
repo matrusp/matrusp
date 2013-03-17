@@ -1,8 +1,6 @@
 include config.mak
 
-DBs=20121.json 20122.json 20131.json
-
-all: $(DBs) matrufsc.py dispatch.$(CGI) matrufsc.js index.html
+all: matrufsc.py dispatch.$(CGI) matrufsc.js index.html
 
 SRC:=json2.js \
 compat.js \
@@ -30,9 +28,6 @@ main.js
 
 SRC:=$(addprefix js/,$(SRC))
 
-%.json: py/parse_turmas.py db/%*.xml
-	./$^ $@
-
 %.gz: %
 	gzip --best --no-name -c $< > $@
 
@@ -58,7 +53,6 @@ else
 endif
 
 clean::
-	rm -f $(DBs) $(addsuffix .gz,$(DBs))
 	rm -rf matrufsc.js index.html
 	rm -rf install
 	rm -f $(addsuffix /*~,. c db html js py) .htaccess~ .gitignore~
@@ -69,13 +63,11 @@ distclean: clean
 	rm -f .htaccess
 	rm -f config.mak
 
-install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz $(addsuffix .gz,$(DBs))
+install-gz:: install matrufsc.css.gz matrufsc.js.gz index.html.gz
 	cp matrufsc.css.gz matrufsc.js.gz index.html.gz install/
-	cp $(addsuffix .gz,$(DBs)) install/
 
 install:: all
 	mkdir -p install
 	cp matrufsc.css matrufsc.js dispatch.$(CGI) matrufsc.py index.html install/
 	chmod 755 install/dispatch.$(CGI) install/matrufsc.py
-	cp $(DBs) install/
 	cp .htaccess install/

@@ -11,6 +11,9 @@ function Database() {
         return tmp.length * value;
     };
 }
+Database.prototype.get_date = function(semestre) {
+    return this.db[semestre]["DATA"];
+}
 Database.prototype.set_db = function(semestre, campus) {
     if (this.db[semestre] && this.db[semestre][campus])
         this.cur_db = this.db[semestre][campus];
@@ -24,6 +27,10 @@ Database.prototype.add = function(semestre, array) {
 
     for (var campus in array) {
         var campus_array = array[campus];
+        if (campus === "DATA") {
+            self.db[semestre][campus] = campus_array;
+            continue;
+        }
         self.db[semestre][campus] = new Array();
         campus_array.forEach(function(k) {
             var i = new Object();
