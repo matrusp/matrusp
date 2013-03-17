@@ -77,6 +77,9 @@ Database.prototype.fetch = function(string, page) {
         }
     });
     this.result = [];
+    this.result.forEach(function(t) {
+        delete t.score;
+    });
     for (var i = 0; i < this.cur_db.length; i++) {
         var haystack = this.cur_db[i];
         var exactly = false;
@@ -109,9 +112,6 @@ Database.prototype.fetch = function(string, page) {
     }
     this.result.sort(function(a,b) {
         return b.score - a.score;
-    });
-    this.result.forEach(function(t) {
-        delete t.score;
     });
 }
 Database.prototype.page = function(page) {

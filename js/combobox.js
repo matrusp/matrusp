@@ -99,6 +99,7 @@ function Combobox(input, suggestions, ui_logger, database)
     };
     function list_add_items(items) {
         var first = self.array.length;
+//        items.forEach(function(item){var str = item.codigo + " " + item.score + " " + item.nome; list_add_item(str);});
         items.forEach(function(item){var str = item.codigo + " " + item.nome; list_add_item(str);});
         if (items.length == 10) {
             self.more = list_add_item("Buscar mais...");
