@@ -71,7 +71,7 @@ function UI_logger(id)
         persistent_color = color;
     }
     var clear_persistent = function() {
-        persistent_str = "&lt;&lt;&lt;&lt; adicione mat\u00e9rias aqui";
+        persistent_str = "&lt;&lt;&lt;&lt; procure as disciplinas por nome ou código";
         persistent_color = "#eeeeee";
     }
     clear_persistent();
