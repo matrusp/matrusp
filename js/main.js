@@ -765,7 +765,7 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         combo.input.disabled = true;
     };
     self.atualizar_data_db = function(semestre) {
-        document.getElementById("data_db").innerHTML = "banco de dado atualizado em " + database.get_date(semestre);
+        document.getElementById("data_db").innerHTML = "banco de dados atualizado em " + database.get_date(semestre);
     };
     self.set_db = function(semestre, campus, callback) {
         if (semestre == "20131") {
