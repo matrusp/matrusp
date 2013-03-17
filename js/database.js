@@ -97,7 +97,7 @@ Database.prototype.fetch = function(string, page) {
                 expr_score += 200;
             expr_score += this.search_score(haystack.nome_ascii, search_whole[j], 100);
             expr_score += this.search_score(haystack.nome_ascii, search_part[j], 10);
-            expr_score += this.search_score(haystack.codigo, search_part[j], 10);
+            expr_score += this.search_score(haystack.codigo, search_part[j], 1);
             if (expr_score) {
                 score += expr_score;
             } else {
@@ -117,10 +117,17 @@ Database.prototype.fetch = function(string, page) {
     this.result.sort(function(a,b) {
         var diff = b.score - a.score;
         if (!diff) {
-            if      (b.nome_ascii < a.nome_ascii)
-                diff =  1;
-            else if (a.nome_ascii < b.nome_ascii)
-                diff = -1;
+            if (a.score < 10 && b.score < 10) {
+                if      (b.codigo < a.codigo)
+                    diff =  1;
+                else if (a.codigo < b.codigo)
+                    diff = -1;
+            } else {
+                if      (b.nome_ascii < a.nome_ascii)
+                    diff =  1;
+                else if (a.nome_ascii < b.nome_ascii)
+                    diff = -1;
+            }
         }
         return diff;
     });
