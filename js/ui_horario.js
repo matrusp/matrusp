@@ -57,6 +57,12 @@ function UI_horario(id)
     var clear_cell = function(dia, hora) {
         var cell = array[dia][hora];
         cell.innerHTML = "&nbsp;";
+
+        var div = document.createElement("div");
+        div.style.fontSize = "10px";
+        div.innerHTML = "&nbsp;";
+        cell.appendChild(div);
+
         cell.style.backgroundColor = "white";
         cell.style.border = "1px solid black";
         cell.style.color = "black";
@@ -64,6 +70,16 @@ function UI_horario(id)
     var display_cell = function(dia, hora, data) {
         var cell = array[dia][hora];
         cell.innerHTML = data.text;
+
+        var div = document.createElement("div");
+        div.style.fontSize = "10px";
+        if (data.sala) {
+            div.innerHTML = data.sala;
+        } else {
+            div.innerHTML = "&nbsp;";
+        }
+        cell.appendChild(div);
+
         if (data.fixed)
             cell.style.fontWeight = "";
         else
@@ -105,7 +121,7 @@ function UI_horario(id)
     self.height       = function() { return horario.offsetHeight; };
 }
 var Cell = {
-    normal: function(  d) { return {fixed:d.fixed,text:d.horario.materia.codigo,bgcolor:d.horario.materia.cor,color:"black"}; },
+    normal: function(  d) { return {fixed:d.fixed,text:d.horario.materia.codigo,sala:d.sala,bgcolor:d.horario.materia.cor,color:"black"}; },
     red   : function(str) { return {fixed:true,text:str,bgcolor:"red",color:"black"}; },
     black : function(str) { return {fixed:false,text:str,bgcolor:"black",color:"white"}; }
 };

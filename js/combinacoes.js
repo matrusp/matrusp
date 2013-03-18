@@ -39,7 +39,7 @@ function Combinacoes()
             c2[i2] = new Array();
             for (var i3 = 0; i3 < 14; i3++) {
                 if (combinacao[i2][i3] && combinacao[i2][i3].horario.materia != except)
-                    c2[i2][i3] = {horario:combinacao[i2][i3].horario};
+                    c2[i2][i3] = {horario:combinacao[i2][i3].horario,sala:combinacao[i2][i3].sala};
             }
         }
         return c2;
@@ -71,7 +71,7 @@ function Combinacoes()
                     var combinacao = [[],[],[],[],[],[]];
                     for (var k = 0; k < horario.aulas.length; k++) {
                         var aula = horario.aulas[k];
-                        combinacao[aula.dia][aula.hora] = {horario:horario};
+                        combinacao[aula.dia][aula.hora] = {horario:horario,sala:aula.sala};
                     }
                     combinacao[materia.codigo] = horario;
                     combinacao.horarios_combo = new Array();
@@ -114,7 +114,7 @@ function Combinacoes()
                         });
                         for (var k = 0; k < horario.aulas.length; k++) {
                             var aula = horario.aulas[k];
-                            c2[aula.dia][aula.hora] = {horario:horario};
+                            c2[aula.dia][aula.hora] = {horario:horario,sala:aula.sala};
                         }
                         c2.horarios_combo.push(horario);
                         combinacoes2.push(c2);
