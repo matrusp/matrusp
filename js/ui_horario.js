@@ -35,6 +35,11 @@ function UI_horario(id)
 
     var tbody = document.createElement("tbody");
     for (var j = 0; j < horas.length; j++) {
+        if (j == 5 || j == 10) {
+            var row = document.createElement("tr");
+            row.style.height = "4px";
+            tbody.appendChild(row);
+        }
         var row = document.createElement("tr");
         var hora = document.createElement("td");
         hora.style.fontSize = "11px";
