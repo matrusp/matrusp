@@ -8,6 +8,9 @@ function UI_horario(id)
     var horas = [ "07:30", "08:20", "09:10", "10:10", "11:00",
                   "13:30", "14:20", "15:10", "16:20", "17:10",
                   "18:30", "19:20", "20:20", "21:10"];
+    var horas_fim = [ "08:20", "09:10", "10:00", "11:00", "11:50",
+                      "14:20", "15:10", "16:00", "17:10", "18:00",
+                      "19:20", "20:10", "21:10", "22:00"];
     var horario = document.getElementById(id);
     horario.className = "ui_horario";
 
@@ -34,7 +37,8 @@ function UI_horario(id)
     for (var j = 0; j < horas.length; j++) {
         var row = document.createElement("tr");
         var hora = document.createElement("td");
-        hora.innerHTML = horas[j];
+        hora.style.fontSize = "11px";
+        hora.innerHTML = horas[j] + "<br />" + horas_fim[j];
         row.appendChild(hora);
         for (var i = 0; i < dias.length; i++) {
             var data = document.createElement("td");
