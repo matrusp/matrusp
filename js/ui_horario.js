@@ -40,6 +40,12 @@ function UI_horario(id)
             var data = document.createElement("td");
             data.className = "ui_horario_celula";
             data.innerHTML = "&nbsp;";
+
+            var div = document.createElement("div");
+            div.style.fontSize = "10px";
+            div.innerHTML = "&nbsp;";
+            data.appendChild(div);
+
             array[i][j] = data;
             row.appendChild(data);
         }
