@@ -1,3 +1,5 @@
+INTRODUÇÃO
+
 O MatrUFSC foi escrito para substituir um serviço similar que existia para os
 estudantes da UFSC, o GRAMA (GRAde de MAtrícula), que foi escrito por um
 estudante de Engenharia de Produção e tinha o apoio da ufsc, pelo site
@@ -24,7 +26,8 @@ com os seguintes princípios:
   Pouco importa para o usuário quem fez o sistema. Este não deve ser usado
   como meio de promoção individual ou comercial, salvo se for alguma
   instituição de alunos para alunos, sem fins comerciais ou outros interesses
-  (por exemplo: algum centro acadêmico).
+  (por exemplo: algum centro acadêmico). Créditos aos desenvolvedores devem
+  ser dados em algum lugar discreto do aplicativo.
 - Sem retorno financeiro:
   O site não deve ser poluído com propagandas e logos de apoio. Quem está
   tomando seu tempo para desenvolver o site deve ter como única recompensa o
@@ -44,12 +47,30 @@ com os seguintes princípios:
 
 LICENÇA
 
-A ideia original era fazer o MatrUFSC ser código-livre, mas uma licença mais
-comum de código livre (como a GPL) não restringiria o uso no servidor com
-algumas restrições como "sem retorno financeiro". Fiquei sabendo da intenção
-de algumas pessoas em pegar o código (caso fosse livre) e fazer seu próprio
-serviço, com propagandas e acúmulo de informação dos usuários (para venda
-de lista de e-mails), então acabei não liberando o código ainda.
+A ideia original era fazer o MatrUFSC ser código-livre. Porém, as licenças
+mais comuns (como a GPL) não atenderiam a algumas restrições que eu gostaria
+de impor ao código. Portanto, aqui defino a licença do MatrUFSC:
+
+1. É proibido qualquer tipo de retorno financeiro, direta ou indiretamente,
+   como, por exemplo:
+   - o uso de propagandas, divulgação, apoio, troca de favores ou serviços
+     afins no próprio site do aplicativo, em qualquer site que leve ao
+     aplicativo e em qualquer site relacionado ao aplicativo;
+   - cobrar pela utilização do serviço ou qualquer serviço adicional;
+   - a venda de informações dos usuários;
+2. É proibido o acúmulo de informações pessoais dos usuários, exceto pelos
+   próprios horários que eles mesmos salvarem com um identificador de escolha
+   deles;
+3. É proibida a promoção pessoal do(s) desenvolvedor(es), exceto por uma
+   menção em uma janela discreta para esta finalidade. Esta janela só deve
+   aparecer quando solicitada pelo usuário e deve conter crédito para todos
+   os desenvolvedores envolvidos, atuais e passados;
+4. São permitidos o desenvolvimento e distribuição independentes do projeto,
+   contanto que seja mantida esta licença e seja usado outro nome para o
+   projeto;
+5. O código fonte deve ser disponibilizado em algum repositório público, cujo
+   endereço deve ser promovido em algum lugar do aplicativo;
+6. Toda alteração ao código também deve obedecer a esta licença.
 
 ===========================================================================
 1. Servidor
@@ -68,61 +89,19 @@ $ sudo a2enmod rewrite
 Certifique-se que na configuração de seu site no apache2 ExecCGI esteja
 habilitado e os arquivos .htaccess também (AllowOverride All).
 
-2. Python
-
-Se o seu executável python não reside em /usr/bin/python, você deve criar
-um arquivo chamado "pythonpath" que contém o caminho correto. Por exemplo:
-$ echo "$HOME/meupythoncomflup/bin/python" > pythonpath
-
-Este caminho será substituido no arquivo dispatch.fcgi pelo Makefile.
-
-3. Caminhos
+2. Caminhos
 
 O MatrUFSC gera arquivos de dados para cada identificador gravado e gera
 arquivos de log para cada erro interno do dispatch.fcgi. O caminho para os
-dados está em matrufsc.py, sendo "$HOME" substituido pelo Makefile. O caminho
-para os logs está em dispatch.fcgi, sendo "$HOME" também substituido pelo
-Makefile.
+dados está em matrufsc.py e o caminho para os logs está em dispatch.fcgi.
+Ambos são substituídos pelo Makefile pelo valor configurado por --base-path.
 
-O MatrUFSC supõe que reside na subpasta /matrufsc, por exemplo:
-ramiro.arrozcru.org/matrufsc
+3. Banco de dados
 
-Para mudar a subpasta (ou tirar toda ela), edite o arquivo .htaccess e mude
-o caminho em RewriteBase.
+O banco de dados é gerado por código em outro repositório:
+http://git.arrozcru.org/?p=matrufsc_dbs.git;a=summary
 
-4. Banco de dados
-
-O banco de dados é gerado usando os script py/get_turmas.py e
-py/parse_turmas.py. Estes scripts são específicos para o sistema de
-cadastro de disciplinas da UFSC.
-
-get_turmas.py pega os dados do CAGR e os grava separados por semestre e campus.
-O modo de usar é: ./py/get_turmas.py <username> <password> [semestre]
-parse_turmas.py gera arquivos .json dos arquivos xml criados por get_turmas.
-O modo de usar é: ./py/parse_turmas.py <arquivos de entrada> <arquivo de saída>
-
-Os arquivos finais .json seguem a seguinte estrutura:
-
-{ "<código do campus>" : [lista de disciplinas] }
-
-Cada disciplina é uma lista com a seguinte estrutura:
-[ "código da disciplina", "nome da disciplina em ascii e caixa alta", "nome da disciplina", [lista de turmas] ]
-
-Cada turma é uma lista com a seguinte estrutura:
-[ "nome_turma", horas_aula, vagas_ofertadas, vagas_ocupadas, alunos_especiais, saldo_vagas, pedidos_sem_vaga, [horarios], [professores]]
-
-Os dados relativos a horas_aula e vagas são em números, não strings.
-Os horários são no formato disponibilizado pela UFSC:
-"2.1010-2 / ARA-ARA209"
- | |    |   |   \----- código da sala
- | |    |   \--------- código do departamento
- | |    \------------- número de aulas seguidas no bloco
- | \------------------ horário da primeira aula do bloco
- \-------------------- dia da semana
-
-Os professores são dispostos numa lista de strings.
-
-5. closure
+4. closure
 
 É possível utilizar o closure compiler para reduzir o tamanho do javascript
 final.
@@ -138,7 +117,7 @@ final.
   (provavelmente por causa do código do state que não permite renomear os
   campos aleatoriamente)
 
-6. build system
+5. build system
 Para compilar o MatrUFSC, é necessário primeiro configurá-lo. Use o script
 configure, passando as seguintes opções:
   --python-bin=<caminho>  caminho do executável do python no servidor
@@ -152,6 +131,6 @@ basta rodar 'make'.
 
 O que eu faço para instalar o MatrUFSC é:
 $ ./configure --base-path=$HOME/matrufsc --subdir=matrufsc
-$ make -j3 install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
+$ make install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
 tendo "matrufsc-<versao>" um symlink para "matrufsc", que vai ser acessado
 pelo usuário.
