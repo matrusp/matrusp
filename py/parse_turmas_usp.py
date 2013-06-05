@@ -264,17 +264,22 @@ def filtrar_turmas(turmas):
 		info, horario, vagas = turma
 		codigo, data_inicio, data_fim, tipo, codigo_teorica = info
 		
+		#Existem turmas de Prática Vinculada sem a Teórica Vinculada correspondente...
+		if codigo_teorica == None:
+			praticas[codigo] = turma
+			continue
+		
 		#Novo código
 		codigo = codigo[0:5] + codigo_teorica[5:] + u"+" + codigo[5:]
-		
+	
 		#Join dos horários
 		horario_teorica = tipos[u"Teórica Vinculada"][codigo_teorica][1]
-		
+	
 		if horario == None and horario_teorica:
 			horario = horario_teorica
 		elif horario and horario_teorica:
 			horario.extend(horario_teorica)
-		
+			
 		#Reempacotando
 		info = (codigo, data_inicio, data_fim, u"Teórica e Prática Vinculadas", None)
 		turma = (info, horario, vagas)
