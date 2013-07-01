@@ -13,6 +13,7 @@ arquivos = { 'index.html'   : { 'content_type': 'text/html'              },
              '20121.json'   : { 'content_type': 'application/json'       },
              '20122.json'   : { 'content_type': 'application/json'       },
              '20131.json'   : { 'content_type': 'application/json'       },
+             '20132.json'   : { 'content_type': 'application/json'       },
            }
 
 dados_prefix = '$BASE_PATH/dados3/'
