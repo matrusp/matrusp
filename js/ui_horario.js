@@ -79,10 +79,10 @@ function UI_horario(id)
             data.innerHTML = "&nbsp;";
 
             if (mostrar_sala) {
-            var div = document.createElement("div");
-            div.style.fontSize = "10px";
-            div.innerHTML = "&nbsp;";
-            data.appendChild(div);
+                var div = document.createElement("div");
+                div.style.fontSize = "10px";
+                div.innerHTML = "&nbsp;";
+                data.appendChild(div);
             }
 
             array[i][j] = data;
@@ -105,10 +105,10 @@ function UI_horario(id)
         cell.innerHTML = "&nbsp;";
 
         if (mostrar_sala) {
-        var div = document.createElement("div");
-        div.style.fontSize = "10px";
-        div.innerHTML = "&nbsp;";
-        cell.appendChild(div);
+            var div = document.createElement("div");
+            div.style.fontSize = "10px";
+            div.innerHTML = "&nbsp;";
+            cell.appendChild(div);
         }
 
         cell.style.backgroundColor = "white";
@@ -120,14 +120,14 @@ function UI_horario(id)
         cell.innerHTML = data.text;
 
         if (mostrar_sala) {
-        var div = document.createElement("div");
-        div.style.fontSize = "10px";
-        if (data.sala) {
-            div.innerHTML = data.sala;
-        } else {
-            div.innerHTML = "&nbsp;";
-        }
-        cell.appendChild(div);
+            var div = document.createElement("div");
+            div.style.fontSize = "10px";
+            if (data.sala) {
+                div.innerHTML = data.sala;
+            } else {
+                div.innerHTML = "&nbsp;";
+            }
+            cell.appendChild(div);
         }
 
         if (data.fixed)
