@@ -11,6 +11,8 @@ function UI_horario(id)
     var horas_fim = [ "08:20", "09:10", "10:00", "11:00", "11:50",
                       "14:20", "15:10", "16:00", "17:10", "18:00",
                       "19:20", "20:10", "21:10", "22:00"];
+    var horas_fim_div = [];
+    var mostrar_sala = false;
     var horario = document.getElementById(id);
     horario.className = "ui_horario";
 
@@ -23,7 +25,17 @@ function UI_horario(id)
     var thead = document.createElement("thead");
 
     var row = document.createElement("tr");
-    row.appendChild(document.createElement("th"));
+    var head = document.createElement("th");
+    var input = document.createElement("input");
+    input.title = "mostrar salas";
+    input.type  = "checkbox";
+    input.onchange = function() {
+        mostrar_sala = this.checked;
+        self.show_fim();
+        self.cb_select();
+    };
+    head.appendChild(input);
+    row.appendChild(head);
     for (var i = 0; i < dias.length; i++) {
         var head = document.createElement("th");
         head.innerHTML = dias[i];
@@ -32,6 +44,16 @@ function UI_horario(id)
     thead.appendChild(row);
 
     table.appendChild(thead);
+
+    self.show_fim = function() {
+        horas_fim_div.forEach(function(div) {
+            if (mostrar_sala) {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        });
+    }
 
     var tbody = document.createElement("tbody");
     for (var j = 0; j < horas.length; j++) {
@@ -43,17 +65,25 @@ function UI_horario(id)
         var row = document.createElement("tr");
         var hora = document.createElement("td");
         hora.style.fontSize = "11px";
-        hora.innerHTML = horas[j] + "<br />" + horas_fim[j];
+        var div = document.createElement("div");
+        div.innerHTML = horas[j];
+        hora.appendChild(div);
+        var div = document.createElement("div");
+        div.innerHTML = horas_fim[j];
+        hora.appendChild(div);
+        horas_fim_div.push(div);
         row.appendChild(hora);
         for (var i = 0; i < dias.length; i++) {
             var data = document.createElement("td");
             data.className = "ui_horario_celula";
             data.innerHTML = "&nbsp;";
 
+            if (mostrar_sala) {
             var div = document.createElement("div");
             div.style.fontSize = "10px";
             div.innerHTML = "&nbsp;";
             data.appendChild(div);
+            }
 
             array[i][j] = data;
             row.appendChild(data);
@@ -63,6 +93,7 @@ function UI_horario(id)
 
     table.appendChild(tbody);
     horario.appendChild(table);
+    self.show_fim();
 
     var reset = function() {
         for (var dia = 0; dia < 6; dia++)
@@ -73,10 +104,12 @@ function UI_horario(id)
         var cell = array[dia][hora];
         cell.innerHTML = "&nbsp;";
 
+        if (mostrar_sala) {
         var div = document.createElement("div");
         div.style.fontSize = "10px";
         div.innerHTML = "&nbsp;";
         cell.appendChild(div);
+        }
 
         cell.style.backgroundColor = "white";
         cell.style.border = "1px solid black";
@@ -86,6 +119,7 @@ function UI_horario(id)
         var cell = array[dia][hora];
         cell.innerHTML = data.text;
 
+        if (mostrar_sala) {
         var div = document.createElement("div");
         div.style.fontSize = "10px";
         if (data.sala) {
@@ -94,6 +128,7 @@ function UI_horario(id)
             div.innerHTML = "&nbsp;";
         }
         cell.appendChild(div);
+        }
 
         if (data.fixed)
             cell.style.fontWeight = "";
@@ -134,6 +169,8 @@ function UI_horario(id)
     self.reset        = reset;
     /* functions */
     self.height       = function() { return horario.offsetHeight; };
+    /* callbacks */
+    self.cb_select    = null;
 }
 var Cell = {
     normal: function(  d) { return {fixed:d.fixed,text:d.horario.materia.codigo,sala:d.sala,bgcolor:d.horario.materia.cor,color:"black"}; },

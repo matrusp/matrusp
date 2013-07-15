@@ -556,6 +556,11 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         _gaq.push(['_trackEvent', 'state', 'load', identificador])
         ui_logger.waiting("carregando horário para '" + identificador + "'");
     }
+    /* UI_horario */
+    ui_horario.cb_select = function() {
+        display_combinacao(state.plano.combinacoes.current());
+        ui_turmas.set_height(ui_horario.height());
+    };
     /* UI_campus */
     ui_campus.cb_campus = function(campus) {
         self.set_db(state.semestre, campus);
