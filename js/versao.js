@@ -1,1 +1,1 @@
-versao_matrufsc = "versão 2.5.7"
+versao_matrufsc = "versão 2.5.8"
