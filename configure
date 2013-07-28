@@ -5,8 +5,8 @@ show_help(){
     echo
     echo "  --python-bin=<caminho>  caminho do executável do python no servidor"
     echo "  --release               habilita otimização, facebook e google analytics"
-    echo "  --base-path=<caminho>   caminho da pasta principal do matrufsc no servidor"
-    echo "  --subdir=<caminho>      subdiretório em que o matrufsc se encontra no site"
+    echo "  --base-path=<caminho>   caminho da pasta principal do CAPIM no servidor"
+    echo "  --subdir=<caminho>      subdiretório em que o CAPIM se encontra no site"
     echo "  --cgi                   usar cgi no lugar de fcgi"
     exit 1
 }

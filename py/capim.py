@@ -8,8 +8,8 @@ import calendar
 import os
 
 arquivos = { 'index.html'   : { 'content_type': 'text/html'              },
-             'matrufsc.js'  : { 'content_type': 'application/javascript' },
-             'matrufsc.css' : { 'content_type': 'text/css'               },
+             'capim.js'     : { 'content_type': 'application/javascript' },
+             'capim.css'    : { 'content_type': 'text/css'               },
              '20121.json'   : { 'content_type': 'application/json'       },
              '20122.json'   : { 'content_type': 'application/json'       },
              '20131.json'   : { 'content_type': 'application/json'       },

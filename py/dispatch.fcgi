@@ -7,20 +7,20 @@ import traceback
 
 logs_prefix = '$BASE_PATH/logs/'
 
-def matrufsc_mtime():
-    return time.ctime(os.path.getmtime('matrufsc.py'))
+def capim_mtime():
+    return time.ctime(os.path.getmtime('capim.py'))
 
-import matrufsc
-last_mtime = matrufsc_mtime()
+import capim
+last_mtime = capim_mtime()
 
 def dispatch(environ, start_response):
     global last_mtime
-    new_mtime = matrufsc_mtime()
+    new_mtime = capim_mtime()
     if last_mtime != new_mtime:
-        reload(matrufsc)
+        reload(capim)
         last_mtime = new_mtime
     try:
-        return matrufsc.run(environ, start_response)
+        return capim.run(environ, start_response)
     except:
         now = datetime.datetime.now()
         fp = open(logs_prefix + str(now.year) + '_' + str(now.month) + '_' + str(now.day) + '.log', 'a')

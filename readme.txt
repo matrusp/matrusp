@@ -1,6 +1,6 @@
 INTRODUÇÃO
 
-O MatrUFSC foi escrito para substituir um serviço similar que existia para os
+O CAPIM foi escrito para substituir um serviço similar que existia para os
 estudantes da UFSC, o GRAMA (GRAde de MAtrícula), que foi escrito por um
 estudante de Engenharia de Produção e tinha o apoio da ufsc, pelo site
 http://grama.ufsc.br
@@ -14,10 +14,10 @@ do serviço para fazer propaganda própria da empresa criada pelo seu autor,
 que acabara de se formar da UFSC.
 
 Esse foi o momento propício para criar outro sistema que substituisse o GRAMA.
-Foi então que o MatrUFSC surgiu, estando disponível inicialmente para o
-período de matrícula do semestre 2012-1.
+Foi então que o CAPIM surgiu, a princípio com o nome de MatrUFSC, estando
+disponível inicialmente para o período de matrícula do semestre 2012-1.
 
-Vendo os erros e as falhas de outros serviços semelhantes, o MatrUFSC nasceu
+Vendo os erros e as falhas de outros serviços semelhantes, o CAPIM nasceu
 com os seguintes princípios:
 - Simplicidade e facilidade de uso:
   O aplicativo deve seguir o princípio KISS - Keep it Simple, Stupid, e deve
@@ -36,7 +36,7 @@ com os seguintes princípios:
 - Não ao acúmulo de dados pessoais dos usuários:
   Não existe necessidade nenhuma de ter os dados pessoais dos usuários no
   servidor. Nem e-mail, nem login, nem CPF (sério, tem site para
-  "universitário" que pede até CPF no cadastro). O MatrUFSC permite ao
+  "universitário" que pede até CPF no cadastro). O CAPIM permite ao
   usuário fazer download e upload de seu horário, sem precisar nem gravar
   nada no servidor. Os usuários podem usar qualquer identificador para
   gravar seus horários no sistema se quiserem.
@@ -47,9 +47,9 @@ com os seguintes princípios:
 
 LICENÇA
 
-A ideia original era fazer o MatrUFSC ser código-livre. Porém, as licenças
+A ideia original era fazer o CAPIM ser código-livre. Porém, as licenças
 mais comuns (como a GPL) não atenderiam a algumas restrições que eu gostaria
-de impor ao código. Portanto, aqui defino a licença do MatrUFSC:
+de impor ao código. Portanto, aqui defino a licença do CAPIM:
 
 1. É proibido qualquer tipo de retorno financeiro, direta ou indiretamente,
    como, por exemplo:
@@ -75,7 +75,7 @@ de impor ao código. Portanto, aqui defino a licença do MatrUFSC:
 ===========================================================================
 1. Servidor
 
-Para rodar o MatrUFSC, é necessário ter os seguintes programas/pacotes
+Para rodar o CAPIM, é necessário ter os seguintes programas/pacotes
 instalados no servidor:
 - apache2
 - FastCGI
@@ -91,9 +91,9 @@ habilitado e os arquivos .htaccess também (AllowOverride All).
 
 2. Caminhos
 
-O MatrUFSC gera arquivos de dados para cada identificador gravado e gera
+O CAPIM gera arquivos de dados para cada identificador gravado e gera
 arquivos de log para cada erro interno do dispatch.fcgi. O caminho para os
-dados está em matrufsc.py e o caminho para os logs está em dispatch.fcgi.
+dados está em capim.py e o caminho para os logs está em dispatch.fcgi.
 Ambos são substituídos pelo Makefile pelo valor configurado por --base-path.
 
 3. Banco de dados
@@ -118,18 +118,18 @@ final.
   campos aleatoriamente)
 
 5. build system
-Para compilar o MatrUFSC, é necessário primeiro configurá-lo. Use o script
+Para compilar o CAPIM, é necessário primeiro configurá-lo. Use o script
 configure, passando as seguintes opções:
   --python-bin=<caminho>  caminho do executável do python no servidor
   --release               habilita otimização, facebook e google analytics
-  --base-path=<caminho>   caminho da pasta principal do matrufsc no servidor
-  --subdir=<caminho>      subdiretório em que o matrufsc se encontra no site
+  --base-path=<caminho>   caminho da pasta principal do capim no servidor
+  --subdir=<caminho>      subdiretório em que o capim se encontra no site
   --cgi                   usar cgi no lugar de fcgi
 
 Somente a opção --base-path é obrigatório, sendo o resto opcional. Em seguida,
 basta rodar 'make'.
 
-O que eu faço para instalar o MatrUFSC é:
+O que eu faço para instalar o CAPIM é:
 $ ./configure --base-path=$HOME/matrufsc --subdir=matrufsc
 $ make install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
 tendo "matrufsc-<versao>" um symlink para "matrufsc", que vai ser acessado
