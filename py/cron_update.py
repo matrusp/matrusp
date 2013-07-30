@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import sys
 import get_turmas_usp
 import parse_turmas_usp
 
@@ -19,7 +20,7 @@ if __name__ == "__main__":
 	
 	if len(sys.argv) == 3:
 		parse_turmas_usp.main(sys.argv[1], sys.argv[2])
-	else
+	else:
 		parse_turmas_usp.main(sys.argv[1], sys.argv[2], sys.argv[3])
 	
 	print " - Fim da atualização! - "
