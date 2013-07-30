@@ -6,16 +6,25 @@ import sys
 import re
 import json
 import codecs
-from datetime import datetime
+import locale
+import multiprocessing
+import dateutil.parser
+import get_turmas_cepe
+from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
-def main(db_dir, arq_saida, arq_antigo=None):
+#sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
+
+#30 dias antes da matéria encerrar ela será excluída do BD
+data_validade = datetime.today() + timedelta(days=30)
+
+def main(db_dir, arq_saida, arq_antigo=None, obter_cepe=True):
 	db_dir = os.path.abspath(db_dir)
 	arq_saida = os.path.abspath(arq_saida)
 
 
 	if not os.path.isdir(db_dir):
-		print " - %s não é um diretório válido. Encerrando. - " % (db_dir)
+		print u" - %s não é um diretório válido. Encerrando. - " % (db_dir)
 		return 1;
 		
 	db_antigo = {}
@@ -23,27 +32,46 @@ def main(db_dir, arq_saida, arq_antigo=None):
 		if arq_antigo != None:
 			db_antigo = ler_db_antigo(os.path.abspath(arq_antigo))
 	except Exception, e:
-		print " - %s não pôde ser aberto. Encerrando. - " % (arq_antigo)
+		print u" - %s não pôde ser aberto. Encerrando. - " % (arq_antigo)
 		sys.exit(1);
 
-	db_novo = {}
-	for arq in os.listdir(db_dir):
-		parseado = parsear_materia(os.path.join(db_dir, arq))
-		codigo = parseado[0]
-		db_novo[codigo] = parseado
+	arqs = map(lambda arq: os.path.join(db_dir, arq), os.listdir(db_dir))
 	
-	resultado = fundir_dbs(db_novo, db_antigo)
+	pool = multiprocessing.Pool()
+	db_novo = dict(pool.map(processar_arquivo, arqs))
 	
-	print " - Gravando resultados - "
+	if arq_antigo != None:
+		db_novo = fundir_dbs(db_novo, db_antigo)
+		
+	db_novo = remover_materias_apos_validade(db_novo)
+	
+	if obter_cepe:
+		print u" - Obtendo disciplinas do CEPE - "
+		try:
+			cepe = get_turmas_cepe.obter_materias_cepe()
+			db_novo.update(cepe)
+			print u" - Disciplinas do CEPE incorporadas - "
+		except:
+			pass
+	
+	print u" - Gravando resultados - "
 	try:
 		saida = codecs.open(arq_saida, "w", encoding='utf-8')
 	except Exception, e:
-		print " - %s não pôde ser aberto. Encerrando. - " % (arq_saida)
+		print u" - %s não pôde ser aberto. Encerrando. - " % (arq_saida)
 		return 1;
-	saida.write(json.dumps({u"TODOS":resultado.values()}, separators=(',',':')))
+	saida.write(json.dumps({u"TODOS":db_novo.values()}, separators=(',',':')))
 	saida.close()
-	print " - FIM! - "
+	print u" - FIM! - "
 	return 0
+
+#Engloba todo o processamento de uma dada matéria. 
+#Recebe como parâmetro um caminho ABSOLUTO do html e retorna uma dupla (código
+#da disciplina, dados extraídos do arquivo html).
+def processar_arquivo(arq):
+	parseado = parsear_materia(arq)
+	codigo = parseado[0]
+	return (codigo, parseado)
 
 #Abre o arquivo com o DB antigo e retorna um dicionário da forma
 #db = {"AAA000": info_aaa000, "AAA0001": info_aaa0001, ...}
@@ -64,24 +92,40 @@ def ler_db_antigo(arq_antigo):
 #Exemplo: Matérias anuais não tem oferecimento no segundo semestre mas ainda
 # devem continuar aparecendo durante todo o ano.
 def fundir_dbs(db_novo, db_antigo):
-	print " - Fundindo DBs antigo e novo - "
+	print u" - Fundindo DBs antigo e novo - "
+	hoje = datetime.today()
 	for codigo, materia in db_antigo.iteritems():
 		if codigo not in db_novo:
 			inicio_mais_passado = obter_inicio_mais_passado(materia)
 			termino_mais_futuro = obter_termino_mais_futuro(materia)
-			if inicio_mais_passado < datetime.today() and datetime.today() < termino_mais_futuro:
+			if inicio_mais_passado < hoje and hoje < termino_mais_futuro:
 				print u" - Recuperando %s do DB antigo (Término em %s). - " % (codigo, termino_mais_futuro.strftime("%d/%m/%Y"))
 				db_novo[codigo] = materia
 
-	print " - Fim da fusão dos DBs antigo e novo - "
+	print u" - Fim da fusão dos DBs antigo e novo - "
+		
 	return db_novo
+
+#Remove do DB quaisquer matérias que tem como término mais no futuro uma data
+#antes de data_validade
+def remover_materias_apos_validade(db):
+	print u" - Removendo do DB matérias que passaram da validade - "	
+	for codigo, materia in db.items():
+		termino_mais_futuro = obter_termino_mais_futuro(materia)
+		if termino_mais_futuro < data_validade:
+			print u"   - Removendo %s  (Término em %s). - " % (codigo, termino_mais_futuro.strftime("%d/%m/%Y"))
+			del db[codigo]
+	
+	print u" - Fim da remoção das matérias que passaram da validade - "	
+	
+	return db
 
 #Dada uma descrição de uma matéria da forma que parsear_materia retorna, 
 #devolve o datetime correspondente à data de térimino mais no futuro de todas
 #as turmas dela.
 def obter_termino_mais_futuro(materia):
 	turmas = materia[2]
-	datas_termino = map(lambda t: datetime.strptime(t[2], u"%d/%m/%Y"), turmas)
+	datas_termino = map(lambda t: dateutil.parser.parse(t[2], dayfirst=True), turmas)
 	return max(datas_termino)
 
 #Dada uma descrição de uma matéria da forma que parsear_materia retorna, 
@@ -89,7 +133,7 @@ def obter_termino_mais_futuro(materia):
 #as turmas dela.
 def obter_inicio_mais_passado(materia):
 	turmas = materia[2]
-	datas_inicio = map(lambda t: datetime.strptime(t[1], u"%d/%m/%Y"), turmas)
+	datas_inicio = map(lambda t: dateutil.parser.parse(t[1], dayfirst=True), turmas)
 	return min(datas_inicio)
 
 
@@ -111,15 +155,15 @@ def parsear_informacoes(tabela):
 		elif re.search(u"Código\s+da\s+Turma", tds[0].string, flags=re.U):
 			codigo = re.match(u"^(\w+)", tds[1].string.strip(), flags=re.U).group(1)
 		elif re.search(u"Início", tds[0].string, flags=re.U):
-			inicio = tds[1].string.strip()
+			inicio = dateutil.parser.parse(tds[1].string.strip(), dayfirst=True).strftime("%d/%m/%Y")
 		elif re.search(u"Fim", tds[0].string, flags=re.U):
-			fim = tds[1].string.strip()
+			fim = dateutil.parser.parse(tds[1].string.strip(), dayfirst=True).strftime("%d/%m/%Y")
 		elif re.search(u"Tipo\s+da\s+Turma", tds[0].string, flags=re.U):
 			tipo = tds[1].string.strip()
 		elif re.search(u"Observações", tds[0].string, flags=re.U):
 			observacoes = tds[1].string.strip()
 		else:
-			print "Informacao ignorada: %s" % (tds[0].string.strip())
+			print u"Informacao ignorada: %s" % (tds[0].string.strip())
 #		print info
 	return (codigo, inicio, fim, tipo, codigo_teorica)
 
@@ -136,17 +180,31 @@ def parsear_horario(tabela):
 		tds = map(lambda x: u"".join(x.stripped_strings).strip(), tds)
 		if tds[0] == u"Horário": #Cabeçalho
 			continue
+		
 		if tds[0] != u"": #Novo dia de aula (Ex. |ter|10:00|11:50|Adilson Simonis|)
 			if accum != None:
 				horario.append(accum)
 			accum = (tds[0], tds[1], tds[2], [tds[3]])
-		if tds[0] == u"": #Mais professores (Ex. ||||Elisabeti Kira|) ou um horário maior:
-			if tds[2] > accum[2]: 
-			#Ex: |qui|14:00|16:00|Sonia Regina Leite Garcia
-			#    |   |     |18:00|Artur Simões Rozestraten
-			#    |   |     |     |Eduardo Colli
-				accum = (accum[0], accum[1], tds[2], accum[3])
-			accum[3].append(tds[3])
+ 		
+ 		#Mais professores (Ex. ||||Elisabeti Kira|) e possivelmente um horário maior
+		#Ex: |qui|14:00|16:00|Sonia Regina Leite Garcia
+		#    |   |     |18:00|Artur Simões Rozestraten
+		#    |   |     |     |Eduardo Colli
+ 		if tds[0] == u"" and tds[1] == u"": 
+ 			if tds[2] > accum[2]:
+ 				accum = (accum[0], accum[1], tds[2], accum[3])
+ 			accum[3].append(tds[3])
+ 		
+ 		#Mais uma aula no mesmo dia
+		#Ex:  |seg|08:00|12:00|(R)Jose Roberto de Magalhaes Bastos
+ 		#     |   |     |13:00|(R)Magali de Lourdes Caldana
+		#     |   |14:00|18:00|(R)Jose Roberto de Magalhaes Bastos
+ 		#     |   |     |19:00|(R)Magali de Lourdes Caldana
+ 		if tds[0] == u"" and tds[1] != u"":
+ 			if accum != None:
+				horario.append(accum)
+			accum = (accum[0], tds[1], tds[2], [tds[3]])
+			
 	if accum != None:
 		horario.append(accum)
 #		print horario
@@ -212,7 +270,7 @@ def eh_tabela_folha(tag):
 #Exemplo:
 #("MAC0315", "Programação Linear", [(..., ..., ..., ..., ..., ...)])
 def parsear_materia(arquivo):
-	print " - Parseando arquivo %s - " % (os.path.basename(arquivo))
+	print u" - Parseando arquivo %s - " % (os.path.basename(arquivo))
 	
 	codigo = os.path.basename(arquivo).split(".")[0]
 	html = open(arquivo, "r")
@@ -259,22 +317,32 @@ def filtrar_turmas(turmas):
 		tipos[tipo][codigo[0:7]] = (info, horario, vagas) #tipos["Teórica"]["2013102"] = (...)
 	
 	praticas = {}
+	#Turmas teóricas vinculadas que podem ser removidas por terem conseguido fazer o join
+	teoricas_utilizadas = set([]) 
 	for codigo, turma in tipos[u"Prática Vinculada"].iteritems():
 		#Desempacotando
 		info, horario, vagas = turma
 		codigo, data_inicio, data_fim, tipo, codigo_teorica = info
 		
+		#Existem turmas de Prática Vinculada sem a Teórica Vinculada correspondente...
+		if codigo_teorica == None or codigo_teorica not in tipos[u"Teórica Vinculada"]:
+			praticas[codigo] = turma
+			continue
+		
+		#Podemos remover essa teorica vinculada
+		teoricas_utilizadas.add(codigo_teorica)
+		
 		#Novo código
 		codigo = codigo[0:5] + codigo_teorica[5:] + u"+" + codigo[5:]
-		
+	
 		#Join dos horários
 		horario_teorica = tipos[u"Teórica Vinculada"][codigo_teorica][1]
-		
+	
 		if horario == None and horario_teorica:
 			horario = horario_teorica
 		elif horario and horario_teorica:
 			horario.extend(horario_teorica)
-		
+			
 		#Reempacotando
 		info = (codigo, data_inicio, data_fim, u"Teórica e Prática Vinculadas", None)
 		turma = (info, horario, vagas)
@@ -283,8 +351,9 @@ def filtrar_turmas(turmas):
 		praticas[codigo] = turma
 	
 	tipos[u"Prática Vinculada"] = praticas
-	del tipos[u"Teórica Vinculada"] #Não é mais necessário
-	
+	for teorica in teoricas_utilizadas:
+		del tipos[u"Teórica Vinculada"][teorica]
+		
 	turmas = []
 	#Removemos o campo codigo_teorica agora desnecessario e fazemos
 	#uma turma ser uma tupla da forma (codigo, data_inicio, data_fim, tipo, horario, vagas)
@@ -299,10 +368,10 @@ def filtrar_turmas(turmas):
 	
 if __name__ == "__main__":
 	if len(sys.argv) < 3:
-		print " - Forneça o diretório de entrada o nome do arquivo de saída e o"
-		print "   nome do banco antigo (Opcional)."
-		print "   Ex: %s ./db ./db_usp.txt ./db_usp_antigo.txt" % (sys.argv[0])
-		print "   Encerrando. - "
+		print u" - Forneça o diretório de entrada o nome do arquivo de saída e o"
+		print u"   nome do banco antigo (Opcional)."
+		print u"   Ex: %s ./db ./db_usp.txt ./db_usp_antigo.txt" % (sys.argv[0])
+		print u"   Encerrando. - "
 		sys.exit(1)
 	elif len(sys.argv) == 3:
 		main(sys.argv[1], sys.argv[2])

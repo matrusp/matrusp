@@ -5,19 +5,25 @@ import os, os.path
 import re
 import sys
 import urllib2
+import locale
+import codecs
 from bs4 import BeautifulSoup
+
+sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
 #Limpa o DB_DIR antes de inserir os dados novos
 remover_antigos = True
 
 def main(db_dir, remover_antigos):
+	reload(sys)
+	sys.setdefaultencoding('utf-8')
 	db_dir = os.path.abspath(db_dir)
 	
 	if not os.path.isdir(db_dir):
-		print " - %s não é um diretório válido. Encerrando. - " % (db_dir)
+		print u" - %s não é um diretório válido. Encerrando. - " % (db_dir)
 		return 1;
 
-	print " - Obtendo a lista de todas as unidades de ensino - "
+	print u" - Obtendo a lista de todas as unidades de ensino - "
 	response = urllib2.urlopen('https://uspdigital.usp.br/jupiterweb/jupColegiadoLista?tipo=D')
 	soup = BeautifulSoup(response.read(), "html5lib")
 
@@ -33,44 +39,44 @@ def main(db_dir, remover_antigos):
 	#u'71', u'100', u'1', u'30', u'64', u'31', u'85', u'36', u'32', u'38', u'33']
 	codigos_unidades = map(extrai_codigo, links_unidades)
 
-	print " - %d unidades de ensino encontradas - " % (len(codigos_unidades))
+	print u" - %d unidades de ensino encontradas - " % (len(codigos_unidades))
 	
 	materias = {}
 	for codigo in codigos_unidades:
-		print " - Obtendo as materias da unidade %s - " % (codigo)
+		print u" - Obtendo as materias da unidade %s - " % (codigo)
 		response = urllib2.urlopen('https://uspdigital.usp.br/jupiterweb/jupDisciplinaLista?letra=A-Z&tipo=D&codcg=' + codigo)
 		soup = BeautifulSoup(response.read(), "html5lib")
 		links_materias = soup.find_all('a', href=re.compile("obterDisciplina"))
 		materias_unidade = map(extrai_materia, links_materias)
-		print "   - %d materias encontradas - " % (len(materias_unidade))
+		print u"   - %d materias encontradas - " % (len(materias_unidade))
 		materias[codigo] = materias_unidade
 
-	print " - Terminada a descoberta de materias - "
+	print u" - Terminada a descoberta de materias - "
 
 	if remover_antigos:
-		print "   - Removendo turmas armazenadas antigas ... ",
+		print u"   - Removendo turmas armazenadas antigas ... ",
 		limpar_diretorio(db_dir)
-		print "Feito - "
+		print u"Feito - "
 
 	nao_existe_oferecimento = re.compile("existe oferecimento")
 
 	for unidade, materias_unidade in materias.iteritems():
-		print " - Iniciando processamento da unidade %s - " % (unidade)
+		print u" - Iniciando processamento da unidade %s - " % (unidade)
 	
 		for materia, nome in materias_unidade:
 			if len(materia) != 7:
 				continue
 			response = urllib2.urlopen('https://uspdigital.usp.br/jupiterweb/obterTurma?print=true&sgldis=' + materia).read()
 			if nao_existe_oferecimento.search(response):
-				print "   - Pulando     %s - %s" % (materia, nome)
+				print u"   - Pulando     %s - %s" % (materia, nome)
 				continue
-			print "   - Armazenando %s - %s" % (materia, nome)
+			print u"   - Armazenando %s - %s" % (materia, nome)
 			arq = open("%s.html" % os.path.join(db_dir, materia), "w")
 			arq.write(response)
 			arq.close()
-		print " - Fim do processamento da unidade %s - " % (unidade)
+		print u" - Fim do processamento da unidade %s - " % (unidade)
 	
-	print " - FIM! -"
+	print u" - FIM! -"
 	return 0
 
 
@@ -92,6 +98,6 @@ def limpar_diretorio(diretorio):
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
-		print " - Forneça o caminho para o diretório onde serão armazenados os arquivos. Encerrando. - "
+		print u" - Forneça o caminho para o diretório onde serão armazenados os arquivos. Encerrando. - "
 		sys.exit(1);
 	main(sys.argv[1], remover_antigos)
