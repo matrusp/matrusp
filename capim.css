@@ -252,6 +252,7 @@ th {
     cursor: pointer;
     padding: 2px 6px 2px 6px;
     text-decoration: underline;
+    text-align: left;
     font-size: 13px;
 }
 .widget_dropdown_menu_button:hover {
