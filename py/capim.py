@@ -128,8 +128,19 @@ def run(environ, start_response):
         start_response('200 OK', [('Content-Type', 'text/html'), ('Expires', '-1')])
         return ['OK']
     elif path0 == 'ping.cgi':
-        content_disposition = 'attachment; filename=' + get_q(environ['QUERY_STRING']) + '.json'
-        data = environ['wsgi.input'].read().split('\r\n\r\n')[1].split('\r\n')[0]
+        content_disposition = 'attachment; filename=' + get_q(environ['QUERY_STRING'])
+        wsgi_input = environ['wsgi.input'].read().split('\r\n')
+        terminator = wsgi_input[0] + '--'
+        data = []
+        started = False
+        for line in wsgi_input[1:]:
+            if line == terminator:
+                break
+            if started:
+                data.append(line)
+            if line == '':
+                started = True
+        data = '\r\n'.join(data)
         start_response('200 OK', [('Content-Type', 'application/octet-stream'), ('Content-Disposition', content_disposition), ('Expires', '-1')])
         return [data]
     elif path0 == 'robots.txt':

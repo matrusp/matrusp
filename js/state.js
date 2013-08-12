@@ -89,6 +89,82 @@ function State()
         return JSON.stringify(state_to_return);
     };
 
+    self.ics = function() {
+        var ics_str = [ "BEGIN:VCALENDAR",
+                        "VERSION:2.0",
+                        "PRODID:-//CAPIM//MatrUFSC " + versao_capim + "//EN",
+                        "BEGIN:VTIMEZONE",
+                        "TZID:America/Sao_Paulo",
+                        "BEGIN:DAYLIGHT",
+                        "TZNAME:BRST",
+                        "TZOFFSETFROM:-0300",
+                        "TZOFFSETTO:-0200",
+                        "DTSTART:19701018T000000",
+                        "RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=3SU",
+                        "END:DAYLIGHT",
+                        "BEGIN:STANDARD",
+                        "TZNAME:BRT",
+                        "TZOFFSETFROM:-0200",
+                        "TZOFFSETTO:-0300",
+                        "DTSTART:19700215T000000",
+                        "RRULE:FREQ=YEARLY;BYMONTH=2;BYDAY=3SU",
+                        "END:STANDARD",
+                        "END:VTIMEZONE" ];
+
+        var c = self.plano.combinacoes.get_current();
+        c.horarios_combo.forEach(function(horario){
+            for (var k in horario.turmas) {
+                if (horario.turmas[k].selected) {
+                    var turma = horario.turmas[k];
+                    break;
+                }
+            }
+            if (!turma)
+                var turma = horario.turma_representante;
+            turma.order_aulas();
+            var i = 0;
+            while (i < turma.aulas.length) {
+                var dia  = turma.aulas[i].dia;
+                var hor0 = turma.aulas[i].hora;
+                var sala = turma.aulas[i].sala;
+                do {
+                    var hor1 = turma.aulas[i++].hora;
+                } while (i < turma.aulas.length && turma.aulas[i].dia == dia && turma.aulas[i].sala == sala && turma.aulas[i].hora == (hor1+1));
+                var dia_str = "" + (12 + dia);
+                hor0 = Horas[hor0]
+                hor1 = parseInt(Horas[hor1]) + 50;
+                if ((hor1 % 100) > 60)
+                    hor1 += 40;
+                hor1 = "" + hor1;
+                if (hor1.length < 4)
+                    hor1 = "0" + hor1;
+                ics_str.push("BEGIN:VEVENT");
+                ics_str.push("SUMMARY:" + turma.materia.nome);
+                ics_str.push("LOCATION:" + sala);
+                var professores_str = "";
+                turma.professores.forEach(function(prof){
+                    if (professores_str != "")
+                        professores_str += "\\n";
+                    professores_str += prof;
+                });
+                ics_str.push("DESCRIPTION:" + professores_str);
+                ics_str.push("UID:" + turma.materia.codigo + turma.nome + i);
+                ics_str.push("RRULE:FREQ=WEEKLY;UNTIL=20131211T220000Z");
+                ics_str.push("EXDATE;VALUE=DATE:20130907");
+                ics_str.push("EXDATE;VALUE=DATE:20131012");
+                ics_str.push("EXDATE;VALUE=DATE:20131102");
+                ics_str.push("EXDATE;VALUE=DATE:20131115");
+                ics_str.push("DTSTART;TZID=America/Sao_Paulo:201308" + dia_str + "T" + hor0 + "00"); //
+                ics_str.push("DTEND;TZID=America/Sao_Paulo:201308" + dia_str + "T" + hor1 + "00"); //
+                ics_str.push("TRANSP:OPAQUE");
+                ics_str.push("END:VEVENT");
+            }
+        });
+
+        ics_str.push("END:VCALENDAR");
+        return ics_str.join("\r\n");
+    };
+
     self.new_plano = function(plano_to_load, n) {
         var plano = new Plano(n);
         plano.materias.selected = plano_to_load.materia;

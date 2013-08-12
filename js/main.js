@@ -455,12 +455,16 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         display_combinacao(state.plano.combinacoes.current());
     };
     /* UI_saver */
-    ui_saver.cb_download = function() {
+    ui_saver.cb_download = function(ext) {
         var identificador = ui_saver.input.value;
         if (!identificador)
             identificador = "matrufsc";
-        ui_saver.form.action = "ping.cgi?q=" + encodeURIComponent(identificador);
-        ui_saver.form_input.value = state.save();
+        ui_saver.form.action = "ping.cgi?q=" + encodeURIComponent(identificador + ext);
+        if (ext == ".ics") {
+            ui_saver.form_input.value = state.ics();
+        } else {
+            ui_saver.form_input.value = state.save();
+        }
         ui_saver.form.submit();
     };
     ui_saver.cb_upload = function() {

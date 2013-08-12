@@ -38,7 +38,7 @@ function UI_saver(id)
     self.form = form;
     self.form_input = input;
 
-    var dropdown_menu = new widget_dropdown_menu(ui_saver, 175, 2, true);
+    var dropdown_menu = new widget_dropdown_menu(ui_saver, 220, 2, true);
     dropdown_menu.add("limpar tudo", function(e) {
         var really = confirm("Você quer mesmo limpar tudo?");
         if (really) {
@@ -46,7 +46,8 @@ function UI_saver(id)
             _gaq.push(['_trackEvent', 'state', 'reset', self.input.value]);
         }
     });
-    dropdown_menu.add("exportar arquivo JSON", function(e) { self.cb_download(); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
+    dropdown_menu.add("exportar arquivo iCalendar", function(e) { self.cb_download(".ics"); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
+    dropdown_menu.add("exportar arquivo JSON", function(e) { self.cb_download(".json"); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
     dropdown_menu.add("abrir arquivo JSON", function(e) { self.cb_upload(); _gaq.push(['_trackEvent', 'state', 'upload', self.input.value]); });
 
     self.enabled = true;
