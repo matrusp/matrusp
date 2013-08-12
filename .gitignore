@@ -1,13 +1,13 @@
 index.html
 index.html.gz
-matrufsc.css.gz
+capim.css.gz
 cursos_turmas
 cursos_turmas.js
 header_gen
 header_gen_pdf
-matrufsc.js
-matrufsc.js.gz
-matrufsc.py
+capim.js
+capim.js.gz
+capim.py
 .htaccess
 dispatch.cgi
 dispatch.fcgi
