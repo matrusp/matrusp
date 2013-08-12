@@ -775,14 +775,9 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
     self.set_db = function(semestre, campus, callback) {
         if (semestre == "20132") {
             ui_avisos.reset();
-        } else if (semestre == "20131") {
-            ui_avisos.set_text("Você escolheu os horários de 2013-1! Nós já estamos em 2013-2!");
-        } else if (semestre == "20122") {
-            ui_avisos.set_text("Você escolheu os horários de 2012-2! Nós já estamos em 2013!");
-        } else if (semestre == "20121") {
-            ui_avisos.set_text("Você escolheu os horários de 2012-1! Nós já estamos em 2013!");
         } else {
-            ui_avisos.reset();
+            var str = semestre.substr(0,4) + "-" + semestre.substr(4,1);
+            ui_avisos.set_text("Você escolheu os horários de " + str + "! Nós já estamos em 2013-2!");
         }
         var ret = database.set_db(semestre, campus);
         if (ret == -1)
