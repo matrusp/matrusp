@@ -1,1 +1,1 @@
-versao_capim = "versão 2.5.8"
+versao_capim = "versão 2.5.9"
