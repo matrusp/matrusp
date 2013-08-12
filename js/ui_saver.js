@@ -48,7 +48,7 @@ function UI_saver(id)
     });
     dropdown_menu.add("exportar arquivo iCalendar", function(e) { self.cb_download(".ics"); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
     dropdown_menu.add("exportar arquivo JSON", function(e) { self.cb_download(".json"); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
-    dropdown_menu.add("abrir arquivo JSON", function(e) { self.cb_upload(); _gaq.push(['_trackEvent', 'state', 'upload', self.input.value]); });
+    dropdown_menu.add("importar arquivo JSON", function(e) { self.cb_upload(); _gaq.push(['_trackEvent', 'state', 'upload', self.input.value]); });
 
     self.enabled = true;
     self.disable = function() {
