@@ -46,8 +46,8 @@ function UI_saver(id)
             _gaq.push(['_trackEvent', 'state', 'reset', self.input.value]);
         }
     });
-    dropdown_menu.add("download para seu HD", function(e) { self.cb_download(); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
-    dropdown_menu.add("upload de seu HD", function(e) { self.cb_upload(); _gaq.push(['_trackEvent', 'state', 'upload', self.input.value]); });
+    dropdown_menu.add("exportar arquivo JSON", function(e) { self.cb_download(); _gaq.push(['_trackEvent', 'state', 'download', self.input.value]); });
+    dropdown_menu.add("abrir arquivo JSON", function(e) { self.cb_upload(); _gaq.push(['_trackEvent', 'state', 'upload', self.input.value]); });
 
     self.enabled = true;
     self.disable = function() {
