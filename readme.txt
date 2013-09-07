@@ -86,7 +86,9 @@ $ sudo apt-get install apache2 libapache2-mod-fcgid python-flup
 $ sudo a2enmod rewrite
 
 Certifique-se que na configuração de seu site no apache2 ExecCGI esteja
-habilitado e os arquivos .htaccess também (AllowOverride All).
+habilitado e os arquivos .htaccess também:
+    Options +ExecCGI
+    AllowOverride All
 
 2. Caminhos
 
@@ -99,6 +101,17 @@ Ambos são substituídos pelo Makefile pelo valor configurado por --base-path.
 
 O banco de dados é gerado por código em outro repositório:
 http://git.arrozcru.org/?p=matrufsc_dbs.git;a=summary
+
+Se você não quiser usar o repositório git, basta pegar os arquivos já gerados
+para uso no MatrUFSC e colocá-los na pasta do aplicativo instalado no servidor:
+http://ramiro.arrozcru.org/matrufsc/20121.json
+http://ramiro.arrozcru.org/matrufsc/20121.json.gz
+http://ramiro.arrozcru.org/matrufsc/20122.json
+http://ramiro.arrozcru.org/matrufsc/20122.json.gz
+http://ramiro.arrozcru.org/matrufsc/20131.json
+http://ramiro.arrozcru.org/matrufsc/20131.json.gz
+http://ramiro.arrozcru.org/matrufsc/20132.json
+http://ramiro.arrozcru.org/matrufsc/20132.json.gz
 
 4. closure
 
