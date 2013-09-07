@@ -5,9 +5,8 @@ estudantes da UFSC, o GRAMA (GRAde de MAtrícula), que foi escrito por um
 estudante de Engenharia de Produção e tinha o apoio da ufsc, pelo site
 http://grama.ufsc.br
 
-O GRAMA estava tecnologicamente defasado, tendo sido escrito no começo dos
-anos 2000, não aproveitando facilidades como XMLHttpRequest e o poder de
-processamento dos navegadores modernos.
+O GRAMA estava tecnologicamente defasado, não aproveitando facilidades como
+XMLHttpRequest e o poder de processamento dos navegadores modernos.
 
 O GRAMA perdeu o apoio da UFSC quando tentou se aproveitar da popularidade
 do serviço para fazer propaganda própria da empresa criada pelo seu autor,
