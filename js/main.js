@@ -963,12 +963,12 @@ window.onload = function() {
     }
     if (!database_ok) {
         if (identificador != null && identificador != "") {
-            ui_saver.cb_load(identificador, function(){ main.set_db("20132", "FLO"); });
+            ui_saver.cb_load(identificador, function(){ main.set_db("20141", "FLO"); });
             database_ok = true;
         }
     }
     if (!database_ok)
-        main.set_db("20132", "FLO");
+        main.set_db("20141", "FLO");
     if (combo.input.value == identificador)
         combo.input.value = "";
 

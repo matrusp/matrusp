@@ -56,7 +56,7 @@ function UI_campus(id)
     semestre.appendChild(option);
     ui_campus.appendChild(semestre);
 
-    semestre.value = "20132";
+    semestre.value = "20141";
 
     semestre.onchange = function() {
         self.cb_semestre(this.value);
