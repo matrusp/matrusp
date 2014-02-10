@@ -89,6 +89,50 @@ function State()
         return JSON.stringify(state_to_return);
     };
 
+    var cores = document.createElement("textarea");
+    cores.style.display = "none";
+    cores.style.color = "transparent";
+    document.body.appendChild(cores);
+
+    /* http://stackoverflow.com/questions/638948/background-color-hex-to-javascript-variable */
+    function rgb2hex(rgb) {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        function hex(x) {
+            return ("0" + parseInt(x).toString(16)).slice(-2);
+        }
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
+
+    self.preview = function(p) {
+        var h = [[],[],[],[],[],[]];
+        var t = [];
+
+        var c = self.plano.combinacoes.get_current();
+        c.horarios_combo.forEach(function(horario){
+            for (var k in horario.turmas) {
+                if (horario.turmas[k].selected) {
+                    var turma = horario.turmas[k];
+                    break;
+                }
+            }
+            if (!turma)
+                var turma = horario.turma_representante;
+            turma.order_aulas();
+
+            cores.style.color = turma.materia.cor;
+            var cor = rgb2hex(cores.style.getPropertyValue("color"));
+            cores.style.color = "transparent";
+
+            t.push({ codigo: turma.materia.codigo, nome: turma.materia.nome, turma: turma.nome, periodo: turma.materia.semestre, professores: turma.professores, cor: cor });
+            for (var i = 0; i < turma.aulas.length; i++) {
+                var dia  = turma.aulas[i].dia;
+                var hora = turma.aulas[i].hora;
+                h[dia][hora] = { codigo: turma.materia.codigo, sala: turma.aulas[i].sala, cor: cor };
+            }
+        });
+        return { horarios: h, turmas: t, index: self.index };
+    };
+
     self.ics = function() {
         var ics_str = [ "BEGIN:VCALENDAR",
                         "VERSION:2.0",

@@ -1,6 +1,6 @@
 include config.mak
 
-all: capim.py dispatch.$(CGI) capim.js index.html
+all: ods.py capim.py dispatch.$(CGI) capim.js index.html
 
 SRC:=json2.js \
 compat.js \
@@ -36,6 +36,9 @@ ifeq ($(RELEASE),1)
 sed_RELEASE=-e "s/if(0)/if(1)/"
 endif
 
+ods.py: py/ods.py
+	sed "s|\$$BASE_PATH|${BASE_PATH}|" $^ | tee $@ > /dev/null
+
 capim.py: py/capim.py
 	sed "s|\$$BASE_PATH|${BASE_PATH}|" $^ | tee $@ > /dev/null
 
@@ -57,7 +60,7 @@ clean::
 	rm -rf capim.js index.html
 	rm -rf install
 	rm -f $(addsuffix /*~,. c db html js py) .htaccess~ .gitignore~
-	rm -f capim.py dispatch.$(CGI)
+	rm -f capim.py ods.py dispatch.$(CGI)
 	rm -f capim.css.gz capim.js.gz index.html.gz
 
 distclean: clean
@@ -69,6 +72,6 @@ install-gz:: install capim.css.gz capim.js.gz index.html.gz
 
 install:: all
 	mkdir -p install
-	cp capim.css capim.js dispatch.$(CGI) capim.py index.html install/
-	chmod 755 install/dispatch.$(CGI) install/capim.py
+	cp capim.css capim.js dispatch.$(CGI) capim.py ods.py index.html install/
+	chmod 755 install/dispatch.$(CGI) install/capim.py install/ods.py
 	cp .htaccess install/
