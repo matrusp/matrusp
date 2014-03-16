@@ -174,7 +174,7 @@ function State()
                 do {
                     var hor1 = turma.aulas[i++].hora;
                 } while (i < turma.aulas.length && turma.aulas[i].dia == dia && turma.aulas[i].sala == sala && turma.aulas[i].hora == (hor1+1));
-                var dia_str = "" + (12 + dia);
+                var dia_str = "" + (17 + dia);
                 hor0 = Horas[hor0]
                 hor1 = parseInt(Horas[hor1]) + 50;
                 if ((hor1 % 100) > 60)
@@ -193,13 +193,15 @@ function State()
                 });
                 ics_str.push("DESCRIPTION:" + professores_str);
                 ics_str.push("UID:" + turma.materia.codigo + turma.nome + i);
-                ics_str.push("RRULE:FREQ=WEEKLY;UNTIL=20131211T220000Z");
-                ics_str.push("EXDATE;VALUE=DATE:20130907");
-                ics_str.push("EXDATE;VALUE=DATE:20131012");
-                ics_str.push("EXDATE;VALUE=DATE:20131102");
-                ics_str.push("EXDATE;VALUE=DATE:20131115");
-                ics_str.push("DTSTART;TZID=America/Sao_Paulo:201308" + dia_str + "T" + hor0 + "00"); //
-                ics_str.push("DTEND;TZID=America/Sao_Paulo:201308" + dia_str + "T" + hor1 + "00"); //
+                ics_str.push("RRULE:FREQ=WEEKLY;UNTIL=20140725T220000Z");
+                ics_str.push("EXDATE;VALUE=DATE:20140418");
+                ics_str.push("EXDATE;VALUE=DATE:20140421");
+                ics_str.push("EXDATE;VALUE=DATE:20140501");
+                ics_str.push("EXDATE;VALUE=DATE:20140502");
+                ics_str.push("EXDATE;VALUE=DATE:20140619");
+                ics_str.push("EXDATE;VALUE=DATE:20140620");
+                ics_str.push("DTSTART;TZID=America/Sao_Paulo:201403" + dia_str + "T" + hor0 + "00"); //
+                ics_str.push("DTEND;TZID=America/Sao_Paulo:201403" + dia_str + "T" + hor1 + "00"); //
                 ics_str.push("TRANSP:OPAQUE");
                 ics_str.push("END:VEVENT");
             }
