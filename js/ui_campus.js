@@ -25,6 +25,10 @@ function UI_campus(id)
     option.value = "ARA";
     option.innerHTML = "Araranguá";
     campus.appendChild(option);
+    var option = document.createElement("option");
+    option.value = "BLN";
+    option.innerHTML = "Blumenau";
+    campus.appendChild(option);
     ui_campus.appendChild(campus);
 
     campus.value = "FLO";
