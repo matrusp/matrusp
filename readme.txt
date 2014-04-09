@@ -79,11 +79,15 @@ instalados no servidor:
 - apache2
 - FastCGI
 - python2
+- odslib para python2
 - flup
 
 No ubuntu, os comandos são:
 $ sudo apt-get install apache2 libapache2-mod-fcgid python-flup
 $ sudo a2enmod rewrite
+
+$ sudo apt-get install python-pip
+$ sudo pip install odslib
 
 Certifique-se que na configuração de seu site no apache2 ExecCGI esteja
 habilitado e os arquivos .htaccess também:
@@ -96,11 +100,18 @@ O CAPIM gera arquivos de dados para cada identificador gravado e gera
 arquivos de log para cada erro interno do dispatch.fcgi. O caminho para os
 dados está em capim.py e o caminho para os logs está em dispatch.fcgi.
 Ambos são substituídos pelo Makefile pelo valor configurado por --base-path.
+Por exemplo, passando --base-path=$HOME/matrufsc, a estrutura das pastas fica
+sendo:
+$HOME/matrufsc/dados3
+$HOME/matrufsc/logs
+Estas pastas não devem ser acessíveis pelo usuário que acessa o servidor!
+Você precisa ter certeza que estas pastas podem ser escritas pelo processo
+do apache.
 
 3. Banco de dados
 
 O banco de dados é gerado por código em outro repositório:
-http://git.arrozcru.org/?p=matrufsc_dbs.git;a=summary
+https://github.com/ramiropolla/matrufsc_dbs.git
 
 Se você não quiser usar o repositório git, basta pegar os arquivos já gerados
 para uso no MatrUFSC e colocá-los na pasta do aplicativo instalado no servidor:
@@ -118,7 +129,7 @@ http://ramiro.arrozcru.org/matrufsc/20141.json.gz
 4. closure
 
 É possível utilizar o closure compiler para reduzir o tamanho do javascript
-final.
+final. O closure só é usado em modo release (habilitado pelo configure).
 
 - Pegue o programa em https://developers.google.com/closure/compiler/
 - Copie compiler.jar para algum path (como /usr/bin/compiler.jar)
@@ -137,14 +148,36 @@ configure, passando as seguintes opções:
   --python-bin=<caminho>  caminho do executável do python no servidor
   --release               habilita otimização, facebook e google analytics
   --base-path=<caminho>   caminho da pasta principal do capim no servidor
-  --subdir=<caminho>      subdiretório em que o capim se encontra no site
+                          onde serão guardados os horários dos usuários e
+                          os logs de erro, por exemplo: /home/user/matrufsc
+                          não deixe estes arquivos expostos pelo servidor!
+  --subdir=<caminho>      subdiretório em que o capim se encontra no site,
+                          por exemplo: www.example.com/<caminho>
   --cgi                   usar cgi no lugar de fcgi
 
-Somente a opção --base-path é obrigatório, sendo o resto opcional. Em seguida,
+Somente a opção --base-path é obrigatória, sendo o resto opcional. Em seguida,
 basta rodar 'make'.
 
 O que eu faço para instalar o CAPIM é:
 $ ./configure --base-path=$HOME/matrufsc --subdir=matrufsc
 $ make install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
-tendo "matrufsc-<versao>" um symlink para "matrufsc", que vai ser acessado
-pelo usuário.
+
+"matrufsc-<versao>" é um symlink para "matrufsc", que vai ser acessado pelo
+usuário.
+
+Não se esqueça de copiar os arquivos dos bancos de dados pra pasta na qual
+o sistema está instalado.
+
+6. Troubleshooting
+
+# Dá erro na hora de carregar os bancos de dados.
+  Lembre-se de copiá-los a partir do outro repositório, o matrufsc_dbs.
+# Dá erro 404 quando tento salvar/abrir.
+  Confere se o .htaccess tá funcionando direito. Olha a seção 1 e vê
+  se o ExecCGI e o AllowOverride estão certo mesmo.
+# Dá erro 500 quando tento abrir qualquer coisa.
+  Confere o error.log do apache2. Se for por causa do ods.py, você
+  provavelmente não instalou o odslib. Olha na seção 1 pra ver como
+  fazer. Se você estiver em um ambiente compartilhado, crie um
+  virtualenv próprio para sua instalação de Python (procure no Google
+  como fazer isso).
