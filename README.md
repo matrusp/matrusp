@@ -77,7 +77,7 @@ Servidor
 ========
 Para rodar o CAPIM, é necessário ter os seguintes programas/pacotes instalados
 no servidor:
-- Apache 2/Nginx
+- Apache 2 **ou** Nginx
 - FastCGI
 - Python 2
 - Flup e OSDLib para Python 2
@@ -142,7 +142,8 @@ $HOME/matrufsc/dados3
 $HOME/matrufsc/logs
 ```
 Estas pastas não devem ser acessíveis pelo usuário que acessa o servidor! Você
-precisa ter certeza que estas pastas podem ser escritas pelo processo do Apache.
+precisa ter certeza que estas pastas podem ser escritas pelo processo do Apache
+ou do Nginx.
 
 Banco de dados
 --------------
@@ -178,7 +179,8 @@ Só é possível utilizar SIMPLE_OPTIMIZATIONS e não ADVANCED_OPTIMIZATIONS
 (provavelmente por causa do código do state que não permite renomear os campos
 aleatoriamente)
 
-5. build system
+Build system
+============
 Para compilar o CAPIM, é necessário primeiro configurá-lo. Use o script
 configure, passando as seguintes opções:
 
@@ -208,11 +210,14 @@ Não se esqueça de copiar os arquivos dos bancos de dados pra pasta na qual o s
 Troubleshooting
 ===============
 - Dá erro na hora de carregar os bancos de dados.
+
   Lembre-se de copiá-los a partir do outro repositório, o matrufsc_dbs.
 - Dá erro 404 quando tento salvar/abrir.
+
   Confere se o .htaccess tá funcionando direito. Olha a seção 1 e vê se o
   ExecCGI e o AllowOverride estão certo mesmo.
 - Dá erro 500 quando tento abrir qualquer coisa.
+
   Confere o error.log do apache2. Se for por causa do ods.py, você
   provavelmente não instalou o odslib. Olha na seção 1 pra ver como fazer. Se
   você estiver em um ambiente compartilhado, crie um virtualenv próprio para
