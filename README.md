@@ -35,7 +35,7 @@ os seguintes princípios:
 - Não ao acúmulo de dados pessoais dos usuários:
   Não existe necessidade nenhuma de ter os dados pessoais dos usuários no
   servidor. Nem e-mail, nem login, nem CPF (sério, tem site para
-  "universitário" que pede até CPF no cadastro). O CAPIM permite ao usuário
+  **universitário** que pede até CPF no cadastro). O CAPIM permite ao usuário
   fazer download e upload de seu horário, sem precisar nem gravar nada no
   servidor. Os usuários podem usar qualquer identificador para gravar seus
   horários no sistema se quiserem.
@@ -47,14 +47,14 @@ os seguintes princípios:
 Licença
 =======
 A ideia original era fazer o CAPIM ser código-livre. Porém, as licenças mais
-comuns (como a GPL) não atenderiam a algumas restrições que eu gostaria de impor
-ao código. Portanto, aqui defino a licença do CAPIM:
+comuns (como a GPL) não atenderiam a algumas restrições que eu gostaria de
+impor ao código. Portanto, aqui defino a licença do CAPIM:
 
 1. É proibido qualquer tipo de retorno financeiro, direta ou indiretamente,
    como, por exemplo:
-   - o uso de propagandas, divulgação, apoio, troca de favores ou serviços afins
-     no próprio site do aplicativo, em qualquer site que leve ao aplicativo e em
-     qualquer site relacionado ao aplicativo;
+   - o uso de propagandas, divulgação, apoio, troca de favores ou serviços
+   afins no próprio site do aplicativo, em qualquer site que leve ao aplicativo
+   e em qualquer site relacionado ao aplicativo;
    - cobrar pela utilização do serviço ou qualquer serviço adicional;
    - a venda de informações dos usuários;
 2. É proibido o acúmulo de informações pessoais dos usuários, exceto pelos
@@ -77,11 +77,13 @@ Servidor
 ========
 Para rodar o CAPIM, é necessário ter os seguintes programas/pacotes instalados
 no servidor:
-- Apache 2
+- Apache 2/Nginx
 - FastCGI
 - Python 2
 - Flup e OSDLib para Python 2
 
+Apache
+------
 No Ubuntu, os comandos são:
 ```
 $ sudo apt-get install apache2 libapache2-mod-fcgid python-flup
@@ -98,8 +100,38 @@ Options +ExecCGI
 AllowOverride All
 ```
 
+Nginx
+-----
+No Ubuntu e outras distros Debian-based, os pacotes a instalar são:
+```
+$ sudo apt-get install nginx spawn-fcgi python-pip
+$ sudo pip install flup odslib
+```
+
+Usamos o `spawn-fcgi` para criar um processo FastCGI, já que o Nginx não
+permite por padrão. Da pasta que contém `dispatch.fcgi`:
+```
+$ spawn-fcgi -p 9000 -- dispatch.fcgi
+```
+
+O bloco do Nginx deve conter um redirecionamento para a porta local 9000:
+```
+location / {
+  try_files $uri $uri/ /index.html;
+
+  location ~ \.cgi$ {
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_pass 127.0.0.1:9000;
+  }
+}
+```
+Assim podemos ter certeza que o Nginx buscará arquivos quando solicitado, mas
+passará as requisições de scripts para a porta correta. Não é necessário usar a
+porta 9000, mas mantenha o padrão.
+
 Caminhos
-========
+--------
 O CAPIM gera arquivos de dados para cada identificador gravado e gera arquivos
 de log para cada erro interno do dispatch.fcgi. O caminho para os dados está em
 capim.py e o caminho para os logs está em dispatch.fcgi. Ambos são substituídos
@@ -114,10 +146,10 @@ precisa ter certeza que estas pastas podem ser escritas pelo processo do Apache.
 
 Banco de dados
 --------------
-O banco de dados é gerado por código em 
-[outro repositório](https://github.com/ramiropolla/matrufsc_dbs). Se você não
-quiser usar o repositório git, basta pegar os arquivos já gerados para uso no
-MatrUFSC e colocá-los na pasta do aplicativo instalado no servidor:
+O banco de dados é gerado por código em [outro repositório]
+(https://github.com/ramiropolla/matrufsc_dbs.git). Se você não quiser usar o
+repositório git, basta pegar os arquivos já gerados
+para uso no MatrUFSC e colocá-los na pasta do aplicativo instalado no servidor:
 - http://ramiro.arrozcru.org/matrufsc/20121.json
 - http://ramiro.arrozcru.org/matrufsc/20121.json.gz
 - http://ramiro.arrozcru.org/matrufsc/20122.json
@@ -136,7 +168,7 @@ final. O Closure só é usado em modo release (habilitado pelo configure).
 - Pegue o programa em https://developers.google.com/closure/compiler/
 - Copie compiler.jar para algum path (como /usr/bin/compiler.jar)
 - Torne o arquivo legível e executável (chmod a+xr /usr/bin/compiler.jar)
-- Crie um script closure no path (como /usr/bin/closure) que rode o compilador:
+- Crie um script chamado closure no path (como /usr/bin/closure) que rode o compilador:
 ```
 #!/bin/sh
 
@@ -146,22 +178,22 @@ Só é possível utilizar SIMPLE_OPTIMIZATIONS e não ADVANCED_OPTIMIZATIONS
 (provavelmente por causa do código do state que não permite renomear os campos
 aleatoriamente)
 
-Build system
-------------
+5. build system
 Para compilar o CAPIM, é necessário primeiro configurá-lo. Use o script
 configure, passando as seguintes opções:
+
 - --python-bin=<caminho>  caminho do executável do python no servidor
 - --release               habilita otimização, facebook e google analytics
 - --base-path=<caminho>   caminho da pasta principal do capim no servidor onde
                           serão guardados os horários dos usuários e os logs de
                           erro, por exemplo: /home/user/matrufsc 
-    											(não deixe estes arquivos expostos pelo servidor)
+    										  (não deixe estes arquivos expostos pelo servidor)
 - --subdir=<caminho>      subdiretório em que o capim se encontra no site, por
                           exemplo: www.example.com/<caminho>
 - --cgi                   usar cgi no lugar de fcgi
 
 Somente a opção --base-path é obrigatória, sendo o resto opcional. Em seguida,
-basta rodar 'make'.
+basta rodar `make`.
 
 O que eu faço para instalar o CAPIM é:
 ```
@@ -169,11 +201,9 @@ $ ./configure --base-path=$HOME/matrufsc --subdir=matrufsc
 $ make install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
 ```
 
-"matrufsc-<versao>" é um symlink para "matrufsc", que vai ser acessado pelo
-usuário.
+"matrufsc-<versao>" é um symlink para "matrufsc", que vai ser acessado pelo usuário.
 
-Não se esqueça de copiar os arquivos dos bancos de dados pra pasta na qual o
-sistema está instalado.
+Não se esqueça de copiar os arquivos dos bancos de dados pra pasta na qual o sistema está instalado.
 
 Troubleshooting
 ===============
