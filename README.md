@@ -182,14 +182,14 @@ aleatoriamente)
 Para compilar o CAPIM, é necessário primeiro configurá-lo. Use o script
 configure, passando as seguintes opções:
 
-- --python-bin=<caminho>  caminho do executável do python no servidor
+- --python-bin=&lt;caminho&gt;  caminho do executável do python no servidor
 - --release               habilita otimização, facebook e google analytics
-- --base-path=<caminho>   caminho da pasta principal do capim no servidor onde
+- --base-path=&lt;caminho&gt;   caminho da pasta principal do capim no servidor onde
                           serão guardados os horários dos usuários e os logs de
                           erro, por exemplo: /home/user/matrufsc 
     										  (não deixe estes arquivos expostos pelo servidor)
-- --subdir=<caminho>      subdiretório em que o capim se encontra no site, por
-                          exemplo: www.example.com/<caminho>
+- --subdir=&lt;caminho&gt;      subdiretório em que o capim se encontra no site, por
+                          exemplo: example.com/&lt;caminho&gt;
 - --cgi                   usar cgi no lugar de fcgi
 
 Somente a opção --base-path é obrigatória, sendo o resto opcional. Em seguida,
@@ -201,7 +201,7 @@ $ ./configure --base-path=$HOME/matrufsc --subdir=matrufsc
 $ make install-gz && cp -r install/* install/.htaccess "/<pasta_do_site>/matrufsc-<versao>"
 ```
 
-"matrufsc-<versao>" é um symlink para "matrufsc", que vai ser acessado pelo usuário.
+"matrufsc-&lt;versao&gt;" é um symlink para "matrufsc", que vai ser acessado pelo usuário.
 
 Não se esqueça de copiar os arquivos dos bancos de dados pra pasta na qual o sistema está instalado.
 
