@@ -596,8 +596,8 @@ function Main(ui_materias, ui_turmas, ui_logger, ui_combinacoes, ui_horario,
         }, ui_updates.hide);
     };
     function avisar_semestre() {
-        if (state.semestre == "20131")
-            ui_avisos.set_text("As disciplinas de 2013-1 ainda estão sujeitas a alterações!");
+        if (state.semestre == "20142")
+            ui_avisos.set_text("As disciplinas de 2014-2 ainda estão sujeitas a alterações!");
         else
             ui_avisos.reset();
     };
@@ -894,12 +894,12 @@ window.onload = function() {
     }
     if (!database_ok) {
         if (identificador != null && identificador != "") {
-            ui_saver.cb_load(identificador, function(){ main.set_db("20131", "TODOS"); });
+            ui_saver.cb_load(identificador, function(){ main.set_db("20142", "TODOS"); });
             database_ok = true;
         }
     }
     if (!database_ok)
-        main.set_db("20131", "TODOS");
+        main.set_db("20142", "TODOS");
     if (combo.input.value == identificador)
         combo.input.value = "";
 

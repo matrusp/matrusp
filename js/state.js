@@ -30,7 +30,7 @@ function State()
         self.index  = 0;
         self.plano  = self.planos[self.index];
         self.campus = "TODOS";
-        self.semestre = "20131";
+        self.semestre = "20142";
     }
     self.reset();
 

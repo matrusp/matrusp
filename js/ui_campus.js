@@ -23,12 +23,17 @@ function UI_campus(id)
 
     var semestre = document.createElement("select");
     var option = document.createElement("option");
-    option.value = "20131";
-    option.innerHTML = "2013-1";
+    option.value = "20141";
+    option.innerHTML = "2014-1";
+    semestre.appendChild(option);
+    ui_campus.appendChild(semestre);
+    var option = document.createElement("option");
+    option.value = "20142";
+    option.innerHTML = "2014-2";
     semestre.appendChild(option);
     ui_campus.appendChild(semestre);
 
-    semestre.value = "20131";
+    semestre.value = "20142";
 
     semestre.onchange = function() {
         self.cb_semestre(this.value);
