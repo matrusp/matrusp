@@ -41,9 +41,8 @@ def main(db_dir, arq_saida, arq_antigo=None, obter_cepe=True):
 	db_novo = dict(pool.map(processar_arquivo, arqs))
 	
 	if arq_antigo != None:
-		db_novo = fundir_dbs(db_novo, db_antigo)
-		
-	db_novo = remover_materias_apos_validade(db_novo)
+		db_novo = fundir_dbs(db_novo, db_antigo)		
+		db_novo = remover_materias_apos_validade(db_novo)
 	
 	if obter_cepe:
 		print u" - Obtendo disciplinas do CEPE - "
