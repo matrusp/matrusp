@@ -7,7 +7,6 @@ import re
 import json
 import codecs
 import locale
-import multiprocessing
 import dateutil.parser
 import get_turmas_cepe
 from datetime import datetime, timedelta
@@ -37,8 +36,7 @@ def main(db_dir, arq_saida, arq_antigo=None, obter_cepe=True):
 
 	arqs = map(lambda arq: os.path.join(db_dir, arq), os.listdir(db_dir))
 	
-	pool = multiprocessing.Pool()
-	db_novo = dict(pool.map(processar_arquivo, arqs))
+	db_novo = dict(map(processar_arquivo, arqs))
 	
 	if arq_antigo != None:
 		db_novo = fundir_dbs(db_novo, db_antigo)		
