@@ -1,0 +1,68 @@
+#page-container>#main>#lecture-explorer {
+    >div {
+        width: 100%;
+    }
+    
+    >#search-and-upload {
+        //height: 20px;
+        
+        >input {
+            display: inline-block;
+            height: 100%;
+            
+            &#search {
+                width: calc((3 / 4) * 100% - 10px);
+            }
+            
+            &#upload {
+                width: calc((1 / 4) * 100% - 10px);
+            }
+        }
+    }
+    
+    >#accordion-window {
+        height: 100%; // - $search-and-upload-height
+        width: 100%;
+        overflow: hidden;
+        
+        >#accordion {
+            height: 100%;
+            width: 100%;
+            overflow: scroll;
+            padding-right: $scroll-bar-width + 400px;
+            padding-bottom: $scroll-bar-width;
+            
+            >.lecture-info {
+                
+                >label {
+                    padding: 10px;
+                    position: relative;
+                    display: block;
+                    background: red;
+                    transition: all .4s;
+                    cursor: pointer;
+                }
+                
+                >.lecture-classrooms {
+                    overflow: hidden;
+                    height: 0px;
+                    position: relative;
+                    transition: height .4s;
+                    background: green;
+                }
+            }
+            
+            input {
+                display: none;
+                
+                &[type='checkbox']:checked ~ .lecture-classrooms {
+                    height: 70px;
+                }
+                
+                &[type='radio']:checked ~ span{
+                    background-color: #880023;
+                }
+            }
+        }
+    }
+}

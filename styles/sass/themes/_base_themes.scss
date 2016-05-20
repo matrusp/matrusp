@@ -1,0 +1,94 @@
+body {
+    background-image: linear-gradient(
+        to bottom,
+        $header-color-primary $header-height,
+        $header-color-secondary $header-height,
+        $header-color-secondary ($header-height + ($header-bottom-line / 2)),
+        $header-color-tertiary ($header-height + ($header-bottom-line / 2)),
+        $header-color-tertiary ($header-height + $header-bottom-line),
+        $header-color-background ($header-height + $header-bottom-line),
+        $header-color-background 100%
+    );
+    
+    background-repeat: no-repeat;
+    //background-color: $header-color-background;
+    
+    overflow: auto;
+    
+    font-family: $font-family;
+}
+
+.hour {
+    font-size: $font-size-hour;
+}
+
+.week-day {
+    border-bottom-color: $week-day-underline-color;
+    box-shadow: $week-day-underline-shadow;
+}
+
+/*
+
+    >span#logo {
+        font-size: 28px;
+        font-weight: bold;
+        font-family: tahoma;
+        color: #FDFDFD;
+    }
+
+    >div.hover-mask {
+        background-color: rgba(100, 100, 100, 0.5);
+        border-style: solid;
+        border-color: rgba(100, 100, 100, 0.8);
+    }
+*/
+/* Colorindo os elementos do DOM para auxiliar
+    o ajuste do layout */
+/*
+
+$opacity: 1;
+
+#page-container {
+    background-color:skyblue;
+    opacity: $opacity;
+}
+
+header {
+    background-color:greenyellow;
+    opacity: $opacity;
+}
+
+span#logo {
+    background-color:palevioletred;
+    opacity: $opacity;
+}
+
+ul#icons {
+    background-color:sandybrown;
+    opacity: $opacity;
+}
+
+li.icon {
+    background-color:yellow;
+    opacity: $opacity;
+}
+
+div#main {
+    background-color:orangered;
+    opacity: $opacity;
+}
+
+div#lecture-schedule {
+    background-color:cadetblue;
+    opacity: $opacity;
+}
+
+div.column {
+    background-color:lawngreen;
+    opacity: $opacity;
+}
+
+div#lecture-explorer {
+    background-color:mistyrose;
+    opacity: $opacity;
+} */

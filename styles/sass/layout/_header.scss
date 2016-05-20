@@ -1,0 +1,88 @@
+
+header {
+    >span#logo {
+        /* line-height equal to parent height, centralizes the text */
+        line-height: $header-height;
+        padding-left: $header-height / 2;
+    }
+    
+    >ul#icons {
+        display: inline-block;
+        float: right;
+        height: 100%;
+        padding-right: $header-height / 2;
+        
+        
+        >li.icon {
+            display: inline-block;
+            height: $icons-square-size;
+            width: $icons-square-size;
+            position: relative;
+            vertical-align: top;            
+            
+            >div.hover-mask, >img {
+                position: absolute;
+                @include center-block-horizontally();
+                @include center-block-vertically();
+                
+            }
+            
+            >div.hover-mask {
+                visibility: hidden;
+                width: 90%;
+                height: 90%;
+                border-size: 2px; 
+                border-radius: 8px;
+                
+                
+                background-color: rgba(100, 100, 100, 0.5);
+                border-style: solid;
+                border-color: rgba(100, 100, 100, 0.8);
+            }
+            
+            &::before {
+                visibility: hidden;
+                position: absolute;
+                @include triangle-up($tooltip-triangle-width, $tooltip-triangle-height);
+                left: calc(50% - (#{$tooltip-triangle-width} / 2));
+                top: 100%;
+                content: "";
+                
+                border-bottom-color: #f0f0f0;
+            }
+            
+            &::after {
+                visibility: hidden;
+                position: absolute;
+                display: block;
+                width: $tooltip-width;
+                height: auto;
+                padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+                /* remember that 100% here refers to parent size */
+                top: calc(100% + #{$tooltip-triangle-height});
+                left: calc( -1 * (#{$tooltip-width} + 2 * #{$tooltip-padding-horizontal} - 100%) / 2);
+                content: attr(data-title);
+                z-index: 1;
+                text-align: center;
+                border-radius: 3px;
+                line-height: 21px;
+            
+            
+                color: #3d3d3d;
+                font-family: tahoma;
+                font-size: 13px;
+                background-color: #f0f0f0;
+            }
+            
+            
+            &:hover{
+                >div.hover-mask, &::before, &::after {
+                    visibility: visible;
+                }
+            }
+            
+            
+        }
+    }
+    
+}

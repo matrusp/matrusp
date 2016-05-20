@@ -1,0 +1,217 @@
+html, body, ul, li, header, footer {
+  margin: 0;
+  padding: 0; }
+
+ul {
+  list-style: none; }
+
+li {
+  list-style-type: none; }
+
+/* Variables */
+/* Base */
+/* Header */
+/* Lecture Schedule */
+/* Lecture Explorer */
+/* Animation Variables */
+/* Mixins */
+/* need some color on border-bottom-color to show up */
+/* Base Layout */
+html, body {
+  height: 100%;
+  width: 100%;
+  min-height: 520px;
+  min-width: 600px; }
+
+body > #page-container {
+  width: 100%;
+  max-width: 960px;
+  min-width: 600px;
+  height: 100%;
+  /* only works with elements having position: absolute and some fixed height */
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto; }
+  body > #page-container > header, body > #page-container > #main, body > #page-container > footer {
+    width: 100%;
+    position: relative;
+    /* defining a position to work 
+        with children positions */ }
+  body > #page-container > header, body > #page-container > footer {
+    height: 40px; }
+  body > #page-container > footer > a {
+    display: inline-block;
+    line-height: 100%;
+    height: 100%;
+    vertical-align: middle; }
+  body > #page-container > footer > a:first-child {
+    float: left; }
+  body > #page-container > footer > a:last-child {
+    float: right; }
+  body > #page-container > #main {
+    padding: 15px;
+    width: calc(100% - 2 * 15px);
+    height: calc(100% - (2 * 40px + 10px + 2 * 15px));
+    margin-top: 10px;
+    min-height: 400px; }
+    body > #page-container > #main > div {
+      display: inline-block;
+      vertical-align: top; }
+    body > #page-container > #main > #lecture-schedule {
+      padding-top: 40px;
+      height: calc(100% - 40px);
+      max-height: 560px;
+      /* subtracting 3px to deal with standard 
+          spacing between inline-block elements */
+      width: calc((2 / 3) * 100% - 3px); }
+    body > #page-container > #main > #lecture-explorer {
+      height: 100%;
+      min-height: 400px;
+      max-height: 600px;
+      width: calc((1 / 3) * 100% - 3px); }
+
+header > span#logo {
+  /* line-height equal to parent height, centralizes the text */
+  line-height: 40px;
+  padding-left: 20px; }
+header > ul#icons {
+  display: inline-block;
+  float: right;
+  height: 100%;
+  padding-right: 20px; }
+  header > ul#icons > li.icon {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    position: relative;
+    vertical-align: top; }
+    header > ul#icons > li.icon > div.hover-mask, header > ul#icons > li.icon > img {
+      position: absolute;
+      /* only works with elements having position: absolute and some fixed height */
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      top: 0;
+      bottom: 0;
+      margin-top: auto;
+      margin-bottom: auto; }
+    header > ul#icons > li.icon > div.hover-mask {
+      visibility: hidden;
+      width: 90%;
+      height: 90%;
+      border-size: 2px;
+      border-radius: 8px;
+      background-color: rgba(100, 100, 100, 0.5);
+      border-style: solid;
+      border-color: rgba(100, 100, 100, 0.8); }
+    header > ul#icons > li.icon::before {
+      visibility: hidden;
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-top-width: 0;
+      border-bottom-width: 6px;
+      border-left-width: 6px;
+      border-right-width: 6px;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      left: calc(50% - (12px / 2));
+      top: 100%;
+      content: "";
+      border-bottom-color: #f0f0f0; }
+    header > ul#icons > li.icon::after {
+      visibility: hidden;
+      position: absolute;
+      display: block;
+      width: 100px;
+      height: auto;
+      padding: 5px 8px;
+      /* remember that 100% here refers to parent size */
+      top: calc(100% + 6px);
+      left: calc( -1 * (100px + 2 * 8px - 100%) / 2);
+      content: attr(data-title);
+      z-index: 1;
+      text-align: center;
+      border-radius: 3px;
+      line-height: 21px;
+      color: #3d3d3d;
+      font-family: tahoma;
+      font-size: 13px;
+      background-color: #f0f0f0; }
+    header > ul#icons > li.icon:hover > div.hover-mask, header > ul#icons > li.icon:hover::before, header > ul#icons > li.icon:hover::after {
+      visibility: visible; }
+
+#page-container > #main > #lecture-schedule > .column {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%; }
+  #page-container > #main > #lecture-schedule > .column.time {
+    width: 40px; }
+    #page-container > #main > #lecture-schedule > .column.time > div.hour {
+      height: 5.55556%;
+      /* 19 elements and 18 slots inside this column. 
+          Aligning vertically each text with upper 
+          div border (setting line-height to zero, 
+          miraculously!), we get 06:00 aligned with 
+          top border and 00:00 aligned with bottom 
+          border (that's actually its upper border) */
+      min-height: 20px;
+      line-height: 0; }
+  #page-container > #main > #lecture-schedule > .column:not(:first-child) {
+    position: relative;
+    /* 4.5px empirically set to fill the parent div with these columns */
+    width: calc((100% - 40px - (7 * 4.5px)) / 6);
+    background-image: repeating-linear-gradient(to bottom, #BFBFBF, #BFBFBF 2px, transparent 2px, transparent calc(5.55556%), #DFDFDF calc(5.55556%), #DFDFDF calc(5.55556% + 2px), transparent calc(5.55556% + 2px), transparent calc(2 * 5.55556%));
+    border-bottom: 2px solid #BFBFBF; }
+    #page-container > #main > #lecture-schedule > .column:not(:first-child) > .week-day {
+      position: absolute;
+      width: 100%;
+      top: -40px;
+      padding-bottom: 4px;
+      border-bottom-width: 2px;
+      border-bottom-style: solid;
+      text-align: center; }
+
+#page-container > #main > #lecture-explorer > div {
+  width: 100%; }
+#page-container > #main > #lecture-explorer > #search-and-upload > input {
+  display: inline-block;
+  height: 100%; }
+  #page-container > #main > #lecture-explorer > #search-and-upload > input#search {
+    width: calc((3 / 4) * 100% - 10px); }
+  #page-container > #main > #lecture-explorer > #search-and-upload > input#upload {
+    width: calc((1 / 4) * 100% - 10px); }
+#page-container > #main > #lecture-explorer > #accordion-window {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+  #page-container > #main > #lecture-explorer > #accordion-window > #accordion {
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+    padding-right: 415px;
+    padding-bottom: 15px; }
+    #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > label {
+      padding: 10px;
+      position: relative;
+      display: block;
+      background: red;
+      transition: all .4s;
+      cursor: pointer; }
+    #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms {
+      overflow: hidden;
+      height: 0px;
+      position: relative;
+      transition: height .4s;
+      background: green; }
+    #page-container > #main > #lecture-explorer > #accordion-window > #accordion input {
+      display: none; }
+      #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='checkbox']:checked ~ .lecture-classrooms {
+        height: 70px; }
+      #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='radio']:checked ~ span {
+        background-color: #880023; }
+
+/*# sourceMappingURL=application.css.map */
