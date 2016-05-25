@@ -1,4 +1,9 @@
 header {
+    user-select: none;
+    /* autoprefixer will include this, when linked delete 
+       this next line */
+    -webkit-user-select: none;
+    
     >span#logo {
         /* line-height equal to parent height, centralizes the text */
         line-height: $header-height;
@@ -9,10 +14,6 @@ header {
         letter-spacing: $logo-letter-spacing;
         
         cursor: default;
-        user-select: none;
-        /* autoprefixer will include this, when linked delete 
-           this next line */
-        -webkit-user-select: none;
     }
     
     >ul#icons {
