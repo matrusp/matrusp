@@ -17,6 +17,7 @@
                     border (that's actually its upper border) */
                 min-height: ($lecture-schedule-min-height - $lecture-schedule-padding-top) / 18;
                 line-height: 0;
+                font-size: $font-size-hour;
             }
         }
         

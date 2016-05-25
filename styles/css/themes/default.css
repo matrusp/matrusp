@@ -1,5 +1,3 @@
-/* Colors */
-/* Fonts */
 html, body, ul, li, header, footer {
   margin: 0;
   padding: 0; }
@@ -30,6 +28,9 @@ body > #page-container {
   max-width: 960px;
   min-width: 600px;
   height: 100%;
+  /* not sure why, but without this overflow property
+     a scroll bar appears on the bottom */
+  overflow-x: hidden;
   /* only works with elements having position: absolute and some fixed height */
   left: 0;
   right: 0;
@@ -76,7 +77,15 @@ body > #page-container {
 header > span#logo {
   /* line-height equal to parent height, centralizes the text */
   line-height: 40px;
-  padding-left: 20px; }
+  padding-left: 20px;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: default;
+  user-select: none;
+  /* autoprefixer will include this, when linked delete 
+     this next line */
+  -webkit-user-select: none; }
 header > ul#icons {
   display: inline-block;
   float: right;
@@ -87,7 +96,9 @@ header > ul#icons {
     height: 40px;
     width: 40px;
     position: relative;
-    vertical-align: top; }
+    vertical-align: top;
+    margin-left: 20px;
+    cursor: pointer; }
     header > ul#icons > li.icon > div.hover-mask, header > ul#icons > li.icon > img {
       position: absolute;
       /* only works with elements having position: absolute and some fixed height */
@@ -101,13 +112,13 @@ header > ul#icons {
       margin-bottom: auto; }
     header > ul#icons > li.icon > div.hover-mask {
       visibility: hidden;
-      width: 90%;
-      height: 90%;
-      border-size: 2px;
-      border-radius: 8px;
-      background-color: rgba(100, 100, 100, 0.5);
-      border-style: solid;
-      border-color: rgba(100, 100, 100, 0.8); }
+      width: 78%;
+      height: 78%;
+      border-width: 0px;
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.2);
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+      box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2); }
     header > ul#icons > li.icon::before {
       visibility: hidden;
       position: absolute;
@@ -123,7 +134,9 @@ header > ul#icons {
       left: calc(50% - (12px / 2));
       top: 100%;
       content: "";
-      border-bottom-color: #f0f0f0; }
+      /* ::before z-index is 1 more than ::after z-index.
+         this is to prevent the ::after box-shadow from appearing on top of the triangle */
+      z-index: 2; }
     header > ul#icons > li.icon::after {
       visibility: hidden;
       position: absolute;
@@ -131,20 +144,26 @@ header > ul#icons {
       width: 100px;
       height: auto;
       padding: 5px 8px;
-      /* remember that 100% here refers to parent size */
+      /* top+left centers the tooltip;  remember that the
+         value '100%'' here refers to the parent size */
       top: calc(100% + 6px);
       left: calc( -1 * (100px + 2 * 8px - 100%) / 2);
-      content: attr(data-title);
+      content: attr(data-description);
       z-index: 1;
       text-align: center;
       border-radius: 3px;
       line-height: 21px;
-      color: #3d3d3d;
-      font-family: tahoma;
-      font-size: 13px;
-      background-color: #f0f0f0; }
+      box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
+      font-size: 13px; }
+    header > ul#icons > li.icon:last-child::after {
+      left: auto;
+      right: 0; }
     header > ul#icons > li.icon:hover > div.hover-mask, header > ul#icons > li.icon:hover::before, header > ul#icons > li.icon:hover::after {
       visibility: visible; }
+    header > ul#icons > li.icon:active > div.hover-mask {
+      /* just change colors between background and shadow */
+      background-color: rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.2); }
 
 #page-container > #main > #lecture-schedule > .column {
   display: inline-block;
@@ -161,7 +180,8 @@ header > ul#icons {
           top border and 00:00 aligned with bottom 
           border (that's actually its upper border) */
       min-height: 20px;
-      line-height: 0; }
+      line-height: 0;
+      font-size: 13px; }
   #page-container > #main > #lecture-schedule > .column:not(:first-child) {
     position: relative;
     /* 4.5px empirically set to fill the parent div with these columns */
@@ -179,36 +199,38 @@ header > ul#icons {
 
 #page-container > #main > #lecture-explorer > div {
   width: 100%; }
-#page-container > #main > #lecture-explorer > #search-and-upload > input {
+#page-container > #main > #lecture-explorer > #search-and-add > * {
   display: inline-block;
   height: 100%; }
-  #page-container > #main > #lecture-explorer > #search-and-upload > input#search {
+  #page-container > #main > #lecture-explorer > #search-and-add > *#search {
     width: calc((3 / 4) * 100% - 10px); }
-  #page-container > #main > #lecture-explorer > #search-and-upload > input#upload {
+  #page-container > #main > #lecture-explorer > #search-and-add > *#add-extra-activity {
+    float: right;
     width: calc((1 / 4) * 100% - 10px); }
 #page-container > #main > #lecture-explorer > #accordion-window {
   height: 100%;
   width: 100%;
   overflow: hidden; }
   #page-container > #main > #lecture-explorer > #accordion-window > #accordion {
-    height: 100%;
-    width: 100%;
-    overflow: scroll;
-    padding-right: 415px;
-    padding-bottom: 15px; }
-    #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > label {
-      padding: 10px;
-      position: relative;
-      display: block;
-      background: red;
-      transition: all .4s;
-      cursor: pointer; }
-    #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms {
-      overflow: hidden;
-      height: 0px;
-      position: relative;
-      transition: height .4s;
-      background: green; }
+    /* sum scroll-bar-width to hide it from the user */
+    height: calc(100% + 15px);
+    width: calc(100% + 15px);
+    overflow: scroll; }
+    #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info {
+      width: 100%; }
+      #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > label {
+        padding: 10px;
+        position: relative;
+        display: block;
+        background: red;
+        transition: all .4s;
+        cursor: pointer; }
+      #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms {
+        overflow: hidden;
+        height: 0px;
+        position: relative;
+        transition: height .4s;
+        background: green; }
     #page-container > #main > #lecture-explorer > #accordion-window > #accordion input {
       display: none; }
       #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='checkbox']:checked ~ .lecture-classrooms {
@@ -216,14 +238,21 @@ header > ul#icons {
       #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='radio']:checked ~ span {
         background-color: #880023; }
 
+/* Colors */
+/* Fonts */
 body {
   background-image: linear-gradient(to bottom, #FBA71C 40px, #64C6D3 40px, #64C6D3 45px, #1495AB 45px, #1495AB 50px, #FEFEFE 50px, #FEFEFE 100%);
   background-repeat: no-repeat;
   overflow: auto;
-  font-family: tahoma; }
+  font-family: tahoma, helvetica; }
 
-.hour {
-  font-size: 13px; }
+header > span#logo {
+  color: #FEFEFE; }
+header ul#icons > li.icon::before {
+  border-bottom-color: #EAEAEA; }
+header ul#icons > li.icon::after {
+  background-color: #EAEAEA;
+  color: #3D3D3D; }
 
 .week-day {
   border-bottom-color: #050505;

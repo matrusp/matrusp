@@ -1,11 +1,12 @@
+
 body {
     background-image: linear-gradient(
         to bottom,
-        $header-color-primary $header-height,
-        $header-color-secondary $header-height,
-        $header-color-secondary ($header-height + ($header-bottom-line / 2)),
-        $header-color-tertiary ($header-height + ($header-bottom-line / 2)),
-        $header-color-tertiary ($header-height + $header-bottom-line),
+        $header-color-primary     $header-height,
+        $header-color-secondary   $header-height,
+        $header-color-secondary  ($header-height + ($header-bottom-line / 2)),
+        $header-color-tertiary   ($header-height + ($header-bottom-line / 2)),
+        $header-color-tertiary   ($header-height + $header-bottom-line),
         $header-color-background ($header-height + $header-bottom-line),
         $header-color-background 100%
     );
@@ -18,8 +19,21 @@ body {
     font-family: $font-family;
 }
 
-.hour {
-    font-size: $font-size-hour;
+header {
+    >span#logo {
+        color: $header-color-symbols;
+    }
+    
+    ul#icons>li.icon {
+        &::before {
+            border-bottom-color: $tooltip-color-background;
+        }
+        
+        &::after {
+            background-color: $tooltip-color-background;
+            color: $tooltip-color-text;
+        }
+    }
 }
 
 .week-day {

@@ -4,34 +4,36 @@
     <meta charset="UTF-8">
     <title>MATRUSP</title>
     
-    <link rel="stylesheet" href="styles/css/default.css">
+    <link rel="stylesheet" href="styles/css/themes/default.css">
     
 </head>
 <body>
    <!-- EMMET snnipet --> <!--
-div#page-container>(header>(span#logo{MATRUSP}+ul#icons>(li.icon[data-description=""]>div.hover-mask+img[src="images/ic_$.png"])*5))+(div#main>((div#lecture-schedule>((div.column.time>(div.hour{$$@6:00}*19))+div.column*6>(div.week-day{Segunda}+div.lecture>(span.timespan+div.color-box>span.lecture-code))))+div#lecture-explorer>(div#search-and-upload>(input#search[type=text]+input#upload[type=file]))+div#accordion-window>(div#accordion>(div.lecture-info>(input#lecture-info-$$[type=checkbox name=lecture-info]+label[for=lecture-info-$$]{Lecture Name $$})+div.lecture-classrooms>(div.classroom>(label>input[type=radio name=classroom-lecture-$$]+span.classroom-number{N$}+span.classroom-teacher{Teacher Name}))+(div.classroom>(label>input[type=radio name=classroom-lecture-$$]+span.classroom-number{N$}+span.classroom-teacher{Teacher Name}))+(div.classroom>(label>input[type=radio name=classroom-lecture-$$]+span.classroom-number{N$}+span.classroom-teacher{Teacher Name})))*5)))+footer>a{Fale Conosco / Criticas e Sugestoes}+a{Fork on GitHub}
+div#page-container>(header>(span#logo{MATRUSP}+ul#icons>(li.icon[data-description="Exportar para o calendario do Google"]>div.hover-mask+img[src="images/ic_$.png"])*5))+(div#main>((div#lecture-schedule>((div.column.time>(div.hour{$$@6:00}*19))+div.column*6>(div.week-day{Segunda}+div.lecture>(span.timespan+div.color-box>span.lecture-code))))+div#lecture-explorer>(div#search-and-add>(input#search[type=text]+button#add-extra-activity{+}))+div#accordion-window>(div#accordion>(div.lecture-info>(input#lecture-info-$$[type=checkbox name=lecture-info]+label[for=lecture-info-$$]{Lecture Name $$})+div.lecture-classrooms>(div.classroom>(label>input[type=radio name=classroom-lecture-$$]+span.classroom-number{N$}+span.classroom-teacher{Teacher Name}))+(div.classroom>(label>input[type=radio name=classroom-lecture-$$]+span.classroom-number{N$}+span.classroom-teacher{Teacher Name}))+(div.classroom>(label>input[type=radio name=classroom-lecture-$$]+span.classroom-number{N$}+span.classroom-teacher{Teacher Name})))*5)+div#explorer-footer>input#upload[type=file]))+footer>a{Fale Conosco / Criticas e Sugestoes}+a{Fork on GitHub}
     -->
-   <div id="page-container">
+    
+  
+   <!--div id="page-container">
        <header>
            <span id="logo">MATRUSP</span>
            <ul id="icons">
-               <li class="icon" data-description="">
+               <li class="icon" data-description="Exportar para o calendario do Google">
                    <div class="hover-mask"></div>
                    <img src="images/ic_1.png" alt="">
                </li>
-               <li class="icon" data-description="">
+               <li class="icon" data-description="Exportar para o calendario do Google">
                    <div class="hover-mask"></div>
                    <img src="images/ic_2.png" alt="">
                </li>
-               <li class="icon" data-description="">
+               <li class="icon" data-description="Exportar para o calendario do Google">
                    <div class="hover-mask"></div>
                    <img src="images/ic_3.png" alt="">
                </li>
-               <li class="icon" data-description="">
+               <li class="icon" data-description="Exportar para o calendario do Google">
                    <div class="hover-mask"></div>
                    <img src="images/ic_4.png" alt="">
                </li>
-               <li class="icon" data-description="">
+               <li class="icon" data-description="Exportar para o calendario do Google">
                    <div class="hover-mask"></div>
                    <img src="images/ic_5.png" alt="">
                </li>
@@ -422,14 +424,956 @@ div#page-container>(header>(span#logo{MATRUSP}+ul#icons>(li.icon[data-descriptio
                                    </label></div>
                            </div>
                        </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-16" name="lecture-info">
+                           <label for="lecture-info-16">Lecture Name 16</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-16">
+                                       <span class="classroom-number">N16</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-16">
+                                       <span class="classroom-number">N16</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-16">
+                                       <span class="classroom-number">N16</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-17" name="lecture-info">
+                           <label for="lecture-info-17">Lecture Name 17</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-17">
+                                       <span class="classroom-number">N17</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-17">
+                                       <span class="classroom-number">N17</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-17">
+                                       <span class="classroom-number">N17</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-18" name="lecture-info">
+                           <label for="lecture-info-18">Lecture Name 18</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-18">
+                                       <span class="classroom-number">N18</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-18">
+                                       <span class="classroom-number">N18</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-18">
+                                       <span class="classroom-number">N18</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-19" name="lecture-info">
+                           <label for="lecture-info-19">Lecture Name 19</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-19">
+                                       <span class="classroom-number">N19</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-19">
+                                       <span class="classroom-number">N19</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-19">
+                                       <span class="classroom-number">N19</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-20" name="lecture-info">
+                           <label for="lecture-info-20">Lecture Name 20</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-20">
+                                       <span class="classroom-number">N20</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-20">
+                                       <span class="classroom-number">N20</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-20">
+                                       <span class="classroom-number">N20</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-21" name="lecture-info">
+                           <label for="lecture-info-21">Lecture Name 21</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-21">
+                                       <span class="classroom-number">N21</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-21">
+                                       <span class="classroom-number">N21</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-21">
+                                       <span class="classroom-number">N21</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-22" name="lecture-info">
+                           <label for="lecture-info-22">Lecture Name 22</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-22">
+                                       <span class="classroom-number">N22</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-22">
+                                       <span class="classroom-number">N22</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-22">
+                                       <span class="classroom-number">N22</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-23" name="lecture-info">
+                           <label for="lecture-info-23">Lecture Name 23</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-23">
+                                       <span class="classroom-number">N23</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-23">
+                                       <span class="classroom-number">N23</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-23">
+                                       <span class="classroom-number">N23</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-24" name="lecture-info">
+                           <label for="lecture-info-24">Lecture Name 24</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-24">
+                                       <span class="classroom-number">N24</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-24">
+                                       <span class="classroom-number">N24</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-24">
+                                       <span class="classroom-number">N24</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-25" name="lecture-info">
+                           <label for="lecture-info-25">Lecture Name 25</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-25">
+                                       <span class="classroom-number">N25</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-25">
+                                       <span class="classroom-number">N25</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-25">
+                                       <span class="classroom-number">N25</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-26" name="lecture-info">
+                           <label for="lecture-info-26">Lecture Name 26</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-26">
+                                       <span class="classroom-number">N26</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-26">
+                                       <span class="classroom-number">N26</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-26">
+                                       <span class="classroom-number">N26</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-27" name="lecture-info">
+                           <label for="lecture-info-27">Lecture Name 27</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-27">
+                                       <span class="classroom-number">N27</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-27">
+                                       <span class="classroom-number">N27</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-27">
+                                       <span class="classroom-number">N27</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-28" name="lecture-info">
+                           <label for="lecture-info-28">Lecture Name 28</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-28">
+                                       <span class="classroom-number">N28</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-28">
+                                       <span class="classroom-number">N28</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-28">
+                                       <span class="classroom-number">N28</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-29" name="lecture-info">
+                           <label for="lecture-info-29">Lecture Name 29</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-29">
+                                       <span class="classroom-number">N29</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-29">
+                                       <span class="classroom-number">N29</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-29">
+                                       <span class="classroom-number">N29</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-30" name="lecture-info">
+                           <label for="lecture-info-30">Lecture Name 30</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-30">
+                                       <span class="classroom-number">N30</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-30">
+                                       <span class="classroom-number">N30</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-30">
+                                       <span class="classroom-number">N30</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-31" name="lecture-info">
+                           <label for="lecture-info-31">Lecture Name 31</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-31">
+                                       <span class="classroom-number">N31</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-31">
+                                       <span class="classroom-number">N31</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-31">
+                                       <span class="classroom-number">N31</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-32" name="lecture-info">
+                           <label for="lecture-info-32">Lecture Name 32</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-32">
+                                       <span class="classroom-number">N32</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-32">
+                                       <span class="classroom-number">N32</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-32">
+                                       <span class="classroom-number">N32</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-33" name="lecture-info">
+                           <label for="lecture-info-33">Lecture Name 33</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-33">
+                                       <span class="classroom-number">N33</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-33">
+                                       <span class="classroom-number">N33</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-33">
+                                       <span class="classroom-number">N33</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-34" name="lecture-info">
+                           <label for="lecture-info-34">Lecture Name 34</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-34">
+                                       <span class="classroom-number">N34</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-34">
+                                       <span class="classroom-number">N34</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-34">
+                                       <span class="classroom-number">N34</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-35" name="lecture-info">
+                           <label for="lecture-info-35">Lecture Name 35</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-35">
+                                       <span class="classroom-number">N35</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-35">
+                                       <span class="classroom-number">N35</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-35">
+                                       <span class="classroom-number">N35</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-36" name="lecture-info">
+                           <label for="lecture-info-36">Lecture Name 36</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-36">
+                                       <span class="classroom-number">N36</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-36">
+                                       <span class="classroom-number">N36</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-36">
+                                       <span class="classroom-number">N36</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-37" name="lecture-info">
+                           <label for="lecture-info-37">Lecture Name 37</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-37">
+                                       <span class="classroom-number">N37</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-37">
+                                       <span class="classroom-number">N37</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-37">
+                                       <span class="classroom-number">N37</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-38" name="lecture-info">
+                           <label for="lecture-info-38">Lecture Name 38</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-38">
+                                       <span class="classroom-number">N38</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-38">
+                                       <span class="classroom-number">N38</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-38">
+                                       <span class="classroom-number">N38</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-39" name="lecture-info">
+                           <label for="lecture-info-39">Lecture Name 39</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-39">
+                                       <span class="classroom-number">N39</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-39">
+                                       <span class="classroom-number">N39</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-39">
+                                       <span class="classroom-number">N39</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-40" name="lecture-info">
+                           <label for="lecture-info-40">Lecture Name 40</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-40">
+                                       <span class="classroom-number">N40</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-40">
+                                       <span class="classroom-number">N40</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-40">
+                                       <span class="classroom-number">N40</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-41" name="lecture-info">
+                           <label for="lecture-info-41">Lecture Name 41</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-41">
+                                       <span class="classroom-number">N41</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-41">
+                                       <span class="classroom-number">N41</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-41">
+                                       <span class="classroom-number">N41</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-42" name="lecture-info">
+                           <label for="lecture-info-42">Lecture Name 42</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-42">
+                                       <span class="classroom-number">N42</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-42">
+                                       <span class="classroom-number">N42</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-42">
+                                       <span class="classroom-number">N42</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-43" name="lecture-info">
+                           <label for="lecture-info-43">Lecture Name 43</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-43">
+                                       <span class="classroom-number">N43</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-43">
+                                       <span class="classroom-number">N43</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-43">
+                                       <span class="classroom-number">N43</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-44" name="lecture-info">
+                           <label for="lecture-info-44">Lecture Name 44</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-44">
+                                       <span class="classroom-number">N44</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-44">
+                                       <span class="classroom-number">N44</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-44">
+                                       <span class="classroom-number">N44</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-45" name="lecture-info">
+                           <label for="lecture-info-45">Lecture Name 45</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-45">
+                                       <span class="classroom-number">N45</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-45">
+                                       <span class="classroom-number">N45</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-45">
+                                       <span class="classroom-number">N45</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-46" name="lecture-info">
+                           <label for="lecture-info-46">Lecture Name 46</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-46">
+                                       <span class="classroom-number">N46</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-46">
+                                       <span class="classroom-number">N46</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-46">
+                                       <span class="classroom-number">N46</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-47" name="lecture-info">
+                           <label for="lecture-info-47">Lecture Name 47</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-47">
+                                       <span class="classroom-number">N47</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-47">
+                                       <span class="classroom-number">N47</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-47">
+                                       <span class="classroom-number">N47</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-48" name="lecture-info">
+                           <label for="lecture-info-48">Lecture Name 48</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-48">
+                                       <span class="classroom-number">N48</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-48">
+                                       <span class="classroom-number">N48</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-48">
+                                       <span class="classroom-number">N48</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-49" name="lecture-info">
+                           <label for="lecture-info-49">Lecture Name 49</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-49">
+                                       <span class="classroom-number">N49</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-49">
+                                       <span class="classroom-number">N49</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-49">
+                                       <span class="classroom-number">N49</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
+                       <div class="lecture-info">
+                           <input type="checkbox" id="lecture-info-50" name="lecture-info">
+                           <label for="lecture-info-50">Lecture Name 50</label>
+                           <div class="lecture-classrooms">
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-50">
+                                       <span class="classroom-number">N50</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-50">
+                                       <span class="classroom-number">N50</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                               <div class="classroom"><label>
+                                       <input type="radio" name="classroom-lecture-50">
+                                       <span class="classroom-number">N50</span>
+                                       <span class="classroom-teacher">Teacher Name</span>
+                                   </label></div>
+                           </div>
+                       </div>
                    </div>
                </div>
            </div>
        </div>
        <footer><a href="">Fale Conosco / Criticas e Sugestoes</a><a href="">Fork on GitHub</a></footer>
-   </div>
+   </div-->
     
-    
+  <div id="page-container">
+      <header>
+          <span id="logo">MATRUSP</span>
+          <ul id="icons">
+              <li class="icon" data-description="Exportar para o calendario do Google">
+                  <div class="hover-mask"></div>
+                  <img src="images/ic_1.png" alt="">
+              </li>
+              <li class="icon" data-description="Exportar para o calendario do Google">
+                  <div class="hover-mask"></div>
+                  <img src="images/ic_2.png" alt="">
+              </li>
+              <li class="icon" data-description="Exportar para o calendario do Google">
+                  <div class="hover-mask"></div>
+                  <img src="images/ic_3.png" alt="">
+              </li>
+              <li class="icon" data-description="Exportar para o calendario do Google">
+                  <div class="hover-mask"></div>
+                  <img src="images/ic_4.png" alt="">
+              </li>
+              <li class="icon" data-description="Exportar para o calendario do Google">
+                  <div class="hover-mask"></div>
+                  <img src="images/ic_5.png" alt="">
+              </li>
+          </ul>
+      </header>
+      <div id="main">
+          <div id="lecture-schedule">
+              <div class="column time">
+                  <div class="hour">06:00</div>
+                  <div class="hour">07:00</div>
+                  <div class="hour">08:00</div>
+                  <div class="hour">09:00</div>
+                  <div class="hour">10:00</div>
+                  <div class="hour">11:00</div>
+                  <div class="hour">12:00</div>
+                  <div class="hour">13:00</div>
+                  <div class="hour">14:00</div>
+                  <div class="hour">15:00</div>
+                  <div class="hour">16:00</div>
+                  <div class="hour">17:00</div>
+                  <div class="hour">18:00</div>
+                  <div class="hour">19:00</div>
+                  <div class="hour">20:00</div>
+                  <div class="hour">21:00</div>
+                  <div class="hour">22:00</div>
+                  <div class="hour">23:00</div>
+                  <div class="hour">24:00</div>
+              </div>
+              <div class="column">
+                  <div class="week-day">Segunda</div>
+                  <div class="lecture">
+                      <span class="timespan"></span>
+                      <div class="color-box"><span class="lecture-code"></span></div>
+                  </div>
+              </div>
+              <div class="column">
+                  <div class="week-day">Segunda</div>
+                  <div class="lecture">
+                      <span class="timespan"></span>
+                      <div class="color-box"><span class="lecture-code"></span></div>
+                  </div>
+              </div>
+              <div class="column">
+                  <div class="week-day">Segunda</div>
+                  <div class="lecture">
+                      <span class="timespan"></span>
+                      <div class="color-box"><span class="lecture-code"></span></div>
+                  </div>
+              </div>
+              <div class="column">
+                  <div class="week-day">Segunda</div>
+                  <div class="lecture">
+                      <span class="timespan"></span>
+                      <div class="color-box"><span class="lecture-code"></span></div>
+                  </div>
+              </div>
+              <div class="column">
+                  <div class="week-day">Segunda</div>
+                  <div class="lecture">
+                      <span class="timespan"></span>
+                      <div class="color-box"><span class="lecture-code"></span></div>
+                  </div>
+              </div>
+              <div class="column">
+                  <div class="week-day">Segunda</div>
+                  <div class="lecture">
+                      <span class="timespan"></span>
+                      <div class="color-box"><span class="lecture-code"></span></div>
+                  </div>
+              </div>
+          </div>
+          <div id="lecture-explorer">
+              <div id="search-and-add"><input type="text" id="search"><button id="add-extra-activity">+</button></div>
+              <div id="accordion-window">
+                  <div id="accordion">
+                      <div class="lecture-info">
+                          <input type="checkbox" id="lecture-info-01" name="lecture-info">
+                          <label for="lecture-info-01">Lecture Name 01</label>
+                          <div class="lecture-classrooms">
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-01">
+                                      <span class="classroom-number">N1</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-01">
+                                      <span class="classroom-number">N1</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-01">
+                                      <span class="classroom-number">N1</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                          </div>
+                      </div>
+                      <div class="lecture-info">
+                          <input type="checkbox" id="lecture-info-02" name="lecture-info">
+                          <label for="lecture-info-02">Lecture Name 02</label>
+                          <div class="lecture-classrooms">
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-02">
+                                      <span class="classroom-number">N2</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-02">
+                                      <span class="classroom-number">N2</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-02">
+                                      <span class="classroom-number">N2</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                          </div>
+                      </div>
+                      <div class="lecture-info">
+                          <input type="checkbox" id="lecture-info-03" name="lecture-info">
+                          <label for="lecture-info-03">Lecture Name 03</label>
+                          <div class="lecture-classrooms">
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-03">
+                                      <span class="classroom-number">N3</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-03">
+                                      <span class="classroom-number">N3</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-03">
+                                      <span class="classroom-number">N3</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                          </div>
+                      </div>
+                      <div class="lecture-info">
+                          <input type="checkbox" id="lecture-info-04" name="lecture-info">
+                          <label for="lecture-info-04">Lecture Name 04</label>
+                          <div class="lecture-classrooms">
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-04">
+                                      <span class="classroom-number">N4</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-04">
+                                      <span class="classroom-number">N4</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-04">
+                                      <span class="classroom-number">N4</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                          </div>
+                      </div>
+                      <div class="lecture-info">
+                          <input type="checkbox" id="lecture-info-05" name="lecture-info">
+                          <label for="lecture-info-05">Lecture Name 05</label>
+                          <div class="lecture-classrooms">
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-05">
+                                      <span class="classroom-number">N5</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-05">
+                                      <span class="classroom-number">N5</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                              <div class="classroom"><label>
+                                      <input type="radio" name="classroom-lecture-05">
+                                      <span class="classroom-number">N5</span>
+                                      <span class="classroom-teacher">Teacher Name</span>
+                                  </label></div>
+                          </div>
+                      </div>
+                  </div>
+                  <div id="explorer-footer"><input type="file" id="upload"></div>
+              </div>
+          </div>
+      </div>
+      <footer><a href="">Fale Conosco / Criticas e Sugestoes</a><a href="">Fork on GitHub</a></footer>
+  </div>
     
 </body>
 </html>

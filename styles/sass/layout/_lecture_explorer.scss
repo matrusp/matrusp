@@ -3,10 +3,10 @@
         width: 100%;
     }
     
-    >#search-and-upload {
+    >#search-and-add {
         //height: 20px;
         
-        >input {
+        >* {
             display: inline-block;
             height: 100%;
             
@@ -14,7 +14,8 @@
                 width: calc((3 / 4) * 100% - 10px);
             }
             
-            &#upload {
+            &#add-extra-activity {
+                float: right;
                 width: calc((1 / 4) * 100% - 10px);
             }
         }
@@ -26,13 +27,13 @@
         overflow: hidden;
         
         >#accordion {
-            height: 100%;
-            width: 100%;
+            /* sum scroll-bar-width to hide it from the user */
+            height: calc(100% + #{$scroll-bar-width});
+            width: calc(100% + #{$scroll-bar-width});
             overflow: scroll;
-            padding-right: $scroll-bar-width + 400px;
-            padding-bottom: $scroll-bar-width;
             
             >.lecture-info {
+                width: 100%;
                 
                 >label {
                     padding: 10px;

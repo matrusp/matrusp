@@ -1,5 +1,5 @@
 @import '_layout_variables_and_mixins.scss';
-    
+
 /* Base Layout */
 
 html, body {
@@ -17,6 +17,9 @@ body>#page-container {
     max-width: $page-max-width;
     min-width: $page-min-width;
     height: 100%;
+    /* not sure why, but without this overflow property
+       a scroll bar appears on the bottom */
+    overflow-x: hidden;
     
     @include center-block-horizontally();
     
