@@ -9,6 +9,7 @@ li {
   list-style-type: none; }
 
 /* Variables */
+/* Fonts */
 /* Base */
 /* Header */
 /* Lecture Schedule */
@@ -22,6 +23,10 @@ html, body {
   width: 100%;
   min-height: 520px;
   min-width: 600px; }
+
+body {
+  font-family: tahoma, helvetica;
+  font-size: 12px; }
 
 body > #page-container {
   width: 100%;
@@ -137,7 +142,7 @@ header {
         content: "";
         /* ::before z-index is 1 more than ::after z-index.
            this is to prevent the ::after box-shadow from appearing on top of the triangle */
-        z-index: 2; }
+        z-index: 11; }
       header > ul#icons > li.icon::after {
         visibility: hidden;
         position: absolute;
@@ -150,7 +155,7 @@ header {
         top: calc(100% + 6px);
         left: calc( -1 * (100px + 2 * 8px - 100%) / 2);
         content: attr(data-description);
-        z-index: 1;
+        z-index: 10;
         text-align: center;
         border-radius: 3px;
         line-height: 21px;
@@ -200,14 +205,80 @@ header {
 
 #page-container > #main > #lecture-explorer > div {
   width: 100%; }
-#page-container > #main > #lecture-explorer > #search-and-add > * {
-  display: inline-block;
-  height: 100%; }
-  #page-container > #main > #lecture-explorer > #search-and-add > *#search {
-    width: calc((3 / 4) * 100% - 10px); }
-  #page-container > #main > #lecture-explorer > #search-and-add > *#add-extra-activity {
+#page-container > #main > #lecture-explorer > #search-and-add {
+  height: 30px;
+  margin-bottom: 10px;
+  position: relative; }
+  #page-container > #main > #lecture-explorer > #search-and-add > * {
+    position: relative;
+    box-sizing: content-box;
+    display: inline-block;
+    height: calc(100% - 2 * 2px);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 2px; }
+    #page-container > #main > #lecture-explorer > #search-and-add > *:focus {
+      /* remove default outline from input:focus;
+         will be replaced by a shadow */
+      outline: none; }
+  #page-container > #main > #lecture-explorer > #search-and-add > #search {
+    width: calc(100% - 2 * 5px - 2 * 2px - 2px - 30px);
+    padding: 0 5px;
+    font-family: tahoma, helvetica;
+    font-size: 12px; }
+  #page-container > #main > #lecture-explorer > #search-and-add > #add-extra-activity {
     float: right;
-    width: calc((1 / 4) * 100% - 10px); }
+    padding: 0;
+    width: calc(30px - 2 * 2px - 2px);
+    background-color: white;
+    /* TODO change font size to a variable or
+       change plus sign to an image or css */
+    font-size: 20px;
+    line-height: 100%;
+    cursor: pointer; }
+    #page-container > #main > #lecture-explorer > #search-and-add > #add-extra-activity:hover {
+      background-color: rgba(0, 0, 0, 0.1); }
+    #page-container > #main > #lecture-explorer > #search-and-add > #add-extra-activity:active {
+      background-color: rgba(0, 0, 0, 0.4); }
+  #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box {
+    visibility: hidden;
+    display: block;
+    position: absolute;
+    /* TODO change top to variable; it is 1px more than the search box height */
+    top: 27px;
+    /* TODO change [min-/max-]height to variable */
+    min-height: 10px;
+    height: auto;
+    max-height: 300px;
+    /* TODO check if with more lectures than max-height it is bad or good */
+    overflow-y: auto;
+    width: calc(100% - 2 * 2px);
+    border-radius: 0 2px 2px 2px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
+    /* TODO change this white to background variable? */
+    background-color: white;
+    z-index: 1;
+    cursor: default; }
+    #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info {
+      padding: 6px 4px;
+      border-bottom: 1px solid rgba(159, 159, 159, 0.8); }
+      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-code,
+      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-description {
+        display: inline-block;
+        vertical-align: top; }
+      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-code {
+        width: 58px; }
+      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-description {
+        width: calc(100% - 58px - 4px); }
+  #page-container > #main > #lecture-explorer > #search-and-add > #search:focus {
+    box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4);
+    border-bottom-style: none;
+    border-radius: 2px 2px 0 0;
+    z-index: 2; }
+    #page-container > #main > #lecture-explorer > #search-and-add > #search:focus ~ #add-extra-activity {
+      opacity: 0.4; }
+    #page-container > #main > #lecture-explorer > #search-and-add > #search:focus ~ #search-result-box {
+      visibility: visible; }
 #page-container > #main > #lecture-explorer > #accordion-window {
   height: 100%;
   width: 100%;
@@ -239,13 +310,13 @@ header {
       #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='radio']:checked ~ span {
         background-color: #880023; }
 
-/* Colors */
-/* Fonts */
+/* Header */
+/* Lecture Schedule */
+/* lecture Explorer */
 body {
   background-image: linear-gradient(to bottom, #FBA71C 40px, #64C6D3 40px, #64C6D3 45px, #1495AB 45px, #1495AB 50px, #FEFEFE 50px, #FEFEFE 100%);
   background-repeat: no-repeat;
-  overflow: auto;
-  font-family: tahoma, helvetica; }
+  overflow: auto; }
 
 header > span#logo {
   color: #FEFEFE; }
@@ -258,6 +329,19 @@ header ul#icons > li.icon::after {
 .week-day {
   border-bottom-color: #050505;
   box-shadow: 0 4px 3px -4px #070707; }
+
+#main > #lecture-explorer > #search-and-add {
+  /*
+  >#add-extra-activity {
+      &:hover {
+          //background-color: red;
+      }
+  }*/ }
+  #main > #lecture-explorer > #search-and-add > * {
+    border-color: #9f9f9f; }
+  #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info:hover {
+    background-color: #e8ffdb;
+    color: #398417; }
 
 /*
 

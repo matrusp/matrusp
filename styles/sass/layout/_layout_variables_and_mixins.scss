@@ -1,5 +1,9 @@
 /* Variables */
 
+/* Fonts */
+$font-family: tahoma, helvetica;
+$font-size: 12px;
+
 /* Base */
 $page-max-width: 960px;
 $page-min-width: 600px;
@@ -30,10 +34,13 @@ $column-time-width: 40px;
 $hour-height: (100% / 18);
 $column-background-line-height: 2px;
 $week-day-underline-height: 4px;
+$font-size-hour: 13px;
 
 /* Lecture Explorer */
 $scroll-bar-width: 15px;
-$font-size-hour: 13px;
+$search-and-add-height: 30px;
+$search-and-add-border-width: 2px;
+$search-padding-horizontal: 5px;
 
 /* Animation Variables */
 $timing: .4s;

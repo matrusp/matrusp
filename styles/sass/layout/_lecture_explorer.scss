@@ -4,22 +4,112 @@
     }
     
     >#search-and-add {
-        //height: 20px;
+        height: $search-and-add-height;
+        margin-bottom: 10px;
+        position: relative;
         
         >* {
+            position: relative;
+            box-sizing: content-box;
             display: inline-block;
-            height: 100%;
+            height: calc(100% - 2 * #{$search-and-add-border-width});
+            border-width: $search-and-add-border-width;
+            border-style: solid;
+            border-radius: 2px;
             
-            &#search {
-                width: calc((3 / 4) * 100% - 10px);
+            &:focus {
+                /* remove default outline from input:focus;
+                   will be replaced by a shadow */
+                outline: none;
+            }
+        }
+            
+        >#search {
+            width: calc(100% - 2 * #{$search-padding-horizontal} - 2 * #{$search-and-add-border-width} - 2px - 30px);
+            padding: 0 $search-padding-horizontal;
+            font-family: $font-family;
+            font-size: $font-size;
+        }
+
+        >#add-extra-activity {
+            float: right;
+            padding: 0;
+            width: calc(30px - 2 * #{$search-and-add-border-width} - 2px);
+            background-color: white;
+            /* TODO change font size to a variable or
+               change plus sign to an image or css */
+            font-size: 20px;
+            line-height: 100%;
+            
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            &:active {
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        >#search-result-box {
+            visibility: hidden;
+            display: block;
+            position: absolute;
+            /* TODO change top to variable; it is 1px more than the search box height */
+            top: 27px;
+            /* TODO change [min-/max-]height to variable */
+            min-height: 10px;
+            height: auto;
+            max-height: 300px;
+            /* TODO check if with more lectures than max-height it is bad or good */
+            overflow-y: auto;
+            width: calc(100% - 2 * #{$search-and-add-border-width});
+            border-radius: 0 2px 2px 2px;
+            box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
+
+            /* TODO change this white to background variable? */
+            background-color: white;
+            z-index: 1;
+            cursor: default;
+            
+            >.search-result.lecture-info {
+                padding: 6px 4px;
+                border-bottom: 1px solid rgba(159, 159, 159, 0.8);
+
+                >.lecture-info-code,
+                >.lecture-info-description {
+                    display: inline-block;
+                    vertical-align: top;
+                }
+
+                >.lecture-info-code {
+                    width: 58px;
+                }
+
+                >.lecture-info-description {
+                    width: calc(100% - 58px - 4px);
+                }
+            }
+        }
+        
+        >#search:focus {
+            box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4);
+            border-bottom-style: none;
+            border-radius: 2px 2px 0 0;
+            z-index: 2;
+
+            ~ #add-extra-activity {
+                opacity: 0.4;
             }
             
-            &#add-extra-activity {
-                float: right;
-                width: calc((1 / 4) * 100% - 10px);
+            ~ #search-result-box {
+                visibility: visible;
             }
         }
     }
+
+    
     
     >#accordion-window {
         height: 100%; // - $search-and-upload-height

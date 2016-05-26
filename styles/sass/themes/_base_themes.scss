@@ -15,8 +15,6 @@ body {
     //background-color: $header-color-background;
     
     overflow: auto;
-    
-    font-family: $font-family;
 }
 
 header {
@@ -40,6 +38,31 @@ header {
     border-bottom-color: $week-day-underline-color;
     box-shadow: $week-day-underline-shadow;
 }
+
+#main>#lecture-explorer {
+    >#search-and-add {
+        >* {
+            border-color: $search-and-add-border-color;
+        }
+        
+        >#search-result-box {
+            >.search-result.lecture-info {
+                &:hover {
+                    background-color: $highlight-background;
+                    color: $highlight-text;
+                }
+            }
+        }
+        /*
+        >#add-extra-activity {
+            &:hover {
+                //background-color: red;
+            }
+        }*/
+    }
+}
+
+            
 
 /*
 
