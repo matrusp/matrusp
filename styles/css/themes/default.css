@@ -260,16 +260,8 @@ header {
     z-index: 1;
     cursor: default; }
     #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info {
-      padding: 6px 4px;
-      border-bottom: 1px solid rgba(159, 159, 159, 0.8); }
-      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-code,
-      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-description {
-        display: inline-block;
-        vertical-align: top; }
-      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-code {
-        width: 58px; }
-      #page-container > #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info > .lecture-info-description {
-        width: calc(100% - 58px - 4px); }
+      border-bottom: 1px solid rgba(159, 159, 159, 0.8);
+      padding: 6px 4px; }
   #page-container > #main > #lecture-explorer > #search-and-add > #search:focus {
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4);
     border-bottom-style: none;
@@ -279,40 +271,109 @@ header {
       opacity: 0.4; }
     #page-container > #main > #lecture-explorer > #search-and-add > #search:focus ~ #search-result-box {
       visibility: visible; }
+#page-container > #main > #lecture-explorer .lecture-info .lecture-info-code,
+#page-container > #main > #lecture-explorer .lecture-info .lecture-info-description,
+#page-container > #main > #lecture-explorer .lecture-info .lecture-delete {
+  display: inline-block;
+  vertical-align: top; }
+#page-container > #main > #lecture-explorer .lecture-info .lecture-info-code {
+  width: 58px; }
+#page-container > #main > #lecture-explorer .lecture-info .lecture-info-description {
+  width: calc(100% - 58px - 4px); }
 #page-container > #main > #lecture-explorer > #accordion-window {
   height: 100%;
+  max-height: 560px;
   width: 100%;
-  overflow: hidden; }
+  overflow: hidden;
+  border: 1px solid lightgray;
+  border-radius: 2px; }
   #page-container > #main > #lecture-explorer > #accordion-window > #accordion {
     /* sum scroll-bar-width to hide it from the user */
     height: calc(100% + 15px);
     width: calc(100% + 15px);
     overflow: scroll; }
     #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info {
-      width: 100%; }
-      #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > label {
-        padding: 10px;
-        position: relative;
-        display: block;
-        background: red;
-        transition: all .4s;
-        cursor: pointer; }
+      /* 100% - 2*padding */
+      width: calc(100% - 2px);
+      padding: 1px;
+      position: relative; }
+      #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-info-header {
+        position: relative; }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-info-header > label {
+          padding: 7px 6px 7px 8px;
+          position: relative;
+          display: block;
+          height: 30px;
+          max-height: 100%;
+          line-height: 30px;
+          overflow: hidden;
+          width: calc(100% - 30px - 2 * 6px);
+          cursor: pointer; }
+          #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-info-header > label > .lecture-info-description {
+            width: calc(100% - 58px - 4px); }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-info-header > .lecture-delete {
+          width: 30px;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer; }
+          #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-info-header > .lecture-delete > img {
+            position: absolute;
+            width: 20px;
+            opacity: 0.3;
+            /* only works with elements having position: absolute and some fixed height */
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            top: 0;
+            bottom: 0;
+            margin-top: auto;
+            margin-bottom: auto; }
       #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms {
         overflow: hidden;
         height: 0px;
-        position: relative;
-        transition: height .4s;
-        background: green; }
+        position: relative; }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > .classrooms-header {
+          padding-top: 6px;
+          padding-bottom: 6px; }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > label.classroom {
+          display: block;
+          padding-top: 4px;
+          padding-bottom: 7px; }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > .classrooms-header:not(:last-child),
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > label.classroom:not(:last-child) {
+          border-bottom: 1px solid; }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > .classrooms-header > div,
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > label.classroom > div {
+          display: inline-block;
+          vertical-align: middle; }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > .classrooms-header .classroom-number,
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > label.classroom .classroom-number {
+          /* TODO por variavel em width */
+          width: 40px;
+          text-align: center;
+          margin: 0 10px; }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > .classrooms-header .classroom-teacher,
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > label.classroom .classroom-teacher {
+          width: calc(100% - 58px - 30px); }
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > .classrooms-header .toggle-classroom,
+        #page-container > #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms > label.classroom .toggle-classroom {
+          position: relative;
+          left: 2px; }
     #page-container > #main > #lecture-explorer > #accordion-window > #accordion input {
       display: none; }
+      #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='checkbox']:checked + .lecture-info-header > label {
+        height: auto;
+        line-height: normal; }
       #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='checkbox']:checked ~ .lecture-classrooms {
-        height: 70px; }
-      #page-container > #main > #lecture-explorer > #accordion-window > #accordion input[type='radio']:checked ~ span {
-        background-color: #880023; }
+        height: auto; }
 
 /* Header */
 /* Lecture Schedule */
-/* lecture Explorer */
+/* Lecture Explorer */
+/* Lecture colors */
 body {
   background-image: linear-gradient(to bottom, #FBA71C 40px, #64C6D3 40px, #64C6D3 45px, #1495AB 45px, #1495AB 50px, #FEFEFE 50px, #FEFEFE 100%);
   background-repeat: no-repeat;
@@ -330,18 +391,193 @@ header ul#icons > li.icon::after {
   border-bottom-color: #050505;
   box-shadow: 0 4px 3px -4px #070707; }
 
-#main > #lecture-explorer > #search-and-add {
-  /*
-  >#add-extra-activity {
-      &:hover {
-          //background-color: red;
-      }
-  }*/ }
-  #main > #lecture-explorer > #search-and-add > * {
-    border-color: #9f9f9f; }
-  #main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info:hover {
-    background-color: #e8ffdb;
-    color: #398417; }
+#main > #lecture-explorer > #search-and-add > * {
+  border-color: #9f9f9f; }
+#main > #lecture-explorer > #search-and-add > #search-result-box > .search-result.lecture-info:hover {
+  background-color: #e8ffdb;
+  color: #398417; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) {
+  background-color: #bdefac;
+  color: #3d991d; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1):hover {
+    background-color: #adeb96; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #8be36b; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-info-header > .lecture-delete:active {
+    background-color: #7adf56; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) {
+  background-color: #a0ddfc;
+  color: #0577b1; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2):hover {
+    background-color: #87d4fb; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #56c2fa; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-info-header > .lecture-delete:active {
+    background-color: #3db9f9; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) {
+  background-color: #ffcf8c;
+  color: #a66100; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3):hover {
+    background-color: #ffc573; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #ffb040; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-info-header > .lecture-delete:active {
+    background-color: #ffa526; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) {
+  background-color: #e5c5ed;
+  color: #86309c; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4):hover {
+    background-color: #dcb1e7; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #cb8adb; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-info-header > .lecture-delete:active {
+    background-color: #c277d5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) {
+  background-color: #aff4ef;
+  color: #17a79d; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5):hover {
+    background-color: #98f1eb; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #6bebe2; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-info-header > .lecture-delete:active {
+    background-color: #55e8de; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) {
+  background-color: #ffb2c1;
+  color: #cc0027; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6):hover {
+    background-color: #ff99ac; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #ff6683; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-info-header > .lecture-delete:active {
+    background-color: #ff4c6e; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) {
+  background-color: #ffe88c;
+  color: #a68400; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7):hover {
+    background-color: #ffe373; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #ffd840; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-info-header > .lecture-delete:active {
+    background-color: #ffd326; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) {
+  background-color: #ff96cb;
+  color: #b00059; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8):hover {
+    background-color: #ff7dbf; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #ff4aa6; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-info-header > .lecture-delete:active {
+    background-color: #ff3099; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) {
+  background-color: #d5c8b7;
+  color: #6a563d; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9):hover {
+    background-color: #ccbba7; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #b9a286; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-info-header > .lecture-delete:active {
+    background-color: #b09676; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) {
+  background-color: #dceac1;
+  color: #739431; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10):hover {
+    background-color: #d2e4ad; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-info-header > .lecture-delete:hover {
+    background-color: #bdd787; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-info-header > .lecture-delete:active {
+    background-color: #b2d174; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom > .classroom-teacher {
+    opacity: 0.5; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom:hover > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
+    opacity: 0.8; }
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
+  #main > #lecture-explorer > #accordion-window > #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
+    opacity: 1; }
+#main > #lecture-explorer > #accordion-window > #accordion > .lecture-info > .lecture-classrooms {
+  background-color: #FEFEFE; }
 
 /*
 

@@ -53,12 +53,63 @@ header {
                 }
             }
         }
-        /*
-        >#add-extra-activity {
-            &:hover {
-                //background-color: red;
+    }
+    
+    >#accordion-window>#accordion {
+        @each $color in $lecture-colors {
+            $i: index($lecture-colors, $color);
+            
+            >.lecture-info:nth-child(#{$i}) {
+                background-color: lighten($color, 20%);
+                color: darken($color, 25%);
+                    
+                &:hover {
+                    background-color: lighten($color, 15%);
+                }
+                
+                >.lecture-info-header {
+                    >.lecture-delete {
+                        &:hover {
+                            background-color: lighten($color, 5%);
+                        }
+                        
+                        &:active {
+                            background-color: $color;
+                        }
+                    }
+                }
+                
+                >.lecture-classrooms {
+                    //background-color: lighten($color, 33%);
+                    >label.classroom {
+                        >.classroom-number,
+                        >.classroom-teacher {
+                            opacity: 0.5;
+                        }
+                        
+                        &:hover {
+                            >.classroom-number,
+                            >.classroom-teacher {
+                                opacity: 0.8;
+                            }
+                        }
+                    }
+                    
+                    >input[type='radio']:checked + label.classroom{
+                        >.classroom-number,
+                        >.classroom-teacher {
+                            opacity: 1;
+                        }
+                    }
+                }
             }
-        }*/
+        }
+        
+        >.lecture-info {
+            >.lecture-classrooms {
+                background-color: $white;
+            }
+        }
     }
 }
 

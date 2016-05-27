@@ -1,10 +1,12 @@
 @import '../application.scss';
 
+$white: #FEFEFE;
+
 /* Header */
 $header-color-primary: #FBA71C;
 $header-color-secondary: #64C6D3;
 $header-color-tertiary: #1495AB;
-$header-color-background: #FEFEFE;
+$header-color-background: $white;
 
 $header-color-symbols: #FEFEFE;
 
@@ -15,9 +17,12 @@ $tooltip-color-text: #3D3D3D;
 $week-day-underline-color: #050505;
 $week-day-underline-shadow: 0 4px 3px -4px #070707;
 
-/* lecture Explorer */
+/* Lecture Explorer */
 $search-and-add-border-color: #9f9f9f;
 $highlight-background: #e8ffdb; 
 $highlight-text: #398417;
+
+/* Lecture colors */
+$lecture-colors: #7adf56, #3db9f9, #ffa526, #c277d5, #55e8de, #ff4c6e, #ffd326, #ff3099, #b09676, #b2d174;
 
 @import '_base_themes.scss';

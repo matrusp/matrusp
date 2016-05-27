@@ -74,22 +74,8 @@
             cursor: default;
             
             >.search-result.lecture-info {
-                padding: 6px 4px;
                 border-bottom: 1px solid rgba(159, 159, 159, 0.8);
-
-                >.lecture-info-code,
-                >.lecture-info-description {
-                    display: inline-block;
-                    vertical-align: top;
-                }
-
-                >.lecture-info-code {
-                    width: 58px;
-                }
-
-                >.lecture-info-description {
-                    width: calc(100% - 58px - 4px);
-                }
+                padding: 6px 4px;
             }
         }
         
@@ -109,12 +95,31 @@
         }
     }
 
-    
+    .lecture-info {
+
+        .lecture-info-code,
+        .lecture-info-description,
+        .lecture-delete {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .lecture-info-code {
+            width: $width-lecture-code;
+        }
+
+        .lecture-info-description {
+            width: calc(100% - #{$width-lecture-code} - 4px);
+        }
+    }
     
     >#accordion-window {
         height: 100%; // - $search-and-upload-height
+        max-height: 560px;
         width: 100%;
         overflow: hidden;
+        border: 1px solid lightgray;
+        border-radius: 2px;
         
         >#accordion {
             /* sum scroll-bar-width to hide it from the user */
@@ -123,35 +128,108 @@
             overflow: scroll;
             
             >.lecture-info {
-                width: 100%;
+                /* 100% - 2*padding */
+                width: calc(100% - 2px);
+                padding: 1px;
+                position: relative;
                 
-                >label {
-                    padding: 10px;
+                >.lecture-info-header {
                     position: relative;
-                    display: block;
-                    background: red;
-                    transition: all .4s;
-                    cursor: pointer;
+                    >label {
+                        padding: 7px 6px 7px 8px;
+                        position: relative;
+                        display: block;
+                        //transition: all .4s;
+                        height: 30px;
+                        max-height: 100%;
+                        line-height: 30px;
+                        overflow: hidden;
+                        width: calc(100% - #{$width-lecture-delete} - 2 * 6px);
+                        cursor: pointer;
+
+                        >.lecture-info-description {
+                            width: calc(100% - #{$width-lecture-code} - 4px);
+                        }
+                    }
+
+                    >.lecture-delete {
+                        width: $width-lecture-delete;
+                        height: 100%;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        cursor: pointer;
+
+                        >img {
+                            position: absolute;
+                            width: $width-icon-delete;
+                            opacity: 0.3;
+
+                            @include center-block-horizontally();
+                            @include center-block-vertically();
+                        }
+                    }
                 }
                 
                 >.lecture-classrooms {
                     overflow: hidden;
                     height: 0px;
                     position: relative;
-                    transition: height .4s;
-                    background: green;
+                    //transition: height .4s;
+                    
+                    >.classrooms-header {
+                        padding-top: 6px;
+                        padding-bottom: 6px;
+                    }
+                    
+                    >label.classroom {
+                        display: block;
+                        padding-top: 4px;
+                        padding-bottom: 7px;
+                    }
+                    
+                    >.classrooms-header,
+                    >label.classroom {
+                        &:not(:last-child) {
+                            border-bottom: 1px solid;
+                        }
+                        
+                        >div {
+                            display: inline-block;
+                            vertical-align: middle;
+                        }
+                        
+                        .classroom-number {
+                            /* TODO por variavel em width */
+                            width: 40px;
+                            text-align: center;
+                            margin: 0 10px;
+                        }
+                        
+                        .classroom-teacher {
+                            width: calc(100% - #{$width-lecture-code} - #{$width-lecture-delete})
+                        }
+                        
+                        .toggle-classroom {
+                            position: relative;
+                            left: 2px;
+                        }
+                    }
                 }
             }
             
             input {
                 display: none;
                 
-                &[type='checkbox']:checked ~ .lecture-classrooms {
-                    height: 70px;
-                }
-                
-                &[type='radio']:checked ~ span{
-                    background-color: #880023;
+                &[type='checkbox']:checked {
+                    & + .lecture-info-header>label {
+                        height: auto;
+                        line-height: normal;
+                    }
+                    
+                    & ~ .lecture-classrooms {
+                        height: auto;
+                    }
                 }
             }
         }
