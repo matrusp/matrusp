@@ -1,10 +1,26 @@
 MATRUSP TCC 2016
 ================
 
-Este é o repositório do [MATRUSP](http://bcc.ime.usp.br/matrusp/).
+Branch voltada para o _re_-desenvolvimento do MatrUSP. 
 
-Como contribuir (na branch tcc2016)
------------------------------------
+Este é o tema do Trabalho de Conclusão de Curso dos alunos
 
- - Todo código e texto que **não** será apresentada a algum usuário (diferente deste que você está lendo) será escrito em inglês. Isso inclui as mensagens de commits!
- - [Como escrever um commit](http://chris.beams.io/posts/git-commit/#seven-rules). A página inteira é interessante, ainda que o link te leve para o exemplo e regras práticas.
+- Bruno de Oliveira Endo
+- José Ernesto Young Rodrigues
+- Rafael Marinaro Verona
+
+sob orientação de José Coelho de Pina e Pedro Paulo Vezzá Campos.
+
+| [Versão atual] | [Versão anterior] |
+|:--------------:|:-----------------:|
+
+[Versão atual]: http://matrusp.github.io/matrusp/
+[Versão anterior]: http://bcc.ime.usp.br/matrusp/
+
+Envolva-se
+----------
+[Contribua](https://github.com/matrusp/matrusp/wiki/Contribute) com o código
+
+[Entenda](https://github.com/matrusp/matrusp/wiki/Design) melhor o software
+
+[Navegue](https://github.com/matrusp/matrusp/wiki) pela Wiki do projeto
