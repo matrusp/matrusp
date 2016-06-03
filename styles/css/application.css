@@ -254,6 +254,8 @@ header {
   line-height: 100%;
   cursor: pointer;
   background-color: #FEFEFE; }
+  #add-extra-activity:focus {
+    outline: none; }
   #add-extra-activity:hover {
     background-color: rgba(0, 0, 0, 0.1); }
   #add-extra-activity:active {
