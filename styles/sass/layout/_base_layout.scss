@@ -1,92 +1,99 @@
-@import '_layout_variables_and_mixins.scss';
-
-/* Base Layout */
+// 
+//
+// Base Layout
+// ===========
+//
+// This file structures the basic layout for the page. It defines
+// positioning and min/max sizes on a base level: this means that 
+// it only modifies elements listed here.
+// 
+// Affected HTML
+// -------------
+//
+//   html
+//     body
+//       div#page-container
+//         header
+//         div#main
+//           div#lecture-schedule
+//           div#lecture-explorer
+//         footer
+//
+//
 
 html, body {
-    height: 100%;
     width: 100%;
-    min-height: $header-height + $header-bottom-line
-                + 2 * $main-padding
-                + $lecture-schedule-min-height
-                + $footer-height;
+    height: 100%;
     min-width: $page-min-width;
+    min-height: $page-min-height;
 }
 
 body {
+    overflow: auto;
     font-family: $font-family;
     font-size: $font-size;
+    background-image: linear-gradient(
+            to bottom,
+            $header-color-primary     $header-height,
+            $header-color-secondary   $header-height,
+            $header-color-secondary  ($header-height + ($header-bottom-line / 2)),
+            $header-color-tertiary   ($header-height + ($header-bottom-line / 2)),
+            $header-color-tertiary   ($header-height +  $header-bottom-line),
+            $header-color-background ($header-height +  $header-bottom-line),
+            $header-color-background 100%
+        );
+    background-repeat: no-repeat;
 }
 
-body>#page-container {
+#page-container {
+    @include center-block-horizontally();
     width: 100%;
+    height: 100%;
     max-width: $page-max-width;
     min-width: $page-min-width;
-    height: 100%;
-    /* not sure why, but without this overflow property
-       a scroll bar appears on the bottom */
+    // not sure why, but without this overflow property a scroll bar 
+    // appears on the bottom 
     overflow-x: hidden;
     
-    @include center-block-horizontally();
-    
-    >header, >#main, >footer {
-        width: 100%;
-        position: relative;
-        /* defining a position to work 
-            with children positions */
-    }
-    
-    >header, >footer {
-        //position: fixed;
-        height: $header-height;
-        //z-index: 1;
-    }
-    
+    >header,
     >footer {
-        >a {
-            display: inline-block;
-            line-height: 100%;
-            height: 100%;
-            vertical-align: middle;
-        }
-        >a:first-child {
-            float: left;
-        }
-        
-        >a:last-child {
-            float: right;
-        }
-    }
-    
-    >#main {
-        padding: $main-padding;
-        width: calc(100% - 2 * #{$main-padding});
-        height: calc(100% - (2 * #{$header-height} + #{$header-bottom-line} + 2 * #{$main-padding}));
-        margin-top: $header-bottom-line;
-        min-height: 400px;
-        
-        &>div {
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        
-        >#lecture-schedule {
-            padding-top: $lecture-schedule-padding-top;
-            height: calc(100% - #{$lecture-schedule-padding-top});
-            max-height: $lecture-schedule-max-height - $lecture-schedule-padding-top;
-            /* subtracting 3px to deal with standard 
-                spacing between inline-block elements */
-            width: calc((2 / 3) * 100% - 3px);
-        }
-    
-        >#lecture-explorer {
-            height: 100%;
-            min-height: $lecture-explorer-min-height;
-            max-height: $lecture-explorer-max-height;
-
-            width: calc((1 / 3) * 100% - 3px);
-        }
+    // defining a position here to work with children positions
+        position: relative;
+        width: 100%;
+        height: $header-height;
     }
 }
 
-#lecture-schedule{}
+#main {
+    position: relative;
+    width: calc(100% - (2 * #{$main-padding}));
+    // TODO deal with this identation, how to make it good?
+    height: calc(100% - ( (2 * #{$header-height}) 
+                          + #{$header-bottom-line} 
+                          + (2 * #{$main-padding}) ));
+    min-height: 400px;
+    padding: $main-padding;
+    margin-top: $header-bottom-line;
+}
+
+#lecture-schedule,
+#lecture-explorer {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#lecture-schedule {
+    // subtracting 3px to deal with standard spacing between 
+    // inline-block elements
+    width: calc((2 / 3) * 100% - 3px);
+    height: calc(100% - #{$lecture-schedule-padding-top});
+    max-height: $lecture-schedule-max-height - $lecture-schedule-padding-top;
+    padding-top: $lecture-schedule-padding-top;
+}
+
+#lecture-explorer {
+    width: calc((1 / 3) * 100% - 3px);
+    height: 100%;
+    max-height: $lecture-explorer-max-height;
+    min-height: $lecture-explorer-min-height;
+}

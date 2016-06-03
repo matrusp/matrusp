@@ -1,0 +1,39 @@
+// 
+//
+// Base Lecture Info Layout
+// ========================
+//
+// This file structures basic layout for lecture-info.
+// 
+// Affected HTML
+// -------------
+// html > body > div#page-container > div#lecture-explorer
+//      
+//  div#lecture-explorer
+//      div#search-and-add
+//          div#search-result-box
+//              div.search-result.lecture-info
+//              ...
+//      div#accordion-window
+//          div#accordion
+//              div.lecture-info
+//              ...
+//
+//
+
+#lecture-explorer .lecture-info {
+    .lecture-info-code,
+    .lecture-info-description,
+    .lecture-delete {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .lecture-info-code {
+        width: $width-lecture-code;
+    }
+
+    .lecture-info-description {
+        width: calc(100% - #{$width-lecture-code} - 4px);
+    }
+}

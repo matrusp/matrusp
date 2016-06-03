@@ -1,45 +1,61 @@
-#page-container>#main>#lecture-schedule {
+// 
+//
+// Lecture Schedule Layout
+// =======================
+//
+// This file structures the basic lecture schedule layout.
+// 
+// Affected HTML
+// -------------
+// html > body > div#page-container > div#main > div#lecture-schedule
+//
+//  div#lecture-explorer
+//      div#search-and-add
+//      div#accordion-window
+//
+//
+
+#lecture-schedule {
     >.column {
         display: inline-block;
-        vertical-align: top;
         height: 100%;
+        vertical-align: top;
+    }
         
-        &.time {
-            width: $column-time-width;
-            
-            >div.hour {
-                height: $hour-height;
-                /* 19 elements and 18 slots inside this column. 
-                    Aligning vertically each text with upper 
-                    div border (setting line-height to zero, 
-                    miraculously!), we get 06:00 aligned with 
-                    top border and 00:00 aligned with bottom 
-                    border (that's actually its upper border) */
-                min-height: ($lecture-schedule-min-height - $lecture-schedule-padding-top) / 18;
-                line-height: 0;
-                font-size: $font-size-hour;
-            }
+    >.column.time {
+        width: $column-time-width;
+        
+        >.hour {
+            height: $hour-height;
+            // 19 elements and 18 "slots" inside this column. 
+            // Aligning vertically each text with upper div border
+            // (setting line-height to zero,  miraculously!), we get
+            // 06:00 aligned with top border and 00:00 aligned with 
+            // bottom border (that's actually its upper border).
+            min-height: ($lecture-schedule-min-height - $lecture-schedule-padding-top) / 18;
+            font-size: $font-size-hour;
+            line-height: 0;
         }
+    }
         
-        
-        &:not(:first-child) {
-            position: relative;
-            /* 4.5px empirically set to fill the parent div with these columns */
-            width: calc((100% - #{$column-time-width} - (7 * 4.5px)) / 6);
-            @include column-background($black:#BFBFBF, $gray:#DFDFDF);
-        
-            >.week-day {
-                position: absolute;
-                width: 100%;
-                top: - $lecture-schedule-padding-top;
-                padding-bottom: $week-day-underline-height;
-                border-bottom-width: $column-background-line-height;
-                border-bottom-style: solid;
-                
-                text-align: center;
-            }
+    // TODO test replace ":first-child" with ".time"
+    >.column:not(:first-child) {
+        // TODO test take off "$variable:" before #COLORR
+        @include column-background($black:#BFBFBF, $gray:#DFDFDF);
+        position: relative;
+        // 4.5px empirically set to fill the parent div with these columns.
+        width: calc((100% - #{$column-time-width} - (7 * 4.5px)) / 6);
+    
+        >.week-day {
+            position: absolute;
+            top: - $lecture-schedule-padding-top;
+            width: 100%;
+            padding-bottom: $week-day-underline-height;
+            text-align: center;
+            border-bottom-color: $week-day-underline-color;
+            border-bottom-style: solid;
+            border-bottom-width: $column-background-line-height;
+            box-shadow: $week-day-underline-shadow;
         }
     }
 }
-
-.week-day{}

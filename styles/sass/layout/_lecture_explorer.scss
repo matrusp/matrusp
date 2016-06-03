@@ -1,237 +1,35 @@
-#page-container>#main>#lecture-explorer {
-    >div {
-        width: 100%;
-    }
-    
-    >#search-and-add {
-        height: $search-and-add-height;
-        margin-bottom: 10px;
-        position: relative;
-        
-        >* {
-            position: relative;
-            box-sizing: content-box;
-            display: inline-block;
-            height: calc(100% - 2 * #{$search-and-add-border-width});
-            border-width: $search-and-add-border-width;
-            border-style: solid;
-            border-radius: 2px;
-            
-            &:focus {
-                /* remove default outline from input:focus;
-                   will be replaced by a shadow */
-                outline: none;
-            }
-        }
-            
-        >#search {
-            width: calc(100% - 2 * #{$search-padding-horizontal} - 2 * #{$search-and-add-border-width} - 2px - 30px);
-            padding: 0 $search-padding-horizontal;
-            font-family: $font-family;
-            font-size: $font-size;
-        }
+// 
+//
+// Lecture Explorer Layout
+// =======================
+//
+// This file structures the basic lecture explorer layout.
+// 
+// Affected HTML
+// -------------
+// html > body > div#page-container > div#main > div#lecture-explorer
+//
+//  div#lecture-explorer
+//      div#search-and-add
+//      div#accordion-window
+//
+//
 
-        >#add-extra-activity {
-            float: right;
-            padding: 0;
-            width: calc(30px - 2 * #{$search-and-add-border-width} - 2px);
-            background-color: white;
-            /* TODO change font size to a variable or
-               change plus sign to an image or css */
-            font-size: 20px;
-            line-height: 100%;
-            
-            cursor: pointer;
+#search-and-add,
+#accordion-window {
+    width: 100%;
+}
 
-            &:hover {
-                background-color: rgba(0, 0, 0, 0.1);
-            }
+#search-and-add {
+    position: relative;
+    height: $search-and-add-height;
+    margin-bottom: 10px;
+}
 
-            &:active {
-                background-color: rgba(0, 0, 0, 0.4);
-            }
-        }
-
-        >#search-result-box {
-            visibility: hidden;
-            display: block;
-            position: absolute;
-            /* TODO change top to variable; it is 1px more than the search box height */
-            top: 27px;
-            /* TODO change [min-/max-]height to variable */
-            min-height: 10px;
-            height: auto;
-            max-height: 300px;
-            /* TODO check if with more lectures than max-height it is bad or good */
-            overflow-y: auto;
-            width: calc(100% - 2 * #{$search-and-add-border-width});
-            border-radius: 0 2px 2px 2px;
-            box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
-
-            /* TODO change this white to background variable? */
-            background-color: white;
-            z-index: 1;
-            cursor: default;
-            
-            >.search-result.lecture-info {
-                border-bottom: 1px solid rgba(159, 159, 159, 0.8);
-                padding: 6px 4px;
-            }
-        }
-        
-        >#search:focus {
-            box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4);
-            border-bottom-style: none;
-            border-radius: 2px 2px 0 0;
-            z-index: 2;
-
-            ~ #add-extra-activity {
-                opacity: 0.4;
-            }
-            
-            ~ #search-result-box {
-                visibility: visible;
-            }
-        }
-    }
-
-    .lecture-info {
-
-        .lecture-info-code,
-        .lecture-info-description,
-        .lecture-delete {
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        .lecture-info-code {
-            width: $width-lecture-code;
-        }
-
-        .lecture-info-description {
-            width: calc(100% - #{$width-lecture-code} - 4px);
-        }
-    }
-    
-    >#accordion-window {
-        height: 100%; // - $search-and-upload-height
-        max-height: 560px;
-        width: 100%;
-        overflow: hidden;
-        border: 1px solid lightgray;
-        border-radius: 2px;
-        
-        >#accordion {
-            /* sum scroll-bar-width to hide it from the user */
-            height: calc(100% + #{$scroll-bar-width});
-            width: calc(100% + #{$scroll-bar-width});
-            overflow: scroll;
-            
-            >.lecture-info {
-                /* 100% - 2*padding */
-                width: calc(100% - 2px);
-                padding: 1px;
-                position: relative;
-                
-                >.lecture-info-header {
-                    position: relative;
-                    >label {
-                        padding: 7px 6px 7px 8px;
-                        position: relative;
-                        display: block;
-                        //transition: all .4s;
-                        height: 30px;
-                        max-height: 100%;
-                        line-height: 30px;
-                        overflow: hidden;
-                        width: calc(100% - #{$width-lecture-delete} - 2 * 6px);
-                        cursor: pointer;
-
-                        >.lecture-info-description {
-                            width: calc(100% - #{$width-lecture-code} - 4px);
-                        }
-                    }
-
-                    >.lecture-delete {
-                        width: $width-lecture-delete;
-                        height: 100%;
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        cursor: pointer;
-
-                        >img {
-                            position: absolute;
-                            width: $width-icon-delete;
-                            opacity: 0.3;
-
-                            @include center-block-horizontally();
-                            @include center-block-vertically();
-                        }
-                    }
-                }
-                
-                >.lecture-classrooms {
-                    overflow: hidden;
-                    height: 0px;
-                    position: relative;
-                    //transition: height .4s;
-                    
-                    >.classrooms-header {
-                        padding-top: 6px;
-                        padding-bottom: 6px;
-                    }
-                    
-                    >label.classroom {
-                        display: block;
-                        padding-top: 4px;
-                        padding-bottom: 7px;
-                    }
-                    
-                    >.classrooms-header,
-                    >label.classroom {
-                        &:not(:last-child) {
-                            border-bottom: 1px solid;
-                        }
-                        
-                        >div {
-                            display: inline-block;
-                            vertical-align: middle;
-                        }
-                        
-                        .classroom-number {
-                            /* TODO por variavel em width */
-                            width: 40px;
-                            text-align: center;
-                            margin: 0 10px;
-                        }
-                        
-                        .classroom-teacher {
-                            width: calc(100% - #{$width-lecture-code} - #{$width-lecture-delete})
-                        }
-                        
-                        .toggle-classroom {
-                            position: relative;
-                            left: 2px;
-                        }
-                    }
-                }
-            }
-            
-            input {
-                display: none;
-                
-                &[type='checkbox']:checked {
-                    & + .lecture-info-header>label {
-                        height: auto;
-                        line-height: normal;
-                    }
-                    
-                    & ~ .lecture-classrooms {
-                        height: auto;
-                    }
-                }
-            }
-        }
-    }
+#accordion-window {
+    height: calc(100% - #{$search-and-add-height});
+    overflow: hidden;
+    // TODO change to variable
+    border: 1px solid lightgray;
+    border-radius: 2px;
 }

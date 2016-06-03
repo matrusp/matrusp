@@ -1,0 +1,31 @@
+// 
+//
+// Footer Layout
+// =============
+//
+// This file structures the footer layout.
+// 
+// Affected HTML
+// -------------
+// html > body > div#page-container > footer
+//
+//	footer
+//		a
+//		a	
+//
+//
+
+#page-container>footer>a {
+    display: inline-block;
+    height: 100%;
+    line-height: 100%;
+    vertical-align: middle;
+
+    &:first-child {
+        float: left;
+    }
+    
+    &:last-child {
+        float: right;
+    }
+}
