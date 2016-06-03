@@ -1,0 +1,207 @@
+// 
+//
+// Accordion Layout
+// =====================
+//
+// This file structures the accordion layout.
+// 
+// Affected HTML
+// -------------
+// html > body > div#page-container > div#main 
+// > div#lecture-explorer > div#accordion-window
+//
+//  div#accordion-window
+//      div#accordion
+//  ->      div#lecture-info
+//              input#lecture-info-01
+//              div#lecture-info-header
+//                  label[for=lecture-info-01]
+//                      div.lecture-info-code
+//                      div.lecture-info-description
+//              div#lecture-classrooms
+//                  div.classrooms-header
+//                      div.classroom-number
+//                      div.classroom-teacher
+//                      div.toggle-classroom
+//            ->    input#classroom-01
+//                  label.classroom[for=classroom-01]
+//                      div.classroom-number
+//                      div.classroom-teacher
+//                      div.toggle-classroom
+//            ->    ...
+//  ->      ...
+//
+//
+
+#accordion {
+    /* sum scroll-bar-width to hide it from the user */
+    height: calc(100% + #{$scroll-bar-width});
+    width: calc(100% + #{$scroll-bar-width});
+    overflow: scroll;
+}
+
+// TODO compare these properties with those inside "_base_lecture_info.scss"
+#accordion>.lecture-info {
+    position: relative;
+    // 100% - 2 * padding
+    width: calc(100% - 2px);
+    padding: 1px;
+    
+    >.lecture-info-header {
+        position: relative;
+
+        >label {
+            position: relative;
+            display: block;
+            width: calc(100% - #{$width-lecture-delete} - 2 * 6px);
+            // TODO these height declarations doesn't make any sense, or do they?
+            height: 30px;
+            max-height: 100%;
+            padding: 7px 6px 7px 8px;
+            overflow: hidden;
+            line-height: 30px;
+            cursor: pointer;
+            // TODO transitions doesn't work well with 'auto' values
+            //      so take this off or come up with some solution.
+            //transition: all .4s;
+
+            >.lecture-info-description {
+                width: calc(100% - #{$width-lecture-code} - 4px);
+            }
+        }
+
+        >.lecture-delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: $width-lecture-delete;
+            height: 100%;
+            cursor: pointer;
+
+            >img {
+                @include center-block-horizontally();
+                @include center-block-vertically();
+                position: absolute;
+                width: $width-icon-delete;
+                opacity: 0.3;
+            }
+        }
+    }
+}
+
+.lecture-classrooms {
+    position: relative;
+    height: 0px;
+    overflow: hidden;
+    background-color: $white;
+    //transition: height .4s;
+    
+    >.classrooms-header {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+    
+    >label.classroom {
+        display: block;
+        padding-top: 4px;
+        padding-bottom: 7px;
+    }
+    
+    >.classrooms-header,
+    >label.classroom {
+        &:not(:last-child) {
+            border-bottom: 1px solid;
+        }
+        
+        >div {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .classroom-number {
+            // TODO change to variable
+            width: 40px;
+            text-align: center;
+            // TODO change to variable
+            margin: 0 10px;
+        }
+        
+        .classroom-teacher {
+            width: calc(100% - #{$width-lecture-code} - #{$width-lecture-delete})
+        }
+        
+        .toggle-classroom {
+            position: relative;
+            // TODO change to variable
+            left: 2px;
+        }
+    }
+}
+    
+#accordion input {
+    display: none;
+    
+    &[type='checkbox']:checked {
+        & + .lecture-info-header>label {
+            height: auto;
+            line-height: normal;
+        }
+        
+        & ~ .lecture-classrooms {
+            height: auto;
+        }
+    }
+}
+
+
+#accordion {
+    @each $color in $lecture-colors {
+        $i: index($lecture-colors, $color);
+        
+        >.lecture-info:nth-child(#{$i}) {
+            background-color: lighten($color, 20%);
+            color: darken($color, 25%);
+                
+            &:hover {
+                background-color: lighten($color, 15%);
+            }
+            
+            >.lecture-info-header {
+                >.lecture-delete {
+                    &:hover {
+                        background-color: lighten($color, 5%);
+                    }
+                    
+                    &:active {
+                        background-color: $color;
+                    }
+                }
+            }
+            
+            >.lecture-classrooms {
+                //background-color: lighten($color, 33%);
+                >label.classroom {
+                    >.classroom-number,
+                    >.classroom-teacher {
+                        opacity: 0.5;
+                    }
+                    
+                    &:hover {
+                        >.classroom-number,
+                        >.classroom-teacher {
+                            opacity: 0.8;
+                        }
+                    }
+                }
+                
+                >input[type='radio']:checked + label.classroom{
+                    >.classroom-number,
+                    >.classroom-teacher {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+

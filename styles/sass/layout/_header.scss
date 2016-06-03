@@ -1,105 +1,40 @@
+// 
+//
+// Header Layout
+// =============
+//
+// This file structures the header layout.
+// 
+// Affected HTML
+// -------------
+// html > body > div#page-container > header
+//
+//  header
+//      span#logo
+//      ul#icons
+//
+//
+
 header {
     user-select: none;
-    /* autoprefixer will include this, when linked delete 
-       this next line */
+    // TODO autoprefixer will include this, when linked delete this next line
     -webkit-user-select: none;
-    
-    >span#logo {
-        /* line-height equal to parent height, centralizes the text */
-        line-height: $header-height;
-        padding-left: $header-height / 2;
-        
-        font-size: $font-size-logo;
-        font-weight: bold;
-        letter-spacing: $logo-letter-spacing;
-        
-        cursor: default;
-    }
-    
-    >ul#icons {
-        display: inline-block;
-        float: right;
-        height: 100%;
-        padding-right: $header-height / 2;
-        
-        
-        >li.icon {
-            display: inline-block;
-            height: $icons-square-size;
-            width: $icons-square-size;
-            position: relative;
-            vertical-align: top;
-            margin-left: $icons-spacing;
-            cursor: pointer;
-            
-            >div.hover-mask, >img {
-                position: absolute;
-                @include center-block-horizontally();
-                @include center-block-vertically();
-            }
-            
-            >div.hover-mask {
-                visibility: hidden;
-                width: 78%;
-                height: 78%;
-                border-width: 0px;
-                border-radius: 6px;
-                background-color: rgba(255, 255, 255, 0.2);
-                /* offset-x | offset-y | blur-radius | spread-radius | color */
-                box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2);
-            }
-            
-            &::before {
-                visibility: hidden;
-                position: absolute;
-                @include triangle-up($tooltip-triangle-width, $tooltip-triangle-height);
-                left: calc(50% - (#{$tooltip-triangle-width} / 2));
-                top: 100%;
-                content: "";
-                /* ::before z-index is 1 more than ::after z-index.
-                   this is to prevent the ::after box-shadow from appearing on top of the triangle */
-                z-index: 11;
-            }
+}
 
-            &::after {
-                visibility: hidden;
-                position: absolute;
-                display: block;
-                width: $tooltip-width;
-                height: auto;
-                padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
-                /* top+left centers the tooltip;  remember that the
-                   value '100%'' here refers to the parent size */
-                top: calc(100% + #{$tooltip-triangle-height});
-                left: calc( -1 * (#{$tooltip-width} + 2 * #{$tooltip-padding-horizontal} - 100%) / 2);
-                content: attr(data-description);
-                z-index: 10;
-                text-align: center;
-                border-radius: 3px;
-                line-height: 21px;
+#logo {
+    padding-left: $header-height / 2;
+    font-size: $font-size-logo;
+    font-weight: bold;
+    // line-height equal to parent height, centralizes the text
+    line-height: $header-height;
+    letter-spacing: $logo-letter-spacing;
+    color: $header-color-symbols;
+    cursor: default;
+}
 
-
-                box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
-                font-size: $tooltip-font-size;
-            }
-
-            &:last-child::after {
-                left: auto;
-                right: 0;
-            }
-
-            &:hover{
-                >div.hover-mask, &::before, &::after {
-                    visibility: visible;
-                }
-            }
-
-            &:active>div.hover-mask {
-                /* just change colors between background and shadow */
-                background-color: rgba(0, 0, 0, 0.2);
-                box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.2);
-            }
-        }
-    }
-    
+#icons {
+    display: inline-block;
+    float: right;
+    height: 100%;
+    padding-right: $header-height / 2;
 }

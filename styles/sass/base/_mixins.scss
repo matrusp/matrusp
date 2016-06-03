@@ -1,0 +1,49 @@
+// Mixins
+@mixin center-block-horizontally() {
+    // only works with elements having position: absolute and some 
+    // fixed height.
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@mixin center-block-vertically() {
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+// need some color on border-bottom-color to show up.
+@mixin triangle-up($base, $height) {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-top-width: 0;
+    border-bottom-width: $height;
+    border-left-width: $base / 2;
+    border-right-width: $base / 2;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+@mixin column-background($black, $gray) {
+    $line-height: $column-background-line-height;
+    background-image: 
+        repeating-linear-gradient(
+            to bottom,
+            
+            $black,
+            $black $line-height,
+            transparent $line-height,
+            
+            transparent calc(#{$hour-height}),
+            $gray calc(#{$hour-height}),
+            $gray calc(#{$hour-height} + #{$line-height}),
+            transparent calc(#{$hour-height} + #{$line-height}),
+            
+            transparent calc(2 * #{$hour-height}));
+    
+    border-bottom: $line-height solid $black;
+}

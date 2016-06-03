@@ -1,0 +1,124 @@
+// 
+//
+// Search and Add Layout
+// =====================
+//
+// This file structures the basic search-and-add layout.
+// 
+// Affected HTML
+// -------------
+// html > body > div#page-container > div#main 
+// > div#lecture-explorer > div#search-and-add
+//
+//  div#search-and-add
+//      input#search
+//      button#add-extra-activity
+//      div#search-result-box
+//  ->      div.search-result.lecture-info
+//              div.lecture-info-code
+//              div.lecture-info-description
+//  ->      ...
+//
+//
+
+#search,
+#add-extra-activity,
+#search-result-box {
+    position: relative;
+    display: inline-block;
+    height: calc(100% - 2 * #{$search-and-add-border-width});
+    border-color: $search-and-add-border-color;
+    border-style: solid;
+    border-width: $search-and-add-border-width;
+    border-radius: 2px;
+    box-sizing: content-box;
+    
+    
+}
+        
+#search {
+    // TODO make mixing to deal with spacing between inline elements
+    //      like this "- 2px".
+    // TODO change 30px to variable
+    width: calc(100% - (2 * #{$search-padding-horizontal})
+                     - (2 * #{$search-and-add-border-width})
+                     - 2px - 30px);
+    padding: 0 $search-padding-horizontal;
+    font-family: $font-family;
+    font-size: $font-size;
+
+    &:focus {
+        z-index: 2;
+        border-bottom-style: none;
+        border-radius: 2px 2px 0 0;
+        // removes default outline from input:focus and replaces it
+        // with a shadow.
+        outline: none;
+        box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4);
+
+        // becomes translucent, "hiding" from user's view
+        ~ #add-extra-activity {
+            opacity: 0.4;
+        }
+        
+        ~ #search-result-box {
+            visibility: visible;
+        }
+    }
+}
+
+#add-extra-activity {
+    float: right;
+    width: calc(30px - 2 * #{$search-and-add-border-width} - 2px);
+    padding: 0;
+    // TODO change font size to a variable or change plus
+    //      sign to an image or css drawing.
+    font-size: 20px;
+    line-height: 100%;
+    cursor: pointer;
+    background-color: $white;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+}
+
+// it's visible only on #search:focus
+#search-result-box {
+    position: absolute;
+    // TODO change top to variable; it is 1px more than the 
+    //      search box height.
+    top: 27px;
+    z-index: 1;
+    display: block;
+    width: calc(100% - 2 * #{$search-and-add-border-width});
+    height: auto;
+    // TODO change [max/min]-height to variable.
+    // TODO check if with more lectures than max-height it breaks.
+    max-height: 300px;
+    min-height: 10px;
+    overflow-y: auto;
+    cursor: default;
+    background-color: $white;
+    border-radius: 0 2px 2px 2px;
+    visibility: hidden;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.search-result.lecture-info {
+    padding: 6px 4px;
+    border-bottom: 1px solid rgba(159, 159, 159, 0.8);
+
+    &:hover {
+        background-color: $highlight-background;
+        color: $highlight-text;
+    }
+}
