@@ -549,4 +549,16 @@ header {
   #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
     opacity: 1; }
 
+.lecture {
+  background-color: #7adf56;
+  position: absolute;
+  width: 100%; }
+
+.lecture-highlight {
+  color: white;
+  background-color: black; }
+
+.lecture-hide {
+  display: none; }
+
 /*# sourceMappingURL=application.css.map */
