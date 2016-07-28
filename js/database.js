@@ -120,7 +120,8 @@ function Database() {
 								'start_date' : specifications[1],
 								'end_date' : specifications[2],
 								'type' : specifications[3],
-								'schedule' : new Array()
+								'schedule' : new Array(),
+								'selected' : 1
 								};
 								if(specifications[4] != null) {
 								specifications[4].forEach(function(schedules) {
@@ -149,6 +150,8 @@ function Database() {
 	}
 }
 
+var database = new Database();
+database.loadDB(1);
 
 //TODO verificar se limitar o sliceObjectDB torna a busca mais rapida
 

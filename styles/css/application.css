@@ -243,8 +243,6 @@ header {
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4); }
     #search:focus ~ #add-extra-activity {
       opacity: 0.4; }
-    #search:focus ~ #search-result-box {
-      visibility: visible; }
 
 #add-extra-activity {
   float: right;
@@ -283,6 +281,10 @@ header {
   .search-result.lecture-info:hover {
     background-color: #e8ffdb;
     color: #398417; }
+
+.search-result-selected {
+  background-color: #e8ffdb;
+  color: #398417; }
 
 #accordion {
   /* sum scroll-bar-width to hide it from the user */

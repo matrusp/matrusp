@@ -23,12 +23,18 @@ function hasClass(el, className) {
  * @param {String} className
  */
 function addClass(el, className) {
-  // test for IE 9
-  if (el.classList) {
-    el.classList.add(className);
-  } else if (!hasClass(el, className)) {
-    el.className += " " + className;
-  }
+	// test for IE 9
+	if (Array.isArray(className)) {
+		for (var i = 0; i < className.length; i++) {
+			addClass(el, className[i]);
+		}
+	} else {
+		if (el.classList) {
+			el.classList.add(className);
+		} else if (!hasClass(el, className)) {
+			el.className += " " + className;
+		}
+	}
 }
 
 /**

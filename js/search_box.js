@@ -2,21 +2,22 @@
  * @constructor
  */
 
-function SearchBox(database) {
-	var self = this;//TODO captura o estado do sistema na hora da sua criacao
+function SearchBox() {
+	var self = this;
 
 	self.database = database;
 	self.searchBox = document.getElementById('search');
 	self.searchResultBox = document.getElementById('search-result-box');
 	self.overSearchResultBox = false;
-	self.selectedLectureIndex = -1;//TODO nome estranho
+	self.selectedLectureIndex = -1;
 	self.lecturesSuggestionList = new Array();
 
+		console.log('selectedLectureIndex', self.selectedLectureIndex)
 	function addLectures(lectures) {
 		lectures.forEach(function(lecture) {
 
 			var searchResultLectureInfo = createAndAppendChild(self.searchResultBox, 'div', {
-				'class' : 'search-result lecture-info'
+				'class' : ['search-result', 'lecture-info']
 				});
 			var lectureIndoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
 				'class' : 'lecture-info-code',
@@ -29,7 +30,7 @@ function SearchBox(database) {
 
 			
 			var addLectureCallback = function() {
-				addLecture(lecture);
+				ui.addLecture(lecture);
 				searchResultBoxHide();
 				self.overSearchResultBox = false;
 			}
@@ -85,6 +86,7 @@ function SearchBox(database) {
 		} else {
 			var keyPress = e.key;
 		}
+		console.log('keyPress', keyPress);
 
 		var suggestionLectures = self.searchResultBox.childNodes;
 		var selectedClass = "search-result-selected";
@@ -120,7 +122,7 @@ function SearchBox(database) {
 				return;
 			case 13:
 			case "Enter":
-				addLecture(self.lecturesSuggestionList[self.selectedLectureIndex]);
+				ui.addLecture(self.lecturesSuggestionList[self.selectedLectureIndex]);
 				searchResultBoxHide();
 				self.overSearchResultBox = false;
 				return;
@@ -141,7 +143,7 @@ function SearchBox(database) {
 }
 
 
-
+var searchBox = new SearchBox();
 
 
 
@@ -151,3 +153,4 @@ function SearchBox(database) {
 
 //TODO fazer uma funcao que mexe o scroll de search-result-box
 //TODO nao permitir incluir materias ja adicionadas
+//TODO captura o estado do sistema na hora da sua criacao
