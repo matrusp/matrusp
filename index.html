@@ -2,42 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- If the browser is lower than or equal to IE 9, redirect to the old page.
+        TODO verificar outros navegadores
+        TODO colocar a página correta de redirecionamento (quando for para produção, 
+            criar um link para a página antiga e.g. matrusp/old, matrusp/v1) -->
+    <!--[if lte IE 9 ]>
+        <meta http-equiv="refresh" content="0; url=http://bcc.ime.usp.br/matrusp/" />
+    <![endif]-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>MATRUSP</title>
     
     <link rel="stylesheet" href="styles/css/application.css">
     
 </head>
-<!-- EMMET snnipet --> 
-<!--
 
-div#page-container>(header>(span#logo{MATRUSP}+ul#icons>(li.icon[data-description="Exportar para o calendario do Google"]>div.hover-mask+img[src="images/ic_$.png"])*5))+(div#main>((div#lecture-schedule>((div.column.time>(div.hour{$$@6:00}*19))+div.column*6>(div.week-day{Segunda}+div.lecture>(span.timespan+div.color-box>span.lecture-code))))+div#lecture-explorer>(div#search-and-add>(input#search[type=text placeholder="Digite o código ou nome da matéria"]+button#add-extra-activity{+}+div#search-result-box>((div.search-result.lecture-info>(div.lecture-info-code{MAC$$@1$$@10 -}+div.lecture-info-description{Alguma matéria de computação}))+(div.search-result.lecture-info>(div.lecture-info-code{MAC$$@1$$@10 -}+div.lecture-info-description{Alguma outra matéria de outro possivel curso mas dessa vez com uma descrição muito maior para testar o número de linhas que isso toma ao aparecer nos resultados agora acho que está bom})))*5))+div#accordion-window>(div#accordion>(div.lecture-info>(input#lecture-info-$$[type=checkbox name=lecture-info]+div.lecture-info-header>(label[for=lecture-info-$$]>div.lecture-info-code{MAC$$@1$$@10 -}+div.lecture-info-description{Introdução à Análise de Algoritmos}^+div.lecture-delete>img[src="images/ic_close.png"]))+div.lecture-classrooms>(div.classrooms-header>div.classroom-number{Turma}+div.classroom-teacher{Professor}+div.toggle-classroom{+})+((input#classroom-$$[type=radio name=classroom-lecture-$$@-]+label.classroom[for=classroom-$$]>div.classroom-number{N$}+div.classroom-teacher{Nome do Professor}+div.toggle-classroom{+})+(input#classroom-$$@31[type=radio name=classroom-lecture-$$@-31]+label.classroom[for=classroom-$$@31]>div.classroom-number{N$}+div.classroom-teacher{Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria}+div.toggle-classroom{+})+(input#classroom-$$@61[type=radio name=classroom-lecture-$$@-61]+label.classroom[for=classroom-$$@61]>div.classroom-number{N$}+div.classroom-teacher{Prof Curto}+div.toggle-classroom{+})))*10)+div#explorer-footer>input#upload[type=file]))+footer>a{Fale Conosco / Críticas e Sugestões}+a{Fork me on GitHub}
-
--->
 <body>
-    
     <div id="page-container">
         <header>
             <span id="logo">MATRUSP</span>
             <ul id="icons">
                 <li class="icon" data-description="Exportar para o calendario do Google">
                     <div class="hover-mask"></div>
-                    <img src="images/ic_1.png" alt="">
+                    <img src="images/ic_calendar.png" alt="">
                 </li>
-                <li class="icon" data-description="Exportar para o calendario do Google">
+                <li class="icon" data-description="Imprimir">
                     <div class="hover-mask"></div>
-                    <img src="images/ic_2.png" alt="">
+                    <img src="images/ic_print.png" alt="">
                 </li>
-                <li class="icon" data-description="Exportar para o calendario do Google">
+                <li class="icon" data-description="Enviar por E-mail">
                     <div class="hover-mask"></div>
-                    <img src="images/ic_3.png" alt="">
+                    <img src="images/ic_email.png" alt="">
                 </li>
-                <li class="icon" data-description="Exportar para o calendario do Google">
+                <li class="icon" data-description="Compartilhar pelo Facebook">
                     <div class="hover-mask"></div>
-                    <img src="images/ic_4.png" alt="">
+                    <img src="images/ic_facebook.png" alt="">
                 </li>
-                <li class="icon" data-description="Exportar para o calendario do Google">
+                <li class="icon" data-description="Fazer download">
                     <div class="hover-mask"></div>
-                    <img src="images/ic_5.png" alt="">
+                    <img src="images/ic_download.png" alt="">
                 </li>
             </ul>
         </header>
@@ -62,101 +64,50 @@ div#page-container>(header>(span#logo{MATRUSP}+ul#icons>(li.icon[data-descriptio
                     <div class="hour">21:00</div>
                     <div class="hour">22:00</div>
                     <div class="hour">23:00</div>
-                    <div class="hour">24:00</div>
+                    <div class="hour">00:00</div>
                 </div>
                 <div class="column">
                     <div class="week-day">Segunda</div>
-                    <div class="lecture">
-                        <span class="timespan"></span>
-                        <div class="color-box"><span class="lecture-code"></span></div>
+                    <!--
+                    <div class="lecture" id="l-exemplo">
+                        <span class="timespan">10:00 11:40</span>
+                        <div class="color-box"><span class="lecture-code">MAC0110</span></div>
                     </div>
+                    -->
                 </div>
                 <div class="column">
-                    <div class="week-day">Segunda</div>
-                    <div class="lecture">
-                        <span class="timespan"></span>
-                        <div class="color-box"><span class="lecture-code"></span></div>
-                    </div>
+                    <div class="week-day">Terça</div>
                 </div>
                 <div class="column">
-                    <div class="week-day">Segunda</div>
-                    <div class="lecture">
-                        <span class="timespan"></span>
-                        <div class="color-box"><span class="lecture-code"></span></div>
-                    </div>
+                    <div class="week-day">Quarta</div>
                 </div>
                 <div class="column">
-                    <div class="week-day">Segunda</div>
-                    <div class="lecture">
-                        <span class="timespan"></span>
-                        <div class="color-box"><span class="lecture-code"></span></div>
-                    </div>
+                    <div class="week-day">Quinta</div>
                 </div>
                 <div class="column">
-                    <div class="week-day">Segunda</div>
-                    <div class="lecture">
-                        <span class="timespan"></span>
-                        <div class="color-box"><span class="lecture-code"></span></div>
-                    </div>
+                    <div class="week-day">Sexta</div>
                 </div>
                 <div class="column">
-                    <div class="week-day">Segunda</div>
-                    <div class="lecture">
-                        <span class="timespan"></span>
-                        <div class="color-box"><span class="lecture-code"></span></div>
-                    </div>
+                    <div class="week-day">Sábado</div>
                 </div>
             </div>
             <div id="lecture-explorer">
                 <div id="search-and-add">
                     <input type="text" id="search" placeholder="Digite o código ou nome da matéria">
-                    <button id="add-extra-activity">+</button>
+                    <button id="add-extra-activity" onclick="ui.addLecture(lectureEx, 0);">+</button>
                     <div id="search-result-box">
-                        <div class="search-result lecture-info">
+                        <!--
+                        <div class="search-result lecture-info" id="sr-li-exemplo">
                             <div class="lecture-info-code">MAC0110 -</div>
                             <div class="lecture-info-description">Alguma matéria de computação</div>
                         </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0110 -</div>
-                            <div class="lecture-info-description">Alguma outra matéria de outro possivel curso mas dessa vez com uma descrição muito maior para testar o número de linhas que isso toma ao aparecer nos resultados agora acho que está bom</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0211 -</div>
-                            <div class="lecture-info-description">Alguma matéria de computação</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0211 -</div>
-                            <div class="lecture-info-description">Alguma outra matéria de outro possivel curso mas dessa vez com uma descrição muito maior para testar o número de linhas que isso toma ao aparecer nos resultados agora acho que está bom</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0312 -</div>
-                            <div class="lecture-info-description">Alguma matéria de computação</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0312 -</div>
-                            <div class="lecture-info-description">Alguma outra matéria de outro possivel curso mas dessa vez com uma descrição muito maior para testar o número de linhas que isso toma ao aparecer nos resultados agora acho que está bom</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0413 -</div>
-                            <div class="lecture-info-description">Alguma matéria de computação</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0413 -</div>
-                            <div class="lecture-info-description">Alguma outra matéria de outro possivel curso mas dessa vez com uma descrição muito maior para testar o número de linhas que isso toma ao aparecer nos resultados agora acho que está bom</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0514 -</div>
-                            <div class="lecture-info-description">Alguma matéria de computação</div>
-                        </div>
-                        <div class="search-result lecture-info">
-                            <div class="lecture-info-code">MAC0514 -</div>
-                            <div class="lecture-info-description">Alguma outra matéria de outro possivel curso mas dessa vez com uma descrição muito maior para testar o número de linhas que isso toma ao aparecer nos resultados agora acho que está bom</div>
-                        </div>
+                        -->
                     </div>
                 </div>
                 <div id="accordion-window">
                     <div id="accordion">
-                        <div class="lecture-info">
+                        <!--
+                        <div class="lecture-info" id="li-exemplo">
                             <input type="checkbox" id="lecture-info-01" name="lecture-info">
                             <div class="lecture-info-header">
                                 <label for="lecture-info-01">
@@ -182,320 +133,9 @@ div#page-container>(header>(span#logo{MATRUSP}+ul#icons>(li.icon[data-descriptio
                                     <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
                                     <div class="toggle-classroom">+</div>
                                 </label>
-                                <input type="radio" id="classroom-61" name="classroom-lecture-10">
-                                <label class="classroom" for="classroom-61">
-                                    <div class="classroom-number">N1</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
                             </div>
                         </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-02" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-02">
-                                    <div class="lecture-info-code">MAC0211 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-02" name="classroom-lecture-09">
-                                <label class="classroom" for="classroom-02">
-                                    <div class="classroom-number">N2</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-32" name="classroom-lecture-09">
-                                <label class="classroom" for="classroom-32">
-                                    <div class="classroom-number">N2</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-62" name="classroom-lecture-09">
-                                <label class="classroom" for="classroom-62">
-                                    <div class="classroom-number">N2</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-03" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-03">
-                                    <div class="lecture-info-code">MAC0312 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-03" name="classroom-lecture-08">
-                                <label class="classroom" for="classroom-03">
-                                    <div class="classroom-number">N3</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-33" name="classroom-lecture-08">
-                                <label class="classroom" for="classroom-33">
-                                    <div class="classroom-number">N3</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-63" name="classroom-lecture-08">
-                                <label class="classroom" for="classroom-63">
-                                    <div class="classroom-number">N3</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-04" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-04">
-                                    <div class="lecture-info-code">MAC0413 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-04" name="classroom-lecture-07">
-                                <label class="classroom" for="classroom-04">
-                                    <div class="classroom-number">N4</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-34" name="classroom-lecture-07">
-                                <label class="classroom" for="classroom-34">
-                                    <div class="classroom-number">N4</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-64" name="classroom-lecture-07">
-                                <label class="classroom" for="classroom-64">
-                                    <div class="classroom-number">N4</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-05" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-05">
-                                    <div class="lecture-info-code">MAC0514 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-05" name="classroom-lecture-06">
-                                <label class="classroom" for="classroom-05">
-                                    <div class="classroom-number">N5</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-35" name="classroom-lecture-06">
-                                <label class="classroom" for="classroom-35">
-                                    <div class="classroom-number">N5</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-65" name="classroom-lecture-06">
-                                <label class="classroom" for="classroom-65">
-                                    <div class="classroom-number">N5</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-06" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-06">
-                                    <div class="lecture-info-code">MAC0615 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-06" name="classroom-lecture-05">
-                                <label class="classroom" for="classroom-06">
-                                    <div class="classroom-number">N6</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-36" name="classroom-lecture-05">
-                                <label class="classroom" for="classroom-36">
-                                    <div class="classroom-number">N6</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-66" name="classroom-lecture-05">
-                                <label class="classroom" for="classroom-66">
-                                    <div class="classroom-number">N6</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-07" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-07">
-                                    <div class="lecture-info-code">MAC0716 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-07" name="classroom-lecture-04">
-                                <label class="classroom" for="classroom-07">
-                                    <div class="classroom-number">N7</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-37" name="classroom-lecture-04">
-                                <label class="classroom" for="classroom-37">
-                                    <div class="classroom-number">N7</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-67" name="classroom-lecture-04">
-                                <label class="classroom" for="classroom-67">
-                                    <div class="classroom-number">N7</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-08" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-08">
-                                    <div class="lecture-info-code">MAC0817 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-08" name="classroom-lecture-03">
-                                <label class="classroom" for="classroom-08">
-                                    <div class="classroom-number">N8</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-38" name="classroom-lecture-03">
-                                <label class="classroom" for="classroom-38">
-                                    <div class="classroom-number">N8</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-68" name="classroom-lecture-03">
-                                <label class="classroom" for="classroom-68">
-                                    <div class="classroom-number">N8</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-09" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-09">
-                                    <div class="lecture-info-code">MAC0918 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-09" name="classroom-lecture-02">
-                                <label class="classroom" for="classroom-09">
-                                    <div class="classroom-number">N9</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-39" name="classroom-lecture-02">
-                                <label class="classroom" for="classroom-39">
-                                    <div class="classroom-number">N9</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-69" name="classroom-lecture-02">
-                                <label class="classroom" for="classroom-69">
-                                    <div class="classroom-number">N9</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="lecture-info">
-                            <input type="checkbox" id="lecture-info-10" name="lecture-info">
-                            <div class="lecture-info-header">
-                                <label for="lecture-info-10">
-                                    <div class="lecture-info-code">MAC1019 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
-                                <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
-                            </div>
-                            <div class="lecture-classrooms">
-                                <div class="classrooms-header">
-                                    <div class="classroom-number">Turma</div>
-                                    <div class="classroom-teacher">Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </div>
-                                <input type="radio" id="classroom-10" name="classroom-lecture-01">
-                                <label class="classroom" for="classroom-10">
-                                    <div class="classroom-number">N10</div>
-                                    <div class="classroom-teacher">Nome do Professor</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-40" name="classroom-lecture-01">
-                                <label class="classroom" for="classroom-40">
-                                    <div class="classroom-number">N10</div>
-                                    <div class="classroom-teacher">Professor Com Um Nome Muito Longo Ou Quem Sabe Mais de Um Professor Para a Mesma Matéria</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                                <input type="radio" id="classroom-70" name="classroom-lecture-01">
-                                <label class="classroom" for="classroom-70">
-                                    <div class="classroom-number">N10</div>
-                                    <div class="classroom-teacher">Prof Curto</div>
-                                    <div class="toggle-classroom">+</div>
-                                </label>
-                            </div>
-                        </div>
+                        -->
                     </div>
                     <div id="explorer-footer"><input type="file" id="upload"></div>
                 </div>
@@ -503,6 +143,7 @@ div#page-container>(header>(span#logo{MATRUSP}+ul#icons>(li.icon[data-descriptio
         </div>
         <footer><a href="">Fale Conosco / Críticas e Sugestões</a><a href="">Fork me on GitHub</a></footer>
     </div>
-    
+    <script type="text/javascript" src="js/custom_lib.js"></script>
+    <script type="text/javascript" src="js/ui.js"></script>
 </body>
 </html>

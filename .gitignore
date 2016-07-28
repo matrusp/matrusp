@@ -1,3 +1,5 @@
 *.DS_Store
 .sass-cache/*
-styles/css/*.map
+styles/.sass-cache/*
+styles/css/*
+js/docs/*
