@@ -60,10 +60,10 @@
         ~ #add-extra-activity {
             opacity: 0.4;
         }
-        
-        ~ #search-result-box {
-            visibility: visible;
-        }
+				//TODO ver as cosequencias de tirar esse cara 
+        //~ #search-result-box {
+        //    visibility: visible;
+        //}
     }
 }
 
@@ -121,4 +121,9 @@
         background-color: $highlight-background;
         color: $highlight-text;
     }
+}
+
+.search-result-selected {
+        background-color: $highlight-background;
+        color: $highlight-text;
 }
