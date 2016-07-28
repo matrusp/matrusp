@@ -3,3 +3,5 @@
 styles/.sass-cache/*
 styles/css/*
 js/docs/*
+#exclude vim swap files
+*.swp

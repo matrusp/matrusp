@@ -351,6 +351,9 @@ function UI() {
    * @param {Number} combinationClassroomIndex Index of the set classroom, the one for this combination scheme.
    */
   this.addLecture = function(lecture, combinationClassroomIndex) {
+		if(!combinationClassroomIndex) {
+		 combinationClassroomIndex = 0;
+		}
     if (!lecture.classrooms[combinationClassroomIndex].selected) {
       console.log('Inside addLecture(): combinationClassroomIndex doesn\'t refer to a selected classroom.');
       console.log('lecture', lecture, 'combinationClassroomIndex', combinationClassroomIndex);
