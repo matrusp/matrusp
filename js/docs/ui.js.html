@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ui.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ui.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Object interface to manipulate the User Interface objects
+ * 
+ * @Constructor
+ */
+function UI() {
+  // DOM Objects Reference Variables
+  // ===============================
+  var accordion = document.getElementById('accordion');
+  var weekdays = new Array();
+  // Ignores i == 0 because it's the time column
+  var lectureScheduleColumns = document.getElementsByClassName('column');
+  for(var i = 1; i &lt; lectureScheduleColumns.length; i++) {
+    weekdays.push(lectureScheduleColumns[i]);
+  }
+
+
+  // Functions
+  // =========
+
+  /**
+   * Creates a string containing CSS calc() function to correctly position vertically the classroom schedule box
+   *
+   * @param {Schedule} schedule
+   * @return {Object} &lt;pre>&lt;code>{ 
+   *  positionBegin : &lt;i>string&lt;/i>, 
+   *  positionEnd : &lt;i>string&lt;/i> 
+   * }&lt;/code>&lt;/pre>
+   */
+  function calcPositionForTime(schedule) {
+    var hourBegin = schedule.timeBegin.substr(0,2);
+    var minBegin = schedule.timeBegin.substr(3,2);
+    var hourEnd = schedule.timeEnd.substr(0,2);
+    var minEnd = schedule.timeEnd.substr(3,2);
+
+    positionBegin = 'calc((100% / 18) * (' + hourBegin + ' + (' + minBegin + ' / 60) - 6) + 1px)';
+    positionEnd = 'calc((100% / 18) * (' + hourEnd + ' - ' + hourBegin + ' - 1 + (60 - ' + minBegin + ') / 60 + ' + minEnd + ' / 60) + 1px)'; 
+
+    return { 
+      positionBegin, 
+      positionEnd 
+    };
+  }
+
+  /**
+   * Creates boxes that represent lecture schedules in the schedule table.
+   * &lt;br>
+   * Generates HTML elements with this form:
+   *
+   * &lt;pre>&lt;code>&amp;ltdiv class="lecture"&amp;gt
+   *   &amp;ltspan class="timespan"&amp;gt10:00 11:40&amp;lt/span&amp;gt
+   *   &amp;ltspan class="lecture-code"&amp;gtMAC0110&amp;lt/span&amp;gt
+   * &amp;lt/div&amp;gt&lt;/code>&lt;/pre>
+   *
+   * @param {Schedule} schedule
+   * @param {String} lectureCode
+   * @return {div}
+   */
+  this.createScheduleBox = function(schedule, lectureCode) {
+    var scheduleBoxTreeObj = {
+        tag: 'div',
+        class:'schedule-box',
+        children: [
+        {
+          tag: 'span',
+          class: 'timespan',
+          innerHTML: schedule.timeBegin + ' ' + schedule.timeEnd
+        },
+        {
+          tag: 'span',
+          class: 'lecture-code',
+          innerHTML: lectureCode
+        }
+      ]
+    };
+
+    var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
+
+    var timePosition = calcPositionForTime(schedule);
+    scheduleBox.style.top = timePosition.positionBegin;
+    scheduleBox.style.height = timePosition.positionEnd;
+
+    return scheduleBox;
+  }
+
+
+  /**
+   * Creates boxes that represent lecture schedules in the schedule table.
+   * &lt;br>
+   * Generates HTML elements with this form:
+   *
+   * &lt;pre>&lt;code>&amp;ltdiv class="lecture-classrooms"&amp;gt
+   *     &amp;ltdiv class="classroom-info"&amp;gt
+   *       &amp;ltinput type="checkbox" id="classroom-01" name="MAC0110"&amp;gt
+   *       &amp;ltlabel class="classroom" for="classroom-01"&amp;gt
+   *         &amp;ltdiv class="classroom-number"&amp;gtN1&amp;lt/div&amp;gt
+   *         &amp;ltdiv class="classroom-teacher"&amp;gtNome do Professor&amp;lt/div&amp;gt
+   *         &amp;ltdiv class="classroom-toggle"&amp;gt+&amp;lt/div&amp;gt
+   *       &amp;lt/label&amp;gt
+   *     &amp;lt/div&amp;gt
+   * &amp;lt/div&amp;gt&lt;/pre>&lt;/code>
+   *
+   *
+   * @param {Schedule} schedule
+   * @param {String} lectureCode
+   * @return {div}
+   */
+  this.createClassroomInfo = function(classroom, lectureCode) {
+    var classroomInfoTreeObj = {
+      tag: 'div',
+      class: 'classroom-info',
+      children: [
+        {
+          tag: 'div',
+          class: 'classroom-code',
+          innerHTML: classroom.classroomCode
+        },
+        {
+          tag: 'div',
+          class: 'classroom-teacher',
+          innerHTML: classroom.teachers.join('&lt;br>')
+        },
+        {
+          tag: 'div',
+          class: 'classroom-toggle',
+          innerHTML: 'x'
+        }
+      ]
+    };
+
+    var classroomInfo = createHtmlElementTree(classroomInfoTreeObj);
+    return classroomInfo;
+  }
+
+  /**
+   * Creates the Info section of a lecture, inside lecture explorer.
+   *
+   * @param {Lecture} lecture
+   * @return {HTML_Element} div.lecture-info
+   */
+  this.createLectureInfo = function(lecture) {
+    var lectureInfoTreeObj = {
+      tag: 'div',
+      class: 'lecture-info',
+      children: [
+        {
+          tag: 'div',
+          class: 'lecture-info-header',
+          children: [
+            {
+              tag: 'div',
+              class: 'lecture-info-header-title',
+              children: [
+                {
+                  tag: 'div',
+                  class: 'lecture-info-code',
+                  innerHTML: (lecture.code + ' -')
+                },
+                {
+                  tag: 'div',
+                  class: 'lecture-info-name',
+                  innerHTML: ('&amp;nbsp' + lecture.name)
+                }
+              ]
+            },
+            {
+              tag: 'div',
+              class: 'lecture-info-delete',
+              children: [
+                {
+                  tag: 'img',
+                  src: 'images/ic_close.png'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          tag: 'div',
+          class: 'lecture-classrooms',
+          children: [
+            {
+              tag: 'div',
+              class: 'classrooms-header',
+              children: [
+                {
+                  tag: 'div',
+                  class: 'classroom-code',
+                  innerHTML: 'Turma'
+                },
+                {
+                  tag: 'div',
+                  class: 'classroom-teacher',
+                  innerHTML: 'Professor'
+                },
+                {
+                  tag: 'div',
+                  class: 'classroom-toggle',
+                  innerHTML: 'x'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+
+    var lectureInfo = createHtmlElementTree(lectureInfoTreeObj);
+    return lectureInfo;
+  }
+
+  /**
+   *
+   */
+  this.addLecture = function(lecture) {
+    accordion.appendChild(lecture.htmlElement);
+    for (var i = 0; i &lt; lecture.classrooms.length; i++) {
+      var classroom = lecture.classrooms[i];
+      for (var j = 0; j &lt; classroom.schedules.length; j++) {
+        var schedule = classroom.schedules[j];
+        var day = indexOfDay(schedule.day);
+        weekdays[day].appendChild(schedule.htmlElement);
+      }
+    }
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Jul 30 2016 14:56:49 GMT-0300 (BRT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
