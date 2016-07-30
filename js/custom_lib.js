@@ -104,6 +104,71 @@ function createAndAppendChild(parent, tag, attributes) {
 }
 
 /**
+ * Create a HTML Element Tree from a js object.
+ *
+ * @example param
+ *  var lectureInfoTreeObj = {
+ *    tag: 'div',
+ *   class: 'lecture-info',
+ *    children: [
+ *      {
+ *        tag: 'input',
+ *        type: 'checkbox',
+ *        id: 'lecture-info-' + labelCount,
+ *        name: 'lecture-info'
+ *      },
+ *      {
+ *        tag: 'div',
+ *        class: 'lecture-info-header',
+ *        children: [
+ *          {
+ *            tag: 'label',
+ *            htmlFor: 'lecture-info-' + labelCount,
+ *            children: [
+ *              {
+ *                tag: 'div',
+ *                class: 'lecture-info-code',
+ *                innerHTML: (lecture.code + ' -')
+ *              }
+ *            ]
+ *          }
+ *        ]
+ *      }
+ *    ]
+ *  }
+ *
+ * @param rootObj
+ * @param {String} rootObj.tag HTML tag
+ * @param {String[]} rootObj.class CSS classes
+ * @param [rootObj.children] Objects like rootObj
+ * @return {HTML_Element} The root element
+ */
+function createHtmlElementTree(rootObj) {
+  if (!rootObj.tag) {
+    console.log('Error in createHtmlElementTree(', rootObj, ')');
+    return;
+  }
+
+  var tag = rootObj.tag;
+  delete rootObj.tag;
+  var children = rootObj.children;
+  delete rootObj.children;
+
+  var rootElement = createElementWithAttributes(tag, rootObj);
+
+  if (!children) {
+    return rootElement;
+  }
+
+  for (var i = 0; i < children.length; i++) {
+    var child = createHtmlElementTree(children[i]);
+    rootElement.appendChild(child);
+  }
+
+  return rootElement;
+}
+
+/**
  * Translates 3-characters words in numbers.
  * <br>
  * 'seg' = 0, 'ter' = 1, ..., 'dom' = 6
@@ -142,8 +207,6 @@ function removeDuplicates(array) {
   }
   return uniqueArray;
 }
-
-
 
 
 
