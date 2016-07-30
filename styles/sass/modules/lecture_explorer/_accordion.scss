@@ -17,17 +17,17 @@
 //              div#lecture-info-header
 //                  label[for=lecture-info-01]
 //                      div.lecture-info-code
-//                      div.lecture-info-description
+//                      div.lecture-info-name
 //              div#lecture-classrooms
 //                  div.classrooms-header
 //                      div.classroom-number
 //                      div.classroom-teacher
-//                      div.toggle-classroom
+//                      div.classroom-toggle 
 //            ->    input#classroom-01
-//                  label.classroom[for=classroom-01]
+//                  label.classroom-info[for=classroom-01]
 //                      div.classroom-number
 //                      div.classroom-teacher
-//                      div.toggle-classroom
+//                      div.classroom-toggle 
 //            ->    ...
 //  ->      ...
 //
@@ -41,51 +41,51 @@
 }
 
 // TODO compare these properties with those inside "_base_lecture_info.scss"
-#accordion>.lecture-info {
+.lecture-info {
     position: relative;
     // 100% - 2 * padding
     width: calc(100% - 2px);
     padding: 1px;
+}
     
-    >.lecture-info-header {
-        position: relative;
+.lecture-info-header {
+    position: relative;
+}
 
-        >label {
-            position: relative;
-            display: block;
-            width: calc(100% - #{$width-lecture-delete} - 2 * 6px);
-            // TODO these height declarations doesn't make any sense, or do they?
-            height: 30px;
-            max-height: 100%;
-            padding: 7px 6px 7px 8px;
-            overflow: hidden;
-            line-height: 30px;
-            cursor: pointer;
-            // TODO transitions doesn't work well with 'auto' values
-            //      so take this off or come up with some solution.
-            //transition: all .4s;
+.lecture-info-header-title {
+    position: relative;
+    display: block;
+    width: calc(100% - #{$width-lecture-delete} - 2 * 6px);
+    // TODO these height declarations doesn't make any sense, or do they?
+    height: 30px;
+    max-height: 100%;
+    padding: 7px 6px 7px 8px;
+    overflow: hidden;
+    line-height: 30px;
+    cursor: pointer;
+    // TODO transitions doesn't work well with 'auto' values
+    //      so take this off or come up with some solution.
+    //transition: all .4s;
 
-            >.lecture-info-description {
-                width: calc(100% - #{$width-lecture-code} - 4px);
-            }
-        }
+    >.lecture-info-name {
+        width: calc(100% - #{$width-lecture-code} - 4px);
+    }
+}
 
-        >.lecture-delete {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: $width-lecture-delete;
-            height: 100%;
-            cursor: pointer;
+.lecture-info-delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: $width-lecture-delete;
+    height: 100%;
+    cursor: pointer;
 
-            >img {
-                @include center-block-horizontally();
-                @include center-block-vertically();
-                position: absolute;
-                width: $width-icon-delete;
-                opacity: 0.3;
-            }
-        }
+    >img {
+        @include center-block-horizontally();
+        @include center-block-vertically();
+        position: absolute;
+        width: $width-icon-delete;
+        opacity: 0.3;
     }
 }
 
@@ -94,6 +94,7 @@
     height: 0px;
     overflow: hidden;
     background-color: $white;
+    cursor: default;
     //transition: height .4s;
     
     >.classrooms-header {
@@ -101,24 +102,26 @@
         padding-bottom: 6px;
     }
     
-    >label.classroom {
+    >.classroom-info {
         display: block;
         padding-top: 4px;
         padding-bottom: 7px;
     }
     
     >.classrooms-header,
-    >label.classroom {
+    >.classroom-info {
         &:not(:last-child) {
             border-bottom: 1px solid;
         }
         
-        >div {
+        .classroom-code,
+        .classroom-teacher,
+        .classroom-toggle {
             display: inline-block;
             vertical-align: middle;
         }
         
-        .classroom-number {
+        .classroom-code {
             // TODO change to variable
             width: 40px;
             text-align: center;
@@ -130,29 +133,24 @@
             width: calc(100% - #{$width-lecture-code} - #{$width-lecture-delete})
         }
         
-        .toggle-classroom {
+        .classroom-toggle {
             position: relative;
             // TODO change to variable
             left: 2px;
         }
     }
 }
-    
-#accordion input {
-    display: none;
-    
-    &[type='checkbox']:checked {
-        & + .lecture-info-header>label {
-            height: auto;
-            line-height: normal;
-        }
-        
-        & ~ .lecture-classrooms {
-            height: auto;
-        }
+
+.lecture-open {
+    >.lecture-classrooms {
+        height: auto;
+    }
+
+    .lecture-info-header-title {
+        height: auto;
+        line-height: normal;
     }
 }
-
 
 #accordion {
     @each $color in $lecture-colors {
@@ -167,7 +165,7 @@
             }
             
             >.lecture-info-header {
-                >.lecture-delete {
+                >.lecture-info-delete {
                     &:hover {
                         background-color: lighten($color, 5%);
                     }
@@ -180,22 +178,23 @@
             
             >.lecture-classrooms {
                 //background-color: lighten($color, 33%);
-                >label.classroom {
-                    >.classroom-number,
+                >.classroom-info {
+                    >.classroom-code,
                     >.classroom-teacher {
-                        opacity: 0.5;
+                        opacity: 0.4;
                     }
                     
                     &:hover {
-                        >.classroom-number,
+                        >.classroom-code,
                         >.classroom-teacher {
-                            opacity: 0.8;
+                            opacity: 0.6;
                         }
                     }
                 }
-                
-                >input[type='radio']:checked + label.classroom{
-                    >.classroom-number,
+
+                >.classroom-selected,
+                >.classroom-selected:hover {
+                    >.classroom-code,
                     >.classroom-teacher {
                         opacity: 1;
                     }
