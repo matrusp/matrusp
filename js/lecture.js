@@ -20,7 +20,8 @@
 function Lecture(jsonObj, parentPlan) {
   this.parent = parentPlan;
   this.classrooms = new Array();
-  this.activeClassroomIndex = 0;
+  // activeClassroomIndex is set after combinations are computed (last thing of creating a plan)
+  this.activeClassroomIndex = null;
   if (jsonObj) {
     this.code = jsonObj.code;
     this.name = jsonObj.name;
@@ -33,8 +34,7 @@ function Lecture(jsonObj, parentPlan) {
     }
 
     this.appendHTMLChildren();
-    this.addClick();
-    this.classrooms[this.activeClassroomIndex].showBox();
+    this.addEventListeners();
   } else {
     this.code = null;
     this.name = null;
@@ -64,7 +64,7 @@ Lecture.prototype.toggleLectureOpen = function() {
 /**
  *
  */
-Lecture.prototype.addClick = function() {
+Lecture.prototype.addEventListeners = function() {
   // this.htmlElement.children[0] is equivalent (30.jul.16)
   var lectureHeaderTitle = this.htmlElement.getElementsByClassName('lecture-info-header-title')[0];
   lectureHeaderTitle.addEventListener('click', this.toggleLectureOpen.bind(this));

@@ -11,6 +11,12 @@
   visibility: visible;
 }
 
+.schedule-box-highlight-conflict {
+  color: black;
+  background-color: red;
+  z-index: 1;
+}
+
 .schedule-box-show {
   visibility: visible;
 }
