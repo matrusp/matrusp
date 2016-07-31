@@ -10,7 +10,7 @@
         {
           "code": "SCC0502",
           "name": "Algoritmos e Estruturas de Dados I",
-          "color": "lightblue",
+          "color": "1",
           "campus": "TODOS",
           "selected": 0,
           "classrooms": [
@@ -100,7 +100,7 @@
         {
           "code": "ESA5350",
           "name": "Educação Educação Educação Educação Educação Educação",
-          "color": "lightblue",
+          "color": "2",
           "campus": "TODOS",
           "selected": 1,
           "classrooms": [
@@ -190,7 +190,7 @@
         {
           "code": "MAK0002",
           "name": "Artes 1",
-          "color": "lightblue",
+          "color": "3",
           "campus": "TODOS",
           "selected": 1,
           "classrooms": [

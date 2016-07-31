@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: custom_lib.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: custom_lib.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * Verify if a HTML Element have a class
+ *
+ * @param {Object} el
+ * @param {String} className
+ * @return {boolean} 
+ */
+function hasClass(el, className) {
+  // test for IE 9
+  if (el.classList) {
+    return el.classList.contains(className);
+  } else {
+    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+    return !!el.className.match(reg);
+  }
+}
+
+/**
+ * Include a class to a HTML Element if it doesn't have it yet
+ *
+ * @param {Object} el
+ * @param {String} className
+ */
+function addClass(el, className) {
+	// test for IE 9
+	if (Array.isArray(className)) {
+		for (var i = 0; i &lt; className.length; i++) {
+			addClass(el, className[i]);
+		}
+	} else {
+		if (el.classList) {
+			el.classList.add(className);
+		} else if (!hasClass(el, className)) {
+			el.className += " " + className;
+		}
+	}
+}
+
+/**
+ * Removes a class to a HTML Element if it exists
+ *
+ * @param {Object} el
+ * @param {String} className
+ */
+function removeClass(el, className) {
+  // test for IE 9
+  if (el.classList) {
+    el.classList.remove(className);
+  } else if (hasClass(el, className)) {
+    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+    el.className = el.className.replace(reg, ' ');
+  }
+}
+
+/**
+ * Toggle the existence of a class to a HTML Element
+ *
+ * @param {Object} el
+ * @param {String} className
+ */
+// opcao a partir do IE 10: {var menu = document.querySelector('.menu'); menu.classList.toggle('hidden-phone');}
+function toggleClass(el, className) {
+  if (hasClass(el, className)) {
+    removeClass(el, className);
+  } else {
+    addClass(el, className);
+  }
+}
+
+/**
+ * Create a HTML Element with attributes (e.g. class, innerHTML, style, etc.)
+ *
+ * @param {String} tag
+ * @param {Array} attributes
+ */
+function createElementWithAttributes(tag, attributes) {
+  var element = document.createElement(tag);
+  for (attr in attributes) {
+    // test for IE8
+    if (attributes.hasOwnProperty(attr)) {
+      if (attr == 'class') {
+        addClass(element, attributes[attr]);
+      } else {
+        element[attr] = attributes[attr];
+      }
+    }
+  }
+  return element;
+}
+
+/**
+ * Create a HTML Element with attributes (e.g. class, innerHTML, style, etc.) and appends it to another element.
+ *
+ * @param {object} parent
+ * @param {String} tag
+ * @param {Array} attributes
+ * @return {object} The child element just created
+ */
+function createAndAppendChild(parent, tag, attributes) {
+  var child = createElementWithAttributes(tag, attributes);
+  parent.appendChild(child);
+  return child;
+}
+
+/**
+ * Create a HTML Element Tree from a js object.
+ *
+ * @example param
+ *  var lectureInfoTreeObj = {
+ *    tag: 'div',
+ *   class: 'lecture-info',
+ *    children: [
+ *      {
+ *        tag: 'input',
+ *        type: 'checkbox',
+ *        id: 'lecture-info-' + labelCount,
+ *        name: 'lecture-info'
+ *      },
+ *      {
+ *        tag: 'div',
+ *        class: 'lecture-info-header',
+ *        children: [
+ *          {
+ *            tag: 'label',
+ *            htmlFor: 'lecture-info-' + labelCount,
+ *            children: [
+ *              {
+ *                tag: 'div',
+ *                class: 'lecture-info-code',
+ *                innerHTML: (lecture.code + ' -')
+ *              }
+ *            ]
+ *          }
+ *        ]
+ *      }
+ *    ]
+ *  }
+ *
+ * @param rootObj
+ * @param {String} rootObj.tag HTML tag
+ * @param {String[]} rootObj.class CSS classes
+ * @param [rootObj.children] Objects like rootObj
+ * @return {HTML_Element} The root element
+ */
+function createHtmlElementTree(rootObj) {
+  if (!rootObj.tag) {
+    console.log('Error in createHtmlElementTree(', rootObj, ')');
+    return;
+  }
+
+  var tag = rootObj.tag;
+  delete rootObj.tag;
+  var children = rootObj.children;
+  delete rootObj.children;
+
+  var rootElement = createElementWithAttributes(tag, rootObj);
+
+  if (!children) {
+    return rootElement;
+  }
+
+  for (var i = 0; i &lt; children.length; i++) {
+    var child = createHtmlElementTree(children[i]);
+    rootElement.appendChild(child);
+  }
+
+  return rootElement;
+}
+
+/**
+ * Translates 3-characters words in numbers.
+ * &lt;br>
+ * 'seg' = 0, 'ter' = 1, ..., 'dom' = 6
+ *
+ * @param {String} day
+ * @return {Number}
+ */
+function indexOfDay(day) {
+  switch (day) {
+    case 'seg': return 0;
+    case 'ter': return 1;
+    case 'qua': return 2;
+    case 'qui': return 3;
+    case 'sex': return 4;
+    case 'sab': return 5;
+    case 'dom': return 6;
+  }
+}
+
+/**
+ * Creates a new array with unique elements from the array given.
+ *
+ * @param {Array} array
+ * @return {Array}
+ */
+function removeDuplicates(array) {
+  var seenHash = new Object();
+  var uniqueArray = new Array();
+  var uniqueCounter = 0;
+  for(var i = 0; i &lt; array.length; i++) {
+    var item = array[i];
+    if(seenHash[item] != 1) {
+      seenHash[item] = 1;
+      uniqueArray[uniqueCounter++] = item;
+    }
+  }
+  return uniqueArray;
+}
+
+
+// TODO deixar essas funcoes (timeInMinutes, schedulesConflict, classroomsConflict) em plan.js ?
+//      a principio elas sao utilizadas **somente** la
+/**
+ *
+ */
+function timeInMinutes(timeString) {
+  var hours = Number(timeString.substr(0,2));
+  var minutes = Number(timeString.substr(3,2));
+  return 60*hours + minutes;
+}
+
+/**
+ *
+ */
+function schedulesConflict(schedule1, schedule2) {
+  if ((schedule1 == schedule2) ||
+      (schedule1.day != schedule2.day)) {
+    return false;
+  }
+  var timeBegin1 = timeInMinutes(schedule1.timeBegin);
+  var timeBegin2 = timeInMinutes(schedule2.timeBegin);
+  var timeEnd1 = timeInMinutes(schedule1.timeEnd);
+  var timeEnd2 = timeInMinutes(schedule2.timeEnd);
+
+  return ((timeBegin1 == timeBegin2 &amp;&amp; timeEnd1 == timeEnd2) ||
+    (timeBegin1 &lt; timeBegin2 &amp;&amp; timeBegin2 &lt; timeEnd1) ||
+    (timeBegin1 &lt; timeEnd2 &amp;&amp; timeEnd2 &lt; timeEnd1) ||
+    (timeBegin2 &lt; timeBegin1 &amp;&amp; timeBegin1 &lt; timeEnd2) ||
+    (timeBegin2 &lt; timeEnd1 &amp;&amp; timeEnd1 &lt; timeEnd2)
+  );
+}
+
+/**
+ *
+ */
+function classroomsConflict(classroom1, classroom2) {
+  var schedules1 = classroom1.schedules;
+  var schedules2 = classroom2.schedules;
+
+  for (var i = 0; i &lt; schedules1.length; i++) {
+    for (var j = 0; j &lt; schedules2.length; j++) {
+      if (schedulesConflict(schedules1[i], schedules2[j])) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 31 2016 17:46:53 GMT-0300 (BRT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

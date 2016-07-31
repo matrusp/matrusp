@@ -1,24 +1,32 @@
 .schedule-box {
-	background-color: #7adf56;
 	position: absolute;
 	width: 100%;
   visibility: hidden;
 }
 
+.schedule-box-show,
 .schedule-box-highlight {
-	color: white;
-	background-color: black;
   visibility: visible;
 }
 
-.schedule-box-highlight-conflict {
-  color: black;
+// Same order as in lecture_explorer/_accordion.scss
+@each $color in $lecture-colors {
+  $i: index($lecture-colors, $color);
+
+  .schedule-box.color-#{$i} {
+    background-color: lighten($color, 20%);
+    color: darken($color, 25%);
+  }
+
+  .schedule-box-highlight.color-#{$i} {
+    background-color: $color;
+    color: darken($color, 25%);
+  }
+}
+
+.schedule-box-highlight.schedule-box-highlight-conflict {
   background-color: red;
+  color: black;
+  opacity: 0.8;
   z-index: 1;
 }
-
-.schedule-box-show {
-  visibility: visible;
-}
-
-
