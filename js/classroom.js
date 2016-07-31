@@ -44,6 +44,9 @@ function Classroom(jsonObj, parentLecture) {
       this.schedules.push(new Schedule(jsonObj.schedules[i], this));
     }
     this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
+    if (this.selected) {
+      addClass(this.htmlElement, 'classroom-selected');
+    }
     this.addEventListeners();
   } else {
     this.classroomCode = null;
@@ -94,11 +97,32 @@ Classroom.prototype.hideBox = function() {
 /**
  *
  */
+ // TODO mudar aqui quando tiver plan.activeCombination e lecture.activeClassroom
 Classroom.prototype.setHighlight = function() {
   var lecture = this.parent;
-  var activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
-  activeClassroom.hideBox();
+  if (lecture.selected) {
+    var activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
+    activeClassroom.hideBox();
+  }
   this.addClassInSchedules('schedule-box-highlight');
+  
+  if (this != activeClassroom) {
+    var activeCombination = lecture.parent.combinations[lecture.parent.activeCombinationIndex];
+    var lecturesClassroom = activeCombination.lecturesClassroom;
+    for (var i = 0; i < lecturesClassroom.length; i++) {
+      if (this.parent == lecturesClassroom[i].parent) {
+        // same lecture, skip.
+        continue;
+      }
+      for (var j = 0; j < this.schedules.length; j++) {
+        for (var k = 0; k < lecturesClassroom[i].schedules.length; k++) {
+          if (schedulesConflict(this.schedules[j], lecturesClassroom[i].schedules[k])) {
+            addClass(this.schedules[j].htmlElement, 'schedule-box-highlight-conflict');
+          }
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -106,9 +130,12 @@ Classroom.prototype.setHighlight = function() {
  */
 Classroom.prototype.unsetHighlight = function() {
   var lecture = this.parent;
-  var activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
-  activeClassroom.showBox();
+  if (lecture.selected) {
+    var activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
+    activeClassroom.showBox();
+  }
   this.removeClassInSchedules('schedule-box-highlight');
+  this.removeClassInSchedules('schedule-box-highlight-conflict');
 }
 
 /**
@@ -117,6 +144,8 @@ Classroom.prototype.unsetHighlight = function() {
 Classroom.prototype.toggleClassroomSelection = function() {
   toggleClass(this.htmlElement, 'classroom-selected');
   this.selected = !this.selected;
+  // Update plan.
+  this.parent.parent.update();
 }
 
 

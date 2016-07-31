@@ -209,4 +209,52 @@ function removeDuplicates(array) {
 }
 
 
+// TODO deixar essas funcoes (timeInMinutes, schedulesConflict, classroomsConflict) em plan.js ?
+//      a principio elas sao utilizadas **somente** la
+/**
+ *
+ */
+function timeInMinutes(timeString) {
+  var hours = Number(timeString.substr(0,2));
+  var minutes = Number(timeString.substr(3,2));
+  return 60*hours + minutes;
+}
+
+/**
+ *
+ */
+function schedulesConflict(schedule1, schedule2) {
+  if ((schedule1 == schedule2) ||
+      (schedule1.day != schedule2.day)) {
+    return false;
+  }
+  var timeBegin1 = timeInMinutes(schedule1.timeBegin);
+  var timeBegin2 = timeInMinutes(schedule2.timeBegin);
+  var timeEnd1 = timeInMinutes(schedule1.timeEnd);
+  var timeEnd2 = timeInMinutes(schedule2.timeEnd);
+
+  return ((timeBegin1 == timeBegin2 && timeEnd1 == timeEnd2) ||
+    (timeBegin1 < timeBegin2 && timeBegin2 < timeEnd1) ||
+    (timeBegin1 < timeEnd2 && timeEnd2 < timeEnd1) ||
+    (timeBegin2 < timeBegin1 && timeBegin1 < timeEnd2) ||
+    (timeBegin2 < timeEnd1 && timeEnd1 < timeEnd2)
+  );
+}
+
+/**
+ *
+ */
+function classroomsConflict(classroom1, classroom2) {
+  var schedules1 = classroom1.schedules;
+  var schedules2 = classroom2.schedules;
+
+  for (var i = 0; i < schedules1.length; i++) {
+    for (var j = 0; j < schedules2.length; j++) {
+      if (schedulesConflict(schedules1[i], schedules2[j])) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Schedule</title>
+    <title>JSDoc: Class: Combination</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Schedule</h1>
+    <h1 class="page-title">Class: Combination</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>Schedule</h2>
+        <h2>Combination</h2>
         
     
 </header>
@@ -40,14 +40,14 @@
 
     
 
-    <h4 class="name" id="Schedule"><span class="type-signature"></span>new Schedule<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Combination"><span class="type-signature"></span>new Combination<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    A class representing schedules.
+    A class representing combinations.
 </div>
 
 
@@ -91,7 +91,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedule.js.html">schedule.js</a>, <a href="schedule.js.html#line17">line 17</a>
+        <a href="combination.js.html">combination.js</a>, <a href="combination.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -101,7 +101,7 @@
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="UI.html#createScheduleBox">UI#createScheduleBox</a></li>
+            <li><a href="Plan.html#computeCombinations">Plan#computeCombinations</a></li>
         </ul>
     </dd>
     
@@ -125,11 +125,10 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var scheduleExample = {
-   day: "qua",
-   timeBegin: "19:00",
-   timeEnd: "20:40",
-   htmlElement: div.schedule-box
+    <pre class="prettyprint"><code>var combinationExemple = {
+   parent: <a href="Plan.html">Plan</a>,
+   classrooms: [<a href="Classroom.html">Classroom</a>], // classrooms.length === parent.lectures.length
+   htmlElement: div
  }</code></pre>
 
 

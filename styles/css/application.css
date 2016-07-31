@@ -208,14 +208,14 @@ header {
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.2); }
 
-#lecture-explorer .lecture-info .lecture-info-code,
-#lecture-explorer .lecture-info .lecture-info-name,
-#lecture-explorer .lecture-info .lecture-info-delete {
+.lecture-info .lecture-info-code,
+.lecture-info .lecture-info-name,
+.lecture-info .lecture-info-delete {
   display: inline-block;
   vertical-align: top; }
-#lecture-explorer .lecture-info .lecture-info-code {
+.lecture-info .lecture-info-code {
   width: 58px; }
-#lecture-explorer .lecture-info .lecture-info-name {
+.lecture-info .lecture-info-name {
   width: calc(100% - 58px - 4px); }
 
 #search,
@@ -375,6 +375,8 @@ header {
 .lecture-open .lecture-info-header-title {
   height: auto;
   line-height: normal; }
+.lecture-open .lecture-info-code {
+  vertical-align: middle; }
 
 #accordion > .lecture-info:nth-child(1) {
   background-color: #bdefac;
@@ -587,6 +589,11 @@ header {
   color: white;
   background-color: black;
   visibility: visible; }
+
+.schedule-box-highlight-conflict {
+  color: black;
+  background-color: red;
+  z-index: 1; }
 
 .schedule-box-show {
   visibility: visible; }
