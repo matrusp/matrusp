@@ -100,23 +100,40 @@ Classroom.prototype.hideBox = function() {
  // TODO mudar aqui quando tiver plan.activeCombination e lecture.activeClassroom
 Classroom.prototype.setHighlight = function() {
   var lecture = this.parent;
-  if (lecture.selected) {
-    var activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
+  var activeClassroom = null;
+  if (lecture.activeClassroomIndex != null) {
+    // There is an active classroom for this lecture.
+    activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
     activeClassroom.hideBox();
   }
   this.addClassInSchedules('schedule-box-highlight');
   
-  if (this != activeClassroom) {
+  // Look for conflicting schedules. The active classroom doesn't have any
+  // conflicts because it is active (obviously). Also there are only conflicts
+  // if there is a combination being displayed.
+  if (this != activeClassroom && lecture.parent.activeCombinationIndex != null) {
     var activeCombination = lecture.parent.combinations[lecture.parent.activeCombinationIndex];
+    if (activeCombination.length == 0) {
+      // This happens when there are at least one lecture displayed on the screen
+      // but no lecture is selected (div#lecture-schedule is graphically empty).
+      // However, in this situation there may be various lectures included,
+      // i.e. plan.lectures.length >>> 0. 
+      // So there is no conflict, we can return.
+      return
+    }
     var lecturesClassroom = activeCombination.lecturesClassroom;
     for (var i = 0; i < lecturesClassroom.length; i++) {
       if (this.parent == lecturesClassroom[i].parent) {
-        // same lecture, skip.
+        // Same lecture, skip.
         continue;
       }
+      // Iterate over every schedule on this classroom and every active classroom
+      // on the current active combination.
       for (var j = 0; j < this.schedules.length; j++) {
         for (var k = 0; k < lecturesClassroom[i].schedules.length; k++) {
           if (schedulesConflict(this.schedules[j], lecturesClassroom[i].schedules[k])) {
+            // This schedule (one of many for this classroom) conflicts with some other
+            // schedule from an active classroom. Set conflict highlight.
             addClass(this.schedules[j].htmlElement, 'schedule-box-highlight-conflict');
           }
         }
@@ -130,7 +147,8 @@ Classroom.prototype.setHighlight = function() {
  */
 Classroom.prototype.unsetHighlight = function() {
   var lecture = this.parent;
-  if (lecture.selected) {
+  if (lecture.activeClassroomIndex != null) {
+    // There is an active classroom for this lecture.
     var activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
     activeClassroom.showBox();
   }
@@ -144,8 +162,24 @@ Classroom.prototype.unsetHighlight = function() {
 Classroom.prototype.toggleClassroomSelection = function() {
   toggleClass(this.htmlElement, 'classroom-selected');
   this.selected = !this.selected;
-  // Update plan.
-  this.parent.parent.update();
+
+  var thisLecture = this.parent;
+  var noClassroomSelected = true;
+  for (var i = 0; i < thisLecture.classrooms.length; i++) {
+    if (thisLecture.classrooms[i].selected) {
+      noClassroomSelected = false;
+    }
+  }
+
+  if (noClassroomSelected) {
+    thisLecture.selected = false;
+    thisLecture.activeClassroomIndex = null;
+  } else {
+    thisLecture.selected = true;
+  }
+
+  // Update this plan.
+  thisLecture.parent.update(this);
 }
 
 

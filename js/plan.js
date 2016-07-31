@@ -36,10 +36,76 @@ function Plan(jsonObj) {
 /**
  *
  */
-Plan.prototype.update = function() {
+Plan.prototype.update = function(callerClassroom) {
+  console.log('updating...');
+  var oldActiveCombination = null;
+  if (this.activeCombinationIndex != null) {
+    // There is an active combination
+    oldActiveCombination = this.combinations[this.activeCombinationIndex];
+    this.unsetActiveCombination();
+  }
   this.combinations = new Array();
-  // recalculate every htmlElement element and combination ?
-  // or just combinations ?
+  this.computeCombinations();
+  this.activeCombinationIndex = this.closestCombination(oldActiveCombination, callerClassroom);
+  if (this.activeCombinationIndex != null) {
+    // There is an active combination
+    this.setActiveCombination();
+  }
+
+  // At this moment, the mouse pointer (if it's not a touch screen) is over
+  // the callerClassroom. If it has a sibling classroom that is active it
+  // will show up (consequence of setActiveCombination). So we update the 
+  // highlight status to it (only hides if it was displayed, naturally).
+  if (hasClass(callerClassroom.schedules[0].htmlElement, 'schedule-box-highlight')) {
+    callerClassroom.setHighlight();
+  }
+};
+
+/**
+ *
+ */
+Plan.prototype.closestCombination = function(oldActiveCombination, callerClassroom) {
+  if (this.combinations.length == 0) {
+    // No combination could be created, probably there isn't any lecture selected.
+    return null;
+  }
+  if (!oldActiveCombination) {
+    // Now there is only one combination: if there wasn't any and 
+    // update was called from one single event that is the inclusion 
+    // of a single classroom. Return the index of this single 
+    // combination.
+    return 0;
+  }
+
+  // If there is some combination, there is at least the index 0.
+  var closestCombinationIndex = 0;
+  var maximumScoreSoFar = -1;
+  for (var i = 0; i < this.combinations.length; i++) {
+    var score = oldActiveCombination.getSimilarityScore(this.combinations[i]);
+    if (score > maximumScoreSoFar) {
+      maximumScoreSoFar = score;
+      closestCombinationIndex = i;
+    }
+  }
+  return closestCombinationIndex;
+}
+
+/**
+ *
+ */
+Plan.prototype.nextCombination = function() {
+  this.unsetActiveCombination();
+  this.activeCombinationIndex = (this.activeCombinationIndex + 1) % this.combinations.length;
+  this.setActiveCombination();
+};
+
+/**
+ *
+ */
+Plan.prototype.previousCombination = function() {
+  this.unsetActiveCombination();
+  this.activeCombinationIndex = ((this.activeCombinationIndex - 1) + this.combinations.length) % this.combinations.length;
+  this.setActiveCombination();
 };
 
 /**
@@ -71,7 +137,11 @@ Plan.prototype.testCombination = function(potentialCombination) {
       return false;
     }
     for (var j = i+1; j < potentialCombination.length; j++) {
-      var classroom2Index = potentialCombination[j]
+      var classroom2Index = potentialCombination[j];
+      if (classroom2Index == -1) {
+        // Lecture isn't selected.
+        continue;
+      }
       var classroom2 = this.lectures[j].classrooms[classroom2Index];
       if (!classroom2.selected) {
         return false;
@@ -103,9 +173,18 @@ Plan.prototype.computeCombinations = function() {
     }
   }
 
+  if (leftmostSelectedLectureIndex == -1) {
+    // No lecture selected. There are no combinations.
+    return;
+  }
+
+// TODO tirar daqui
+  console.log('potentialCombination', potentialCombination);
+  var loop = 0;
+
   // while condition can be this without affecting the logic:
   // potentialCombination[leftmostSelectedLectureIndex] >= this.lectures[leftmostSelectedLectureIndex].classrooms.length
-  while (true) {
+  while (loop++ < 100) {
     if (this.testCombination(potentialCombination)) {
       console.log('combination', potentialCombination);
       combination = new Combination(potentialCombination, this);
@@ -146,7 +225,7 @@ Plan.prototype.computeCombinations = function() {
  * 
  */
 Plan.prototype.setActiveCombination = function() {
-  var activeCombination = this.combinations[this.activeCombinationIndex]
+  var activeCombination = this.combinations[this.activeCombinationIndex];
   for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
     var activeClassroom = activeCombination.lecturesClassroom[i];
     activeClassroom.showBox();
@@ -154,5 +233,20 @@ Plan.prototype.setActiveCombination = function() {
     //      possivelmente fazer o mesmo com as combinacoes e so mudar na hora de salvar o json. Isso sera usado,
     //      por exemplo, no setHighlight em Classroom()
     activeClassroom.parent.activeClassroomIndex = activeClassroom.parent.classrooms.indexOf(activeClassroom);
+  }
+
+  document.getElementById('combination-value').value = this.activeCombinationIndex + 1;
+  document.getElementById('combination-total').innerHTML = this.combinations.length;
+};
+
+/**
+ * 
+ */
+Plan.prototype.unsetActiveCombination = function() {
+  var activeCombination = this.combinations[this.activeCombinationIndex]
+  for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
+    var activeClassroom = activeCombination.lecturesClassroom[i];
+    activeClassroom.hideBox();
+    activeClassroom.parent.activeClassroomIndex = null;
   }
 };
