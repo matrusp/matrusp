@@ -90,6 +90,12 @@
                 <div class="column">
                     <div class="week-day">Sábado</div>
                 </div>
+                <div id='combination-controller'>
+                    <button onclick='state.previousCombination();'>&lt</button>
+                    <input id='combination-value' type='text' onsubmit='state.goToCombination(this.value);'>
+                    <span>/</span><span id='combination-total'></span>
+                    <button onclick='state.nextCombination();'>&gt</button>
+                </div>
             </div>
             <div id="lecture-explorer">
                 <div id="search-and-add">

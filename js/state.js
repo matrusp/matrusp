@@ -20,7 +20,7 @@ function State(jsonObj) {
     this.version = jsonObj.version;
     this.campus = jsonObj.campus;
     this.semester = jsonObj.semester;
-    this.planIndex = jsonObj.planIndex;
+    this.activePlanIndex = jsonObj.planIndex;
     for (var i = 0; i < jsonObj.plans.length; i++) {
       this.plans.push(new Plan(jsonObj.plans[i]));
     }
@@ -28,7 +28,7 @@ function State(jsonObj) {
     this.version = null;
     this.campus = null;
     this.semester = null;
-    this.planIndex = null;
+    this.activePlanIndex = null;
   }
 }
 
@@ -40,10 +40,18 @@ function State(jsonObj) {
  */
 State.prototype.addLecture = function(lecture, planIndex) {
   if (!planIndex) {
-    planIndex = this.planIndex;
+    planIndex = this.activePlanIndex;
   }
-  this.plans[this.planIndex].addLecture(lecture);
+  this.plans[planIndex].addLecture(lecture);
 };
+
+State.prototype.nextCombination = function() {
+  this.plans[this.activePlanIndex].nextCombination();
+}
+
+State.prototype.previousCombination = function() {
+  this.plans[this.activePlanIndex].previousCombination();
+}
 
 /**
  * Full State example

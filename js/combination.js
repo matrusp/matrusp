@@ -26,3 +26,18 @@ function Combination(combinationIndices, plan) {
     this.lecturesClassroom.push(plan.lectures[i].classrooms[classroomIndex]);
   }
 }
+
+/**
+ *
+ */
+Combination.prototype.getSimilarityScore = function(otherCombination) {
+  var sameClassroomsCounter = 0;
+  for (var i = 0; i < this.lecturesClassroom.length; i++) {
+    for (var j = 0; j < otherCombination.lecturesClassroom.length; j++) {
+      if (this.lecturesClassroom[i] == otherCombination.lecturesClassroom[j]) {
+        sameClassroomsCounter++;
+      }
+    }
+  }
+  return sameClassroomsCounter;
+};

@@ -154,12 +154,12 @@ function UI() {
                 {
                   tag: 'div',
                   class: 'lecture-info-code',
-                  innerHTML: (lecture.code + ' -')
+                  innerHTML: lecture.code
                 },
                 {
                   tag: 'div',
                   class: 'lecture-info-name',
-                  innerHTML: ('&nbsp' + lecture.name)
+                  innerHTML: lecture.name
                 }
               ]
             },
