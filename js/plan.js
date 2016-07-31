@@ -36,35 +36,46 @@ function Plan(jsonObj) {
 /**
  *
  */
-Plan.prototype.update = function(callerClassroom) {
+Plan.prototype.update = function(classroomUpdated) {
   console.log('updating...');
   var oldActiveCombination = null;
   if (this.activeCombinationIndex != null) {
-    // There is an active combination
+    // There is an active combination.
     oldActiveCombination = this.combinations[this.activeCombinationIndex];
     this.unsetActiveCombination();
   }
   this.combinations = new Array();
   this.computeCombinations();
-  this.activeCombinationIndex = this.closestCombination(oldActiveCombination, callerClassroom);
+  this.activeCombinationIndex = this.closestCombination(oldActiveCombination, classroomUpdated);
   if (this.activeCombinationIndex != null) {
-    // There is an active combination
+    // There is an active combination.
     this.setActiveCombination();
+  } else {
+    // If there are no combinations.
+    document.getElementById('combination-value').value = 0;
+    document.getElementById('combination-total').innerHTML = 0;
   }
 
+  if (!classroomUpdated) {
+    // Plan.update() was called from an insertion or deletion of a lecture.
+    // Nothing more to be done.
+    return;
+  }
+
+  // If this was called by an classroom update, classroomUpdated exists.
   // At this moment, the mouse pointer (if it's not a touch screen) is over
-  // the callerClassroom. If it has a sibling classroom that is active it
-  // will show up (consequence of setActiveCombination). So we update the 
+  // the classroomUpdated. If it has a sibling classroom that is active it
+  // will show up as a consequence of setActiveCombination. So we update the 
   // highlight status to it (only hides if it was displayed, naturally).
-  if (hasClass(callerClassroom.schedules[0].htmlElement, 'schedule-box-highlight')) {
-    callerClassroom.setHighlight();
+  if (hasClass(classroomUpdated.schedules[0].htmlElement, 'schedule-box-highlight')) {
+    classroomUpdated.setHighlight();
   }
 };
 
 /**
  *
  */
-Plan.prototype.closestCombination = function(oldActiveCombination, callerClassroom) {
+Plan.prototype.closestCombination = function(oldActiveCombination) {
   if (this.combinations.length == 0) {
     // No combination could be created, probably there isn't any lecture selected.
     return null;

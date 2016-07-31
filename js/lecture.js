@@ -56,9 +56,29 @@ Lecture.prototype.appendHTMLChildren = function() {
   }
 }
 
+/**
+ *
+ */
 Lecture.prototype.toggleLectureOpen = function() {
   toggleClass(this.htmlElement, 'lecture-open');
 }
+
+/**
+ *
+ */
+Lecture.prototype.delete = function() {
+  for (var i = 0; i < this.classrooms.length; i++) {
+    this.classrooms[i].delete();
+  }
+  this.htmlElement.parentNode.removeChild(this.htmlElement);
+
+  // All htmlElements removed, now remove itself from the plan and
+  // update it.
+  var indexOnParent = this.parent.lectures.indexOf(this);
+  this.parent.lectures.splice(indexOnParent, 1);
+
+  this.parent.update();
+};
 
 
 /**
@@ -68,6 +88,10 @@ Lecture.prototype.addEventListeners = function() {
   // this.htmlElement.children[0] is equivalent (30.jul.16)
   var lectureHeaderTitle = this.htmlElement.getElementsByClassName('lecture-info-header-title')[0];
   lectureHeaderTitle.addEventListener('click', this.toggleLectureOpen.bind(this));
+  
+  // this.htmlElement.children[0] is equivalent (31.jul.16)
+  var lectureHeaderDelete = this.htmlElement.getElementsByClassName('lecture-info-delete')[0];
+  lectureHeaderDelete.addEventListener('click', this.delete.bind(this));
 };
 
 

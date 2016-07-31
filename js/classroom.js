@@ -61,6 +61,16 @@ function Classroom(jsonObj, parentLecture) {
   }
 }
 
+/**
+ *
+ */
+// Doesn't need to remove htmlElement because parent Lecture will
+// remove the entire div.lecture-info
+Classroom.prototype.delete = function() {
+  for (var i = 0; i < this.schedules.length; i++) {
+    this.schedules[i].delete();
+  }
+}
 
 /**
  *

@@ -156,52 +156,50 @@
     }
 }
 
-#accordion {
-    @each $color in $lecture-colors {
-        $i: index($lecture-colors, $color);
+.lecture-classrooms {
+    >.classroom-info {
+        >.classroom-code,
+        >.classroom-teacher {
+            opacity: 0.4;
+        }
         
-        >.lecture-info:nth-child(#{$i}) {
-            background-color: lighten($color, 20%);
-            color: darken($color, 25%);
-                
-            &:hover {
-                background-color: lighten($color, 15%);
+        &:hover {
+            >.classroom-code,
+            >.classroom-teacher {
+                opacity: 0.6;
             }
-            
-            >.lecture-info-header {
-                >.lecture-info-delete {
-                    &:hover {
-                        background-color: lighten($color, 5%);
-                    }
-                    
-                    &:active {
-                        background-color: $color;
-                    }
-                }
-            }
-            
-            >.lecture-classrooms {
-                //background-color: lighten($color, 33%);
-                >.classroom-info {
-                    >.classroom-code,
-                    >.classroom-teacher {
-                        opacity: 0.4;
-                    }
-                    
-                    &:hover {
-                        >.classroom-code,
-                        >.classroom-teacher {
-                            opacity: 0.6;
-                        }
-                    }
-                }
+        }
+    }
 
-                >.classroom-selected,
-                >.classroom-selected:hover {
-                    >.classroom-code,
-                    >.classroom-teacher {
-                        opacity: 1;
-                    }
+    >.classroom-selected,
+    >.classroom-selected:hover {
+        >.classroom-code,
+        >.classroom-teacher {
+            opacity: 1;
+        }
+    }
+}
+
+// Same order as in lecture_schedule/_lecture_box.scss
+@each $color in $lecture-colors {
+    $i: index($lecture-colors, $color);
+    
+    .lecture-info.color-#{$i} {
+        background-color: lighten($color, 20%);
+        color: darken($color, 25%);
+            
+        &:hover {
+            background-color: lighten($color, 15%);
+        }
+        
+        >.lecture-info-header {
+            >.lecture-info-delete {
+                &:hover {
+                    background-color: lighten($color, 5%);
+                }
+                
+                &:active {
+                    background-color: $color;
                 }
             }
         }

@@ -56,10 +56,12 @@ function UI() {
    * @param {String} lectureCode
    * @return {div}
    */
-  this.createScheduleBox = function(schedule, lectureCode) {
+  this.createScheduleBox = function(schedule) {
+    // Lecture -> Classroom -> Schedule
+    var lecture = schedule.parent.parent;
     var scheduleBoxTreeObj = {
         tag: 'div',
-        class:'schedule-box',
+        class: ['schedule-box', 'color-' + lecture.color],
         children: [
         {
           tag: 'span',
@@ -69,7 +71,7 @@ function UI() {
         {
           tag: 'span',
           class: 'lecture-code',
-          innerHTML: lectureCode
+          innerHTML: lecture.code
         }
       ]
     };
@@ -141,7 +143,7 @@ function UI() {
   this.createLectureInfo = function(lecture) {
     var lectureInfoTreeObj = {
       tag: 'div',
-      class: 'lecture-info',
+      class: ['lecture-info', 'color-' + lecture.color],
       children: [
         {
           tag: 'div',
