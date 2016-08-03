@@ -49,7 +49,8 @@
 
     &:focus {
         z-index: 2;
-        border-bottom-style: none;
+				//TODO can I remove this without consequences?
+        //border-bottom-style: none;
         border-radius: 2px 2px 0 0;
         // removes default outline from input:focus and replaces it
         // with a shadow.
@@ -60,7 +61,7 @@
         ~ #add-extra-activity {
             opacity: 0.4;
         }
-				//TODO ver as cosequencias de tirar esse cara 
+				//TODO can I remove this without consequences?
         //~ #search-result-box {
         //    visibility: visible;
         //}
@@ -116,11 +117,11 @@
 .search-result.lecture-info {
     padding: 6px 4px;
     border-bottom: 1px solid rgba(159, 159, 159, 0.8);
-
-    &:hover {
-        background-color: $highlight-background;
-        color: $highlight-text;
-    }
+		//TODO can I remove this without consequences?
+			//&:hover {
+    // background-color: $highlight-background;
+    //  color: $highlight-text;
+		//}
 }
 
 .search-result-selected {

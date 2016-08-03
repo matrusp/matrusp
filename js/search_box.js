@@ -11,31 +11,59 @@ function SearchBox() {
 	self.overSearchResultBox = false;
 	self.selectedLectureIndex = -1;
 	self.lecturesSuggestionList = new Array();
+	self.heightSoFar = 0;
 
-		console.log('selectedLectureIndex', self.selectedLectureIndex)
 	function addLectures(lectures) {
-		lectures.forEach(function(lecture) {
+		var suggestionLectures = self.searchResultBox.childNodes;
+		for(var i = 0; i < lectures.length; i++) {
 
-			var searchResultLectureInfo = createAndAppendChild(self.searchResultBox, 'div', {
-				'class' : ['search-result', 'lecture-info']
-				});
-			var lectureIndoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
-				'class' : 'lecture-info-code',
-				'innerHTML' : lecture['code']
-				});
-			var lectureIndoDescription = createAndAppendChild(searchResultLectureInfo, 'div', {
-				'class' : 'lecture-info-description', 
-				'innerHTML' : lecture['name']
-				});
+				var searchResultLectureInfo = createAndAppendChild(self.searchResultBox, 'div', {
+						'class' : ['search-result', 'lecture-info']
+						});
+				var lectureIndoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
+						'class' : 'lecture-info-code',
+						'innerHTML' : lectures[i]['code']
+						});
+				var lectureIndoDescription = createAndAppendChild(searchResultLectureInfo, 'div', {
+						'class' : 'lecture-info-description', 
+						'innerHTML' : lectures[i]['name']
+						});
 
-			
-			var addLectureCallback = function() {
-				ui.addLecture(lecture);
-				searchResultBoxHide();
-				self.overSearchResultBox = false;
-			}
-			searchResultLectureInfo.addEventListener('click', addLectureCallback);
-		});
+
+				var addLectureCallback = function(iterator) {
+					return function() {
+						ui.addLecture(lectures[iterator]);
+						searchResultBoxHide();
+						self.overSearchResultBox = false;
+						removeLecturesSuggestionList();
+						self.searchBox.value = '';
+					}
+				}
+				searchResultLectureInfo.addEventListener('click', addLectureCallback(i));
+
+				var selectLectureCallback = function(iterator, bla) {
+					return function() {
+						addClass(bla, 'search-result-selected');
+						if(self.selectedLectureIndex != -1 && bla != suggestionLectures[self.selectedLectureIndex]) {
+							removeClass(suggestionLectures[self.selectedLectureIndex], 'search-result-selected');
+						}
+						self.heightSoFar = 0;
+						for(var i = 0; i <= iterator; i++) {
+							self.heightSoFar += suggestionLectures[i].offsetHeight;
+						}
+						self.selectedLectureIndex = iterator;
+					}
+				}
+				
+				var deselectLectureCallback = function(bla) {
+					return function() {
+						removeClass(bla, 'search-result-selected');
+					}
+				}
+
+				searchResultLectureInfo.addEventListener('mouseenter', selectLectureCallback(i, searchResultLectureInfo));
+				searchResultLectureInfo.addEventListener('mouseleave', deselectLectureCallback(searchResultLectureInfo));
+		}
 	}
 
 	function removeLecturesSuggestionList() {
@@ -43,7 +71,7 @@ function SearchBox() {
 			self.searchResultBox.removeChild(self.searchResultBox.firstChild);
 		}
 	}
-	
+
 	function searchResultBoxShow() {
 		self.searchResultBox.style.visibility = "visible";
 	}
@@ -71,25 +99,17 @@ function SearchBox() {
 	self.searchResultBox.onmouseout = function() {
 		self.overSearchResultBox = false;
 	}
-	
+
 	self.searchBox.onkeyup = function(e) {
 		if(!e) {
 			e = event;
 		}
-		if(!e.key) {
-			var keyPress = e.keyCode;
-		//	if(!((keyPress >= 65) && (keyPress <= 90)) &&
-	//			!((keyPress >= 48) && (keyPress <= 57)) &&
-	//			keyPress != 46 && keyPress != 8) { //TODO achar uma maneira melhor do que essa!
-	//		return;
-	//	}
-		} else {
-			var keyPress = e.key;
-		}
-		console.log('keyPress', keyPress);
+		keyPress = (e.key) ? e.key : e.keyCode;
+
 
 		var suggestionLectures = self.searchResultBox.childNodes;
-		var selectedClass = "search-result-selected";
+		var sizeOfSearchResultBox = self.searchResultBox.offsetHeight > 300 ? 300 : self.searchResultBox.offsetHeight; //300 is the max-height of div "search-result-box"
+
 		switch(keyPress) {
 			case 27:
 			case "Escape":
@@ -97,16 +117,27 @@ function SearchBox() {
 				return;
 			case 40:
 			case "ArrowDown":
-				if(self.selectedLectureIndex < self.lecturesSuggestionList.length) {
+				if(self.selectedLectureIndex < self.lecturesSuggestionList.length-1) {
 					self.selectedLectureIndex++;
 				} else {
 					return;
 				}
 				if(self.selectedLectureIndex > 0) {
-					toggleClass(suggestionLectures[self.selectedLectureIndex-1], selectedClass);
+					removeClass(suggestionLectures[self.selectedLectureIndex-1], 'search-result-selected');
 				}
-				toggleClass(suggestionLectures[self.selectedLectureIndex], selectedClass);
-				//self.searchResultBox.scrollTop = self.searchResultBox.scrollHeight;
+				addClass(suggestionLectures[self.selectedLectureIndex], 'search-result-selected');
+
+				if(self.heightSoFar < sizeOfSearchResultBox) {
+					if(self.heightSoFar + suggestionLectures[self.selectedLectureIndex].offsetHeight < sizeOfSearchResultBox) {
+						self.heightSoFar += suggestionLectures[self.selectedLectureIndex].offsetHeight;
+					} else {
+						self.heightSoFar += suggestionLectures[self.selectedLectureIndex].offsetHeight;
+						self.searchResultBox.scrollTop += self.heightSoFar - sizeOfSearchResultBox;
+						self.heightSoFar = sizeOfSearchResultBox;
+					} 
+				} else {
+					self.searchResultBox.scrollTop += suggestionLectures[self.selectedLectureIndex].offsetHeight;
+				}
 				return;
 			case 38:
 			case "ArrowUp":
@@ -116,29 +147,49 @@ function SearchBox() {
 					return;
 				}
 				if(self.selectedLectureIndex < self.lecturesSuggestionList.length) {
-					toggleClass(suggestionLectures[self.selectedLectureIndex+1], selectedClass);
+					removeClass(suggestionLectures[self.selectedLectureIndex+1], 'search-result-selected');
 				}
-				toggleClass(suggestionLectures[self.selectedLectureIndex], selectedClass);
+				addClass(suggestionLectures[self.selectedLectureIndex], 'search-result-selected');
+
+				if(self.heightSoFar > 26) { //26 is the minimum height of a suggested lecture
+					if(self.heightSoFar - suggestionLectures[self.selectedLectureIndex].offsetHeight > 26) {
+						self.heightSoFar -= suggestionLectures[self.selectedLectureIndex].offsetHeight;
+					} else {
+						self.heightSoFar -= suggestionLectures[self.selectedLectureIndex].offsetHeight;
+						self.searchResultBox.scrollTop -= suggestionLectures[self.selectedLectureIndex].offsetHeight - self.heightSoFar;
+						self.heightSoFar = suggestionLectures[self.selectedLectureIndex].offsetHeight;
+					} 
+				} else {
+					self.searchResultBox.scrollTop -= suggestionLectures[self.selectedLectureIndex].offsetHeight;
+				}
 				return;
 			case 13:
 			case "Enter":
 				ui.addLecture(self.lecturesSuggestionList[self.selectedLectureIndex]);
 				searchResultBoxHide();
 				self.overSearchResultBox = false;
+				removeLecturesSuggestionList();
+				self.searchBox.value = '';
 				return;
 		}
 		self.selectedLectureIndex = -1;// if new key was press, reset for new search
-
-		var fetch = self.searchBox.value;
+		self.heightSoFar = 0;
+		var fetchValue = self.searchBox.value;
 		removeLecturesSuggestionList();
-		if(fetch.length > 0) {
-			database.fetchLectureOnDB(fetch);
+		if(fetchValue.length > 0) {
+			database.fetchLectureOnDB(fetchValue);
+			self.lecturesSuggestionList = database.sliceObjectDB();
+			if(self.lecturesSuggestionList.length > 0) {
+				addLectures(self.lecturesSuggestionList);
+				searchResultBoxShow();
+			} else {
+				searchResultBoxHide();
+				self.overSearchResultBox = false;
+			}
+		} else {
+			searchResultBoxHide();
+			self.overSearchResultBox = false;
 		}
-		self.lecturesSuggestionList = database.sliceObjectDB();
-		if(self.lecturesSuggestionList.length > 0) {
-			addLectures(self.lecturesSuggestionList);
-		}
-		searchResultBoxShow();
 	}
 }
 
@@ -147,10 +198,5 @@ var searchBox = new SearchBox();
 
 
 
-
-
-
-
-//TODO fazer uma funcao que mexe o scroll de search-result-box
-//TODO nao permitir incluir materias ja adicionadas
-//TODO captura o estado do sistema na hora da sua criacao
+//TODO quando coloca o mouse sobre a div 'search-result-box' perco a referencia da altura que se encontra em relacao ao scroll
+//TODO refatorar if elses da funcao searchBox.onkeyup
