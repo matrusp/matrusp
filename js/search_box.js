@@ -41,10 +41,10 @@ function SearchBox() {
 				}
 				searchResultLectureInfo.addEventListener('click', addLectureCallback(i));
 
-				var selectLectureCallback = function(iterator, bla) {
+				var selectLectureCallback = function(iterator, serachResultLectureInfo) {
 					return function() {
-						addClass(bla, 'search-result-selected');
-						if(self.selectedLectureIndex != -1 && bla != suggestionLectures[self.selectedLectureIndex]) {
+						addClass(serachResultLectureInfo, 'search-result-selected');
+						if(self.selectedLectureIndex != -1 && serachResultLectureInfo != suggestionLectures[self.selectedLectureIndex]) {
 							removeClass(suggestionLectures[self.selectedLectureIndex], 'search-result-selected');
 						}
 						self.heightSoFar = 0;
@@ -55,9 +55,9 @@ function SearchBox() {
 					}
 				}
 				
-				var deselectLectureCallback = function(bla) {
+				var deselectLectureCallback = function(serachResultLectureInfo) {
 					return function() {
-						removeClass(bla, 'search-result-selected');
+						removeClass(serachResultLectureInfo, 'search-result-selected');
 					}
 				}
 
