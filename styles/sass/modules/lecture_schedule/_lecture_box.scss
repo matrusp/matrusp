@@ -1,15 +1,32 @@
-// TODO mudar nome da classe para lecture-classroom ou lecture-box ou lecture-?, ou nao mudar?
-.lecture {
-	background-color: #7adf56;
+.schedule-box {
 	position: absolute;
 	width: 100%;
+  visibility: hidden;
 }
 
-.lecture-highlight {
-	color: white;
-	background-color: black;
+.schedule-box-show,
+.schedule-box-highlight {
+  visibility: visible;
 }
 
-.lecture-hide {
-	display: none;
+// Same order as in lecture_explorer/_accordion.scss
+@each $color in $lecture-colors {
+  $i: index($lecture-colors, $color);
+
+  .schedule-box.color-#{$i} {
+    background-color: lighten($color, 20%);
+    color: darken($color, 25%);
+  }
+
+  .schedule-box-highlight.color-#{$i} {
+    background-color: $color;
+    color: darken($color, 25%);
+  }
+}
+
+.schedule-box-highlight.schedule-box-highlight-conflict {
+  background-color: red;
+  color: black;
+  opacity: 0.8;
+  z-index: 1;
 }

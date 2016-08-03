@@ -21,10 +21,11 @@
 //
 //
 
-#lecture-explorer .lecture-info {
+// #lecture-explorer {
+.lecture-info {
     .lecture-info-code,
-    .lecture-info-description,
-    .lecture-delete {
+    .lecture-info-name,
+    .lecture-info-delete {
         display: inline-block;
         vertical-align: top;
     }
@@ -33,7 +34,7 @@
         width: $width-lecture-code;
     }
 
-    .lecture-info-description {
+    .lecture-info-name {
         width: calc(100% - #{$width-lecture-code} - 4px);
     }
 }

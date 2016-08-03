@@ -208,14 +208,14 @@ header {
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.2); }
 
-#lecture-explorer .lecture-info .lecture-info-code,
-#lecture-explorer .lecture-info .lecture-info-description,
-#lecture-explorer .lecture-info .lecture-delete {
+.lecture-info .lecture-info-code,
+.lecture-info .lecture-info-name,
+.lecture-info .lecture-info-delete {
   display: inline-block;
   vertical-align: top; }
-#lecture-explorer .lecture-info .lecture-info-code {
+.lecture-info .lecture-info-code {
   width: 58px; }
-#lecture-explorer .lecture-info .lecture-info-description {
+.lecture-info .lecture-info-name {
   width: calc(100% - 58px - 4px); }
 
 #search,
@@ -292,275 +292,297 @@ header {
   width: calc(100% + 15px);
   overflow: scroll; }
 
-#accordion > .lecture-info {
+.lecture-info {
   position: relative;
   width: calc(100% - 2px);
   padding: 1px; }
-  #accordion > .lecture-info > .lecture-info-header {
-    position: relative; }
-    #accordion > .lecture-info > .lecture-info-header > label {
-      position: relative;
-      display: block;
-      width: calc(100% - 30px - 2 * 6px);
-      height: 30px;
-      max-height: 100%;
-      padding: 7px 6px 7px 8px;
-      overflow: hidden;
-      line-height: 30px;
-      cursor: pointer; }
-      #accordion > .lecture-info > .lecture-info-header > label > .lecture-info-description {
-        width: calc(100% - 58px - 4px); }
-    #accordion > .lecture-info > .lecture-info-header > .lecture-delete {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 30px;
-      height: 100%;
-      cursor: pointer; }
-      #accordion > .lecture-info > .lecture-info-header > .lecture-delete > img {
-        left: 0;
-        right: 0;
-        margin-left: auto;
-        margin-right: auto;
-        top: 0;
-        bottom: 0;
-        margin-top: auto;
-        margin-bottom: auto;
-        position: absolute;
-        width: 20px;
-        opacity: 0.3; }
+
+.lecture-info-header {
+  position: relative; }
+
+.lecture-info-header-title {
+  position: relative;
+  display: block;
+  width: calc(100% - 30px - 2 * 6px);
+  height: 30px;
+  max-height: 100%;
+  padding: 7px 6px 7px 8px;
+  overflow: hidden;
+  line-height: 30px;
+  cursor: pointer; }
+  .lecture-info-header-title > .lecture-info-name {
+    width: calc(100% - 58px - 4px); }
+
+.lecture-info-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  cursor: pointer; }
+  .lecture-info-delete > img {
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    position: absolute;
+    width: 20px;
+    opacity: 0.3; }
 
 .lecture-classrooms {
   position: relative;
   height: 0px;
   overflow: hidden;
-  background-color: #FEFEFE; }
+  background-color: #FEFEFE;
+  cursor: default; }
   .lecture-classrooms > .classrooms-header {
     padding-top: 6px;
     padding-bottom: 6px; }
-  .lecture-classrooms > label.classroom {
+  .lecture-classrooms > .classroom-info {
     display: block;
     padding-top: 4px;
     padding-bottom: 7px; }
   .lecture-classrooms > .classrooms-header:not(:last-child),
-  .lecture-classrooms > label.classroom:not(:last-child) {
+  .lecture-classrooms > .classroom-info:not(:last-child) {
     border-bottom: 1px solid; }
-  .lecture-classrooms > .classrooms-header > div,
-  .lecture-classrooms > label.classroom > div {
+  .lecture-classrooms > .classrooms-header .classroom-code,
+  .lecture-classrooms > .classrooms-header .classroom-teacher,
+  .lecture-classrooms > .classrooms-header .classroom-toggle,
+  .lecture-classrooms > .classroom-info .classroom-code,
+  .lecture-classrooms > .classroom-info .classroom-teacher,
+  .lecture-classrooms > .classroom-info .classroom-toggle {
     display: inline-block;
     vertical-align: middle; }
-  .lecture-classrooms > .classrooms-header .classroom-number,
-  .lecture-classrooms > label.classroom .classroom-number {
+  .lecture-classrooms > .classrooms-header .classroom-code,
+  .lecture-classrooms > .classroom-info .classroom-code {
     width: 40px;
     text-align: center;
     margin: 0 10px; }
   .lecture-classrooms > .classrooms-header .classroom-teacher,
-  .lecture-classrooms > label.classroom .classroom-teacher {
+  .lecture-classrooms > .classroom-info .classroom-teacher {
     width: calc(100% - 58px - 30px); }
-  .lecture-classrooms > .classrooms-header .toggle-classroom,
-  .lecture-classrooms > label.classroom .toggle-classroom {
+  .lecture-classrooms > .classrooms-header .classroom-toggle,
+  .lecture-classrooms > .classroom-info .classroom-toggle {
     position: relative;
     left: 2px; }
 
-#accordion input {
-  display: none; }
-  #accordion input[type='checkbox']:checked + .lecture-info-header > label {
-    height: auto;
-    line-height: normal; }
-  #accordion input[type='checkbox']:checked ~ .lecture-classrooms {
-    height: auto; }
+.lecture-open > .lecture-classrooms {
+  height: auto; }
+.lecture-open .lecture-info-header-title {
+  height: auto;
+  line-height: normal; }
+.lecture-open .lecture-info-code {
+  vertical-align: middle; }
 
-#accordion > .lecture-info:nth-child(1) {
+.lecture-classrooms > .classroom-info > .classroom-code,
+.lecture-classrooms > .classroom-info > .classroom-teacher {
+  opacity: 0.4; }
+.lecture-classrooms > .classroom-info:hover > .classroom-code,
+.lecture-classrooms > .classroom-info:hover > .classroom-teacher {
+  opacity: 0.6; }
+.lecture-classrooms > .classroom-selected > .classroom-code,
+.lecture-classrooms > .classroom-selected > .classroom-teacher,
+.lecture-classrooms > .classroom-selected:hover > .classroom-code,
+.lecture-classrooms > .classroom-selected:hover > .classroom-teacher {
+  opacity: 1; }
+
+.lecture-info.color-1 {
   background-color: #bdefac;
   color: #3d991d; }
-  #accordion > .lecture-info:nth-child(1):hover {
+  .lecture-info.color-1:hover {
     background-color: #adeb96; }
-  #accordion > .lecture-info:nth-child(1) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-1 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #8be36b; }
-  #accordion > .lecture-info:nth-child(1) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-1 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #7adf56; }
-  #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(1) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(2) {
+
+.lecture-info.color-2 {
   background-color: #a0ddfc;
   color: #0577b1; }
-  #accordion > .lecture-info:nth-child(2):hover {
+  .lecture-info.color-2:hover {
     background-color: #87d4fb; }
-  #accordion > .lecture-info:nth-child(2) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-2 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #56c2fa; }
-  #accordion > .lecture-info:nth-child(2) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-2 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #3db9f9; }
-  #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(2) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(3) {
+
+.lecture-info.color-3 {
   background-color: #ffcf8c;
   color: #a66100; }
-  #accordion > .lecture-info:nth-child(3):hover {
+  .lecture-info.color-3:hover {
     background-color: #ffc573; }
-  #accordion > .lecture-info:nth-child(3) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-3 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #ffb040; }
-  #accordion > .lecture-info:nth-child(3) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-3 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #ffa526; }
-  #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(3) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(4) {
+
+.lecture-info.color-4 {
   background-color: #e5c5ed;
   color: #86309c; }
-  #accordion > .lecture-info:nth-child(4):hover {
+  .lecture-info.color-4:hover {
     background-color: #dcb1e7; }
-  #accordion > .lecture-info:nth-child(4) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-4 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #cb8adb; }
-  #accordion > .lecture-info:nth-child(4) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-4 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #c277d5; }
-  #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(4) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(5) {
+
+.lecture-info.color-5 {
   background-color: #aff4ef;
   color: #17a79d; }
-  #accordion > .lecture-info:nth-child(5):hover {
+  .lecture-info.color-5:hover {
     background-color: #98f1eb; }
-  #accordion > .lecture-info:nth-child(5) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-5 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #6bebe2; }
-  #accordion > .lecture-info:nth-child(5) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-5 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #55e8de; }
-  #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(5) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(6) {
+
+.lecture-info.color-6 {
   background-color: #ffb2c1;
   color: #cc0027; }
-  #accordion > .lecture-info:nth-child(6):hover {
+  .lecture-info.color-6:hover {
     background-color: #ff99ac; }
-  #accordion > .lecture-info:nth-child(6) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-6 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #ff6683; }
-  #accordion > .lecture-info:nth-child(6) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-6 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #ff4c6e; }
-  #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(6) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(7) {
+
+.lecture-info.color-7 {
   background-color: #ffe88c;
   color: #a68400; }
-  #accordion > .lecture-info:nth-child(7):hover {
+  .lecture-info.color-7:hover {
     background-color: #ffe373; }
-  #accordion > .lecture-info:nth-child(7) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-7 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #ffd840; }
-  #accordion > .lecture-info:nth-child(7) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-7 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #ffd326; }
-  #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(7) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(8) {
+
+.lecture-info.color-8 {
   background-color: #ff96cb;
   color: #b00059; }
-  #accordion > .lecture-info:nth-child(8):hover {
+  .lecture-info.color-8:hover {
     background-color: #ff7dbf; }
-  #accordion > .lecture-info:nth-child(8) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-8 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #ff4aa6; }
-  #accordion > .lecture-info:nth-child(8) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-8 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #ff3099; }
-  #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(8) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(9) {
+
+.lecture-info.color-9 {
   background-color: #d5c8b7;
   color: #6a563d; }
-  #accordion > .lecture-info:nth-child(9):hover {
+  .lecture-info.color-9:hover {
     background-color: #ccbba7; }
-  #accordion > .lecture-info:nth-child(9) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-9 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #b9a286; }
-  #accordion > .lecture-info:nth-child(9) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-9 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #b09676; }
-  #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(9) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
-#accordion > .lecture-info:nth-child(10) {
+
+.lecture-info.color-10 {
   background-color: #dceac1;
   color: #739431; }
-  #accordion > .lecture-info:nth-child(10):hover {
+  .lecture-info.color-10:hover {
     background-color: #d2e4ad; }
-  #accordion > .lecture-info:nth-child(10) > .lecture-info-header > .lecture-delete:hover {
+  .lecture-info.color-10 > .lecture-info-header > .lecture-info-delete:hover {
     background-color: #bdd787; }
-  #accordion > .lecture-info:nth-child(10) > .lecture-info-header > .lecture-delete:active {
+  .lecture-info.color-10 > .lecture-info-header > .lecture-info-delete:active {
     background-color: #b2d174; }
-  #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom > .classroom-teacher {
-    opacity: 0.5; }
-  #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom:hover > .classroom-number,
-  #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > label.classroom:hover > .classroom-teacher {
-    opacity: 0.8; }
-  #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-number,
-  #accordion > .lecture-info:nth-child(10) > .lecture-classrooms > input[type='radio']:checked + label.classroom > .classroom-teacher {
-    opacity: 1; }
 
-.lecture {
-  background-color: #7adf56;
+.schedule-box {
   position: absolute;
-  width: 100%; }
+  width: 100%;
+  visibility: hidden; }
 
-.lecture-highlight {
-  color: white;
-  background-color: black; }
+.schedule-box-show,
+.schedule-box-highlight {
+  visibility: visible; }
 
-.lecture-hide {
-  display: none; }
+.schedule-box.color-1 {
+  background-color: #bdefac;
+  color: #3d991d; }
+
+.schedule-box-highlight.color-1 {
+  background-color: #7adf56;
+  color: #3d991d; }
+
+.schedule-box.color-2 {
+  background-color: #a0ddfc;
+  color: #0577b1; }
+
+.schedule-box-highlight.color-2 {
+  background-color: #3db9f9;
+  color: #0577b1; }
+
+.schedule-box.color-3 {
+  background-color: #ffcf8c;
+  color: #a66100; }
+
+.schedule-box-highlight.color-3 {
+  background-color: #ffa526;
+  color: #a66100; }
+
+.schedule-box.color-4 {
+  background-color: #e5c5ed;
+  color: #86309c; }
+
+.schedule-box-highlight.color-4 {
+  background-color: #c277d5;
+  color: #86309c; }
+
+.schedule-box.color-5 {
+  background-color: #aff4ef;
+  color: #17a79d; }
+
+.schedule-box-highlight.color-5 {
+  background-color: #55e8de;
+  color: #17a79d; }
+
+.schedule-box.color-6 {
+  background-color: #ffb2c1;
+  color: #cc0027; }
+
+.schedule-box-highlight.color-6 {
+  background-color: #ff4c6e;
+  color: #cc0027; }
+
+.schedule-box.color-7 {
+  background-color: #ffe88c;
+  color: #a68400; }
+
+.schedule-box-highlight.color-7 {
+  background-color: #ffd326;
+  color: #a68400; }
+
+.schedule-box.color-8 {
+  background-color: #ff96cb;
+  color: #b00059; }
+
+.schedule-box-highlight.color-8 {
+  background-color: #ff3099;
+  color: #b00059; }
+
+.schedule-box.color-9 {
+  background-color: #d5c8b7;
+  color: #6a563d; }
+
+.schedule-box-highlight.color-9 {
+  background-color: #b09676;
+  color: #6a563d; }
+
+.schedule-box.color-10 {
+  background-color: #dceac1;
+  color: #739431; }
+
+.schedule-box-highlight.color-10 {
+  background-color: #b2d174;
+  color: #739431; }
+
+.schedule-box-highlight.schedule-box-highlight-conflict {
+  background-color: red;
+  color: black;
+  opacity: 0.8;
+  z-index: 1; }
 
 /*# sourceMappingURL=application.css.map */

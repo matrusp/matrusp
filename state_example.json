@@ -1,0 +1,256 @@
+{
+  "version": 5,
+  "campus": "TODOS",
+  "semester": "20162",
+  "planIndex": 0,
+  "plans": [
+    {
+      "activeCombinationIndex": 1,
+      "lectures": [
+        {
+          "code": "SCC0502",
+          "name": "Algoritmos e Estruturas de Dados I",
+          "color": "1",
+          "campus": "TODOS",
+          "selected": 0,
+          "classrooms": [
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "seg",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "qua",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "qua",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "seg",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "ter",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "qui",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "ESA5350",
+          "name": "Educação Educação Educação Educação Educação Educação",
+          "color": "2",
+          "campus": "TODOS",
+          "selected": 1,
+          "classrooms": [
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "seg",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "qua",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "qua",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "seg",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "ter",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "qui",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "MAK0002",
+          "name": "Artes 1",
+          "color": "3",
+          "campus": "TODOS",
+          "selected": 1,
+          "classrooms": [
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "seg",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "sab",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "qua",
+                  "timeBegin": "21:00",
+                  "timeEnd": "22:40"
+                },
+                {
+                  "day": "sab",
+                  "timeBegin": "19:00",
+                  "timeEnd": "20:40"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

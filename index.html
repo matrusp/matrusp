@@ -90,6 +90,12 @@
                 <div class="column">
                     <div class="week-day">Sábado</div>
                 </div>
+                <div id='combination-controller'>
+                    <button onclick='state.previousCombination();'>&lt</button>
+                    <input id='combination-value' type='text' onsubmit='state.goToCombination(this.value);'>
+                    <span>/</span><span id='combination-total'></span>
+                    <button onclick='state.nextCombination();'>&gt</button>
+                </div>
             </div>
             <div id="lecture-explorer">
                 <div id="search-and-add">
@@ -112,7 +118,8 @@
                             <div class="lecture-info-header">
                                 <label for="lecture-info-01">
                                     <div class="lecture-info-code">MAC0110 -</div>
-                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div></label>
+                                    <div class="lecture-info-description">Introdução à Análise de Algoritmos</div>
+                                </label>
                                 <div class="lecture-delete"><img src="images/ic_close.png" alt=""></div>
                             </div>
                             <div class="lecture-classrooms">
@@ -147,5 +154,12 @@
     <script type="text/javascript" src="js/ui.js"></script>
     <script type="text/javascript" src="js/database.js"></script>
     <script type="text/javascript" src="js/search_box.js"></script>
+    <script type="text/javascript" src="js/schedule.js"></script>
+    <script type="text/javascript" src="js/classroom.js"></script>
+    <script type="text/javascript" src="js/lecture.js"></script>
+    <script type="text/javascript" src="js/combination.js"></script>
+    <script type="text/javascript" src="js/plan.js"></script>
+    <script type="text/javascript" src="js/state.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
