@@ -4,7 +4,7 @@
 
 function Database() {
 	this.db = new Object();
-	this.currDB = new Object();// Necessario porque se não perco a referencia do semestre atual
+	this.currDB = new Object();//Needed because I don't have reference to semester inside of function fetchLectureOnDB
 
 	function changingSpecialCharacters(word) {
 		return word.toUpperCase()
@@ -79,10 +79,10 @@ function Database() {
 		}
 
 		self.result.sort(function(first, second) {
-				return first.score - second.score;
+			return first.score - second.score;
 		});
 		self.result.forEach(function(t) {
-				delete t.score;
+			delete t.score;
 		});
 	}
 
@@ -146,14 +146,12 @@ function Database() {
 	}
 
 	this.sliceObjectDB= function() {
-		return this.result.slice();
+		return this.result.slice(0, 100);
 	}
 }
 
 var database = new Database();
 database.loadDB(1);
-
-//TODO verificar se limitar o sliceObjectDB torna a busca mais rapida
 
 
 
