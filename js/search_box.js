@@ -228,7 +228,6 @@ function SearchBox(state) {
 }
 
 
-var searchBox = new SearchBox();
 
 
 

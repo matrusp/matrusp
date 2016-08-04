@@ -17,10 +17,13 @@ function loadJSON(fileName, callback) {
 
 var ui = new UI();
 var state;
+var searchBox;
 
 loadJSON('state_example.json', function(response) {
   var myJSON = JSON.parse(response);
-  state = new State(myJSON);
+  state = new State(myJSON); 
+	searchBox= new SearchBox(state);
 });
+
 
 
