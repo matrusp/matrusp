@@ -125,8 +125,9 @@ Plan.prototype.previousCombination = function() {
  * @param {Lecture} lecture
  */
 Plan.prototype.addLecture = function(lecture) {
-  this.lectures.push(lecture);
-  ui.addLecture(lecture);
+	var newLecture = new Lecture(lecture, this);
+  this.lectures.push(newLecture);
+  ui.addLecture(newLecture);
   this.update();
 }
 

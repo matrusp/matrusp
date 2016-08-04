@@ -237,7 +237,6 @@ header {
   font-size: 12px; }
   #search:focus {
     z-index: 2;
-    border-bottom-style: none;
     border-radius: 2px 2px 0 0;
     outline: none;
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4); }
@@ -278,9 +277,6 @@ header {
 .search-result.lecture-info {
   padding: 6px 4px;
   border-bottom: 1px solid rgba(159, 159, 159, 0.8); }
-  .search-result.lecture-info:hover {
-    background-color: #e8ffdb;
-    color: #398417; }
 
 .search-result-selected {
   background-color: #e8ffdb;

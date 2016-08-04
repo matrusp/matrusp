@@ -2,10 +2,9 @@
  * @constructor
  */
 
-function SearchBox() {
+function SearchBox(state) {
 	var self = this;
 
-	self.database = database;
 	self.searchBox = document.getElementById('search');
 	self.searchResultBox = document.getElementById('search-result-box');
 	self.overSearchResultBox = false;
@@ -32,7 +31,42 @@ function SearchBox() {
 
 				var addLectureCallback = function(iterator) {
 					return function() {
-						ui.addLecture(lectures[iterator]);
+						console.log(lectures[iterator]);
+						var obj = new Object();
+						obj = {
+							'code' : lectures[iterator].code,
+							'name' : lectures[iterator].name,
+							'color' : '1',
+							'campus' : 'TODOS',
+							'selected' : 1,
+							'classrooms' : new Array()
+						};
+						lectures[iterator].classrooms.forEach(function(classroom) {
+								var specification = {
+								'classroomCode' : '43',
+								'horas_aula' : 0,
+								'vaga_ofertadas' : 0,
+								'vagas_ocupadas' : 0,
+								'alunos_especiais' : 0,
+								'saldo_vagas' : 0,
+								'pedidos_sem_vaga' : 0,
+								'selected' : 1,
+								'teachers' : new Array(),
+								'schedules' : new Array()
+								};
+								classroom.schedule.forEach(function(schedules) {
+										var schedule = {
+										'day' : schedules.day,
+										'timeBegin' : schedules.begin_time,
+										'timeEnd' : schedules.end_time
+										};
+										specification.teachers.push(schedules.teacher);
+										specification.schedules.push(schedule);
+										});
+								obj.classrooms.push(specification);
+						});
+						console.log(obj);
+						state.addLecture(obj);
 						searchResultBoxHide();
 						self.overSearchResultBox = false;
 						removeLecturesSuggestionList();
