@@ -38,6 +38,9 @@ function Classroom(jsonObj, parentLecture) {
     this.saldo_vagas = jsonObj.saldo_vagas;
     this.pedidos_sem_vaga = jsonObj.pedidos_sem_vaga;
     this.selected = jsonObj.selected;
+    //TODO: rever data de inicio/fim
+    this.data_inicio = jsonObj.data_inicio;
+    this.data_fim = jsonObj.data_fim;
     // Array.slice(0) copies the _entire_ array.
     this.teachers = jsonObj.teachers.slice(0);
     for (var i = 0; i < jsonObj.schedules.length; i++) {
