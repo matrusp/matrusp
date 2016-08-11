@@ -4,3 +4,4 @@ styles/.sass-cache/*
 styles/css/*
 #exclude vim swap files
 *.swp
+.idea
