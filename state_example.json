@@ -15,6 +15,8 @@
           "selected": 0,
           "classrooms": [
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
@@ -42,6 +44,8 @@
               ]
             },
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
@@ -69,6 +73,8 @@
               ]
             },
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
@@ -105,6 +111,8 @@
           "selected": 1,
           "classrooms": [
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
@@ -132,6 +140,8 @@
               ]
             },
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
@@ -159,6 +169,8 @@
               ]
             },
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
@@ -195,6 +207,8 @@
           "selected": 1,
           "classrooms": [
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
@@ -222,6 +236,8 @@
               ]
             },
             {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
               "classroomCode": "43",
               "horas_aula": 0,
               "vagas_ofertadas": 0,
