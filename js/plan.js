@@ -37,7 +37,6 @@ function Plan(jsonObj) {
  *
  */
 Plan.prototype.update = function(classroomUpdated) {
-  console.log('updating...');
   var oldActiveCombination = null;
   if (this.activeCombinationIndex != null) {
     // There is an active combination.
@@ -171,7 +170,40 @@ Plan.prototype.testCombination = function(potentialCombination) {
  *
  */
 Plan.prototype.computeCombinations = function() {
-  var potentialCombination = Array(this.lectures.length).fill(0);
+  var numberOfLecturesToIgnore = 0;
+  while (this.combinations.length == 0 && numberOfLecturesToIgnore < this.lectures.length) {
+    this.computeCombinationsIgnoringLectures(numberOfLecturesToIgnore);
+    numberOfLecturesToIgnore++;
+  }
+  if (this.combinations.length == 0) {
+    return;
+  }
+  numberOfLecturesToIgnore--;
+  for (var i = 0; i < this.lectures.length; i++) {
+    if (i < this.lectures.length - numberOfLecturesToIgnore) {
+      // Don't join these if statements. The 'else' below
+      // opposes just the first if.
+      if (this.lectures[i].htmlLectureCheckbox.disabled) {
+        this.lectures[i].lectureSelect();
+        this.lectures[i].enableCheckbox();
+      }
+    } else {
+      this.lectures[i].lectureUnselect();
+      this.lectures[i].disableCheckbox();
+    }
+  }
+}
+
+
+/**
+ * Computes combinations ignoring the last 'numberOfLecturesToIgnore' lectures.
+ * This makes the order of lectures in Plan.lectures relevant!
+ *
+ */
+Plan.prototype.computeCombinationsIgnoringLectures = function(numberOfLecturesToIgnore) {
+  // creates a '0' default value for 'numberOfLecturesToIgnore'
+  numberOfLecturesToIgnore = (typeof numberOfLecturesToIgnore !== 'undefined') ? numberOfLecturesToIgnore : 0;
+  var potentialCombination = Array(this.lectures.length - numberOfLecturesToIgnore).fill(0);
   var leftmostSelectedLectureIndex = -1;
   // Initialize to something like this:
   // [-1, -1, 0, -1, 0, 0, 0, -1]
@@ -190,15 +222,12 @@ Plan.prototype.computeCombinations = function() {
     return;
   }
 
-// TODO tirar daqui
-  console.log('potentialCombination', potentialCombination);
   var loop = 0;
 
-  // while condition can be this without affecting the logic:
+  // while condition can be this one without affecting the logic:
   // potentialCombination[leftmostSelectedLectureIndex] >= this.lectures[leftmostSelectedLectureIndex].classrooms.length
   while (loop++ < 100) {
     if (this.testCombination(potentialCombination)) {
-      console.log('combination', potentialCombination);
       combination = new Combination(potentialCombination, this);
       this.combinations.push(combination);
     }

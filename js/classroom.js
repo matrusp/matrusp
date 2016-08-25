@@ -110,7 +110,7 @@ Classroom.prototype.hideBox = function() {
 /**
  *
  */
- // TODO mudar aqui quando tiver plan.activeCombination e lecture.activeClassroom
+// TODO mudar aqui quando tiver plan.activeCombination e lecture.activeClassroom
 Classroom.prototype.setHighlight = function() {
   var lecture = this.parent;
   var activeClassroom = null;
@@ -122,7 +122,7 @@ Classroom.prototype.setHighlight = function() {
   this.addClassInSchedules('schedule-box-highlight');
   
   // Look for conflicting schedules. The active classroom doesn't have any
-  // conflicts because it is active (obviously). Also there are only conflicts
+  // conflicts because it is active (obviously). Also there are conflicts only
   // if there is a combination being displayed.
   if (this != activeClassroom && lecture.parent.activeCombinationIndex != null) {
     var activeCombination = lecture.parent.combinations[lecture.parent.activeCombinationIndex];
@@ -130,7 +130,7 @@ Classroom.prototype.setHighlight = function() {
       // This happens when there are at least one lecture displayed on the screen
       // but no lecture is selected (div#lecture-schedule is graphically empty).
       // However, in this situation there may be various lectures included,
-      // i.e. plan.lectures.length >>> 0. 
+      // i.e. plan.lectures.length > 0. 
       // So there is no conflict, we can return.
       return
     }
@@ -170,29 +170,23 @@ Classroom.prototype.unsetHighlight = function() {
 }
 
 /**
- *
+ * @param {Boolean} [shouldUpdate=true] - enables parent lecture and current plan's update
  */
-Classroom.prototype.toggleClassroomSelection = function() {
+Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
   toggleClass(this.htmlElement, 'classroom-selected');
   this.selected = !this.selected;
 
-  var thisLecture = this.parent;
-  var noClassroomSelected = true;
-  for (var i = 0; i < thisLecture.classrooms.length; i++) {
-    if (thisLecture.classrooms[i].selected) {
-      noClassroomSelected = false;
-    }
-  }
+  // These two lines are relevant when this function is called by effect of
+  // toggling selection of all classrooms.
+  var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
+  checkbox.checked = this.selected;
 
-  if (noClassroomSelected) {
-    thisLecture.selected = false;
-    thisLecture.activeClassroomIndex = null;
-  } else {
-    thisLecture.selected = true;
-  }
-
+  // creates a 'true' default value for 'shouldUpdate'
+  shouldUpdate = (typeof shouldUpdate !== 'undefined') ? shouldUpdate : true;
   // Update this plan.
-  thisLecture.parent.update(this);
+  if (shouldUpdate) {
+    this.parent.update(this);
+  }
 }
 
 
@@ -206,5 +200,6 @@ Classroom.prototype.toggleClassroomSelection = function() {
 Classroom.prototype.addEventListeners = function() {
   this.htmlElement.addEventListener('mouseenter', this.setHighlight.bind(this));
   this.htmlElement.addEventListener('mouseleave', this.unsetHighlight.bind(this));
-  this.htmlElement.addEventListener('click', this.toggleClassroomSelection.bind(this));
+  var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
+  checkbox.addEventListener('click', this.toggleClassroomSelection.bind(this));
 };
