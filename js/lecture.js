@@ -171,6 +171,10 @@ Lecture.prototype.updateAllClassroomsSelections = function() {
       this.classrooms[i].toggleClassroomSelection(shouldUpdate);
     }
   }
+  if (!this.htmlClassroomsCheckbox.checked) {
+    this.activeClassroomIndex = null;
+    this.lectureUnselect();
+  }
   this.parent.update();
 }
 
