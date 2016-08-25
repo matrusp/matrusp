@@ -43,6 +43,8 @@ function SearchBox(state) {
 						};
 						lectures[iterator].classrooms.forEach(function(classroom) {
 								var specification = {
+								'data_inicio' : classroom.start_date,
+								'data_fim' : classroom.end_date,
 								'classroomCode' : '43',
 								'horas_aula' : 0,
 								'vaga_ofertadas' : 0,
