@@ -1,6 +1,4 @@
-document.getElementById('icalendar').addEventListener('click', function () {
-  download_icalendar();
-});
+document.getElementById('icalendar').addEventListener('click', download_icalendar);
 
 var header_statement = 'BEGIN:VCALENDAR\n' +
   'PRODID:-\n' +
@@ -62,24 +60,18 @@ function get_class_end_date(classroom) {
 }
 
 function get_class_begin_date(classroom, schedule) {
-  var date = classroom.data_inicio.split("/");
-  var js_date = new Date();
-  js_date.setDate(parseInt(date[0]));
-  js_date.setMonth(parseInt(date[1]) - 1);
-  js_date.setFullYear(parseInt(date[2]));
-  var week_day = js_date.getDay();
-  if (week_day == get_week_day_number(schedule)) {
-    return date[2] + date[1] + date[0];
-  }
-  else {
-    js_date.setDate(js_date.getDate() + Math.abs(week_day - get_week_day_number(schedule)));
-    var final_date = js_date.getFullYear().toString();
-    if (js_date.getMonth() < 10) final_date = final_date + "0" + (js_date.getMonth() + 1).toString();
-    else final_date += (js_date.getMonth() + 1).toString();
-    if (js_date.getDate() < 10) final_date = final_date + "0" + js_date.getDate().toString();
-    else final_date += js_date.getDate().toString();
-    return final_date;
-  }
+  var string_date = classroom.data_inicio.split("/");
+  var begin_date = new string_date();
+  begin_date.setDate(parseInt(string_date[0]));
+  begin_date.setMonth(parseInt(string_date[1]) - 1);
+  begin_date.setFullYear(parseInt(string_date[2]));
+  begin_date.setDate(begin_date.getDate() + (get_week_day_number(schedule) + ( 7 - begin_date.getDay())) % 7);
+  var final_string_date = begin_date.getFullYear().toString();
+  if (begin_date.getMonth() < 10) final_string_date = final_string_date + "0" + (begin_date.getMonth() + 1).toString();
+  else final_string_date += (begin_date.getMonth() + 1).toString();
+  if (begin_date.getDate() < 10) final_string_date = final_string_date + "0" + begin_date.getDate().toString();
+  else final_string_date += begin_date.getDate().toString();
+  return final_string_date;
 }
 
 function get_schedule_start_time(schedule) {
@@ -119,9 +111,9 @@ function build_event() {
 
 function download_icalendar() {
   var element = document.createElement('a');
+  element.style.display = 'none';
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(header_statement + build_event() + final_statement));
   element.setAttribute('download', 'calendario_matrusp.ics');
-  element.style.display = 'none';
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
