@@ -30,6 +30,8 @@ function Lecture(jsonObj, parentPlan) {
     this.selected = jsonObj.selected;
     this.htmlElement = ui.createLectureInfo(this);
     this.htmlLectureCheckbox = this.htmlElement.getElementsByClassName('lecture-info-checkbox')[0];
+    this.htmlLectureArrowUp = this.htmlElement.getElementsByClassName('lecture-info-up')[0];
+    this.htmlLectureArrowDown = this.htmlElement.getElementsByClassName('lecture-info-down')[0];
     this.htmlClassroomsCheckbox = this.htmlElement.getElementsByClassName('classrooms-header-checkbox')[0];
     for (var i = 0; i < jsonObj.classrooms.length; i++) {
       this.classrooms.push(new Classroom(jsonObj.classrooms[i], this));
@@ -46,6 +48,8 @@ function Lecture(jsonObj, parentPlan) {
     this.selected = null;
     this.htmlElement = null;
     this.htmlLectureCheckbox = null;
+    this.htmlLectureArrowUp = null;
+    this.htmlLectureArrowDown = null;
     this.htmlClassroomsCheckbox = null;
   }
 }
@@ -125,7 +129,8 @@ Lecture.prototype.toggleLectureSelection = function() {
   this.selected = !this.selected;
   if (this.selected && this.noClassroomsSelected()) {
     this.htmlClassroomsCheckbox.checked = true;
-    this.updateAllClassroomsSelections();
+    var shouldUpdate = false;
+    this.updateAllClassroomsSelections(shouldUpdate);
   }
   this.parent.update();
 }
@@ -164,18 +169,19 @@ Lecture.prototype.delete = function() {
 /**
  *
  */
-Lecture.prototype.updateAllClassroomsSelections = function() {
+Lecture.prototype.updateAllClassroomsSelections = function(shouldUpdate) {
   for (var i = 0; i < this.classrooms.length; i++) {
     if (this.classrooms[i].selected != this.htmlClassroomsCheckbox.checked) {
-      var shouldUpdate = false;
-      this.classrooms[i].toggleClassroomSelection(shouldUpdate);
+      var shouldUpdateFurther = false;
+      this.classrooms[i].toggleClassroomSelection(shouldUpdateFurther);
     }
   }
-  if (!this.htmlClassroomsCheckbox.checked) {
-    this.activeClassroomIndex = null;
-    this.lectureUnselect();
+
+  // creates a 'true' default value for 'shouldUpdate'
+  shouldUpdate = (typeof shouldUpdate !== 'undefined') ? shouldUpdate : true;
+  if (shouldUpdate) {
+    this.update();
   }
-  this.parent.update();
 }
 
 /**
@@ -186,7 +192,7 @@ Lecture.prototype.update = function(classroomUpdated) {
     this.activeClassroomIndex = null;
     this.lectureUnselect();
   } else if (!this.selected) {
-    // When no classrooms were selected and right now one is, the lecture too
+    // When no classrooms were selected and right now at least one is, the lecture too
     // becomes selected. (Thinking about the use case where the user unchecks all
     // classrooms and then checks one back. I think the user wants that classroom
     // to be considered on the combinations.)
@@ -194,6 +200,43 @@ Lecture.prototype.update = function(classroomUpdated) {
   }
   this.updateClassroomsCheckbox();
   this.parent.update(classroomUpdated);
+}
+
+/**
+ *
+ */
+Lecture.prototype.moveUp = function() {
+  var lectureIndex = this.parent.lectures.indexOf(this);
+  if (lectureIndex == 0) {
+    return;
+  }
+  this.parent.lectures.splice(lectureIndex, 1);
+  this.parent.lectures.splice(lectureIndex - 1, 0, this);
+
+  // Updating the GUI
+  var htmlParentElement = this.htmlElement.parentElement;
+  var htmlElementBefore = htmlParentElement.children[lectureIndex - 1];
+  // this.htmlElement doesn't have to be removed because one element can
+  // exist only in one place. So when reinserting it is automatically removed
+  // from its original place.
+  htmlParentElement.insertBefore(this.htmlElement, htmlElementBefore);
+
+  if (this.htmlLectureCheckbox.disabled) {
+    this.lectureSelect();
+    this.enableCheckbox();
+  }
+  this.parent.update();
+}
+
+/**
+ *
+ */
+Lecture.prototype.moveDown = function() {
+  var lectureIndex = this.parent.lectures.indexOf(this);
+  if (lectureIndex == this.parent.length - 1) {
+    return;
+  }
+  this.parent.lectures[lectureIndex + 1].moveUp();
 }
 
 
@@ -210,6 +253,9 @@ Lecture.prototype.addEventListeners = function() {
   this.htmlLectureCheckbox.addEventListener('click', this.toggleLectureSelection.bind(this));
 
   this.htmlClassroomsCheckbox.addEventListener('click', this.updateAllClassroomsSelections.bind(this));
+
+  this.htmlLectureArrowUp.addEventListener('click', this.moveUp.bind(this));
+  this.htmlLectureArrowDown.addEventListener('click', this.moveDown.bind(this));
 };
 
 

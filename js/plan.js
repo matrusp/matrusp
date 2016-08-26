@@ -170,6 +170,14 @@ Plan.prototype.testCombination = function(potentialCombination) {
  *
  */
 Plan.prototype.computeCombinations = function() {
+  for (var i = 0; i < this.lectures.length; i++) {
+    if (this.lectures[i].htmlLectureCheckbox.disabled) {
+      this.lectures[i].enableCheckbox();
+      if (!this.lectures[i].noClassroomsSelected()) {
+        this.lectures[i].lectureSelect(); 
+      }
+    }
+  }
   var numberOfLecturesToIgnore = 0;
   while (this.combinations.length == 0 && numberOfLecturesToIgnore < this.lectures.length) {
     this.computeCombinationsIgnoringLectures(numberOfLecturesToIgnore);
@@ -179,18 +187,9 @@ Plan.prototype.computeCombinations = function() {
     return;
   }
   numberOfLecturesToIgnore--;
-  for (var i = 0; i < this.lectures.length; i++) {
-    if (i < this.lectures.length - numberOfLecturesToIgnore) {
-      // Don't join these if statements. The 'else' below
-      // opposes just the first if.
-      if (this.lectures[i].htmlLectureCheckbox.disabled) {
-        this.lectures[i].lectureSelect();
-        this.lectures[i].enableCheckbox();
-      }
-    } else {
-      this.lectures[i].lectureUnselect();
-      this.lectures[i].disableCheckbox();
-    }
+  for (var i = this.lectures.length - numberOfLecturesToIgnore; i < this.lectures.length; i++) {
+    this.lectures[i].lectureUnselect();
+    this.lectures[i].disableCheckbox();
   }
 }
 

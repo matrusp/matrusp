@@ -183,7 +183,6 @@ Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
 
   // creates a 'true' default value for 'shouldUpdate'
   shouldUpdate = (typeof shouldUpdate !== 'undefined') ? shouldUpdate : true;
-  // Update this plan.
   if (shouldUpdate) {
     this.parent.update(this);
   }
