@@ -134,8 +134,6 @@ Plan.prototype.addLecture = function(lecture) {
  *
  */
 Plan.prototype.testCombination = function(potentialCombination) {
-  // Combinations only exist with all lectures included. So if
-  // a classroom isn't selected, the combination is invalid.
   for(var i = 0; i < potentialCombination.length - 1; i++) {
     var classroom1Index = potentialCombination[i];
     if (classroom1Index == -1) {
@@ -164,7 +162,66 @@ Plan.prototype.testCombination = function(potentialCombination) {
     }
   }
   return true;
-}
+};
+
+Plan.prototype.findNextCombinationBase = function(lastCombinationBase) {
+  // Using another variable name to make it more readable (regarding semantics).
+  var combinationBase = lastCombinationBase;
+  if (!combinationBase) {
+    // If it is the first possible combination, just return it.
+    combinationBase = Array(this.lectures.length).fill(0);
+    for (var i = combinationBase.length - 1; i >= 0; i--) {
+      if (!this.lectures[i].selected) {
+        combinationBase[i] = -1;
+      }
+    }
+    return combinationBase;
+  }
+
+  var rightmostSelectedLectureIndex = -1;
+  for (var i = combinationBase.length - 1; i >= 0; i--) {
+    if (rightmostSelectedLectureIndex == -1) {
+      rightmostSelectedLectureIndex = i;
+    }
+  }
+  if (rightmostSelectedLectureIndex == -1) {
+    // There are no selected lectures, return all values equal to -1.
+    combinationBase = Array(this.lectures.length).fill(-1);
+    return combinationBase;
+  }
+
+  // Next base is generated like summing 1 to a base-2 number.
+  // If array A generates no valid combinations, B should be the next tried base:
+  // Example 1
+  // A = [ 0, unselectedLecture,  0, -1, -1, unselectedLecture, -1]
+  // B = [ 0, unselectedLecture, -1,  0,  0, unselectedLecture,  0]
+  // Example 2
+  // A = [ 0, unselectedLecture, -1,  0, -1, unselectedLecture, -1]
+  // B = [ 0, unselectedLecture, -1, -1,  0, unselectedLecture,  0]
+  // Example 3
+  // A = [ 0,  0,  0, unselectedLecture, unselectedLecture]
+  // B = [ 0,  0, -1, unselectedLecture, unselectedLecture]
+  // Obs.: The value 'unselectedLecture' is actually -1 on the real array.
+  var i = rightmostSelectedLectureIndex;
+  while (i >= 0) {
+    if (!this.lectures[i].selected) {
+      i--;
+      continue;
+    }
+    if (combinationBase[i] == -1) {
+      combinationBase[i] = 0;
+      i--;
+    } else {
+      combinationBase[i] = -1;
+      return combinationBase;
+    }
+  }
+
+  // If got here, it means that every selected lecture was set to -1 until the
+  // last loop. Set them again to -1 and return.
+  combinationBase = Array(this.lectures.length).fill(-1);
+  return combinationBase;
+};
 
 /**
  *
@@ -178,54 +235,59 @@ Plan.prototype.computeCombinations = function() {
       }
     }
   }
-  var numberOfLecturesToIgnore = 0;
-  while (this.combinations.length == 0 && numberOfLecturesToIgnore < this.lectures.length) {
-    this.computeCombinationsIgnoringLectures(numberOfLecturesToIgnore);
-    numberOfLecturesToIgnore++;
+  // Try first combination base, where all selected lectures are considered.
+  var combinationBase = this.findNextCombinationBase();
+  this.computeCombinationsFromBase(combinationBase);
+  // If all entries in combinationBase are -1 it means that there are no possible combinations.
+  // Otherwise combinationBase.indexOf(0) > -1.
+  while (this.combinations.length == 0 && combinationBase.indexOf(0) > -1) {
+    combinationBase = this.findNextCombinationBase(combinationBase);
+    this.computeCombinationsFromBase(combinationBase);
   }
   if (this.combinations.length == 0) {
     return;
   }
-  numberOfLecturesToIgnore--;
-  for (var i = this.lectures.length - numberOfLecturesToIgnore; i < this.lectures.length; i++) {
-    this.lectures[i].lectureUnselect();
-    this.lectures[i].disableCheckbox();
+  for (var i = 0; i < this.lectures.length; i++) {
+    if (combinationBase[i] == -1 && this.lectures[i].selected) {
+      this.lectures[i].lectureUnselect();
+      this.lectures[i].disableCheckbox();
+    }
   }
 }
 
 
 /**
- * Computes combinations ignoring the last 'numberOfLecturesToIgnore' lectures.
- * This makes the order of lectures in Plan.lectures relevant!
  *
  */
-Plan.prototype.computeCombinationsIgnoringLectures = function(numberOfLecturesToIgnore) {
-  // creates a '0' default value for 'numberOfLecturesToIgnore'
-  numberOfLecturesToIgnore = (typeof numberOfLecturesToIgnore !== 'undefined') ? numberOfLecturesToIgnore : 0;
-  var potentialCombination = Array(this.lectures.length - numberOfLecturesToIgnore).fill(0);
+Plan.prototype.computeCombinationsFromBase = function(combinationBase) {
   var leftmostSelectedLectureIndex = -1;
-  // Initialize to something like this:
+  // combinationBase is something like this:
   // [-1, -1, 0, -1, 0, 0, 0, -1]
   //       ___^____
   // where this guy is the leftmostSelectedLectureIndex
-  for (var i = 0; i < this.lectures.length; i++) {
-    if (!this.lectures[i].selected) {
-      potentialCombination[i] = -1;
-    } else if (leftmostSelectedLectureIndex == -1) {
+  for (var i = 0; i < combinationBase.length; i++) {
+    if (combinationBase[i] != -1 && leftmostSelectedLectureIndex == -1) {
       leftmostSelectedLectureIndex = i;
     }
   }
 
   if (leftmostSelectedLectureIndex == -1) {
-    // No lecture selected. There are no combinations.
+    // combinationBase has all values equal to -1, meaning that no lecture is 
+    // selected. There are no combinations.
     return;
   }
 
-  var loop = 0;
+  // newArray = oldArray.slice() => it copies array by value, since the original array
+  // is composed of numbers.
+  // See: http://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
+  var potentialCombination = combinationBase.slice();
 
-  // while condition can be this one without affecting the logic:
+  // illustrating an upper bound: 8 lectures with 3 classrooms each -> 3^8 combinations = 6561
+  // var loop existis only to foolproof the alternative "while (true)"
+  // while condition could be this one without affecting the logic (?):
   // potentialCombination[leftmostSelectedLectureIndex] >= this.lectures[leftmostSelectedLectureIndex].classrooms.length
-  while (loop++ < 100) {
+  var loop = 0;
+  while (loop++ < 7000) {
     if (this.testCombination(potentialCombination)) {
       combination = new Combination(potentialCombination, this);
       this.combinations.push(combination);
@@ -233,7 +295,7 @@ Plan.prototype.computeCombinationsIgnoringLectures = function(numberOfLecturesTo
 
     // This process is similar to adding 1 to a number, where each slot is a digit
     // we begin at the rightmost digit and whenever a value reaches its maximum
-    // capacity we turn it in zero and add one to the one to its left.
+    // capacity we turn it to zero and add 1 to the one on its left.
     // The first lecture will be last to change (when traveling in the combinations).
     // Also, when there are '-1's (lecture not selected), it jumps. For that matter,
     // the loop stops when the leftmost selected lecture excedes its maximum capacity.

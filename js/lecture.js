@@ -233,17 +233,29 @@ Lecture.prototype.moveUp = function() {
  */
 Lecture.prototype.moveDown = function() {
   var lectureIndex = this.parent.lectures.indexOf(this);
-  if (lectureIndex == this.parent.length - 1) {
+  if (lectureIndex == this.parent.lectures.length - 1) {
     return;
   }
   this.parent.lectures[lectureIndex + 1].moveUp();
 }
+
+// TODO
+Lecture.prototype.setHighlight = function() {
+  this.classrooms[this.activeClassroomIndex].setHighlight();
+};
+Lecture.prototype.unsetHighlight = function() {
+  this.classrooms[this.activeClassroomIndex].unsetHighlight();
+};
 
 
 /**
  *
  */
 Lecture.prototype.addEventListeners = function() {
+  // TODO
+  //this.htmlElement.addEventListener('mouseover', this.setHighlight.bind(this));
+  //this.htmlElement.addEventListener('mouseout', this.unsetHighlight.bind(this));
+
   var lectureHeaderTitle = this.htmlElement.getElementsByClassName('lecture-info-header-title')[0];
   lectureHeaderTitle.addEventListener('click', this.toggleLectureOpen.bind(this));
   
