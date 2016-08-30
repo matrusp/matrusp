@@ -242,7 +242,8 @@ function schedulesConflict(schedule1, schedule2) {
 }
 
 /**
- *
+ * Check if all schedules can be set without conflict. If at least one
+ * pair of schedules conflict, returns true.
  */
 function classroomsConflict(classroom1, classroom2) {
   var schedules1 = classroom1.schedules;
@@ -257,4 +258,3 @@ function classroomsConflict(classroom1, classroom2) {
   }
   return false;
 }
-

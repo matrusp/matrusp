@@ -113,6 +113,12 @@ function UI() {
       class: 'classroom-info',
       children: [
         {
+          tag: 'input',
+          type: 'checkbox',
+          class: 'classroom-info-checkbox',
+          checked: classroom.selected
+        },
+        {
           tag: 'div',
           class: 'classroom-code',
           innerHTML: classroom.classroomCode
@@ -121,11 +127,6 @@ function UI() {
           tag: 'div',
           class: 'classroom-teacher',
           innerHTML: classroom.teachers.join('<br>')
-        },
-        {
-          tag: 'div',
-          class: 'classroom-toggle',
-          innerHTML: 'x'
         }
       ]
     };
@@ -150,6 +151,12 @@ function UI() {
           class: 'lecture-info-header',
           children: [
             {
+              tag: 'input',
+              type: 'checkbox',
+              class: 'lecture-info-checkbox',
+              checked: lecture.selected
+            },
+            {
               tag: 'div',
               class: 'lecture-info-header-title',
               children: [
@@ -162,6 +169,26 @@ function UI() {
                   tag: 'div',
                   class: 'lecture-info-name',
                   innerHTML: lecture.name
+                }
+              ]
+            },
+            {
+              tag: 'div',
+              class: 'lecture-info-up',
+              children: [
+                {
+                  tag: 'img',
+                  src: 'images/ic_arrow_up.png'
+                }
+              ]
+            },
+            {
+              tag: 'div',
+              class: 'lecture-info-down',
+              children: [
+                {
+                  tag: 'img',
+                  src: 'images/ic_arrow_down.png'
                 }
               ]
             },
@@ -186,6 +213,11 @@ function UI() {
               class: 'classrooms-header',
               children: [
                 {
+                  tag: 'input',
+                  type: 'checkbox',
+                  class: 'classrooms-header-checkbox'
+                },
+                {
                   tag: 'div',
                   class: 'classroom-code',
                   innerHTML: 'Turma'
@@ -194,11 +226,6 @@ function UI() {
                   tag: 'div',
                   class: 'classroom-teacher',
                   innerHTML: 'Professor'
-                },
-                {
-                  tag: 'div',
-                  class: 'classroom-toggle',
-                  innerHTML: 'x'
                 }
               ]
             }
@@ -225,4 +252,130 @@ function UI() {
       }
     }
   }
+	
+	/**
+	 *
+	 */
+	this.removeLecture = function(lecture) {
+		accordion.removeChild(lecture.htmlElement);
+		for (var i = 0; i < lecture.classrooms.length; i++) {
+			var classroom = lecture.classrooms[i];
+			for (var j = 0; j < classroom.schedules.length; j++) {
+				var schedule = classroom.schedules[j];
+				var day = indexOfDay(schedule.day);
+				weekdays[day].removeChild(schedule.htmlElement);
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	 this.saveStateOnServer = function(identifier) {
+		if (!identifier || identifier == '') {
+			//TODO print info about use		
+		}
+			var objectJSON = new Object();
+			objectJSON = copyState(objectJSON);
+			objectJSON = JSON.stringify(objectJSON);
+			var xobj = new XMLHttpRequest();
+			xobj.onreadystatechange = function() {
+				if (this.readyState == 4) {
+					console.log("response", this.responseText);
+					if (this.status == 200 && this.responseText == "OK") {
+						//TODO print information of succes
+					} else {
+						//TODO print information about fail
+					}
+				}
+			};
+			xobj.open('POST', './php/save.php?identifier=' + encodeURIComponent(identifier), true);
+			xobj.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xobj.send('data=' + encodeURIComponent(objectJSON));
+	 }
+
+	 /**
+	  *
+		**/
+	 function copyState(object) {
+		 object = {
+			 'planIndex': state.activePlanIndex,
+			 'campus': state.campus,
+			 'semester': state.semester,
+			 'version': state.version,
+			 'plans': new Array()
+		 };
+		 var plan = new Object();
+		 for (var i = 0; i < state.plans.length; i++) {
+			 if (state.plans[i].lectures.length == 0) continue;
+			 var active = 0;
+			 if (i == state.activePlanIndex) {
+				 active = 1;
+			 }
+			 plan = {
+				 'activeCombinationIndex': state.plans[i].activeCombinationIndex,/*this value can't be null*/
+				 'activePlan': active,
+				 'lectures': new Array()
+			 };
+			 for (var j = 0; j < state.plans[i].lectures.length; j++) {
+				 var lecture = new Object();
+				 var lectureState = state.plans[i].lectures[j];
+				 lecture = {
+					 'campus': lectureState.campus,
+					 'code': lectureState.code,
+					 'color': lectureState.color,
+					 'selected': lectureState.selected,
+					 'name': lectureState.name,
+					 'classrooms': new Array()
+				 };
+				 for (var k = 0; k < state.plans[i].lectures[j].classrooms.length; k++) {
+					 var classroom = new Object();
+					 var classroomState = state.plans[i].lectures[j].classrooms[k];
+					 classroom = {
+						 'alunos_especiais': classroomState.alunos_especiais,
+						 'classroomCode': classroomState.classroomCode,
+						 'horas_aula': classroomState.horas_aula,
+						 'pedidos_sem_vagas': classroomState.pedidos_sem_vagas,
+						 'saldo_vagas': classroomState.saldo_vagas,
+						 'selected': classroomState.selected,
+						 'vagas_ocupadas': classroomState.vagas_ocupadas,
+						 'pedidos_sem_vagas': 0,
+						 'vagas_ofertadas': classroomState.vagas_ofertadas,
+						 'schedules': new Array(),
+						 'teachers': classroomState.teachers.slice(0)
+					 };
+					 for (var l = 0; l < state.plans[i].lectures[j].classrooms[k].schedules.length; l++) {
+						 var schedule = new Object();
+						 var scheduleState = state.plans[i].lectures[j].classrooms[k].schedules[l];
+						 schedule = {
+							 'day': scheduleState.day,
+							 'timeBegin': scheduleState.timeBegin,
+							 'timeEnd': scheduleState.timeEnd
+						 };
+						 classroom.schedules.push(schedule);
+					 }
+					 lecture.classrooms.push(classroom);
+				 }
+				 plan.lectures.push(lecture);
+			 }
+			 object.plans.push(plan);
+		 }
+		 return object;
+	 }
+
+	 /**
+	  *
+		**/
+	 this.loadJSON = function(pathAndNameOfJSON, callback) {
+		 var xobj = new XMLHttpRequest();
+		 xobj.overrideMimeType("application/json");
+		 xobj.open('GET', pathAndNameOfJSON, true);
+		 xobj.onreadystatechange = function() {
+			 if(xobj.readyState == 4 && xobj.status == 200) {
+				 callback(xobj.responseText);
+			 }	
+		 };
+		 xobj.send(null);
+	 }
+	
 }

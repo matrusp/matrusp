@@ -11,6 +11,45 @@ function SearchBox(state) {
 	self.selectedLectureIndex = -1;
 	self.lecturesSuggestionList = new Array();
 	self.heightSoFar = 0;
+	self.colorIndex = 0;
+
+
+	function parseDBToLectureFormat(lecture) {
+		var obj = new Object();
+		obj = {
+			'code' : lecture.code,
+			'name' : lecture.name,
+			'color' : state.plans[state.activePlanIndex].lectures.length + 1,
+			'campus' : 'TODOS',
+			'selected' : 1,
+			'classrooms' : new Array()
+		};
+		lecture.classrooms.forEach(function(classroom) {
+				var specification = {
+				'classroomCode' : classroom.code.replace(/.{5}/, ' '),/*remove year and semester to take classroom*/
+				'horas_aula' : 0,
+				'vaga_ofertadas' : 0,
+				'vagas_ocupadas' : 0,
+				'alunos_especiais' : 0,
+				'saldo_vagas' : 0,
+				'pedidos_sem_vaga' : 0,
+				'selected' : 1,
+				'teachers' : new Array(),
+				'schedules' : new Array()
+				};
+				classroom.schedule.forEach(function(schedules) {
+						var schedule = {
+						'day' : schedules.day,
+						'timeBegin' : schedules.begin_time,
+						'timeEnd' : schedules.end_time
+						};
+						specification.teachers.push(schedules.teacher);
+						specification.schedules.push(schedule);
+						});
+				obj.classrooms.push(specification);
+		});
+		return obj;
+	}
 
 	function addLectures(lectures) {
 		var suggestionLectures = self.searchResultBox.childNodes;
@@ -31,43 +70,7 @@ function SearchBox(state) {
 
 				var addLectureCallback = function(iterator) {
 					return function() {
-						console.log(lectures[iterator]);
-						var obj = new Object();
-						obj = {
-							'code' : lectures[iterator].code,
-							'name' : lectures[iterator].name,
-							'color' : '1',
-							'campus' : 'TODOS',
-							'selected' : 1,
-							'classrooms' : new Array()
-						};
-						lectures[iterator].classrooms.forEach(function(classroom) {
-								var specification = {
-								'data_inicio' : classroom.start_date,
-								'data_fim' : classroom.end_date,
-								'classroomCode' : '43',
-								'horas_aula' : 0,
-								'vaga_ofertadas' : 0,
-								'vagas_ocupadas' : 0,
-								'alunos_especiais' : 0,
-								'saldo_vagas' : 0,
-								'pedidos_sem_vaga' : 0,
-								'selected' : 1,
-								'teachers' : new Array(),
-								'schedules' : new Array()
-								};
-								classroom.schedule.forEach(function(schedules) {
-										var schedule = {
-										'day' : schedules.day,
-										'timeBegin' : schedules.begin_time,
-										'timeEnd' : schedules.end_time
-										};
-										specification.teachers.push(schedules.teacher);
-										specification.schedules.push(schedule);
-										});
-								obj.classrooms.push(specification);
-						});
-						console.log(obj);
+						var obj = parseDBToLectureFormat(lectures[iterator]);
 						state.addLecture(obj);
 						searchResultBoxHide();
 						self.overSearchResultBox = false;
@@ -201,7 +204,8 @@ function SearchBox(state) {
 				return;
 			case 13:
 			case "Enter":
-				ui.addLecture(self.lecturesSuggestionList[self.selectedLectureIndex]);
+				var obj = parseDBToLectureFormat(self.lecturesSuggestionList[self.selectedLectureIndex]);
+				state.addLecture(obj);
 				searchResultBoxHide();
 				self.overSearchResultBox = false;
 				removeLecturesSuggestionList();
@@ -231,7 +235,6 @@ function SearchBox(state) {
 
 
 
-
-
-//TODO quando coloca o mouse sobre a div 'search-result-box' perco a referencia da altura que se encontra em relacao ao scroll
+//TODO o jeito que a cor esta sendo incluida nao esta certo
+//TODO quando carregar um horario, atualizar o index do vetor de cores
 //TODO refatorar if elses da funcao searchBox.onkeyup

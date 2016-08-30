@@ -21,6 +21,9 @@ function Plan(jsonObj) {
     this.activeCombinationIndex = jsonObj.activeCombinationIndex;
     for (var i = 0; i < jsonObj.lectures.length; i++) {
       this.lectures.push(new Lecture(jsonObj.lectures[i], this));
+			if (jsonObj.activePlan != 1) {
+				continue;
+			}
       ui.addLecture(this.lectures[i]);
     }
     // TODO arrumar isso para o design final
@@ -28,7 +31,7 @@ function Plan(jsonObj) {
     this.computeCombinations();
     this.setActiveCombination();
   } else {
-    this.combinationIndex = null;
+    this.activeCombinationIndex = null;
     this.htmlElement = null;
   }
 }
@@ -37,7 +40,6 @@ function Plan(jsonObj) {
  *
  */
 Plan.prototype.update = function(classroomUpdated) {
-  console.log('updating...');
   var oldActiveCombination = null;
   if (this.activeCombinationIndex != null) {
     // There is an active combination.
@@ -135,8 +137,6 @@ Plan.prototype.addLecture = function(lecture) {
  *
  */
 Plan.prototype.testCombination = function(potentialCombination) {
-  // Combinations only exist with all lectures included. So if
-  // a classroom isn't selected, the combination is invalid.
   for(var i = 0; i < potentialCombination.length - 1; i++) {
     var classroom1Index = potentialCombination[i];
     if (classroom1Index == -1) {
@@ -165,47 +165,140 @@ Plan.prototype.testCombination = function(potentialCombination) {
     }
   }
   return true;
-}
+};
+
+Plan.prototype.findNextCombinationBase = function(lastCombinationBase) {
+  // Using another variable name to make it more readable (regarding semantics).
+  var combinationBase = lastCombinationBase;
+  if (!combinationBase) {
+    // If it is the first possible combination, just return it.
+    combinationBase = Array(this.lectures.length).fill(0);
+    for (var i = combinationBase.length - 1; i >= 0; i--) {
+      if (!this.lectures[i].selected) {
+        combinationBase[i] = -1;
+      }
+    }
+    return combinationBase;
+  }
+
+  var rightmostSelectedLectureIndex = -1;
+  for (var i = combinationBase.length - 1; i >= 0; i--) {
+    if (rightmostSelectedLectureIndex == -1) {
+      rightmostSelectedLectureIndex = i;
+    }
+  }
+  if (rightmostSelectedLectureIndex == -1) {
+    // There are no selected lectures, return all values equal to -1.
+    combinationBase = Array(this.lectures.length).fill(-1);
+    return combinationBase;
+  }
+
+  // Next base is generated like summing 1 to a base-2 number.
+  // If array A generates no valid combinations, B should be the next tried base:
+  // Example 1
+  // A = [ 0, unselectedLecture,  0, -1, -1, unselectedLecture, -1]
+  // B = [ 0, unselectedLecture, -1,  0,  0, unselectedLecture,  0]
+  // Example 2
+  // A = [ 0, unselectedLecture, -1,  0, -1, unselectedLecture, -1]
+  // B = [ 0, unselectedLecture, -1, -1,  0, unselectedLecture,  0]
+  // Example 3
+  // A = [ 0,  0,  0, unselectedLecture, unselectedLecture]
+  // B = [ 0,  0, -1, unselectedLecture, unselectedLecture]
+  // Obs.: The value 'unselectedLecture' is actually -1 on the real array.
+  var i = rightmostSelectedLectureIndex;
+  while (i >= 0) {
+    if (!this.lectures[i].selected) {
+      i--;
+      continue;
+    }
+    if (combinationBase[i] == -1) {
+      combinationBase[i] = 0;
+      i--;
+    } else {
+      combinationBase[i] = -1;
+      return combinationBase;
+    }
+  }
+
+  // If got here, it means that every selected lecture was set to -1 until the
+  // last loop. Set them again to -1 and return.
+  combinationBase = Array(this.lectures.length).fill(-1);
+  return combinationBase;
+};
 
 /**
  *
  */
 Plan.prototype.computeCombinations = function() {
-  var potentialCombination = Array(this.lectures.length).fill(0);
+  for (var i = 0; i < this.lectures.length; i++) {
+    if (this.lectures[i].htmlLectureCheckbox.disabled) {
+      this.lectures[i].enableCheckbox();
+      if (!this.lectures[i].noClassroomsSelected()) {
+        this.lectures[i].lectureSelect(); 
+      }
+    }
+  }
+  // Try first combination base, where all selected lectures are considered.
+  var combinationBase = this.findNextCombinationBase();
+  this.computeCombinationsFromBase(combinationBase);
+  // If all entries in combinationBase are -1 it means that there are no possible combinations.
+  // Otherwise combinationBase.indexOf(0) > -1.
+  while (this.combinations.length == 0 && combinationBase.indexOf(0) > -1) {
+    combinationBase = this.findNextCombinationBase(combinationBase);
+    this.computeCombinationsFromBase(combinationBase);
+  }
+  if (this.combinations.length == 0) {
+    return;
+  }
+  for (var i = 0; i < this.lectures.length; i++) {
+    if (combinationBase[i] == -1 && this.lectures[i].selected) {
+      this.lectures[i].lectureUnselect();
+      this.lectures[i].disableCheckbox();
+    }
+  }
+}
+
+
+/**
+ *
+ */
+Plan.prototype.computeCombinationsFromBase = function(combinationBase) {
   var leftmostSelectedLectureIndex = -1;
-  // Initialize to something like this:
+  // combinationBase is something like this:
   // [-1, -1, 0, -1, 0, 0, 0, -1]
   //       ___^____
   // where this guy is the leftmostSelectedLectureIndex
-  for (var i = 0; i < this.lectures.length; i++) {
-    if (!this.lectures[i].selected) {
-      potentialCombination[i] = -1;
-    } else if (leftmostSelectedLectureIndex == -1) {
+  for (var i = 0; i < combinationBase.length; i++) {
+    if (combinationBase[i] != -1 && leftmostSelectedLectureIndex == -1) {
       leftmostSelectedLectureIndex = i;
     }
   }
 
   if (leftmostSelectedLectureIndex == -1) {
-    // No lecture selected. There are no combinations.
+    // combinationBase has all values equal to -1, meaning that no lecture is 
+    // selected. There are no combinations.
     return;
   }
 
-// TODO tirar daqui
-  console.log('potentialCombination', potentialCombination);
-  var loop = 0;
+  // newArray = oldArray.slice() => it copies array by value, since the original array
+  // is composed of numbers.
+  // See: http://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
+  var potentialCombination = combinationBase.slice();
 
-  // while condition can be this without affecting the logic:
+  // illustrating an upper bound: 8 lectures with 3 classrooms each -> 3^8 combinations = 6561
+  // var loop existis only to foolproof the alternative "while (true)"
+  // while condition could be this one without affecting the logic (?):
   // potentialCombination[leftmostSelectedLectureIndex] >= this.lectures[leftmostSelectedLectureIndex].classrooms.length
-  while (loop++ < 100) {
+  var loop = 0;
+  while (loop++ < 7000) {
     if (this.testCombination(potentialCombination)) {
-      console.log('combination', potentialCombination);
       combination = new Combination(potentialCombination, this);
       this.combinations.push(combination);
     }
 
     // This process is similar to adding 1 to a number, where each slot is a digit
     // we begin at the rightmost digit and whenever a value reaches its maximum
-    // capacity we turn it in zero and add one to the one to its left.
+    // capacity we turn it to zero and add 1 to the one on its left.
     // The first lecture will be last to change (when traveling in the combinations).
     // Also, when there are '-1's (lecture not selected), it jumps. For that matter,
     // the loop stops when the leftmost selected lecture excedes its maximum capacity.
@@ -255,10 +348,46 @@ Plan.prototype.setActiveCombination = function() {
  * 
  */
 Plan.prototype.unsetActiveCombination = function() {
-  var activeCombination = this.combinations[this.activeCombinationIndex]
+  var activeCombination = this.combinations[this.activeCombinationIndex];
   for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
     var activeClassroom = activeCombination.lecturesClassroom[i];
     activeClassroom.hideBox();
     activeClassroom.parent.activeClassroomIndex = null;
   }
 };
+/**
+ *
+ */
+Plan.prototype.setActivePlan = function(newPlanIndex) {
+	this.cleanPlan(state.activePlanIndex);
+	var newLectures = state.plans[newPlanIndex].lectures;
+	for (var i = 0; i < newLectures.length; i++) {
+		ui.addLecture(newLectures[i]);
+	}
+	state.activePlanIndex = newPlanIndex;
+};
+/**
+ *
+ **/
+Plan.prototype.cleanPlan = function(planIndex) {
+	var currentLectures = state.plans[planIndex].lectures;
+	for (var i = 0; i < currentLectures.length; i++) {
+		ui.removeLecture(currentLectures[i]);
+	}
+};
+/**
+ *
+ **/
+Plan.prototype.copyPlan = function(planIndex) {
+	var newPlan = state.plans[planIndex];
+	newPlan.activeCombinationIndex = state.plans[state.activePlanIndex].activeCombinationIndex;
+	newPlan.lectures = new Array();
+	for (var i = 0; i < state.plans[state.activePlanIndex].lectures.length; i++) {
+		newPlan.lectures.push(new Lecture(state.plans[state.activePlanIndex].lectures[i], newPlan));
+	}
+	newPlan.htmlElement = document.createElement('div');
+	newPlan.computeCombinations();
+	newPlan.update();
+	this.setActivePlan(planIndex);
+}
+
