@@ -21,6 +21,9 @@ function Plan(jsonObj) {
     this.activeCombinationIndex = jsonObj.activeCombinationIndex;
     for (var i = 0; i < jsonObj.lectures.length; i++) {
       this.lectures.push(new Lecture(jsonObj.lectures[i], this));
+			if (jsonObj.activePlan != 1) {
+				continue;
+			}
       ui.addLecture(this.lectures[i]);
     }
     // TODO arrumar isso para o design final
@@ -28,7 +31,7 @@ function Plan(jsonObj) {
     this.computeCombinations();
     this.setActiveCombination();
   } else {
-    this.combinationIndex = null;
+    this.activeCombinationIndex = null;
     this.htmlElement = null;
   }
 }
@@ -255,10 +258,46 @@ Plan.prototype.setActiveCombination = function() {
  * 
  */
 Plan.prototype.unsetActiveCombination = function() {
-  var activeCombination = this.combinations[this.activeCombinationIndex]
+  var activeCombination = this.combinations[this.activeCombinationIndex];
   for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
     var activeClassroom = activeCombination.lecturesClassroom[i];
     activeClassroom.hideBox();
     activeClassroom.parent.activeClassroomIndex = null;
   }
 };
+/**
+ *
+ */
+Plan.prototype.setActivePlan = function(newPlanIndex) {
+	this.cleanPlan(state.activePlanIndex);
+	var newLectures = state.plans[newPlanIndex].lectures;
+	for (var i = 0; i < newLectures.length; i++) {
+		ui.addLecture(newLectures[i]);
+	}
+	state.activePlanIndex = newPlanIndex;
+};
+/**
+ *
+ **/
+Plan.prototype.cleanPlan = function(planIndex) {
+	var currentLectures = state.plans[planIndex].lectures;
+	for (var i = 0; i < currentLectures.length; i++) {
+		ui.removeLecture(currentLectures[i]);
+	}
+};
+/**
+ *
+ **/
+Plan.prototype.copyPlan = function(planIndex) {
+	var newPlan = state.plans[planIndex];
+	newPlan.activeCombinationIndex = state.plans[state.activePlanIndex].activeCombinationIndex;
+	newPlan.lectures = new Array();
+	for (var i = 0; i < state.plans[state.activePlanIndex].lectures.length; i++) {
+		newPlan.lectures.push(new Lecture(state.plans[state.activePlanIndex].lectures[i], newPlan));
+	}
+	newPlan.htmlElement = document.createElement('div');
+	newPlan.computeCombinations();
+	newPlan.update();
+	this.setActivePlan(planIndex);
+}
+

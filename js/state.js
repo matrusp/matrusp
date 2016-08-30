@@ -17,11 +17,12 @@
 function State(jsonObj) {
   this.plans = new Array();
   if (jsonObj) {
+		console.log('filho', jsonObj);
     this.version = jsonObj.version;
     this.campus = jsonObj.campus;
     this.semester = jsonObj.semester;
     this.activePlanIndex = jsonObj.planIndex;
-    for (var i = 0; i < jsonObj.plans.length; i++) {
+    for (var i = 0; i < 3; i++) {
       this.plans.push(new Plan(jsonObj.plans[i]));
     }
   } else {
