@@ -29,7 +29,6 @@ function Database() {
 	}
 
 	this.fetchLectureOnDB = function(word) {
-		var self = this;
 		word = changingSpecialCharacters(word);
 
 		var searchWholeString = new Array;
@@ -41,7 +40,7 @@ function Database() {
 				}
 				});
 
-		self.result = new Array;
+		this.result = new Array;
 		for(var code in this.currDB) {
 			var haystack = this.currDB[code];
 			var exactly = false;
@@ -68,39 +67,28 @@ function Database() {
 			}
 
 			if(exactly) {
-				self.result = [haystack];
+				this.result = [haystack];
 				break;
 			}
 			if(score) {
 				haystack.score = score;
-				self.result.score = score;
-				self.result.push(haystack);
+				this.result.score = score;
+				this.result.push(haystack);
 			}
 		}
 
-		self.result.sort(function(first, second) {
+		this.result.sort(function(first, second) {
 			return first.score - second.score;
 		});
-		self.result.forEach(function(t) {
+		this.result.forEach(function(t) {
 			delete t.score;
 		});
 	}
 
-	function loadJSON(callback) {
-		var xobj = new XMLHttpRequest();
-		xobj.overrideMimeType("application/json");
-		xobj.open('GET', 'db/db_usp.json', true);
-		xobj.onreadystatechange = function() {
-			if(xobj.readyState == 4 && xobj.status == 200) {
-				callback(xobj.responseText);
-			}	
-		};
-		xobj.send(null);
-	}
 
-	this.loadDB = function(semester) {
+	this.loadDB = function(pathAndNameOfJSON, semester) {
 		var self = this;
-		loadJSON(function(response) {
+		ui.loadJSON(pathAndNameOfJSON, function(response) {
 				var myJSON = JSON.parse(response);
 
 				self.db[semester] = new Object();
@@ -150,8 +138,9 @@ function Database() {
 	}
 }
 
+var ui = new UI();
 var database = new Database();
-database.loadDB(1);
+database.loadDB('db/db_usp.json', 1);
 
 
 
