@@ -70,7 +70,6 @@ function SearchBox(state) {
 
 				var addLectureCallback = function(iterator) {
 					return function() {
-						var obj = parseDBToLectureFormat(lectures[iterator]);
 						state.addLecture(obj);
 						searchResultBoxHide();
 						self.overSearchResultBox = false;

@@ -113,6 +113,12 @@ function UI() {
       class: 'classroom-info',
       children: [
         {
+          tag: 'input',
+          type: 'checkbox',
+          class: 'classroom-info-checkbox',
+          checked: classroom.selected
+        },
+        {
           tag: 'div',
           class: 'classroom-code',
           innerHTML: classroom.classroomCode
@@ -121,11 +127,6 @@ function UI() {
           tag: 'div',
           class: 'classroom-teacher',
           innerHTML: classroom.teachers.join('<br>')
-        },
-        {
-          tag: 'div',
-          class: 'classroom-toggle',
-          innerHTML: 'x'
         }
       ]
     };
@@ -150,6 +151,12 @@ function UI() {
           class: 'lecture-info-header',
           children: [
             {
+              tag: 'input',
+              type: 'checkbox',
+              class: 'lecture-info-checkbox',
+              checked: lecture.selected
+            },
+            {
               tag: 'div',
               class: 'lecture-info-header-title',
               children: [
@@ -162,6 +169,26 @@ function UI() {
                   tag: 'div',
                   class: 'lecture-info-name',
                   innerHTML: lecture.name
+                }
+              ]
+            },
+            {
+              tag: 'div',
+              class: 'lecture-info-up',
+              children: [
+                {
+                  tag: 'img',
+                  src: 'images/ic_arrow_up.png'
+                }
+              ]
+            },
+            {
+              tag: 'div',
+              class: 'lecture-info-down',
+              children: [
+                {
+                  tag: 'img',
+                  src: 'images/ic_arrow_down.png'
                 }
               ]
             },
@@ -186,6 +213,11 @@ function UI() {
               class: 'classrooms-header',
               children: [
                 {
+                  tag: 'input',
+                  type: 'checkbox',
+                  class: 'classrooms-header-checkbox'
+                },
+                {
                   tag: 'div',
                   class: 'classroom-code',
                   innerHTML: 'Turma'
@@ -194,11 +226,6 @@ function UI() {
                   tag: 'div',
                   class: 'classroom-teacher',
                   innerHTML: 'Professor'
-                },
-                {
-                  tag: 'div',
-                  class: 'classroom-toggle',
-                  innerHTML: 'x'
                 }
               ]
             }

@@ -34,175 +34,203 @@
 //
 
 #accordion {
-    /* sum scroll-bar-width to hide it from the user */
-    height: calc(100% + #{$scroll-bar-width});
-    width: calc(100% + #{$scroll-bar-width});
-    overflow: scroll;
+  /* sum scroll-bar-width to hide it from the user */
+  height: calc(100% + #{$scroll-bar-width});
+  width: calc(100% + #{$scroll-bar-width});
+  overflow: scroll;
 }
 
 // TODO compare these properties with those inside "_base_lecture_info.scss"
 .lecture-info {
-    position: relative;
-    // 100% - 2 * padding
-    width: calc(100% - 2px);
-    padding: 1px;
+  position: relative;
+  // 100% - 2 * padding
+  width: calc(100% - 2px);
+  padding: 1px;
 }
-    
+
 .lecture-info-header {
-    position: relative;
+  position: relative;
 }
 
 .lecture-info-header-title {
-    position: relative;
-    display: block;
-    width: calc(100% - #{$width-lecture-delete} - 2 * 6px);
-    // TODO these height declarations doesn't make any sense, or do they?
-    height: 30px;
-    max-height: 100%;
-    padding: 7px 6px 7px 8px;
-    overflow: hidden;
-    line-height: 30px;
-    cursor: pointer;
-    // TODO transitions doesn't work well with 'auto' values
-    //      so take this off or come up with some solution.
-    //transition: all .4s;
+  position: relative;
+  left: $width-lecture-checkbox;
+  display: block;
+  width: calc(100% - 3 * #{$width-lecture-delete} - 2 * 6px - #{$width-lecture-checkbox});
+  // TODO these height declarations doesn't make any sense, or do they?
+  height: 30px;
+  max-height: 100%;
+  padding: 7px 0 7px 8px;
+  overflow: hidden;
+  line-height: 30px;
+  cursor: pointer;
+  // TODO transitions doesn't work well with 'auto' values
+  //      so take this off or come up with some solution.
+  //transition: all .4s;
 
-    >.lecture-info-name {
-        width: calc(100% - #{$width-lecture-code} - 4px);
-    }
+  >.lecture-info-name {
+    width: calc(100% - #{$width-lecture-code} - 4px);
+  }
+}
+
+.lecture-info-checkbox {
+  @include center-block-vertically();
+  display: inline-block;
+  position: absolute;
+  width: $width-lecture-checkbox;
+}
+
+.classrooms-header-checkbox,
+.classroom-info-checkbox {
+  width: $width-lecture-checkbox;
+}
+
+.lecture-info-up,
+.lecture-info-down,
+.lecture-info-delete {
+  position: absolute;
+  top: 0;
+  width: $width-lecture-delete;
+  height: 100%;
+  cursor: pointer;
+
+  >img {
+    @include center-block-horizontally();
+    @include center-block-vertically();
+    position: absolute;
+    width: $width-icon-delete;
+    opacity: 0.3;
+  }
+}
+
+.lecture-info-up {
+  right: calc(2 * #{$width-lecture-delete});
+}
+
+.lecture-info-down {
+  right: $width-lecture-delete;
 }
 
 .lecture-info-delete {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: $width-lecture-delete;
-    height: 100%;
-    cursor: pointer;
-
-    >img {
-        @include center-block-horizontally();
-        @include center-block-vertically();
-        position: absolute;
-        width: $width-icon-delete;
-        opacity: 0.3;
-    }
+  right: 0;
 }
 
 .lecture-classrooms {
-    position: relative;
-    height: 0px;
-    overflow: hidden;
-    background-color: $white;
-    cursor: default;
-    //transition: height .4s;
-    
-    >.classrooms-header {
-        padding-top: 6px;
-        padding-bottom: 6px;
+  position: relative;
+  height: 0px;
+  overflow: hidden;
+  background-color: $white;
+  cursor: default;
+  //transition: height .4s;
+  
+  >.classrooms-header {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  
+  >.classroom-info {
+    display: block;
+    padding-top: 4px;
+    padding-bottom: 7px;
+  }
+  
+  >.classrooms-header,
+  >.classroom-info {
+    &:not(:last-child) {
+      border-bottom: 1px solid;
     }
-    
-    >.classroom-info {
-        display: block;
-        padding-top: 4px;
-        padding-bottom: 7px;
+
+    .classroom-code,
+    .classroom-teacher,
+    .classroom-toggle {
+      display: inline-block;
+      vertical-align: middle;
     }
-    
-    >.classrooms-header,
-    >.classroom-info {
-        &:not(:last-child) {
-            border-bottom: 1px solid;
-        }
-        
-        .classroom-code,
-        .classroom-teacher,
-        .classroom-toggle {
-            display: inline-block;
-            vertical-align: middle;
-        }
-        
-        .classroom-code {
-            // TODO change to variable
-            width: 40px;
-            text-align: center;
-            // TODO change to variable
-            margin: 0 10px;
-        }
-        
-        .classroom-teacher {
-            width: calc(100% - #{$width-lecture-code} - #{$width-lecture-delete})
-        }
-        
-        .classroom-toggle {
-            position: relative;
-            // TODO change to variable
-            left: 2px;
-        }
+
+    .classroom-code {
+      // TODO change to variable
+      width: 40px;
+      text-align: center;
+      // TODO change to variable
+      margin: 0 10px;
     }
+
+    .classroom-teacher {
+      width: calc(100% - #{$width-lecture-code} - #{$width-lecture-delete})
+    }
+
+    .classroom-toggle {
+      position: relative;
+      // TODO change to variable
+      left: 2px;
+    }
+  }
 }
 
 .lecture-open {
-    >.lecture-classrooms {
-        height: auto;
-    }
+  >.lecture-classrooms {
+    height: auto;
+  }
 
-    .lecture-info-header-title {
-        height: auto;
-        line-height: normal;
-    }
+  .lecture-info-header-title {
+    height: auto;
+    line-height: normal;
+  }
 
-    .lecture-info-code {
-        vertical-align: middle;
-    }
+  .lecture-info-code {
+    vertical-align: middle;
+  }
 }
 
 .lecture-classrooms {
-    >.classroom-info {
-        >.classroom-code,
-        >.classroom-teacher {
-            opacity: 0.4;
-        }
-        
-        &:hover {
-            >.classroom-code,
-            >.classroom-teacher {
-                opacity: 0.6;
-            }
-        }
+  >.classroom-info {
+    >.classroom-code,
+    >.classroom-teacher {
+      opacity: 0.4;
     }
 
-    >.classroom-selected,
-    >.classroom-selected:hover {
-        >.classroom-code,
-        >.classroom-teacher {
-            opacity: 1;
-        }
+    &:hover {
+      >.classroom-code,
+      >.classroom-teacher {
+        opacity: 0.6;
+      }
     }
+  }
+
+  >.classroom-selected,
+  >.classroom-selected:hover {
+    >.classroom-code,
+    >.classroom-teacher {
+      opacity: 1;
+    }
+  }
 }
 
 // Same order as in lecture_schedule/_lecture_box.scss
 @each $color in $lecture-colors {
-    $i: index($lecture-colors, $color);
-    
-    .lecture-info.color-#{$i} {
-        background-color: lighten($color, 20%);
-        color: darken($color, 25%);
-            
-        &:hover {
-            background-color: lighten($color, 15%);
-        }
-        
-        >.lecture-info-header {
-            >.lecture-info-delete {
-                &:hover {
-                    background-color: lighten($color, 5%);
-                }
-                
-                &:active {
-                    background-color: $color;
-                }
-            }
-        }
+  $i: index($lecture-colors, $color);
+
+  .lecture-info.color-#{$i} {
+    background-color: lighten($color, 20%);
+    color: darken($color, 25%);
+
+    &:hover {
+      background-color: lighten($color, 15%);
     }
+
+    >.lecture-info-header {
+      >.lecture-info-up,
+      >.lecture-info-down,
+      >.lecture-info-delete {
+        &:hover {
+          background-color: lighten($color, 5%);
+        }
+
+        &:active {
+          background-color: $color;
+        }
+      }
+    }
+  }
 }
 
