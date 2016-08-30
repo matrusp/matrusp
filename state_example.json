@@ -2,10 +2,11 @@
   "version": 5,
   "campus": "TODOS",
   "semester": "20162",
-  "planIndex": 0,
+  "planIndex": 1,
   "plans": [
     {
-      "activeCombinationIndex": 1,
+      "activeCombinationIndex": 2,
+			"activePlan": 0,
       "lectures": [
         {
           "code": "SCC0502",
@@ -186,6 +187,192 @@
               ]
             }
           ]
+        } 
+			]
+    },
+    {
+      "activeCombinationIndex": 1,
+			"activePlan": 1,
+      "lectures": [
+        {
+          "code": "SCC0503",
+          "name": "Algoritmos e Estruturas de Dados II",
+          "color": "1",
+          "campus": "TODOS",
+          "selected": 0,
+          "classrooms": [
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "seg",
+                  "timeBegin": "06:00",
+                  "timeEnd": "07:40"
+                },
+                {
+                  "day": "qua",
+                  "timeBegin": "06:00",
+                  "timeEnd": "07:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "qua",
+                  "timeBegin": "08:00",
+                  "timeEnd": "09:40"
+                },
+                {
+                  "day": "seg",
+                  "timeBegin": "08:00",
+                  "timeEnd": "09:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "ter",
+                  "timeBegin": "06:00",
+                  "timeEnd": "07:40"
+                },
+                {
+                  "day": "qui",
+                  "timeBegin": "08:00",
+                  "timeEnd": "09:40"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "ESA5351",
+          "name": "Educação Educação Educação Educação Educação Educação 2",
+          "color": "2",
+          "campus": "TODOS",
+          "selected": 1,
+          "classrooms": [
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 0,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "seg",
+                  "timeBegin": "12:00",
+                  "timeEnd": "13:40"
+                },
+                {
+                  "day": "qua",
+                  "timeBegin": "13:00",
+                  "timeEnd": "14:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "qua",
+                  "timeBegin": "12:00",
+                  "timeEnd": "13:40"
+                },
+                {
+                  "day": "seg",
+                  "timeBegin": "14:00",
+                  "timeEnd": "15:40"
+                }
+              ]
+            },
+            {
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "ter",
+                  "timeBegin": "14:00",
+                  "timeEnd": "15:40"
+                },
+                {
+                  "day": "qui",
+                  "timeBegin": "12:00",
+                  "timeEnd": "13:40"
+                }
+              ]
+            }
+          ]
         },
         {
           "code": "MAK0002",
@@ -211,13 +398,13 @@
               "schedules": [
                 {
                   "day": "seg",
-                  "timeBegin": "21:00",
-                  "timeEnd": "22:40"
+                  "timeBegin": "10:00",
+                  "timeEnd": "11:40"
                 },
                 {
                   "day": "sab",
-                  "timeBegin": "19:00",
-                  "timeEnd": "20:40"
+                  "timeBegin": "09:00",
+                  "timeEnd": "10:40"
                 }
               ]
             },
@@ -238,19 +425,19 @@
               "schedules": [
                 {
                   "day": "qua",
-                  "timeBegin": "21:00",
-                  "timeEnd": "22:40"
+                  "timeBegin": "11:00",
+                  "timeEnd": "12:40"
                 },
                 {
                   "day": "sab",
-                  "timeBegin": "19:00",
-                  "timeEnd": "20:40"
+                  "timeBegin": "12:00",
+                  "timeEnd": "13:40"
                 }
               ]
             }
           ]
         }
       ]
-    }
+		}
   ]
 }
