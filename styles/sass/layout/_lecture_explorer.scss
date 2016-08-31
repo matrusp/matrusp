@@ -18,6 +18,7 @@
 #search-and-add,
 #accordion-window {
     width: 100%;
+    position: relative;
 }
 
 #search-and-add {
@@ -30,6 +31,7 @@
     height: calc(100% - #{$search-and-add-height});
     overflow: hidden;
     // TODO change to variable
-    border: 1px solid lightgray;
+    border: $border-default;
     border-radius: 2px;
+    z-index: 1;
 }

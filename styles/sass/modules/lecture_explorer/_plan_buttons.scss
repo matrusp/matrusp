@@ -1,0 +1,34 @@
+#plans {
+  // to mimic plans' children positioning of accordion window children
+  border: 1px solid transparent;
+}
+
+.plan {
+  width: calc(100%/3 - 1.4px);
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  border-right: $border-default;
+  border-bottom: $border-default;
+  border-left: $border-default;
+  border-top: 1px solid white;
+  float: left;
+  top: -2px;
+  border-radius: 0 0 2px 2px;
+  cursor: pointer;
+
+  &:not(:first-child) {
+    // size of border
+    margin-left: -1px;
+  }
+
+  &:hover {
+    background-color: #ddd;
+  }
+}
+
+.plan-active {
+  z-index: 2;
+}

@@ -6,7 +6,7 @@
   "plans": [
     {
       "activeCombinationIndex": 1,
-      "activePlan": 0,
+      "activePlan": 1,
       "lectures": [
         {
           "code": "SCC0502",
@@ -204,7 +204,7 @@
     },
     {
       "activeCombinationIndex": 1,
-			"activePlan": 1,
+			"activePlan": 0,
       "lectures": [
         {
           "code": "SCC0503",
