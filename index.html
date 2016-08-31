@@ -96,6 +96,11 @@
                     <span>/</span><span id='combination-total'></span>
                     <button onclick='state.nextCombination();'>&gt</button>
                 </div>
+								<div id='save-controller'>
+										<input id='identificator'> 
+										<button onclick='ui.saveStateOnServer(document.getElementById("identificator").value);'>Save</button>
+										<button onclick='ui.loadStateFromServer(document.getElementById("identificator").value);'>Load</button>
+								</div>
             </div>
             <div id="lecture-explorer">
                 <div id="search-and-add">
@@ -146,6 +151,13 @@
                     </div>
                     <div id="explorer-footer"><input type="file" id="upload"></div>
                 </div>
+								<div id="plans">
+										<button onclick='plan.setActivePlan(0)'>Plan1</button>
+										<button onclick='plan.setActivePlan(1)'>Plan2</button>
+										<button onclick='plan.setActivePlan(2)'>Plan3</button>
+
+										<button onclick='plan.copyToPlan(2)'>Copy Actual Plan to Plan3</button>
+								</div>
             </div>
         </div>
         <footer><a href="">Fale Conosco / Críticas e Sugestões</a><a href="">Fork me on GitHub</a></footer>
