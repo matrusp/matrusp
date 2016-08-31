@@ -17,7 +17,6 @@
 function State(jsonObj) {
   this.plans = new Array();
   if (jsonObj) {
-		console.log('filho', jsonObj);
     this.version = jsonObj.version;
     this.campus = jsonObj.campus;
     this.semester = jsonObj.semester;
