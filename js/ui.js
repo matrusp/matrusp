@@ -274,6 +274,7 @@ function UI() {
 	 this.saveStateOnServer = function(identifier) {
 		if (!identifier || identifier == '') {
 			//TODO print info about use		
+			return;
 		}
 			var objectJSON = new Object();
 			objectJSON = copyState(objectJSON);
@@ -377,5 +378,21 @@ function UI() {
 		 };
 		 xobj.send(null);
 	 }
+
+	 this.loadStateFromServer = function(identifier) {
+		if (!identifier || identifier == '') {
+			//TODO print info about use		
+			return;
+		}
+		 this.loadJSON('data/' + identifier + '.json', function(response) {
+			 var newState = JSON.parse(response);
+			 plan.cleanPlan(state.activePlanIndex);
+			 state = new State(newState);
+		 });
+	 }
 	
 }
+
+
+
+//TODO get the absulute path to folders, the implemented way may not work properly

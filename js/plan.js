@@ -378,7 +378,8 @@ Plan.prototype.cleanPlan = function(planIndex) {
 /**
  *
  **/
-Plan.prototype.copyPlan = function(planIndex) {
+Plan.prototype.copyToPlan = function(planIndex) {
+	if (planIndex == state.activePlanIndex) return;
 	var newPlan = state.plans[planIndex];
 	newPlan.activeCombinationIndex = state.plans[state.activePlanIndex].activeCombinationIndex;
 	newPlan.lectures = new Array();
