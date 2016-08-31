@@ -133,40 +133,6 @@ Plan.prototype.addLecture = function(lecture) {
   this.update();
 }
 
-/**
- *
- */
-Plan.prototype.testCombination = function(potentialCombination) {
-  for(var i = 0; i < potentialCombination.length - 1; i++) {
-    var classroom1Index = potentialCombination[i];
-    if (classroom1Index == -1) {
-      // Lecture isn't selected. Obs.: A combination without any
-      // selected lecture, is still valid.
-      continue;
-    }
-    var classroom1 = this.lectures[i].classrooms[classroom1Index];
-    if (!classroom1.selected) {
-      return false;
-    }
-    for (var j = i+1; j < potentialCombination.length; j++) {
-      var classroom2Index = potentialCombination[j];
-      if (classroom2Index == -1) {
-        // Lecture isn't selected.
-        continue;
-      }
-      var classroom2 = this.lectures[j].classrooms[classroom2Index];
-      if (!classroom2.selected) {
-        return false;
-      }
-
-      if (classroomsConflict(classroom1, classroom2)) {
-        return false;
-      }
-    }
-  }
-  return true;
-};
-
 Plan.prototype.findNextCombinationBase = function(lastCombinationBase) {
   // Using another variable name to make it more readable (regarding semantics).
   var combinationBase = lastCombinationBase;
@@ -257,6 +223,40 @@ Plan.prototype.computeCombinations = function() {
     }
   }
 }
+
+/**
+ *
+ */
+Plan.prototype.testCombination = function(potentialCombination) {
+  for(var i = 0; i < potentialCombination.length; i++) {
+    var classroom1Index = potentialCombination[i];
+    if (classroom1Index == -1) {
+      // Lecture isn't selected. Obs.: A combination without any
+      // selected lecture, is still valid.
+      continue;
+    }
+    var classroom1 = this.lectures[i].classrooms[classroom1Index];
+    if (!classroom1.selected) {
+      return false;
+    }
+    for (var j = i+1; j < potentialCombination.length; j++) {
+      var classroom2Index = potentialCombination[j];
+      if (classroom2Index == -1) {
+        // Lecture isn't selected.
+        continue;
+      }
+      var classroom2 = this.lectures[j].classrooms[classroom2Index];
+      if (!classroom2.selected) {
+        return false;
+      }
+
+      if (classroomsConflict(classroom1, classroom2)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
 
 
 /**
