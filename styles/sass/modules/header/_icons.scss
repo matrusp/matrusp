@@ -55,7 +55,7 @@
         // ::before z-index is 1 more than ::after z-index. This is to 
         // prevent the ::after box-shadow from appearing on top of the 
         // triangle.
-        z-index: 11;
+        z-index: 101;
         border-bottom-color: $tooltip-color-background;
         content: "";
         visibility: hidden;
@@ -67,7 +67,7 @@
         // '100%' here refers to the parent size.
         top: calc(100% + #{$tooltip-triangle-height});
         left: calc(-1 * (#{$tooltip-width} + (2 * #{$tooltip-padding-horizontal}) - 100%) / 2);
-        z-index: 10;
+        z-index: 100;
         display: block;
         width: $tooltip-width;
         height: auto;

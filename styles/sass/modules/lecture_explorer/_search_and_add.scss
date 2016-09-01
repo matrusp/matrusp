@@ -48,7 +48,7 @@
     font-size: $font-size;
 
     &:focus {
-        z-index: 2;
+        z-index: 11;
 				//TODO can I remove this without consequences?
         //border-bottom-style: none;
         border-radius: 2px 2px 0 0;
@@ -98,7 +98,7 @@
     // TODO change top to variable; it is 1px more than the 
     //      search box height.
     top: 27px;
-    z-index: 1;
+    z-index: 10;
     display: block;
     width: calc(100% - 2 * #{$search-and-add-border-width});
     height: auto;

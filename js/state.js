@@ -22,7 +22,19 @@ function State(jsonObj) {
     this.semester = jsonObj.semester;
     this.activePlanIndex = jsonObj.planIndex;
     for (var i = 0; i < 3; i++) {
-      this.plans.push(new Plan(jsonObj.plans[i]));
+      if (i == this.activePlanIndex) {
+        var isActivePlan = true;
+        this.plans.push(new Plan(jsonObj.plans[i], i, isActivePlan));
+      } else {
+        this.plans.push(new Plan(jsonObj.plans[i], i));
+      }
+    }
+    // TODO this is a hack to update the combination index and total combination number
+    // ui below div#lecture-schedule
+    if (this.plans[this.activePlanIndex].lectures.length == 0) {
+      document.getElementById('combination-value').innerHTML = '0/0';
+    } else {
+      this.plans[this.activePlanIndex].setActiveCombination();
     }
   } else {
     this.version = null;

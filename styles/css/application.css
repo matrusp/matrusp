@@ -107,8 +107,10 @@ header {
     font-size: 13px;
     line-height: 0; }
 #lecture-schedule > .column:not(:first-child) {
-  background-image: repeating-linear-gradient(to bottom, #BFBFBF, #BFBFBF 2px, transparent 2px, transparent calc(5.55556%), #DFDFDF calc(5.55556%), #DFDFDF calc(5.55556% + 2px), transparent calc(5.55556% + 2px), transparent calc(2 * 5.55556%));
-  border-bottom: 2px solid #BFBFBF;
+  background-image: url('../../images/stripes.gif');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center;
   position: relative;
   width: calc((100% - 40px - (7 * 4.5px)) / 6); }
   #lecture-schedule > .column:not(:first-child) > .week-day {

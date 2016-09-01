@@ -14,25 +14,29 @@
  *  }
  */
  // IMPORTANT: the 'ui' variable must be already set up!
-function Plan(jsonObj) {
+function Plan(jsonObj, planId, isActivePlan) {
   this.lectures = new Array();
   this.combinations = new Array();
+  this.planId = planId;
+  // It is expected that div#plan-{planId} exists!
+  this.htmlElement = document.getElementById('plan-' + this.planId);
+  this.addEventListeners();
+
   if (jsonObj) {
     this.activeCombinationIndex = jsonObj.activeCombinationIndex;
     for (var i = 0; i < jsonObj.lectures.length; i++) {
       this.lectures.push(new Lecture(jsonObj.lectures[i], this));
-			if (jsonObj.activePlan != 1) {
-				continue;
-			}
-      ui.addLecture(this.lectures[i]);
+      if (isActivePlan) {
+        ui.addLecture(this.lectures[i]);
+      }
     }
-    // TODO arrumar isso para o design final
-    this.htmlElement = document.createElement('div');
+    if (isActivePlan) {
+      addClass(this.htmlElement, 'plan-active');
+    }
     this.computeCombinations();
     this.setActiveCombination();
   } else {
     this.activeCombinationIndex = null;
-    this.htmlElement = null;
   }
 }
 
@@ -133,40 +137,6 @@ Plan.prototype.addLecture = function(lecture) {
   this.update();
 }
 
-/**
- *
- */
-Plan.prototype.testCombination = function(potentialCombination) {
-  for(var i = 0; i < potentialCombination.length - 1; i++) {
-    var classroom1Index = potentialCombination[i];
-    if (classroom1Index == -1) {
-      // Lecture isn't selected. Obs.: A combination without any
-      // selected lecture, is still valid.
-      continue;
-    }
-    var classroom1 = this.lectures[i].classrooms[classroom1Index];
-    if (!classroom1.selected) {
-      return false;
-    }
-    for (var j = i+1; j < potentialCombination.length; j++) {
-      var classroom2Index = potentialCombination[j];
-      if (classroom2Index == -1) {
-        // Lecture isn't selected.
-        continue;
-      }
-      var classroom2 = this.lectures[j].classrooms[classroom2Index];
-      if (!classroom2.selected) {
-        return false;
-      }
-
-      if (classroomsConflict(classroom1, classroom2)) {
-        return false;
-      }
-    }
-  }
-  return true;
-};
-
 Plan.prototype.findNextCombinationBase = function(lastCombinationBase) {
   // Using another variable name to make it more readable (regarding semantics).
   var combinationBase = lastCombinationBase;
@@ -258,6 +228,40 @@ Plan.prototype.computeCombinations = function() {
   }
 }
 
+/**
+ *
+ */
+Plan.prototype.testCombination = function(potentialCombination) {
+  for(var i = 0; i < potentialCombination.length; i++) {
+    var classroom1Index = potentialCombination[i];
+    if (classroom1Index == -1) {
+      // Lecture isn't selected. Obs.: A combination without any
+      // selected lecture, is still valid.
+      continue;
+    }
+    var classroom1 = this.lectures[i].classrooms[classroom1Index];
+    if (!classroom1.selected) {
+      return false;
+    }
+    for (var j = i+1; j < potentialCombination.length; j++) {
+      var classroom2Index = potentialCombination[j];
+      if (classroom2Index == -1) {
+        // Lecture isn't selected.
+        continue;
+      }
+      var classroom2 = this.lectures[j].classrooms[classroom2Index];
+      if (!classroom2.selected) {
+        return false;
+      }
+
+      if (classroomsConflict(classroom1, classroom2)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
 
 /**
  *
@@ -340,8 +344,7 @@ Plan.prototype.setActiveCombination = function() {
     activeClassroom.parent.activeClassroomIndex = activeClassroom.parent.classrooms.indexOf(activeClassroom);
   }
 
-  document.getElementById('combination-value').value = this.activeCombinationIndex + 1;
-  document.getElementById('combination-total').innerHTML = this.combinations.length;
+  document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
 };
 
 /**
@@ -366,6 +369,8 @@ Plan.prototype.setActivePlan = function(newPlanIndex) {
 	}
 	state.activePlanIndex = newPlanIndex;
 };
+
+
 /**
  *
  **/
@@ -375,6 +380,17 @@ Plan.prototype.cleanPlan = function(planIndex) {
 		ui.removeLecture(currentLectures[i]);
 	}
 };
+
+Plan.prototype.unsetPlan = function() {
+  if (this.planId == state.activePlanIndex) {
+    // TODO separar em ui_plan.js e plan.js. A linha abaixo fica no primeiro arquivo
+    removeClass(this.htmlElement, 'plan-active');
+    for (var i = 0; i < this.lectures.length; i++) {
+      ui.removeLecture(this.lectures[i]);
+    }
+  }
+}
+
 /**
  *
  **/
@@ -392,3 +408,36 @@ Plan.prototype.copyToPlan = function(planIndex) {
 	this.setActivePlan(planIndex);
 }
 
+
+
+Plan.prototype.setPlan = function() {
+  if (this.planId == state.activePlanIndex) {
+    // This plan is already set.
+    return;
+  }
+
+  state.plans[state.activePlanIndex].unsetPlan();
+  for (var i = 0; i < this.lectures.length; i++) {
+    ui.addLecture(this.lectures[i]);
+  }
+  state.activePlanIndex = this.planId;
+
+  // TODO separar em ui_plan.js e plan.js. A linha abaixo fica no primeiro arquivo
+  addClass(this.htmlElement, 'plan-active');
+
+  // TODO this is a hack to update the combination index and total combination number
+  // ui below div#lecture-schedule
+  if (this.lectures.length == 0) {
+    document.getElementById('combination-value').innerHTML = '0/0';
+  } else {
+    this.setActiveCombination();
+  }
+};
+
+
+/**
+ *
+ */
+Plan.prototype.addEventListeners = function() {
+  this.htmlElement.addEventListener('click', this.setPlan.bind(this));
+};
