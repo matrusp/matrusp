@@ -44,6 +44,12 @@ function State(jsonObj) {
   }
 }
 
+State.prototype.delete = function() {
+	 while (this.plans.length) {
+		this.plans[0].delete();
+	}
+}
+
 /**
  * Adds a lecture to the current active plan if no planIndex was given.
  *
@@ -185,7 +191,6 @@ State.prototype.fullExample = function() {
     ]
   }
 
-  console.log(stateExample);
   return stateExample;
 };
 

@@ -26,20 +26,36 @@ function Plan(jsonObj, planId, isActivePlan) {
     this.activeCombinationIndex = jsonObj.activeCombinationIndex;
     for (var i = 0; i < jsonObj.lectures.length; i++) {
       this.lectures.push(new Lecture(jsonObj.lectures[i], this));
-      if (isActivePlan) {
-        ui.addLecture(this.lectures[i]);
-      }
+			ui.addLecture(this.lectures[i]);
     }
+		this.computeCombinations();
     if (isActivePlan) {
+			this.setActiveCombination();
       addClass(this.htmlElement, 'plan-active');
+			for (var i = 0; i < this.lectures.length; i++) {
+				addClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
+			}
     }
-    this.computeCombinations();
-    this.setActiveCombination();
   } else {
     this.activeCombinationIndex = null;
   }
 }
 
+/**
+ *
+ **/
+
+Plan.prototype.delete = function() {	
+	while (this.lectures.length) {
+		this.lectures[0].delete();
+	}
+	this.removeEventListeners();
+  // All htmlElements removed, now remove itself from the plan and
+  // update it.
+  var indexOnParent = state.plans.indexOf(this);
+  state.plans.splice(indexOnParent, 1);
+	// TODO change plans constructor to include this.parent
+ }
 /**
  *
  */
@@ -58,8 +74,7 @@ Plan.prototype.update = function(classroomUpdated) {
     this.setActiveCombination();
   } else {
     // If there are no combinations.
-    document.getElementById('combination-value').value = 0;
-    document.getElementById('combination-total').innerHTML = 0;
+    document.getElementById('combination-value').innerHTML = '0/0';
   }
 
   if (!classroomUpdated) {
@@ -334,50 +349,35 @@ Plan.prototype.computeCombinationsFromBase = function(combinationBase) {
  * 
  */
 Plan.prototype.setActiveCombination = function() {
-  var activeCombination = this.combinations[this.activeCombinationIndex];
-  for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
-    var activeClassroom = activeCombination.lecturesClassroom[i];
-    activeClassroom.showBox();
-    // TODO refatorar essa linha ou o codigo. Opcao: guardar a active classroom ao inves de guardar seu indice
-    //      possivelmente fazer o mesmo com as combinacoes e so mudar na hora de salvar o json. Isso sera usado,
-    //      por exemplo, no setHighlight em Classroom()
-    activeClassroom.parent.activeClassroomIndex = activeClassroom.parent.classrooms.indexOf(activeClassroom);
-  }
+	//if there is a activeCombinationIndex seted
+	if(this.activeCombinationIndex != null) {
+		var activeCombination = this.combinations[this.activeCombinationIndex];
+		for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
+			var activeClassroom = activeCombination.lecturesClassroom[i];
+			activeClassroom.showBox();
+			// TODO refatorar essa linha ou o codigo. Opcao: guardar a active classroom ao inves de guardar seu indice
+			//      possivelmente fazer o mesmo com as combinacoes e so mudar na hora de salvar o json. Isso sera usado,
+			//      por exemplo, no setHighlight em Classroom()
+			activeClassroom.parent.activeClassroomIndex = activeClassroom.parent.classrooms.indexOf(activeClassroom);
+		}
 
-  document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
+		document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
+	} else { 
+		document.getElementById('combination-value').innerHTML =  '0/0';
+	}
 };
 
 /**
  * 
  */
 Plan.prototype.unsetActiveCombination = function() {
-  var activeCombination = this.combinations[this.activeCombinationIndex];
-  for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
-    var activeClassroom = activeCombination.lecturesClassroom[i];
-    activeClassroom.hideBox();
-    activeClassroom.parent.activeClassroomIndex = null;
-  }
-};
-/**
- *
- */
-Plan.prototype.setActivePlan = function(newPlanIndex) {
-	this.cleanPlan(state.activePlanIndex);
-	var newLectures = state.plans[newPlanIndex].lectures;
-	for (var i = 0; i < newLectures.length; i++) {
-		ui.addLecture(newLectures[i]);
-	}
-	state.activePlanIndex = newPlanIndex;
-};
-
-
-/**
- *
- **/
-Plan.prototype.cleanPlan = function(planIndex) {
-	var currentLectures = state.plans[planIndex].lectures;
-	for (var i = 0; i < currentLectures.length; i++) {
-		ui.removeLecture(currentLectures[i]);
+	if(this.activeCombinationIndex != null) {
+		var activeCombination = this.combinations[this.activeCombinationIndex];
+		for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
+			var activeClassroom = activeCombination.lecturesClassroom[i];
+			activeClassroom.hideBox();
+			activeClassroom.parent.activeClassroomIndex = null;
+		}
 	}
 };
 
@@ -385,8 +385,9 @@ Plan.prototype.unsetPlan = function() {
   if (this.planId == state.activePlanIndex) {
     // TODO separar em ui_plan.js e plan.js. A linha abaixo fica no primeiro arquivo
     removeClass(this.htmlElement, 'plan-active');
+		this.unsetActiveCombination();
     for (var i = 0; i < this.lectures.length; i++) {
-      ui.removeLecture(this.lectures[i]);
+			removeClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
     }
   }
 }
@@ -417,8 +418,9 @@ Plan.prototype.setPlan = function() {
   }
 
   state.plans[state.activePlanIndex].unsetPlan();
+	this.setActiveCombination();
   for (var i = 0; i < this.lectures.length; i++) {
-    ui.addLecture(this.lectures[i]);
+		addClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
   }
   state.activePlanIndex = this.planId;
 
@@ -439,5 +441,14 @@ Plan.prototype.setPlan = function() {
  *
  */
 Plan.prototype.addEventListeners = function() {
-  this.htmlElement.addEventListener('click', this.setPlan.bind(this));
+	this.fa = this.setPlan.bind(this);
+  this.htmlElement.addEventListener('click', this.fa);
 };
+
+/**
+ *
+ */
+Plan.prototype.removeEventListeners = function() {
+  this.htmlElement.removeEventListener('click', this.fa);
+};
+
