@@ -20,6 +20,11 @@
     <div id="page-container">
         <header>
             <span id="logo">MATRUSP</span>
+            <div id='save-controller'>
+                <input id='user-identifier'> 
+                <button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value);'>Salvar</button>
+                <button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
+            </div>
             <ul id="icons">
                 <li class="icon" id="icalendar" data-description="Exportar para o calendario do Google">
                     <div class="hover-mask"></div>
@@ -92,15 +97,9 @@
                 </div>
                 <div id='combination-controller'>
                     <button onclick='state.previousCombination();'>&lt</button>
-                    <input id='combination-value' type='text' onsubmit='state.goToCombination(this.value);'>
-                    <span>/</span><span id='combination-total'></span>
+                    <span id='combination-value'>0/0</span>
                     <button onclick='state.nextCombination();'>&gt</button>
                 </div>
-								<div id='save-controller'>
-										<input id='identificator'> 
-										<button onclick='ui.saveStateOnServer(document.getElementById("identificator").value);'>Save</button>
-										<button onclick='ui.loadStateFromServer(document.getElementById("identificator").value);'>Load</button>
-								</div>
             </div>
             <div id="lecture-explorer">
                 <div id="search-and-add">
@@ -151,13 +150,12 @@
                     </div>
                     <div id="explorer-footer"><input type="file" id="upload"></div>
                 </div>
-								<div id="plans">
-										<button onclick='plan.setActivePlan(0)'>Plan1</button>
-										<button onclick='plan.setActivePlan(1)'>Plan2</button>
-										<button onclick='plan.setActivePlan(2)'>Plan3</button>
-
-										<button onclick='plan.copyToPlan(2)'>Copy Actual Plan to Plan3</button>
-								</div>
+				<div id="plans">
+                    <div id="plan-0" class="plan">Plano 1</div>
+                    <div id="plan-1" class="plan">Plano 2</div>
+                    <div id="plan-2" class="plan">Plano 3</div>
+					<!--button onclick='plan.copyToPlan(2)'>Copy Actual Plan to Plan3</button-->
+				</div>
             </div>
         </div>
         <footer><a href="">Fale Conosco / Críticas e Sugestões</a><a href="">Fork me on GitHub</a></footer>

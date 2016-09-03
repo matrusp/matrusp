@@ -1,0 +1,10 @@
+#combination-controller {
+  @include center-block-horizontally();
+  width: 86px;
+  margin-top: 20px;
+
+  >button {
+    @include center-block-vertically();
+  }
+}
+

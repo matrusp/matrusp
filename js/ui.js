@@ -282,7 +282,6 @@ function UI() {
 			var xobj = new XMLHttpRequest();
 			xobj.onreadystatechange = function() {
 				if (this.readyState == 4) {
-					console.log("response", this.responseText);
 					if (this.status == 200 && this.responseText == "OK") {
 						//TODO print information of succes
 					} else {
@@ -386,7 +385,7 @@ function UI() {
 		}
 		 this.loadJSON('data/' + identifier + '.json', function(response) {
 			 var newState = JSON.parse(response);
-			 plan.cleanPlan(state.activePlanIndex);
+			 state.delete();
 			 state = new State(newState);
 		 });
 	 }

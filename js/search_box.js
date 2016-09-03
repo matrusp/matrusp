@@ -53,16 +53,17 @@ function SearchBox(state) {
 
 	function addLectures(lectures) {
 		var suggestionLectures = self.searchResultBox.childNodes;
+		console.log("suggestion", suggestionLectures);
 		for(var i = 0; i < lectures.length; i++) {
 
 				var searchResultLectureInfo = createAndAppendChild(self.searchResultBox, 'div', {
 						'class' : ['search-result', 'lecture-info']
 						});
-				var lectureIndoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
+				var lectureInfoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
 						'class' : 'lecture-info-code',
 						'innerHTML' : lectures[i]['code']
 						});
-				var lectureIndoDescription = createAndAppendChild(searchResultLectureInfo, 'div', {
+				var lectureInfoDescription = createAndAppendChild(searchResultLectureInfo, 'div', {
 						'class' : 'lecture-info-description', 
 						'innerHTML' : lectures[i]['name']
 						});
@@ -72,6 +73,9 @@ function SearchBox(state) {
 					return function() {
 						var obj = parseDBToLectureFormat(lectures[iterator]);
 						state.addLecture(obj);
+						for (var i = 0; i < state.plans[state.activePlanIndex].lectures.length; i++) {
+							ui.addLecture(state.plans[state.activePlanIndex].lectures[i]);
+						}
 						searchResultBoxHide();
 						self.overSearchResultBox = false;
 						removeLecturesSuggestionList();

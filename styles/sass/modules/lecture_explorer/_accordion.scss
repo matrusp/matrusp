@@ -46,6 +46,11 @@
   // 100% - 2 * padding
   width: calc(100% - 2px);
   padding: 1px;
+	display: none;
+}
+
+.lecture-info-plan-active {
+	display: block;
 }
 
 .lecture-info-header {
