@@ -41,7 +41,10 @@
     // TODO test replace ":first-child" with ".time"
     >.column:not(:first-child) {
         // TODO test take off "$variable:" before #COLORR
-        @include column-background($black:#BFBFBF, $gray:#DFDFDF);
+        background-image: url('../../images/stripes.gif');
+        background-repeat:no-repeat;
+        background-size:cover;
+        background-position:center;
         position: relative;
         // 4.5px empirically set to fill the parent div with these columns.
         width: calc((100% - #{$column-time-width} - (7 * 4.5px)) / 6);
