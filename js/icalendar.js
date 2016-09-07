@@ -61,7 +61,7 @@ function get_class_end_date(classroom) {
 
 function get_class_begin_date(classroom, schedule) {
   var string_date = classroom.data_inicio.split("/");
-  var begin_date = new string_date();
+  var begin_date = new Date();
   begin_date.setDate(parseInt(string_date[0]));
   begin_date.setMonth(parseInt(string_date[1]) - 1);
   begin_date.setFullYear(parseInt(string_date[2]));
