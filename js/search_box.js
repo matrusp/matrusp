@@ -26,6 +26,8 @@ function SearchBox(state) {
 		};
 		lecture.classrooms.forEach(function(classroom) {
 				var specification = {
+				'data_inicio' : classroom.start_date,
+				'data_fim' : classroom.end_date,
 				'classroomCode' : classroom.code.replace(/.{5}/, ' '),/*remove year and semester to take classroom*/
 				'horas_aula' : 0,
 				'vaga_ofertadas' : 0,
