@@ -1,6 +1,6 @@
 .schedule-box {
 	position: absolute;
-	width: 100%;
+	width: calc(100% - #{$schedule-box-border-left-width});
   visibility: hidden;
 }
 
@@ -16,11 +16,19 @@
   .schedule-box.color-#{$i} {
     background-color: lighten($color, 20%);
     color: darken($color, 25%);
+    border-left: $schedule-box-border-left-width solid darken($color, 25%);
+
+    >.timespan-mini {
+      background-color: lighten($color, 20%);
+    }
   }
 
   .schedule-box-highlight.color-#{$i} {
     background-color: $color;
-    color: darken($color, 25%);
+
+    >.timespan-mini {
+      background-color: $color;
+    }
   }
 }
 
@@ -28,5 +36,50 @@
   background-color: red;
   color: black;
   opacity: 0.8;
+  z-index: 1;
+}
+
+.lecture-code {
+  @include center-block-vertically();
+  position: absolute;
+  width: 100%;
+  // arbitrary value, the important thing is that height and line-height are the same
+  height: 1em;
+  line-height: 1em;
+  text-align: center;
+  bottom: 1px;
+}
+
+.timespan {
+  position: absolute;
+}
+
+.timespan-begin {
+  left: 2px;
+}
+
+.timespan-end {
+  bottom: 2px;
+  right: 3px;
+}
+
+.timespan-mini {
+  left: 0;
+  right: 0;
+  visibility: hidden;
+}
+
+.timespan-mini.timespan-begin {
+  top: -14px;
+}
+
+.timespan-mini.timespan-end {
+  bottom: -13px;
+  text-align: right;
+}
+
+.schedule-box:hover .timespan-mini,
+.schedule-box-highlight .timespan-mini {
+  visibility: visible;
   z-index: 1;
 }

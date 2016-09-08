@@ -65,8 +65,13 @@ function UI() {
         children: [
         {
           tag: 'span',
-          class: 'timespan',
-          innerHTML: schedule.timeBegin + ' ' + schedule.timeEnd
+          class: ['timespan', 'timespan-begin'],
+          innerHTML: schedule.timeBegin
+        },
+        {
+          tag: 'span',
+          class: ['timespan', 'timespan-end'],
+          innerHTML: schedule.timeEnd
         },
         {
           tag: 'span',
@@ -75,6 +80,17 @@ function UI() {
         }
       ]
     };
+
+
+    var hourBegin = parseInt(schedule.timeBegin.substr(0,2), 10);
+    var minBegin = parseInt(schedule.timeBegin.substr(3,2), 10);
+    var hourEnd = parseInt(schedule.timeEnd.substr(0,2), 10);
+    var minEnd = parseInt(schedule.timeEnd.substr(3,2), 10);
+    // if the box is too small and can only fit the lecture code inside
+    if (((hourEnd - hourBegin)*60 + minEnd - minBegin) <= 60) {
+      scheduleBoxTreeObj.children[0].class.push('timespan-mini');
+      scheduleBoxTreeObj.children[1].class.push('timespan-mini');
+    }
 
     var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
 

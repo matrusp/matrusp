@@ -18,7 +18,7 @@
 #lecture-schedule {
     >.column {
         display: inline-block;
-        height: 100%;
+        height: calc(100% - #{$lecture-schedule-combinations-buttons-height});
         vertical-align: top;
     }
         
@@ -26,13 +26,13 @@
         width: $column-time-width;
         
         >.hour {
-            height: $hour-height;
+            height: calc(100% / 18);
             // 19 elements and 18 "slots" inside this column. 
             // Aligning vertically each text with upper div border
             // (setting line-height to zero,  miraculously!), we get
             // 06:00 aligned with top border and 00:00 aligned with 
             // bottom border (that's actually its upper border).
-            min-height: ($lecture-schedule-min-height - $lecture-schedule-padding-top) / 18;
+            min-height: ($lecture-schedule-min-height - $lecture-schedule-padding-top - $lecture-schedule-combinations-buttons-height) / 18;
             font-size: $font-size-hour;
             line-height: 0;
         }

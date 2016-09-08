@@ -2,11 +2,11 @@
   "version": 5,
   "campus": "TODOS",
   "semester": "20162",
-  "planIndex": 1,
+  "planIndex": 2,
   "plans": [
     {
       "activeCombinationIndex": 1,
-      "activePlan": 1,
+      "activePlan": 0,
       "lectures": [
         {
           "code": "SCC0502",
@@ -466,6 +466,88 @@
           ]
         }
       ]
-		}
+		},
+    {
+      "activeCombinationIndex": 0,
+      "activePlan": 1,
+      "lectures": [
+        {
+          "code": "ESA5351",
+          "name": "Educação Educação Educação Educação Educação Educação 2",
+          "color": "2",
+          "campus": "TODOS",
+          "selected": 1,
+          "classrooms": [
+            {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "seg",
+                  "timeBegin": "12:00",
+                  "timeEnd": "12:40"
+                },
+                {
+                  "day": "qua",
+                  "timeBegin": "12:40",
+                  "timeEnd": "13:20"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "ESA5351",
+          "name": "Educaaaaaaaaaaaaaaaaaação 2",
+          "color": "1",
+          "campus": "TODOS",
+          "selected": 1,
+          "classrooms": [
+            {
+              "data_inicio": "31/07/2016",
+              "data_fim": "10/12/2016",
+              "classroomCode": "43",
+              "horas_aula": 0,
+              "vagas_ofertadas": 0,
+              "vagas_ocupadas": 0,
+              "alunos_especiais": 0,
+              "saldo_vagas": 0,
+              "pedidos_sem_vaga": 0,
+              "selected": 1,
+              "teachers": [
+                "First Guy",
+                "Second Son",
+                "third Weird"
+              ],
+              "schedules": [
+                {
+                  "day": "seg",
+                  "timeBegin": "12:40",
+                  "timeEnd": "13:20"
+                },
+                {
+                  "day": "qua",
+                  "timeBegin": "13:30",
+                  "timeEnd": "14:00"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

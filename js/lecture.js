@@ -20,8 +20,8 @@
 function Lecture(jsonObj, parentPlan) {
   this.parent = parentPlan;
   this.classrooms = new Array();
-  // activeClassroomIndex is set after combinations are computed (last thing of creating a plan)
-  this.activeClassroomIndex = null;
+  // activeClassroom is set after combinations are computed (last thing of creating a plan)
+  this.activeClassroom = null;
   if (jsonObj) {
     this.code = jsonObj.code;
     this.name = jsonObj.name;
@@ -189,7 +189,7 @@ Lecture.prototype.updateAllClassroomsSelections = function(shouldUpdate) {
  */
 Lecture.prototype.update = function(classroomUpdated) {
   if (this.noClassroomsSelected()) {
-    this.activeClassroomIndex = null;
+    this.activeClassroom = null;
     this.lectureUnselect();
   } else if (!this.selected) {
     // When no classrooms were selected and right now at least one is, the lecture too
@@ -241,10 +241,10 @@ Lecture.prototype.moveDown = function() {
 
 // TODO
 Lecture.prototype.setHighlight = function() {
-  this.classrooms[this.activeClassroomIndex].setHighlight();
+  this.activeClassroom.setHighlight();
 };
 Lecture.prototype.unsetHighlight = function() {
-  this.classrooms[this.activeClassroomIndex].unsetHighlight();
+  this.activeClassroom.unsetHighlight();
 };
 
 

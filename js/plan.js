@@ -23,12 +23,13 @@ function Plan(jsonObj, planId, isActivePlan) {
   this.addEventListeners();
 
   if (jsonObj) {
-    this.activeCombinationIndex = jsonObj.activeCombinationIndex;
     for (var i = 0; i < jsonObj.lectures.length; i++) {
       this.lectures.push(new Lecture(jsonObj.lectures[i], this));
 			ui.addLecture(this.lectures[i]);
     }
+    this.activeCombinationIndex = jsonObj.activeCombinationIndex;
 		this.computeCombinations();
+    this.activeCombination = this.combinations[this.activeCombinationIndex];
     if (isActivePlan) {
 			this.setActiveCombination();
       addClass(this.htmlElement, 'plan-active');
@@ -38,6 +39,7 @@ function Plan(jsonObj, planId, isActivePlan) {
     }
   } else {
     this.activeCombinationIndex = null;
+    this.activeCombination = null;
   }
 }
 
@@ -61,9 +63,11 @@ Plan.prototype.delete = function() {
  */
 Plan.prototype.update = function(classroomUpdated) {
   var oldActiveCombination = null;
-  if (this.activeCombinationIndex != null) {
+  //if (this.activeCombinationIndex != null) {
+  if (this.activeCombination) {
     // There is an active combination.
-    oldActiveCombination = this.combinations[this.activeCombinationIndex];
+    //oldActiveCombination = this.combinations[this.activeCombinationIndex];
+    oldActiveCombination = this.activeCombination;
     this.unsetActiveCombination();
   }
   this.combinations = new Array();
@@ -71,9 +75,11 @@ Plan.prototype.update = function(classroomUpdated) {
   this.activeCombinationIndex = this.closestCombination(oldActiveCombination, classroomUpdated);
   if (this.activeCombinationIndex != null) {
     // There is an active combination.
+    this.activeCombination = this.combinations[this.activeCombinationIndex];
     this.setActiveCombination();
   } else {
     // If there are no combinations.
+    this.activeCombination = null;
     document.getElementById('combination-value').innerHTML = '0/0';
   }
 
@@ -128,6 +134,7 @@ Plan.prototype.closestCombination = function(oldActiveCombination) {
 Plan.prototype.nextCombination = function() {
   this.unsetActiveCombination();
   this.activeCombinationIndex = (this.activeCombinationIndex + 1) % this.combinations.length;
+  this.activeCombination = this.combinations[this.activeCombinationIndex];
   this.setActiveCombination();
 };
 
@@ -137,6 +144,7 @@ Plan.prototype.nextCombination = function() {
 Plan.prototype.previousCombination = function() {
   this.unsetActiveCombination();
   this.activeCombinationIndex = ((this.activeCombinationIndex - 1) + this.combinations.length) % this.combinations.length;
+  this.activeCombination = this.combinations[this.activeCombinationIndex];
   this.setActiveCombination();
 };
 
@@ -349,21 +357,26 @@ Plan.prototype.computeCombinationsFromBase = function(combinationBase) {
  * 
  */
 Plan.prototype.setActiveCombination = function() {
-	//if there is a activeCombinationIndex seted
-	if(this.activeCombinationIndex != null) {
+	// if there is an activeCombinationIndex set
+	/*if(this.activeCombinationIndex != null) {
 		var activeCombination = this.combinations[this.activeCombinationIndex];
 		for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
 			var activeClassroom = activeCombination.lecturesClassroom[i];
 			activeClassroom.showBox();
-			// TODO refatorar essa linha ou o codigo. Opcao: guardar a active classroom ao inves de guardar seu indice
-			//      possivelmente fazer o mesmo com as combinacoes e so mudar na hora de salvar o json. Isso sera usado,
-			//      por exemplo, no setHighlight em Classroom()
-			activeClassroom.parent.activeClassroomIndex = activeClassroom.parent.classrooms.indexOf(activeClassroom);
-		}
+      activeClassroom.parent.activeClassroom = activeClassroom;
+		} */
+  // if there is an active combination
+  if (this.activeCombination) {
+    var lecturesClassrooms = this.activeCombination.lecturesClassroom;
+    for (var i = 0; i < lecturesClassrooms.length; i++) {
+      lecturesClassrooms[i].showBox();
+      lecturesClassrooms[i].parent.activeClassroom = lecturesClassrooms[i];
+    }
 
 		document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
 	} else { 
-		document.getElementById('combination-value').innerHTML =  '0/0';
+    // TODO safely remove?
+		// document.getElementById('combination-value').innerHTML =  '0/0';
 	}
 };
 
@@ -371,14 +384,24 @@ Plan.prototype.setActiveCombination = function() {
  * 
  */
 Plan.prototype.unsetActiveCombination = function() {
+  /*
 	if(this.activeCombinationIndex != null) {
 		var activeCombination = this.combinations[this.activeCombinationIndex];
 		for (var i = 0; i < activeCombination.lecturesClassroom.length; i++) {
 			var activeClassroom = activeCombination.lecturesClassroom[i];
 			activeClassroom.hideBox();
-			activeClassroom.parent.activeClassroomIndex = null;
+      activeClassroom.parent.activeClassroom = null;
 		}
-	}
+	} */
+  // if there is an active combination
+  if (this.activeCombination) {
+    var lecturesClassrooms = this.activeCombination.lecturesClassroom;
+    for (var i = 0; i < lecturesClassrooms.length; i++) {
+      lecturesClassrooms[i].hideBox();
+      lecturesClassrooms[i].parent.activeClassroom = null;
+    }
+    document.getElementById('combination-value').innerHTML =  '0/0';
+  }
 };
 
 Plan.prototype.unsetPlan = function() {
@@ -391,24 +414,6 @@ Plan.prototype.unsetPlan = function() {
     }
   }
 }
-
-/**
- *
- **/
-Plan.prototype.copyToPlan = function(planIndex) {
-	if (planIndex == state.activePlanIndex) return;
-	var newPlan = state.plans[planIndex];
-	newPlan.activeCombinationIndex = state.plans[state.activePlanIndex].activeCombinationIndex;
-	newPlan.lectures = new Array();
-	for (var i = 0; i < state.plans[state.activePlanIndex].lectures.length; i++) {
-		newPlan.lectures.push(new Lecture(state.plans[state.activePlanIndex].lectures[i], newPlan));
-	}
-	newPlan.htmlElement = document.createElement('div');
-	newPlan.computeCombinations();
-	newPlan.update();
-	this.setActivePlan(planIndex);
-}
-
 
 
 Plan.prototype.setPlan = function() {
@@ -436,19 +441,37 @@ Plan.prototype.setPlan = function() {
   }
 };
 
+/**
+ *
+ **/
+Plan.prototype.copyToPlan = function(planIndex) {
+  if (planIndex == state.activePlanIndex) return;
+  var newPlan = state.plans[planIndex];
+  newPlan.activeCombinationIndex = state.plans[state.activePlanIndex].activeCombinationIndex;
+  newPlan.lectures = new Array();
+  for (var i = 0; i < state.plans[state.activePlanIndex].lectures.length; i++) {
+    newPlan.lectures.push(new Lecture(state.plans[state.activePlanIndex].lectures[i], newPlan));
+  }
+  newPlan.htmlElement = document.createElement('div');
+  newPlan.computeCombinations();
+  newPlan.update();
+  this.setActivePlan(planIndex);
+}
+
+
 
 /**
  *
  */
 Plan.prototype.addEventListeners = function() {
-	this.fa = this.setPlan.bind(this);
-  this.htmlElement.addEventListener('click', this.fa);
+	this.setPlanBoundCallback = this.setPlan.bind(this);
+  this.htmlElement.addEventListener('click', this.setPlanBoundCallback);
 };
 
 /**
  *
  */
 Plan.prototype.removeEventListeners = function() {
-  this.htmlElement.removeEventListener('click', this.fa);
+  this.htmlElement.removeEventListener('click', this.setPlanBoundCallback);
 };
 

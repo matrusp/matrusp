@@ -28,7 +28,7 @@
 }
 
 #accordion-window {
-    height: calc(100% - #{$search-and-add-height});
+    height: calc(100% - #{$search-and-add-height} - #{$lecture-explorer-plan-buttons-height});
     overflow: hidden;
     // TODO change to variable
     border: $border-default;

@@ -7,16 +7,19 @@ $border-default: 1px solid lightgray;
 
 // Base
 $page-max-width: 960px;
-$page-min-width: 600px;
+$page-min-width: 770px;
 $main-padding: 15px;
 $header-height: 40px;
 $footer-height: $header-height;
 $header-bottom-line: $header-height / 4;
+$lecture-schedule-combinations-buttons-height: 30px;
 $lecture-schedule-max-height: 600px;
-$lecture-schedule-min-height: 400px;
+$lecture-schedule-min-height: 500px + $lecture-schedule-combinations-buttons-height;
 $lecture-schedule-padding-top: 40px;
 $lecture-explorer-max-height: $lecture-schedule-max-height;
 $lecture-explorer-min-height: $lecture-schedule-min-height;
+$lecture-explorer-plan-buttons-height: $lecture-schedule-combinations-buttons-height;
+
 $page-min-height: $header-height + $header-bottom-line + 2 * $main-padding + $lecture-schedule-min-height + $footer-height;
 
 // Header
@@ -33,10 +36,10 @@ $tooltip-font-size: 13px;
 
 // Lecture Schedule
 $column-time-width: 40px;
-$hour-height: (100% / 18);
 $column-background-line-height: 2px;
 $week-day-underline-height: 4px;
 $font-size-hour: 13px;
+$schedule-box-border-left-width: 2.3px;
 
 // Lecture Explorer
 $scroll-bar-width: 15px;

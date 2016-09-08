@@ -1,6 +1,7 @@
 #combination-controller {
   @include center-block-horizontally();
   width: 86px;
+  height: $lecture-schedule-combinations-buttons-height;
   margin-top: 20px;
 
   >button {
