@@ -15,8 +15,8 @@ li {
 html, body {
   width: 100%;
   height: 100%;
-  min-width: 600px;
-  min-height: 520px; }
+  min-width: 770px;
+  min-height: 650px; }
 
 body {
   overflow: auto;
@@ -33,7 +33,7 @@ body {
   width: 100%;
   height: 100%;
   max-width: 960px;
-  min-width: 600px;
+  min-width: 770px;
   overflow-x: hidden; }
   #page-container > header,
   #page-container > footer {
@@ -45,7 +45,7 @@ body {
   position: relative;
   width: calc(100% - (2 * 15px));
   height: calc(100% - ( (2 * 40px)  + 10px  + (2 * 15px) ));
-  min-height: 400px;
+  min-height: 530px;
   padding: 15px;
   margin-top: 10px; }
 
@@ -64,7 +64,7 @@ body {
   width: calc((1 / 3) * 100% - 3px);
   height: 100%;
   max-height: 600px;
-  min-height: 400px; }
+  min-height: 530px; }
 
 header {
   user-select: none;
@@ -86,24 +86,21 @@ header {
   padding-right: 20px; }
 
 #page-container > footer > a {
-  display: inline-block;
-  height: 100%;
-  line-height: 100%;
-  vertical-align: middle; }
-  #page-container > footer > a:first-child {
-    float: left; }
+  position: absolute;
+  bottom: 0;
+  margin: 10px 15px; }
   #page-container > footer > a:last-child {
-    float: right; }
+    right: 0; }
 
 #lecture-schedule > .column {
   display: inline-block;
-  height: 100%;
+  height: calc(100% - 30px);
   vertical-align: top; }
 #lecture-schedule > .column.time {
   width: 40px; }
   #lecture-schedule > .column.time > .hour {
-    height: 5.55556%;
-    min-height: 20px;
+    height: calc(100% / 18);
+    min-height: 25.55556px;
     font-size: 13px;
     line-height: 0; }
 #lecture-schedule > .column:not(:first-child) {
@@ -135,7 +132,7 @@ header {
   margin-bottom: 10px; }
 
 #accordion-window {
-  height: calc(100% - 30px);
+  height: calc(100% - 30px - 30px);
   overflow: hidden;
   border: 1px solid lightgray;
   border-radius: 2px;
@@ -457,9 +454,9 @@ header {
 
 .lecture-info.color-3 {
   background-color: #ffcf8c;
-  color: #a56100; }
+  color: #a66100; }
   .lecture-info.color-3:hover {
-    background-color: #ffc572; }
+    background-color: #ffc573; }
   .lecture-info.color-3 > .lecture-info-header > .lecture-info-up:hover,
   .lecture-info.color-3 > .lecture-info-header > .lecture-info-down:hover,
   .lecture-info.color-3 > .lecture-info-header > .lecture-info-delete:hover {
@@ -513,9 +510,9 @@ header {
 
 .lecture-info.color-7 {
   background-color: #ffe88c;
-  color: #a58400; }
+  color: #a68400; }
   .lecture-info.color-7:hover {
-    background-color: #ffe372; }
+    background-color: #ffe373; }
   .lecture-info.color-7 > .lecture-info-header > .lecture-info-up:hover,
   .lecture-info.color-7 > .lecture-info-header > .lecture-info-down:hover,
   .lecture-info.color-7 > .lecture-info-header > .lecture-info-delete:hover {
@@ -529,11 +526,11 @@ header {
   background-color: #ff96cb;
   color: #b00059; }
   .lecture-info.color-8:hover {
-    background-color: #ff7cbf; }
+    background-color: #ff7dbf; }
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-up:hover,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-down:hover,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-delete:hover {
-    background-color: #ff49a6; }
+    background-color: #ff4aa6; }
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-up:active,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-down:active,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-delete:active {
@@ -595,7 +592,7 @@ header {
 
 .schedule-box {
   position: absolute;
-  width: 100%;
+  width: calc(100% - 2.3px);
   visibility: hidden; }
 
 .schedule-box-show,
@@ -604,88 +601,167 @@ header {
 
 .schedule-box.color-1 {
   background-color: #bdefac;
-  color: #3d991d; }
+  color: #3d991d;
+  border-left: 2.3px solid #3d991d; }
+  .schedule-box.color-1 > .timespan-mini {
+    background-color: #bdefac; }
 
 .schedule-box-highlight.color-1 {
-  background-color: #7adf56;
-  color: #3d991d; }
+  background-color: #7adf56; }
+  .schedule-box-highlight.color-1 > .timespan-mini {
+    background-color: #7adf56; }
 
 .schedule-box.color-2 {
   background-color: #a0ddfc;
-  color: #0577b1; }
+  color: #0577b1;
+  border-left: 2.3px solid #0577b1; }
+  .schedule-box.color-2 > .timespan-mini {
+    background-color: #a0ddfc; }
 
 .schedule-box-highlight.color-2 {
-  background-color: #3db9f9;
-  color: #0577b1; }
+  background-color: #3db9f9; }
+  .schedule-box-highlight.color-2 > .timespan-mini {
+    background-color: #3db9f9; }
 
 .schedule-box.color-3 {
   background-color: #ffcf8c;
-  color: #a56100; }
+  color: #a66100;
+  border-left: 2.3px solid #a66100; }
+  .schedule-box.color-3 > .timespan-mini {
+    background-color: #ffcf8c; }
 
 .schedule-box-highlight.color-3 {
-  background-color: #ffa526;
-  color: #a56100; }
+  background-color: #ffa526; }
+  .schedule-box-highlight.color-3 > .timespan-mini {
+    background-color: #ffa526; }
 
 .schedule-box.color-4 {
   background-color: #e5c5ed;
-  color: #86309c; }
+  color: #86309c;
+  border-left: 2.3px solid #86309c; }
+  .schedule-box.color-4 > .timespan-mini {
+    background-color: #e5c5ed; }
 
 .schedule-box-highlight.color-4 {
-  background-color: #c277d5;
-  color: #86309c; }
+  background-color: #c277d5; }
+  .schedule-box-highlight.color-4 > .timespan-mini {
+    background-color: #c277d5; }
 
 .schedule-box.color-5 {
   background-color: #aff4ef;
-  color: #17a79d; }
+  color: #17a79d;
+  border-left: 2.3px solid #17a79d; }
+  .schedule-box.color-5 > .timespan-mini {
+    background-color: #aff4ef; }
 
 .schedule-box-highlight.color-5 {
-  background-color: #55e8de;
-  color: #17a79d; }
+  background-color: #55e8de; }
+  .schedule-box-highlight.color-5 > .timespan-mini {
+    background-color: #55e8de; }
 
 .schedule-box.color-6 {
   background-color: #ffb2c1;
-  color: #cc0027; }
+  color: #cc0027;
+  border-left: 2.3px solid #cc0027; }
+  .schedule-box.color-6 > .timespan-mini {
+    background-color: #ffb2c1; }
 
 .schedule-box-highlight.color-6 {
-  background-color: #ff4c6e;
-  color: #cc0027; }
+  background-color: #ff4c6e; }
+  .schedule-box-highlight.color-6 > .timespan-mini {
+    background-color: #ff4c6e; }
 
 .schedule-box.color-7 {
   background-color: #ffe88c;
-  color: #a58400; }
+  color: #a68400;
+  border-left: 2.3px solid #a68400; }
+  .schedule-box.color-7 > .timespan-mini {
+    background-color: #ffe88c; }
 
 .schedule-box-highlight.color-7 {
-  background-color: #ffd326;
-  color: #a58400; }
+  background-color: #ffd326; }
+  .schedule-box-highlight.color-7 > .timespan-mini {
+    background-color: #ffd326; }
 
 .schedule-box.color-8 {
   background-color: #ff96cb;
-  color: #b00059; }
+  color: #b00059;
+  border-left: 2.3px solid #b00059; }
+  .schedule-box.color-8 > .timespan-mini {
+    background-color: #ff96cb; }
 
 .schedule-box-highlight.color-8 {
-  background-color: #ff3099;
-  color: #b00059; }
+  background-color: #ff3099; }
+  .schedule-box-highlight.color-8 > .timespan-mini {
+    background-color: #ff3099; }
 
 .schedule-box.color-9 {
   background-color: #d5c8b7;
-  color: #6a563d; }
+  color: #6a563d;
+  border-left: 2.3px solid #6a563d; }
+  .schedule-box.color-9 > .timespan-mini {
+    background-color: #d5c8b7; }
 
 .schedule-box-highlight.color-9 {
-  background-color: #b09676;
-  color: #6a563d; }
+  background-color: #b09676; }
+  .schedule-box-highlight.color-9 > .timespan-mini {
+    background-color: #b09676; }
 
 .schedule-box.color-10 {
   background-color: #dceac1;
-  color: #739431; }
+  color: #739431;
+  border-left: 2.3px solid #739431; }
+  .schedule-box.color-10 > .timespan-mini {
+    background-color: #dceac1; }
 
 .schedule-box-highlight.color-10 {
-  background-color: #b2d174;
-  color: #739431; }
+  background-color: #b2d174; }
+  .schedule-box-highlight.color-10 > .timespan-mini {
+    background-color: #b2d174; }
 
 .schedule-box-highlight.schedule-box-highlight-conflict {
   background-color: red;
   color: black;
   opacity: 0.8;
+  z-index: 1; }
+
+.lecture-code {
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  position: absolute;
+  width: 100%;
+  height: 1em;
+  line-height: 1em;
+  text-align: center;
+  bottom: 1px; }
+
+.timespan {
+  position: absolute; }
+
+.timespan-begin {
+  left: 2px; }
+
+.timespan-end {
+  bottom: 2px;
+  right: 3px; }
+
+.timespan-mini {
+  left: 0;
+  right: 0;
+  visibility: hidden; }
+
+.timespan-mini.timespan-begin {
+  top: -14px; }
+
+.timespan-mini.timespan-end {
+  bottom: -13px;
+  text-align: right; }
+
+.schedule-box:hover .timespan-mini,
+.schedule-box-highlight .timespan-mini {
+  visibility: visible;
   z-index: 1; }
 
 #combination-controller {
@@ -694,6 +770,7 @@ header {
   margin-left: auto;
   margin-right: auto;
   width: 86px;
+  height: 30px;
   margin-top: 20px; }
   #combination-controller > button {
     top: 0;

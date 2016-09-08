@@ -16,16 +16,11 @@
 //
 
 #page-container>footer>a {
-    display: inline-block;
-    height: 100%;
-    line-height: 100%;
-    vertical-align: middle;
-
-    &:first-child {
-        float: left;
-    }
+    position: absolute;
+    bottom: 0;
+    margin: 10px 15px;
     
     &:last-child {
-        float: right;
+        right: 0;
     }
 }

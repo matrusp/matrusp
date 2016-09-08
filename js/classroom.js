@@ -114,27 +114,20 @@ Classroom.prototype.hideBox = function() {
 Classroom.prototype.setHighlight = function() {
   var lecture = this.parent;
   var activeClassroom = null;
-  if (lecture.activeClassroomIndex != null) {
+  if (lecture.activeClassroom) {
     // There is an active classroom for this lecture.
-    activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
-    activeClassroom.hideBox();
+    lecture.activeClassroom.hideBox();
   }
   this.addClassInSchedules('schedule-box-highlight');
   
   // Look for conflicting schedules. The active classroom doesn't have any
   // conflicts because it is active (obviously). Also there are conflicts only
   // if there is a combination being displayed.
-  if (this != activeClassroom && lecture.parent.activeCombinationIndex != null) {
-    var activeCombination = lecture.parent.combinations[lecture.parent.activeCombinationIndex];
-    if (activeCombination.length == 0) {
-      // This happens when there are at least one lecture displayed on the screen
-      // but no lecture is selected (div#lecture-schedule is graphically empty).
-      // However, in this situation there may be various lectures included,
-      // i.e. plan.lectures.length > 0. 
-      // So there is no conflict, we can return.
-      return
-    }
-    var lecturesClassroom = activeCombination.lecturesClassroom;
+  //if (this != activeClassroom && lecture.parent.activeCombinationIndex != null) {
+  if (this != activeClassroom && lecture.parent.activeCombination) {
+    //var activeCombination = lecture.parent.combinations[lecture.parent.activeCombinationIndex];
+    //var lecturesClassroom = activeCombination.lecturesClassroom;
+    var lecturesClassroom = lecture.parent.activeCombination.lecturesClassroom;
     for (var i = 0; i < lecturesClassroom.length; i++) {
       if (this.parent == lecturesClassroom[i].parent) {
         // Same lecture, skip.
@@ -160,10 +153,9 @@ Classroom.prototype.setHighlight = function() {
  */
 Classroom.prototype.unsetHighlight = function() {
   var lecture = this.parent;
-  if (lecture.activeClassroomIndex != null) {
+  if (lecture.activeClassroom) {
     // There is an active classroom for this lecture.
-    var activeClassroom = lecture.classrooms[lecture.activeClassroomIndex];
-    activeClassroom.showBox();
+    lecture.activeClassroom.showBox();
   }
   this.removeClassInSchedules('schedule-box-highlight');
   this.removeClassInSchedules('schedule-box-highlight-conflict');
