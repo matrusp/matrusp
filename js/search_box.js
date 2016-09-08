@@ -26,6 +26,8 @@ function SearchBox(state) {
 		};
 		lecture.classrooms.forEach(function(classroom) {
 				var specification = {
+				'data_inicio' : classroom.start_date,
+				'data_fim' : classroom.end_date,
 				'classroomCode' : classroom.code.replace(/.{5}/, ' '),/*remove year and semester to take classroom*/
 				'horas_aula' : 0,
 				'vaga_ofertadas' : 0,
@@ -53,7 +55,6 @@ function SearchBox(state) {
 
 	function addLectures(lectures) {
 		var suggestionLectures = self.searchResultBox.childNodes;
-		console.log("suggestion", suggestionLectures);
 		for(var i = 0; i < lectures.length; i++) {
 
 				var searchResultLectureInfo = createAndAppendChild(self.searchResultBox, 'div', {
@@ -72,10 +73,9 @@ function SearchBox(state) {
 				var addLectureCallback = function(iterator) {
 					return function() {
 						var obj = parseDBToLectureFormat(lectures[iterator]);
+						var posi = state.plans[state.activePlanIndex].lectures.length
 						state.addLecture(obj);
-						for (var i = 0; i < state.plans[state.activePlanIndex].lectures.length; i++) {
-							ui.addLecture(state.plans[state.activePlanIndex].lectures[i]);
-						}
+						addClass(state.plans[state.activePlanIndex].lectures[posi].htmlElement, 'lecture-info-plan-active');
 						searchResultBoxHide();
 						self.overSearchResultBox = false;
 						removeLecturesSuggestionList();
@@ -209,7 +209,9 @@ function SearchBox(state) {
 			case 13:
 			case "Enter":
 				var obj = parseDBToLectureFormat(self.lecturesSuggestionList[self.selectedLectureIndex]);
+				var posi = state.plans[state.activePlanIndex].lectures.length
 				state.addLecture(obj);
+				addClass(state.plans[state.activePlanIndex].lectures[posi].htmlElement, 'lecture-info-plan-active');
 				searchResultBoxHide();
 				self.overSearchResultBox = false;
 				removeLecturesSuggestionList();
@@ -238,7 +240,4 @@ function SearchBox(state) {
 }
 
 
-
-//TODO o jeito que a cor esta sendo incluida nao esta certo
-//TODO quando carregar um horario, atualizar o index do vetor de cores
 //TODO refatorar if elses da funcao searchBox.onkeyup

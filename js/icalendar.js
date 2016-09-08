@@ -1,4 +1,4 @@
-document.getElementById('icalendar').addEventListener('click', download_icalendar);
+//document.getElementById('icalendar').addEventListener('click', download_icalendar);
 
 var header_statement = 'BEGIN:VCALENDAR\n' +
   'PRODID:-\n' +
@@ -61,7 +61,7 @@ function get_class_end_date(classroom) {
 
 function get_class_begin_date(classroom, schedule) {
   var string_date = classroom.data_inicio.split("/");
-  var begin_date = new string_date();
+  var begin_date = new Date();
   begin_date.setDate(parseInt(string_date[0]));
   begin_date.setMonth(parseInt(string_date[1]) - 1);
   begin_date.setFullYear(parseInt(string_date[2]));
@@ -87,8 +87,7 @@ function get_title(classroom) {
 }
 
 function build_event() {
-  //TODO: mudar índice do plano ativo, por enquanto é sempre zero
-  var active_classes = state.plans[0].combinations[state.plans[0].activeCombinationIndex].lecturesClassroom;
+  var active_classes = state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom;
   var events_statement = "";
   for (var i = 0; i < active_classes.length; i++) {
     var current_schedule = active_classes[i].schedules;
@@ -96,7 +95,7 @@ function build_event() {
       events_statement += "BEGIN:VEVENT\n";
       events_statement += "DTSTART;TZID=America/Sao_Paulo:" + get_class_begin_date(active_classes[i], current_schedule[j]) + "T" + get_schedule_start_time(current_schedule[j]) + "\n";
       events_statement += "DTEND;TZID=America/Sao_Paulo:" + get_class_begin_date(active_classes[i], current_schedule[j]) + "T" + get_schedule_end_time(current_schedule[j]) + "\n";
-      events_statement += "RRULE:FREQ=WEEKLY;UNTIL=" + get_class_end_date(active_classes[i]) + "T" + "235959" + ";BYDAY=" + get_week_day_string(current_schedule[j]) + "\n";
+      events_statement += "RRULE:FREQ=WEEKLY;UNTIL=" + get_class_end_date(active_classes[i]) + "T235959;BYDAY=" + get_week_day_string(current_schedule[j]) + "\n";
       events_statement += "DTSTAMP:" + get_utc_current_date_and_time() + "\n";
       events_statement += "UID:" + generate_uid(current_schedule[j]) + "\n";
       events_statement += "SEQUENCE:0\n";
