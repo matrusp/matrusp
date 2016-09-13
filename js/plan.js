@@ -48,6 +48,7 @@ function Plan(jsonObj, planId, isActivePlan) {
  **/
 
 Plan.prototype.delete = function() {	
+	this.unsetPlan();
 	while (this.lectures.length) {
 		this.lectures[0].delete();
 	}
@@ -80,6 +81,7 @@ Plan.prototype.update = function(classroomUpdated) {
   } else {
     // If there are no combinations.
     this.activeCombination = null;
+		saveStateOnLocalStorage();
     document.getElementById('combination-value').innerHTML = '0/0';
   }
 
@@ -378,6 +380,7 @@ Plan.prototype.setActiveCombination = function() {
     // TODO safely remove?
 		// document.getElementById('combination-value').innerHTML =  '0/0';
 	}
+	saveStateOnLocalStorage();
 };
 
 /**
@@ -436,6 +439,7 @@ Plan.prototype.setPlan = function() {
   // ui below div#lecture-schedule
   if (this.lectures.length == 0) {
     document.getElementById('combination-value').innerHTML = '0/0';
+		saveStateOnLocalStorage()
   } else {
     this.setActiveCombination();
   }
@@ -475,3 +479,10 @@ Plan.prototype.removeEventListeners = function() {
   this.htmlElement.removeEventListener('click', this.setPlanBoundCallback);
 };
 
+//TODO move this function to utils when pull changes in git
+
+function saveStateOnLocalStorage() {
+	if (state) {
+		localStorage.setItem('state', JSON.stringify(ui.copyState(state)));
+	}
+}

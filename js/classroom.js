@@ -13,6 +13,8 @@
  *    alunos_especiais: 0,
  *    saldo_vagas: 0,
  *    pedidos_sem_vaga: 0,
+ *		data_inicio: "31/07/2016",
+ *		data_fim: "10/12/2016",
  *    teachers: [
  *      "First Guy",
  *      "Second Son",
@@ -30,17 +32,16 @@ function Classroom(jsonObj, parentLecture) {
   this.teachers = new Array();
   this.schedules = new Array();
   if (jsonObj) {
+    //TODO: rever data de inicio/fim
+		this.data_inicio = jsonObj.data_inicio;
+		this.data_fim = jsonObj.data_fim;
     this.classroomCode = jsonObj.classroomCode;
     this.horas_aula = jsonObj.horas_aula;
-    this.vagas_ofertadas = jsonObj.vagas_ofertadas;
     this.vagas_ocupadas = jsonObj.vagas_ocupadas;
     this.alunos_especiais = jsonObj.alunos_especiais;
     this.saldo_vagas = jsonObj.saldo_vagas;
     this.pedidos_sem_vaga = jsonObj.pedidos_sem_vaga;
     this.selected = jsonObj.selected;
-    //TODO: rever data de inicio/fim
-    this.data_inicio = jsonObj.data_inicio;
-    this.data_fim = jsonObj.data_fim;
     // Array.slice(0) copies the _entire_ array.
     this.teachers = jsonObj.teachers.slice(0);
     for (var i = 0; i < jsonObj.schedules.length; i++) {
@@ -52,6 +53,8 @@ function Classroom(jsonObj, parentLecture) {
     }
     this.addEventListeners();
   } else {
+		this.data_inicio = null; 
+		this.data_fim = null;
     this.classroomCode = null;
     this.horas_aula = null;
     this.vagas_ofertadas = null;
@@ -179,7 +182,6 @@ Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
     this.parent.update(this);
   }
 }
-
 
 /**
  * This function adds event listeners to 'mouseenter', 'mouseleave' and 'click'

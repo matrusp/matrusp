@@ -293,14 +293,16 @@ function UI() {
 			return;
 		}
 			var objectJSON = new Object();
-			objectJSON = copyState(objectJSON);
+			objectJSON = this.copyState(objectJSON);
 			objectJSON = JSON.stringify(objectJSON);
 			var xobj = new XMLHttpRequest();
 			xobj.onreadystatechange = function() {
 				if (this.readyState == 4) {
 					if (this.status == 200 && this.responseText == "OK") {
+						console.log('copiado com sucesso!');
 						//TODO print information of succes
 					} else {
+						console.log('falhou!!');
 						//TODO print information about fail
 					}
 				}
@@ -313,7 +315,7 @@ function UI() {
 	 /**
 	  *
 		**/
-	 function copyState(object) {
+	 this.copyState = function(object) {
 		 object = {
 			 'planIndex': state.activePlanIndex,
 			 'campus': state.campus,
@@ -348,6 +350,8 @@ function UI() {
 					 var classroom = new Object();
 					 var classroomState = state.plans[i].lectures[j].classrooms[k];
 					 classroom = {
+						 'data_inicio' : classroomState.data_inicio,
+						 'data_fim' : classroomState.data_fim,
 						 'alunos_especiais': classroomState.alunos_especiais,
 						 'classroomCode': classroomState.classroomCode,
 						 'horas_aula': classroomState.horas_aula,
@@ -355,8 +359,6 @@ function UI() {
 						 'saldo_vagas': classroomState.saldo_vagas,
 						 'selected': classroomState.selected,
 						 'vagas_ocupadas': classroomState.vagas_ocupadas,
-						 'pedidos_sem_vagas': 0,
-						 'vagas_ofertadas': classroomState.vagas_ofertadas,
 						 'schedules': new Array(),
 						 'teachers': classroomState.teachers.slice(0)
 					 };
@@ -399,11 +401,48 @@ function UI() {
 			//TODO print info about use		
 			return;
 		}
-		 this.loadJSON('data/' + identifier + '.json', function(response) {
-			 var newState = JSON.parse(response);
-			 state.delete();
-			 state = new State(newState);
-		 });
+		this.loadJSON('data/' + identifier + '.json', function(response) {
+				//TODO if identifier not exist show status
+				var newState = JSON.parse(response);
+				seeksChanges(newState);
+				state.delete();
+				state = new State(newState);
+				localStorage.setItem('state', JSON.stringify(ui.copyState(state)));
+			});
+	 }
+		
+	 function tester(obj, objOnDB) { 
+		 var keys = Object.keys(obj);
+		 for (var i = 0; i < keys.length; i++) {
+			 if (typeof(obj[keys[i]]) == 'object' || keys[i] == 'color') {
+				 continue;
+			 }
+			 if (obj[keys[i]] != objOnDB[keys[i]]) {
+				 console.log('obj :', obj[keys[i]], ' key: ', keys[i]); 
+				 console.log('objOnDB :', objOnDB[keys[i]], ' key: ', keys[i]); 
+				 console.log('legal ele percebe que mudou!');
+				 obj[keys[i]] = objOnDB[keys[i]];
+			 }
+		 }
+	 }
+
+	 function seeksChanges(state) {
+		 for (var i = 0; i < state.plans.length; i++) {
+			 for(var j = 0; j < state.plans[i].lectures.length; j++) {
+				 var lecture = state.plans[i].lectures[j];
+				 database.fetchLectureOnDB(lecture.code);
+				 var lectureOnDB = database.sliceObjectDB();
+				 lectureOnDB = searchBox.parseDBToLectureFormat(lectureOnDB[0]);
+				 tester(lecture, lectureOnDB);
+				 tester(lecture.classrooms[0], lectureOnDB.classrooms[0]);
+				 for (var k = 0; k < lecture.classrooms[0].schedules.length; k++) {
+					 tester(lecture.classrooms[0].schedules[k], lectureOnDB.classrooms[0].schedules[k]);
+				 }
+				 for (var k = 0; k < lecture.classrooms[0].teachers.length; k++) {
+					 tester(lecture.classrooms[0].teachers[k], lectureOnDB.classrooms[0].teachers[k]);
+				 }
+			 }
+		 }
 	 }
 	
 }

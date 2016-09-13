@@ -37,10 +37,13 @@ function State(jsonObj) {
       this.plans[this.activePlanIndex].setActiveCombination();
     }
   } else {
-    this.version = null;
-    this.campus = null;
-    this.semester = null;
-    this.activePlanIndex = null;
+    this.version = 5;
+    this.campus = 'TODOS';
+    this.semester = '20162';//chooses some standard values once they don't change
+    this.activePlanIndex = 0;
+		for (var i = 0; i < 3; i++) {
+			this.plans.push(new Plan(null, i));
+		}
   }
 }
 
