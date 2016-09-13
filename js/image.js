@@ -11,7 +11,8 @@ function download_picture() {
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
-    }
+    },
+    background: '#ffffff'
   });
 }
 
