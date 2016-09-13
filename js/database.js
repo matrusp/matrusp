@@ -138,9 +138,6 @@ function Database() {
 	}
 }
 
-var ui = new UI();
-var database = new Database();
-database.loadDB('db/db_usp.json', 1);
 
 
 
