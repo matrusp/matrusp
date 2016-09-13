@@ -23,6 +23,7 @@ function handleOnLoadAuthResult(authResult) {
 
 function handleAuthResult(authResult) {
   if (authResult && !authResult.error) {
+    immediate = true;
     loadCalendarApi();
   } else {
     immediate = false;
@@ -88,8 +89,8 @@ function addEvents() {
        });
 
        request.execute(function (event) {
-       console.log(event);
        });
     }
   }
+  window.open('https://calendar.google.com/calendar', '_blank');
 }
