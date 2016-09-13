@@ -1,16 +1,19 @@
 
 
 
-
 var ui = new UI();
 var state;
 var searchBox;
+if (localStorage.getItem('state')) {
+	state = new State(JSON.parse(localStorage.getItem('state')));
+} else {
+	state = new State();
+}
 
-ui.loadJSON('state_example.json', function(response) {
-  var myJSON = JSON.parse(response);
-  state = new State(myJSON);
-	searchBox= new SearchBox(state);
-});
+var database = new Database();
+database.loadDB('db/db_usp.json', 1);
+searchBox= new SearchBox();
+
 
 
 
