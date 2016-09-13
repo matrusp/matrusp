@@ -2,7 +2,7 @@
  * @constructor
  */
 
-function SearchBox(state) {
+function SearchBox() {
 	var self = this;
 
 	self.searchBox = document.getElementById('search');
@@ -13,8 +13,7 @@ function SearchBox(state) {
 	self.heightSoFar = 0;
 	self.colorIndex = 0;
 
-
-	function parseDBToLectureFormat(lecture) {
+	self.parseDBToLectureFormat = function(lecture) {
 		var obj = new Object();
 		obj = {
 			'code' : lecture.code,
@@ -28,14 +27,13 @@ function SearchBox(state) {
 				var specification = {
 				'data_inicio' : classroom.start_date,
 				'data_fim' : classroom.end_date,
+				'alunos_especiais' : 0,
 				'classroomCode' : classroom.code.replace(/.{5}/, ' '),/*remove year and semester to take classroom*/
 				'horas_aula' : 0,
-				'vaga_ofertadas' : 0,
-				'vagas_ocupadas' : 0,
-				'alunos_especiais' : 0,
-				'saldo_vagas' : 0,
 				'pedidos_sem_vaga' : 0,
+				'saldo_vagas' : 0,
 				'selected' : 1,
+				'vagas_ocupadas' : 0,
 				'teachers' : new Array(),
 				'schedules' : new Array()
 				};
@@ -72,10 +70,10 @@ function SearchBox(state) {
 
 				var addLectureCallback = function(iterator) {
 					return function() {
-						var obj = parseDBToLectureFormat(lectures[iterator]);
-						var posi = state.plans[state.activePlanIndex].lectures.length
+						var obj = self.parseDBToLectureFormat(lectures[iterator]);
 						state.addLecture(obj);
-						addClass(state.plans[state.activePlanIndex].lectures[posi].htmlElement, 'lecture-info-plan-active');
+						var posi = state.plans[state.activePlanIndex].lectures.length;
+						addClass(state.plans[state.activePlanIndex].lectures[posi-1].htmlElement, 'lecture-info-plan-active');
 						searchResultBoxHide();
 						self.overSearchResultBox = false;
 						removeLecturesSuggestionList();
@@ -208,14 +206,16 @@ function SearchBox(state) {
 				return;
 			case 13:
 			case "Enter":
-				var obj = parseDBToLectureFormat(self.lecturesSuggestionList[self.selectedLectureIndex]);
-				var posi = state.plans[state.activePlanIndex].lectures.length
-				state.addLecture(obj);
-				addClass(state.plans[state.activePlanIndex].lectures[posi].htmlElement, 'lecture-info-plan-active');
-				searchResultBoxHide();
-				self.overSearchResultBox = false;
-				removeLecturesSuggestionList();
-				self.searchBox.value = '';
+				if (self.lecturesSuggestionList[self.selectedLectureIndex]) { // if no lecture was selected skip
+					var obj = self.parseDBToLectureFormat(self.lecturesSuggestionList[self.selectedLectureIndex]);
+					state.addLecture(obj);
+					var posi = state.plans[state.activePlanIndex].lectures.length;
+					addClass(state.plans[state.activePlanIndex].lectures[posi-1].htmlElement, 'lecture-info-plan-active');
+					searchResultBoxHide();
+					self.overSearchResultBox = false;
+					removeLecturesSuggestionList();
+					self.searchBox.value = '';
+				}
 				return;
 		}
 		self.selectedLectureIndex = -1;// if new key was press, reset for new search
