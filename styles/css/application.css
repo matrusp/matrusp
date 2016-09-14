@@ -596,7 +596,7 @@ header {
   visibility: hidden; }
 
 .schedule-box-show,
-.schedule-box-highlight {
+.schedule-box-classroom-hover {
   visibility: visible; }
 
 .schedule-box.color-1 {

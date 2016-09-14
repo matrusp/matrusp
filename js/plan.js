@@ -84,21 +84,6 @@ Plan.prototype.update = function(classroomUpdated) {
 		saveStateOnLocalStorage();
     document.getElementById('combination-value').innerHTML = '0/0';
   }
-
-  if (!classroomUpdated) {
-    // Plan.update() was called from an insertion or deletion of a lecture.
-    // Nothing more to be done.
-    return;
-  }
-
-  // If this was called by an classroom update, classroomUpdated exists.
-  // At this moment, the mouse pointer (if it's not a touch screen) is over
-  // the classroomUpdated. If it has a sibling classroom that is active it
-  // will show up as a consequence of setActiveCombination. So we update the 
-  // highlight status to it (only hides if it was displayed, naturally).
-  if (hasClass(classroomUpdated.schedules[0].htmlElement, 'schedule-box-highlight')) {
-    classroomUpdated.setHighlight();
-  }
 };
 
 /**

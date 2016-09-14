@@ -110,26 +110,12 @@ Classroom.prototype.hideBox = function() {
   this.removeClassInSchedules('schedule-box-show');
 };
 
-/**
- *
- */
-// TODO mudar aqui quando tiver plan.activeCombination e lecture.activeClassroom
-Classroom.prototype.setHighlight = function() {
+Classroom.prototype.checkAndSetConflict = function() {
   var lecture = this.parent;
-  var activeClassroom = null;
-  if (lecture.activeClassroom) {
-    // There is an active classroom for this lecture.
-    lecture.activeClassroom.hideBox();
-  }
-  this.addClassInSchedules('schedule-box-highlight');
-  
   // Look for conflicting schedules. The active classroom doesn't have any
   // conflicts because it is active (obviously). Also there are conflicts only
   // if there is a combination being displayed.
-  //if (this != activeClassroom && lecture.parent.activeCombinationIndex != null) {
-  if (this != activeClassroom && lecture.parent.activeCombination) {
-    //var activeCombination = lecture.parent.combinations[lecture.parent.activeCombinationIndex];
-    //var lecturesClassroom = activeCombination.lecturesClassroom;
+  if (this != lecture.activeClassroom && lecture.parent.activeCombination) {
     var lecturesClassroom = lecture.parent.activeCombination.lecturesClassroom;
     for (var i = 0; i < lecturesClassroom.length; i++) {
       if (this.parent == lecturesClassroom[i].parent) {
@@ -151,17 +137,45 @@ Classroom.prototype.setHighlight = function() {
   }
 }
 
+/*
+ * Maybe it's not needed, but to be safe and bug prone use it.
+ */
+Classroom.prototype.unsetConflict = function() {
+  this.removeClassInSchedules('schedule-box-highlight-conflict');
+}
+
+/**
+ * 
+ */
+Classroom.prototype.showOnHover = function() {
+  var lecture = this.parent;
+
+  if (!lecture.selected) {
+    lecture.stopAnimationLoop();
+  }
+
+  if (lecture.activeClassroom) {
+    lecture.activeClassroom.hideBox();
+  }
+  this.checkAndSetConflict();
+  this.showBox();
+}
+
 /**
  *
  */
-Classroom.prototype.unsetHighlight = function() {
+Classroom.prototype.hideOnHoverOut = function() {
   var lecture = this.parent;
   if (lecture.activeClassroom) {
     // There is an active classroom for this lecture.
     lecture.activeClassroom.showBox();
   }
-  this.removeClassInSchedules('schedule-box-highlight');
+  this.hideBox();
   this.removeClassInSchedules('schedule-box-highlight-conflict');
+
+  if (!lecture.selected) {
+    lecture.animationLoopShowEachClassroom();
+  }
 }
 
 /**
@@ -186,13 +200,13 @@ Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
 /**
  * This function adds event listeners to 'mouseenter', 'mouseleave' and 'click'
  *
- * @see Classroom#setHighlight
- * @see Classroom#unsetHighlight
+ * @see Classroom#showOnHover
+ * @see Classroom#hideOnHoverOut
  * @see Classroom#toggleClassroomSelection
  */
 Classroom.prototype.addEventListeners = function() {
-  this.htmlElement.addEventListener('mouseenter', this.setHighlight.bind(this));
-  this.htmlElement.addEventListener('mouseleave', this.unsetHighlight.bind(this));
+  this.htmlElement.addEventListener('mouseenter', this.showOnHover.bind(this));
+  this.htmlElement.addEventListener('mouseleave', this.hideOnHoverOut.bind(this));
   var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
   checkbox.addEventListener('click', this.toggleClassroomSelection.bind(this));
 };
