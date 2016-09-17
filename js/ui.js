@@ -300,6 +300,7 @@ function UI() {
         var scheduleBoxCopy = schedule.htmlElement.cloneNode(deep);
         addClass(scheduleBoxCopy, 'schedule-box-show');
         addClass(scheduleBoxCopy, 'schedule-box-highlight');
+        removeClass(scheduleBoxCopy, 'schedule-box-highlight-conflict');
         weekdaysColumns[day].appendChild(scheduleBoxCopy);
       }
     }
