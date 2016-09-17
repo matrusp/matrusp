@@ -110,8 +110,14 @@ Lecture.prototype.toggleLectureOpen = function() {
  * 
  */
 Lecture.prototype.lectureSelect = function() {
+  this.stopAnimationLoop();
   this.selected = true;
   this.htmlLectureCheckbox.checked = true;
+  if (this.noClassroomsSelected()) {
+    this.htmlClassroomsCheckbox.checked = true;
+    var shouldUpdate = false;
+    this.updateAllClassroomsSelections(shouldUpdate);
+  }
 }
 
 /**
@@ -126,14 +132,10 @@ Lecture.prototype.lectureUnselect = function() {
  * Callback to the 'click' event on the lecture checkbox;
  */
 Lecture.prototype.toggleLectureSelection = function() {
-  if (!this.selected) {
-    this.stopAnimationLoop();
-  }
-  this.selected = !this.selected;
-  if (this.selected && this.noClassroomsSelected()) {
-    this.htmlClassroomsCheckbox.checked = true;
-    var shouldUpdate = false;
-    this.updateAllClassroomsSelections(shouldUpdate);
+  if (this.selected) {
+    this.lectureUnselect();
+  } else {
+    this.lectureSelect();
   }
   this.parent.update();
 }
@@ -195,7 +197,7 @@ Lecture.prototype.update = function(classroomUpdated) {
   if (this.noClassroomsSelected()) {
     this.activeClassroom = null;
     this.lectureUnselect();
-  } else if (!this.selected) {
+  } else if (this.allClassroomsSelected() || (classroomUpdated && classroomUpdated.selected)) {
     // When no classrooms were selected and right now at least one is, the lecture too
     // becomes selected. (Thinking about the use case where the user unchecks all
     // classrooms and then checks one back. I think the user wants that classroom
@@ -219,16 +221,19 @@ Lecture.prototype.moveUp = function() {
 
   // Updating the GUI
   var htmlParentElement = this.htmlElement.parentElement;
-  var htmlElementBefore = htmlParentElement.children[lectureIndex - 1];
+  var indexOnParent;
+  for (var i = 0; i < htmlParentElement.children.length; i++) {
+    if (htmlParentElement.children[i] == this.htmlElement) {
+      indexOnParent = i;
+      break;
+    }
+  }
+  var htmlElementBefore = htmlParentElement.children[indexOnParent - 1];
   // this.htmlElement doesn't have to be removed because one element can
   // exist only in one place. So when reinserting it is automatically removed
   // from its original place.
   htmlParentElement.insertBefore(this.htmlElement, htmlElementBefore);
 
-  if (this.htmlLectureCheckbox.disabled) {
-    this.lectureSelect();
-    this.enableCheckbox();
-  }
   this.parent.update();
 }
 
@@ -263,7 +268,7 @@ Lecture.prototype.showNextClassroom = function() {
 Lecture.prototype.animationLoopShowEachClassroom = function() {
   this.classrooms[0].showBox();
   this.classrooms[0].checkAndSetConflict();
-  if (!this.hoverShowBoxIntervals) {
+  if (!this.hoverAnimationIntervals) {
     // I still don't know why, but more than one interval were being
     // created when moving lectures up/down or clicking 
     // (on unchecked checkbox but active one (bug).
@@ -272,25 +277,27 @@ Lecture.prototype.animationLoopShowEachClassroom = function() {
     // unselect both, select the one on top and see that the checkbox on the
     // other one is still active, although unchecked. Click on it.)
     // or 
-    this.hoverShowBoxIntervals = Array();
+    this.hoverAnimationIntervals = Array();
   }
   var newIntervalId = setInterval(this.showNextClassroom.bind(this), 1000);
-  this.hoverShowBoxIntervals.push(newIntervalId);
+  this.hoverAnimationIntervals.push(newIntervalId);
 }
 
+// side-effect: hides all boxes! Should be called before something like
+// plan.update to, in the end, show the selected boxes.
 Lecture.prototype.stopAnimationLoop = function() {
-  if (!this.hoverShowBoxIntervals) {
+  if (!this.hoverAnimationIntervals) {
     return;
   }
-  while (this.hoverShowBoxIntervals.length > 0) {
-    clearInterval(this.hoverShowBoxIntervals[0]);
+  while (this.hoverAnimationIntervals.length > 0) {
+    clearInterval(this.hoverAnimationIntervals[0]);
     // remove first element of array
-    this.hoverShowBoxIntervals.splice(0, 1);
+    this.hoverAnimationIntervals.splice(0, 1);
   }
 
   for (var i = 0; i < this.classrooms.length; i++) {
-    // to be safe, remove pending styles (if happens to clearIntervals 
-    // unset while one classroom was being displayed)
+    // Hide pending boxes. Probably, clearIntervals was called
+    // while one classroom was being displayed.
     this.classrooms[i].hideBox();
     this.classrooms[i].unsetConflict();
   }

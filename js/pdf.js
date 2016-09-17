@@ -63,7 +63,8 @@ var dd = {
   content: [
     {
       image: 'calendar',
-      width: 480
+      width: 480,
+      height: 480
     },
     {
       style: 'section',

@@ -99,6 +99,15 @@
         }
     }
 
+    &:focus {
+        >.hover-mask,
+        &::before,
+        &::after {
+            visibility: hidden;
+            outline: 0;
+        }
+    }
+
     &:active>.hover-mask {
         // change colors between background and shadow
         background-color: rgba(0, 0, 0, 0.2);

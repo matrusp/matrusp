@@ -25,9 +25,13 @@
                 <button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
             </div>
             <ul id="icons">
-                <li class="icon" id="icalendar" data-description="Exportar para calendário">
+                <li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
                     <div class="hover-mask"></div>
                     <img src="images/ic_calendar.png" alt="">
+                    <ul class="onclick-menu-content">
+                        <li><button id="google">Exportar para o calendário do Google</button></li>
+                        <li><button id="ics">Exportar para arquivo .ics</button></li>
+                    </ul>
                 </li>
                 <li class="icon" id="pdf" data-description="Imprimir">
                     <div class="hover-mask"></div>
