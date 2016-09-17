@@ -1,4 +1,4 @@
-//document.getElementById('icalendar').addEventListener('click', download_icalendar);
+document.getElementById('ics').addEventListener('click', download_icalendar);
 
 var header_statement = 'BEGIN:VCALENDAR\n' +
   'PRODID:-\n' +

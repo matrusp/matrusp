@@ -46,3 +46,25 @@ header {
     float: right;
     padding-right: $header-height / 2;
 }
+
+#icalendar:focus {
+    pointer-events: none;
+}
+#icalendar:focus .onclick-menu-content {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.onclick-menu-content {
+    position: absolute;
+    z-index: 1000;
+    top: calc(100%);
+    width: 100px;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.5s;
+}
+
+*:focus {
+    outline: 0;
+}
