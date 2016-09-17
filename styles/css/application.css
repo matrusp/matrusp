@@ -16,7 +16,7 @@ html, body {
   width: 100%;
   height: 100%;
   min-width: 770px;
-  min-height: 650px; }
+  min-height: 680px; }
 
 body {
   overflow: auto;
@@ -35,43 +35,27 @@ body {
   max-width: 960px;
   min-width: 770px;
   overflow-x: hidden; }
-  #page-container > header,
-  #page-container > footer {
-    position: relative;
-    width: 100%;
-    height: 40px; }
 
 #main {
   position: relative;
   width: calc(100% - (2 * 15px));
-  height: calc(100% - ( (2 * 40px)  + 10px  + (2 * 15px) ));
-  min-height: 530px;
-  padding: 15px;
-  margin-top: 10px; }
-
-#lecture-schedule,
-#lecture-explorer {
-  display: inline-block;
-  vertical-align: top; }
-
-#lecture-schedule {
-  width: calc((2 / 3) * 100% - 3px);
-  height: calc(100% - 40px);
-  max-height: 560px;
-  padding-top: 40px; }
-
-#lecture-explorer {
-  width: calc((1 / 3) * 100% - 3px);
-  height: 100%;
-  max-height: 600px;
-  min-height: 530px; }
+  height: calc(100% - 50px - 30px - 2 * 15px);
+  min-height: 560px;
+  padding: 15px; }
 
 header {
+  position: relative;
+  width: 100%;
+  height: 50px;
   user-select: none;
   -webkit-user-select: none; }
 
+#logo,
+#icons {
+  height: 40px; }
+
 #logo {
-  padding-left: 20px;
+  padding-left: 25px;
   font-size: 26px;
   font-weight: bold;
   line-height: 40px;
@@ -82,44 +66,72 @@ header {
 #icons {
   display: inline-block;
   float: right;
-  height: 100%;
-  padding-right: 20px; }
+  padding-right: 25px; }
 
-#page-container > footer > a {
-  position: absolute;
+footer {
+  width: 100%;
+  height: 30px;
   bottom: 0;
-  margin: 10px 15px; }
-  #page-container > footer > a:last-child {
+  position: relative; }
+  footer > a {
+    position: absolute;
+    bottom: 0;
+    margin: 10px 15px; }
+  footer > a:last-child {
     right: 0; }
 
-#lecture-schedule > .column {
+#lecture-schedule {
   display: inline-block;
-  height: calc(100% - 30px);
+  vertical-align: top;
+  width: calc((2 / 3) * 100% - 3px);
+  height: calc(100% - 40px);
+  max-height: 860px;
+  padding-top: 40px; }
+
+#time-table {
+  width: 100%;
+  height: calc(100% - 100px); }
+
+.column {
+  display: inline-block;
+  height: 100%;
   vertical-align: top; }
-#lecture-schedule > .column.time {
+
+.column.time {
   width: 40px; }
-  #lecture-schedule > .column.time > .hour {
-    height: calc(100% / 18);
-    min-height: 25.55556px;
-    font-size: 13px;
-    line-height: 0; }
-#lecture-schedule > .column:not(:first-child) {
+
+.hour {
+  height: calc(100% / 18);
+  min-height: 23.33333px;
+  font-size: 13px;
+  line-height: 0; }
+
+.column:not(.time) {
   background-image: url("../../images/stripes.gif");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   position: relative;
   width: calc((100% - 40px - (7 * 4.5px)) / 6); }
-  #lecture-schedule > .column:not(:first-child) > .week-day {
-    position: absolute;
-    top: -40px;
-    width: 100%;
-    padding-bottom: 4px;
-    text-align: center;
-    border-bottom-color: #050505;
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-    box-shadow: 0 4px 3px -4px #070707; }
+
+.week-day {
+  position: absolute;
+  top: -40px;
+  width: 100%;
+  padding-bottom: 4px;
+  text-align: center;
+  border-bottom-color: #050505;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  box-shadow: 0 4px 3px -4px #070707; }
+
+#lecture-explorer {
+  display: inline-block;
+  vertical-align: top;
+  width: calc((1 / 3) * 100% - 3px);
+  height: 100%;
+  max-height: 900px;
+  min-height: 560px; }
 
 #search-and-add,
 #accordion-window {
@@ -132,7 +144,7 @@ header {
   margin-bottom: 10px; }
 
 #accordion-window {
-  height: calc(100% - 30px - 30px);
+  height: calc(100% - 30px - 10px - 100px);
   overflow: hidden;
   border: 1px solid lightgray;
   border-radius: 2px;
@@ -162,7 +174,7 @@ header {
     height: 78%;
     background-color: rgba(255, 255, 255, 0.2);
     border-width: 0px;
-    border-radius: 6px;
+    border-radius: 3px;
     visibility: hidden;
     box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2); }
   #icons > li.icon::before {
@@ -213,7 +225,7 @@ header {
   display: inline-block;
   position: relative;
   left: 30px;
-  bottom: 4px; }
+  bottom: 5px; }
 
 .lecture-info .lecture-info-code,
 .lecture-info .lecture-info-name,
@@ -565,12 +577,13 @@ header {
     background-color: #b2d174; }
 
 #plans {
-  border: 1px solid transparent; }
+  border: 1px solid transparent;
+  height: 100px; }
 
 .plan {
   width: calc(100%/3 - 1.4px);
-  height: 30px;
-  line-height: 30px;
+  height: 25px;
+  line-height: 25px;
   display: inline-block;
   position: relative;
   text-align: center;
@@ -581,14 +594,54 @@ header {
   float: left;
   top: -2px;
   border-radius: 0 0 2px 2px;
-  cursor: pointer; }
+  cursor: pointer;
+  overflow: hidden; }
   .plan:not(:first-child) {
     margin-left: -1px; }
-  .plan:hover {
-    background-color: #ddd; }
 
 .plan-active {
   z-index: 2; }
+
+.plan-options-open {
+  height: auto; }
+  .plan-options-open > .plan-tab-options-arrow > img {
+    transform: rotate(180deg); }
+
+.plan-tab-name {
+  width: calc(70% - 5px);
+  float: left;
+  padding-left: 5px; }
+  .plan-tab-name:hover {
+    background-color: #ddd; }
+  .plan-tab-name:active {
+    background-color: #aaa; }
+
+.plan-tab-options-arrow {
+  width: 30%;
+  float: right; }
+  .plan-tab-options-arrow:hover {
+    background-color: #ddd; }
+  .plan-tab-options-arrow:active {
+    background-color: #aaa; }
+  .plan-tab-options-arrow > img {
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 12px; }
+
+.plan-tab-option {
+  width: 100%;
+  float: left;
+  border-top: 1px solid rgba(200, 200, 200, 0.8); }
+  .plan-tab-option:hover {
+    background-color: #ddd; }
+  .plan-tab-option:active {
+    background-color: #aaa; }
 
 .schedule-box {
   position: absolute;
@@ -720,7 +773,8 @@ header {
     background-color: #b2d174; }
 
 .schedule-box-highlight.schedule-box-highlight-conflict {
-  background-color: red;
+  background-color: #f00;
+  border-left-color: #800;
   color: black;
   opacity: 0.8;
   z-index: 1; }
@@ -765,17 +819,86 @@ header {
   z-index: 1; }
 
 #combination-controller {
+  position: relative;
+  width: calc(100% - 10px);
+  height: calc(100px - 20px);
+  margin-top: 20px; }
+
+.combination-button {
+  position: absolute;
+  float: left;
+  height: 100%;
+  width: 34px;
+  top: -1px;
+  background-color: white;
+  border: 1px solid lightgray;
+  z-index: 1;
+  cursor: pointer; }
+  .combination-button > img {
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    position: absolute;
+    width: 30px;
+    transform: rotate(90deg);
+    opacity: 0.6; }
+  .combination-button:hover {
+    background-color: #ddd; }
+  .combination-button:active {
+    background-color: #aaa; }
+
+.combination-button-left {
+  left: 0; }
+
+.combination-button-right {
+  right: 0; }
+
+#combination-track-window {
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  width: 86px;
-  height: 30px;
-  margin-top: 20px; }
-  #combination-controller > button {
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto; }
+  height: calc(100% + 15px);
+  position: absolute;
+  float: left;
+  width: calc(100% - 2 * 34px - 6px);
+  overflow-x: scroll;
+  overflow-y: hidden; }
+
+#combination-track {
+  height: 100%;
+  width: 0; }
+
+.combination {
+  position: relative;
+  display: none;
+  margin: 1px 5px;
+  width: 90px;
+  height: calc(100% - 4px);
+  overflow: hidden;
+  border: 1px solid lightgray;
+  cursor: pointer; }
+  .combination:hover {
+    background-color: #ddd; }
+  .combination:active {
+    background-color: #aaa; }
+
+.combination.combination-highlight {
+  background-color: #eee;
+  box-shadow: 0 0 3px #eee; }
+
+.combination.combination-plan-active {
+  display: inline-block; }
+
+.combination > .column:not(.time) {
+  width: calc(100% / 6);
+  background-image: none; }
+  .combination > .column:not(.time) span {
+    visibility: hidden; }
 
 /*# sourceMappingURL=application.css.map */

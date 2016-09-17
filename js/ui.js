@@ -13,6 +13,7 @@ function UI() {
   for(var i = 1; i < lectureScheduleColumns.length; i++) {
     weekdays.push(lectureScheduleColumns[i]);
   }
+  var combinationTrack = document.getElementById('combination-track');
 
 
   // Functions
@@ -252,6 +253,87 @@ function UI() {
 
     var lectureInfo = createHtmlElementTree(lectureInfoTreeObj);
     return lectureInfo;
+  }
+
+  this.createCombinationBoard = function(combination) {
+    var combinationBoardTreeObj = {
+      tag: 'div',
+      class: 'combination',
+      children: [
+        {
+          tag: 'div',
+          class: 'column'
+        },
+        {
+          tag: 'div',
+          class: 'column'
+        },
+        {
+          tag: 'div',
+          class: 'column'
+        },
+        {
+          tag: 'div',
+          class: 'column'
+        },
+        {
+          tag: 'div',
+          class: 'column'
+        },
+        {
+          tag: 'div',
+          class: 'column'
+        }
+      ]
+    };
+
+    var combinationBoard = createHtmlElementTree(combinationBoardTreeObj);
+    var weekdaysColumns = combinationBoard.getElementsByClassName('column');
+
+    var classrooms = combination.lecturesClassroom;
+    for (var i = 0; i < classrooms.length; i++) {
+      var classroom = classrooms[i];
+      for (var j = 0; j < classroom.schedules.length; j++) {
+        var schedule = classroom.schedules[j];
+        var day = indexOfDay(schedule.day);
+        var deep = true;
+        var scheduleBoxCopy = schedule.htmlElement.cloneNode(deep);
+        addClass(scheduleBoxCopy, 'schedule-box-show');
+        addClass(scheduleBoxCopy, 'schedule-box-highlight');
+        weekdaysColumns[day].appendChild(scheduleBoxCopy);
+      }
+    }
+
+    combinationTrack.appendChild(combinationBoard);
+
+    // setTimeout is used because the html element combinationTrack was
+    // just created and it takes some time to have its dimentions calculated
+    // by the browser engine.
+    setTimeout((function() {
+      this.adjustCombinationTrackWidth();}).bind(this), 1);
+
+    return combinationBoard;
+  }
+
+  this.adjustCombinationTrackWidth = function() {
+    var ct = document.getElementById('combination-track');
+    var cs = ct.getElementsByClassName('combination-plan-active');
+    if (cs.length == 0) return 0;
+    ct.style.width = ((cs[0].offsetWidth + 10) * cs.length) + "px";
+  }
+
+  this.scrollActiveCombinationToView = function() {
+    var ctw = document.getElementById('combination-track-window');
+    var cs = ctw.getElementsByClassName('combination-plan-active');
+    if (cs.length == 0 || state.activePlanIndex == undefined || state.activePlanIndex == null) return 0;
+    var activePlan = state.plans[state.activePlanIndex];
+    if (activePlan.activeCombinationIndex == undefined || activePlan.activeCombinationIndex == null) return 1;
+    var cc = cs[activePlan.activeCombinationIndex];
+    if (cc.offsetLeft < ctw.scrollLeft) {
+      ctw.scrollLeft = cc.offsetLeft;
+    } else if (cc.offsetLeft + cc.offsetWidth > ctw.scrollLeft + ctw.offsetWidth) {
+      ctw.scrollLeft = cc.offsetLeft + cc.offsetWidth - ctw.offsetWidth;
+    }
   }
 
   /**

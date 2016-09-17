@@ -155,6 +155,7 @@ Lecture.prototype.disableCheckbox = function() {
 /**
  *
  */
+// TODO colocar um parametro shouldUpdate. Nao updatar quando clearing o plano.
 Lecture.prototype.delete = function() {
   for (var i = 0; i < this.classrooms.length; i++) {
     this.classrooms[i].delete();

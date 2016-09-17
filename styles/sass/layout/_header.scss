@@ -16,17 +16,26 @@
 //
 
 header {
+    // defining a position here to work with children positions
+    position: relative;
+    width: 100%;
+    height: $header-height;
     user-select: none;
     // TODO autoprefixer will include this, when linked delete this next line
     -webkit-user-select: none;
+}
+
+#logo,
+#icons {
+    height: $header-height - $header-bottom-line;
 }
 
 #logo {
     padding-left: $header-height / 2;
     font-size: $font-size-logo;
     font-weight: bold;
-    // line-height equal to parent height, centralizes the text
-    line-height: $header-height;
+    // line-height equal to its height, centralizes the text
+    line-height: $header-height - $header-bottom-line;
     letter-spacing: $logo-letter-spacing;
     color: $header-color-symbols;
     cursor: default;
@@ -35,6 +44,5 @@ header {
 #icons {
     display: inline-block;
     float: right;
-    height: 100%;
     padding-right: $header-height / 2;
 }

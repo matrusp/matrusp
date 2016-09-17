@@ -166,12 +166,12 @@ Classroom.prototype.showOnHover = function() {
  */
 Classroom.prototype.hideOnHoverOut = function() {
   var lecture = this.parent;
-  if (lecture.activeClassroom) {
-    // There is an active classroom for this lecture.
+  if (lecture.activeClassroom && this != lecture.activeClassroom) {
+    // There is an active classroom for this lecture and it's not 'this' one.
+    this.hideBox();
+    this.removeClassInSchedules('schedule-box-highlight-conflict');
     lecture.activeClassroom.showBox();
   }
-  this.hideBox();
-  this.removeClassInSchedules('schedule-box-highlight-conflict');
 
   if (!lecture.selected) {
     lecture.animationLoopShowEachClassroom();

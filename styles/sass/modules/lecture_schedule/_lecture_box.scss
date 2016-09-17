@@ -33,7 +33,8 @@
 }
 
 .schedule-box-highlight.schedule-box-highlight-conflict {
-  background-color: red;
+  background-color: #f00;
+  border-left-color: #800;
   color: black;
   opacity: 0.8;
   z-index: 1;

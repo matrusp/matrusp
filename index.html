@@ -49,49 +49,61 @@
         </header>
         <div id="main">
             <div id="lecture-schedule">
-                <div class="column time">
-                    <div class="hour">06:00</div>
-                    <div class="hour">07:00</div>
-                    <div class="hour">08:00</div>
-                    <div class="hour">09:00</div>
-                    <div class="hour">10:00</div>
-                    <div class="hour">11:00</div>
-                    <div class="hour">12:00</div>
-                    <div class="hour">13:00</div>
-                    <div class="hour">14:00</div>
-                    <div class="hour">15:00</div>
-                    <div class="hour">16:00</div>
-                    <div class="hour">17:00</div>
-                    <div class="hour">18:00</div>
-                    <div class="hour">19:00</div>
-                    <div class="hour">20:00</div>
-                    <div class="hour">21:00</div>
-                    <div class="hour">22:00</div>
-                    <div class="hour">23:00</div>
-                    <div class="hour">00:00</div>
-                </div>
-                <div class="column">
-                    <div class="week-day">Segunda</div>
-                </div>
-                <div class="column">
-                    <div class="week-day">Terça</div>
-                </div>
-                <div class="column">
-                    <div class="week-day">Quarta</div>
-                </div>
-                <div class="column">
-                    <div class="week-day">Quinta</div>
-                </div>
-                <div class="column">
-                    <div class="week-day">Sexta</div>
-                </div>
-                <div class="column">
-                    <div class="week-day">Sábado</div>
+                <div id="time-table">
+                    <div class="column time">
+                        <div class="hour">06:00</div>
+                        <div class="hour">07:00</div>
+                        <div class="hour">08:00</div>
+                        <div class="hour">09:00</div>
+                        <div class="hour">10:00</div>
+                        <div class="hour">11:00</div>
+                        <div class="hour">12:00</div>
+                        <div class="hour">13:00</div>
+                        <div class="hour">14:00</div>
+                        <div class="hour">15:00</div>
+                        <div class="hour">16:00</div>
+                        <div class="hour">17:00</div>
+                        <div class="hour">18:00</div>
+                        <div class="hour">19:00</div>
+                        <div class="hour">20:00</div>
+                        <div class="hour">21:00</div>
+                        <div class="hour">22:00</div>
+                        <div class="hour">23:00</div>
+                        <div class="hour">00:00</div>
+                    </div>
+                    <div class="column">
+                        <div class="week-day">Segunda</div>
+                    </div>
+                    <div class="column">
+                        <div class="week-day">Terça</div>
+                    </div>
+                    <div class="column">
+                        <div class="week-day">Quarta</div>
+                    </div>
+                    <div class="column">
+                        <div class="week-day">Quinta</div>
+                    </div>
+                    <div class="column">
+                        <div class="week-day">Sexta</div>
+                    </div>
+                    <div class="column">
+                        <div class="week-day">Sábado</div>
+                    </div>
                 </div>
                 <div id='combination-controller'>
-                    <button onclick='state.previousCombination();'>&lt</button>
+                    <div class="combination-button combination-button-left"><img src="images/ic_arrow_down.png"/></div>
+                    <div id="combination-track-window">
+                        <div id="combination-track">
+                            <!--div class="combination"></div>
+                            <div class="combination"></div>
+                            <div class="combination"></div-->
+                        </div>
+                    </div>
+                    <div class="combination-button combination-button-right"><img src="images/ic_arrow_up.png"/></div>
+
+                    <!--button onclick='state.previousCombination();'>&lt</button>
                     <span id='combination-value'>0/0</span>
-                    <button onclick='state.nextCombination();'>&gt</button>
+                    <button onclick='state.nextCombination();'>&gt</button-->
                 </div>
             </div>
             <div id="lecture-explorer">
@@ -109,9 +121,27 @@
                     <div id="explorer-footer"><input type="file" id="upload"></div>
                 </div>
 				<div id="plans">
-                    <div id="plan-0" class="plan">Plano 1</div>
-                    <div id="plan-1" class="plan">Plano 2</div>
-                    <div id="plan-2" class="plan">Plano 3</div>
+                    <div id="plan-0" class="plan">
+                        <div class="plan-tab plan-tab-name">Plano 1</div>
+                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"/></div>
+                        <div class="plan-tab-option"> Limpar </div>
+                        <div class="plan-tab-option"> Copiar p/ 2 </div>
+                        <div class="plan-tab-option"> Copiar p/ 3 </div>
+                    </div>
+                    <div id="plan-1" class="plan">
+                        <div class="plan-tab plan-tab-name">Plano 2</div>
+                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"/></div>
+                        <div class="plan-tab-option"> Limpar </div>
+                        <div class="plan-tab-option"> Copiar p/ 1 </div>
+                        <div class="plan-tab-option"> Copiar p/ 3 </div>
+                    </div>
+                    <div id="plan-2" class="plan">
+                        <div class="plan-tab plan-tab-name">Plano 3</div>
+                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"/></div>
+                        <div class="plan-tab-option"> Limpar </div>
+                        <div class="plan-tab-option"> Copiar p/ 1 </div>
+                        <div class="plan-tab-option"> Copiar p/ 2 </div>
+                    </div>
 					<!--button onclick='plan.copyToPlan(2)'>Copy Actual Plan to Plan3</button-->
 				</div>
             </div>

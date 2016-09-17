@@ -15,5 +15,5 @@ database.loadDB('db/db_usp.json', 1);
 searchBox= new SearchBox();
 
 
-
+setTimeout(function(){ui.scrollActiveCombinationToView()}, 100);
 
