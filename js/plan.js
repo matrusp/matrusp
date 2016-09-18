@@ -36,6 +36,7 @@ function Plan(jsonObj, planId, isActivePlan) {
 /**
  *
  **/
+ // TODO caso em que basePlan == null e isActivePlan eh valido existe! trata-la!
 Plan.prototype.load = function(basePlan, isActivePlan) {
   this.lectures = new Array();
   this.combinations = new Array();

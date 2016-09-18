@@ -143,7 +143,7 @@ function UI() {
         {
           tag: 'div',
           class: 'classroom-teacher',
-          innerHTML: classroom.teachers.join('<br>')
+          innerHTML: removeDuplicates(classroom.teachers).join('<br>')
         }
       ]
     };
@@ -463,8 +463,7 @@ function UI() {
 				 //TODO if identifier not exist show status
 				 var newState = JSON.parse(response);
 				 seeksChanges(newState);
-				 state.delete();
-				 state = new State(newState);
+				 state.reload(newState);
 				 localStorage.setItem('state', JSON.stringify(ui.copyState()));
 				 });
 		 if (!window.location.hash) {// TODO discutir se isso e interessante!
