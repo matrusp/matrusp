@@ -99,31 +99,41 @@ function Database() {
 						lecture = {
 						'code' : description[0],
 						'name' : description[1],
+						'selected': 1,
+						'campus' : 'TODOS',
 						'classrooms' : new Array()
 						};
 						description[2].forEach(function(specifications) {
 								var specification = new Object();
 								specification = {
-								'code' : specifications[0],
-								'start_date' : specifications[1],
-								'end_date' : specifications[2],
+								'classroomCode' : specifications[0].replace(/.{5}/, ' '),
+								'data_inicio' : specifications[1],
+								'data_fim' : specifications[2],
 								'type' : specifications[3],
-								'schedule' : new Array(),
-								'selected' : 1
+								'selected' : 1,
+								'alunos_especiais' : 0,
+								'horas_aula' : 0,
+								'pedidos_sem_vaga' : 0,
+								'saldo_vagas' : 0,
+								'vagas_ocupadas' : 0,
+								'teachers' : new Array(),
+								'schedules' : new Array()
 								};
 								if(specifications[4] != null) {
 								specifications[4].forEach(function(schedules) {
 										var schedule = new Object();
 										schedule = {
 										'day' : schedules[0],
-										'begin_time' : schedules[1],
-										'end_time' : schedules[2],
-										'teacher' : schedules[3]
+										'timeBegin' : schedules[1],
+										'timeEnd' : schedules[2],
 										};
-										specification.schedule.push(schedule);
+										specification.teachers.push(schedules[3]);
+										specification.schedules.push(schedule);
 										});
 								}
-								specification.numVacancies = specifications[5];
+								//specification.numVacancies = specifications[5];
+								// specifications[5] contains information about number
+								// of vacancies
 								lecture.classrooms.push(specification);
 						});
 						self.db[semester][campus][lecture.code] = lecture;

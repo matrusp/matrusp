@@ -376,14 +376,14 @@ function UI() {
 			return;
 		}
 			var objectJSON = new Object();
-			objectJSON = this.copyState(objectJSON);
+			objectJSON = this.copyState();
 			objectJSON = JSON.stringify(objectJSON);
 			var xobj = new XMLHttpRequest();
 			xobj.onreadystatechange = function() {
 				if (this.readyState == 4) {
 					if (this.status == 200 && this.responseText == "OK") {
 						console.log('copiado com sucesso!');
-						//TODO print information of succes
+						//TODO print information of success
 					} else {
 						console.log('falhou!!');
 						//TODO print information about fail
@@ -398,61 +398,35 @@ function UI() {
 	 /**
 	  *
 		**/
-	 this.copyState = function(object) {
-		 object = {
-			 'planIndex': state.activePlanIndex,
-			 'campus': state.campus,
-			 'semester': state.semester,
-			 'version': state.version,
-			 'plans': new Array()
-		 };
-		 var plan = new Object();
+	 this.copyState = function() {
+		 var object = new Object();
+		 object = shallowCopy(state);
+		 object['plans'] = new Array();
 		 for (var i = 0; i < state.plans.length; i++) {
+			 var plan = new Object();
 			 if (state.plans[i].lectures.length == 0) continue;
 			 var active = 0;
 			 if (i == state.activePlanIndex) {
 				 active = 1;
 			 }
-			 plan = {
-				 'activeCombinationIndex': state.plans[i].activeCombinationIndex,/*this value can't be null*/
-				 'activePlan': active,
-				 'lectures': new Array()
-			 };
+			 plan = shallowCopy(state.plans[i]);
+			 plan['activePlan'] = active;
+			 plan['lectures'] = new Array();
 			 for (var j = 0; j < state.plans[i].lectures.length; j++) {
 				 var lecture = new Object();
 				 var lectureState = state.plans[i].lectures[j];
-				 lecture = {
-					 'campus': lectureState.campus,
-					 'code': lectureState.code,
-					 'color': lectureState.color,
-					 'selected': lectureState.selected,
-					 'name': lectureState.name,
-					 'classrooms': new Array()
-				 };
-				 for (var k = 0; k < state.plans[i].lectures[j].classrooms.length; k++) {
+				 lecture = shallowCopy(lectureState);
+				 lecture['classrooms'] = new Array();
+				 for (var k = 0; k < lectureState.classrooms.length; k++) {
 					 var classroom = new Object();
-					 var classroomState = state.plans[i].lectures[j].classrooms[k];
-					 classroom = {
-						 'data_inicio' : classroomState.data_inicio,
-						 'data_fim' : classroomState.data_fim,
-						 'alunos_especiais': classroomState.alunos_especiais,
-						 'classroomCode': classroomState.classroomCode,
-						 'horas_aula': classroomState.horas_aula,
-						 'pedidos_sem_vagas': classroomState.pedidos_sem_vagas,
-						 'saldo_vagas': classroomState.saldo_vagas,
-						 'selected': classroomState.selected,
-						 'vagas_ocupadas': classroomState.vagas_ocupadas,
-						 'schedules': new Array(),
-						 'teachers': classroomState.teachers.slice(0)
-					 };
-					 for (var l = 0; l < state.plans[i].lectures[j].classrooms[k].schedules.length; l++) {
+					 var classroomState = lectureState.classrooms[k];
+					 classroom = shallowCopy(lectureState.classrooms[k]);
+					 classroom['schedules'] = new Array();
+					 classroom['teachers'] = classroomState.teachers.slice(0);
+					 for (var l = 0; l < classroomState.schedules.length; l++) {
 						 var schedule = new Object();
-						 var scheduleState = state.plans[i].lectures[j].classrooms[k].schedules[l];
-						 schedule = {
-							 'day': scheduleState.day,
-							 'timeBegin': scheduleState.timeBegin,
-							 'timeEnd': scheduleState.timeEnd
-						 };
+						 var scheduleState = classroomState.schedules[l];
+						 schedule = shallowCopy(scheduleState);
 						 classroom.schedules.push(schedule);
 					 }
 					 lecture.classrooms.push(classroom);
@@ -479,19 +453,23 @@ function UI() {
 		 xobj.send(null);
 	 }
 
+
 	 this.loadStateFromServer = function(identifier) {
-		if (!identifier || identifier == '') {
-			//TODO print info about use		
-			return;
-		}
-		this.loadJSON('data/' + identifier + '.json', function(response) {
-				//TODO if identifier not exist show status
-				var newState = JSON.parse(response);
-				seeksChanges(newState);
-				state.delete();
-				state = new State(newState);
-				localStorage.setItem('state', JSON.stringify(ui.copyState(state)));
-			});
+		 if (!identifier || identifier == '') {
+			 //TODO print info about use		
+			 return;
+		 }
+		 this.loadJSON('data/' + identifier + '.json', function(response) {
+				 //TODO if identifier not exist show status
+				 var newState = JSON.parse(response);
+				 seeksChanges(newState);
+				 state.delete();
+				 state = new State(newState);
+				 localStorage.setItem('state', JSON.stringify(ui.copyState()));
+				 });
+		 if (!window.location.hash) {// TODO discutir se isso e interessante!
+			 window.location.href += '#' + identifier;	
+		 }
 	 }
 		
 	 function tester(obj, objOnDB) { 
@@ -510,24 +488,52 @@ function UI() {
 	 }
 
 	 function seeksChanges(state) {
-		 for (var i = 0; i < state.plans.length; i++) {
-			 for(var j = 0; j < state.plans[i].lectures.length; j++) {
-				 var lecture = state.plans[i].lectures[j];
+		 var plans = state.plans;
+		 for (var i = 0; i < plans.length; i++) {
+			 var lectures = plans[i].lectures;
+			 for(var j = 0; j < lectures.length; j++) {
+				 var lecture = lectures[j];
 				 database.fetchLectureOnDB(lecture.code);
 				 var lectureOnDB = database.sliceObjectDB();
-				 lectureOnDB = searchBox.parseDBToLectureFormat(lectureOnDB[0]);
+
+				 if (lectureOnDB.length == 0) continue;
+				 // this is needed because when identifier was called from main,
+				 // the BD has not yet been fully loaded
+				 lectureOnDB = lectureOnDB[0];
 				 tester(lecture, lectureOnDB);
-				 tester(lecture.classrooms[0], lectureOnDB.classrooms[0]);
-				 for (var k = 0; k < lecture.classrooms[0].schedules.length; k++) {
-					 tester(lecture.classrooms[0].schedules[k], lectureOnDB.classrooms[0].schedules[k]);
-				 }
-				 for (var k = 0; k < lecture.classrooms[0].teachers.length; k++) {
-					 tester(lecture.classrooms[0].teachers[k], lectureOnDB.classrooms[0].teachers[k]);
+				 for (var l = 0; l < lecture.classrooms.length; l++) {
+					 var classroom = lecture.classrooms[l];
+					 var classroomOnDB = lectureOnDB.classrooms[l];
+					 tester(classroom, classroomOnDB);
+					 for (var k = 0; k < classroom.schedules.length; k++) {
+						 tester(classroom.schedules[k], classroomOnDB.schedules[k]);
+					 }
+					 for (var k = 0; k < classroom.teachers.length; k++) {
+						 tester(classroom.teachers[k], classroomOnDB.teachers[k]);
+					 }
 				 }
 			 }
 		 }
 	 }
-	
+
+	 function shallowCopy(obj) {
+		 var objC = new Object();
+		 var keys = Object.keys(obj);
+		 for(var i = 0; i < keys.length; i++) {
+			 if(typeof(obj[keys[i]]) == 'array' || typeof(obj[keys[i]]) == 'object') {
+			 } else {
+				 objC[keys[i]] = obj[keys[i]];
+			 }
+		 }
+		 return objC;
+	 }
+
+
+	 this.createIdentifierOnServer = function() {
+		 var identifier = (+new Date).toString(36);
+		 this.saveStateOnServer(identifier);
+		 prompt('Envie esse link para quem quiser!!', window.location.href + '#' + identifier);
+	 }
 }
 
 
