@@ -44,6 +44,7 @@ function Classroom(jsonObj, parentLecture) {
     this.selected = jsonObj.selected;
     // Array.slice(0) copies the _entire_ array.
     this.teachers = jsonObj.teachers.slice(0);
+    //console.log('eh igual', this.teachers == jsonObj.teachers)
     for (var i = 0; i < jsonObj.schedules.length; i++) {
       this.schedules.push(new Schedule(jsonObj.schedules[i], this));
     }

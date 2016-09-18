@@ -4,7 +4,7 @@
  
 // 1. Base
 @import 'base/_reset.scss',
-		    'base/_variables.scss',
+		'base/_variables.scss',
         'base/_mixins.scss';
 
 // 2. Themes ('create' and set color variables)
@@ -20,9 +20,10 @@
 // 4. Modules
 @import 'modules/header/_icons.scss',
         'modules/header/_save_and_load_identifier.scss',
-    		'modules/lecture_explorer/_base_lecture_info.scss',
-    		'modules/lecture_explorer/_search_and_add.scss',
+		'modules/lecture_explorer/_base_lecture_info.scss',
+		'modules/lecture_explorer/_search_and_add.scss',
         'modules/lecture_explorer/_accordion.scss',
         'modules/lecture_explorer/_plan_buttons.scss',
+        'modules/lecture_explorer/_upload.scss',
         'modules/lecture_schedule/_lecture_box.scss',
         'modules/lecture_schedule/_combination_controller.scss';
