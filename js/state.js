@@ -18,7 +18,8 @@ function State(jsonObj) {
   this.plans = new Array();
   this.html = {
     previousCombination: document.getElementsByClassName('combination-button-left')[0],
-    nextCombination: document.getElementsByClassName('combination-button-right')[0]
+    nextCombination: document.getElementsByClassName('combination-button-right')[0],
+    upload: document.getElementById('upload-input')
   }
   this.addEventListeners();
   if (jsonObj) {
@@ -79,9 +80,27 @@ State.prototype.previousCombination = function() {
   this.plans[this.activePlanIndex].previousCombination();
 }
 
+// TODO remover essa funcao daqui?? faz sentido ela ser do state?
+State.prototype.uploadFile = function() {
+  var file = this.html.upload.files[0];
+
+  var reader = new FileReader();
+  reader.onload = (function parseAFile(aFile) {
+    return function(e) {
+      var jsonObj = JSON.parse(e.target.result);
+      console.log('jsonObj', jsonObj);
+      document.getElementById('upload-name').innerHTML = shortenString(file.name);
+      state.delete();
+      state = new State(jsonObj);
+    };
+  })(file);
+  reader.readAsText(file);
+}
+
 State.prototype.addEventListeners = function() {
   this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
   this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
+  this.html.upload.addEventListener('change', this.uploadFile.bind(this));
 };
 
 /**

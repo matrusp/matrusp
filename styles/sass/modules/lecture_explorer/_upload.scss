@@ -1,0 +1,39 @@
+#upload-button {
+  position: absolute;
+  width: 200px;
+  height: 40px;
+  bottom: 0;
+  right: 0;
+  border: $border-default;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &:active {
+    background-color: #aaa;
+  }
+
+  > input {
+    display: none;
+  }
+
+  // Text 'Upload' inside the label
+  > div,
+  > img {
+    @include center-block-vertically();
+    position: absolute;
+    text-align: center;
+  }
+
+  > img {
+    width: 20px;
+    right: 10px;
+  }
+
+  > div {
+    width: calc(100% - 30px);
+    height: 1em;
+  }
+}
