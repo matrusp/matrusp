@@ -258,3 +258,10 @@ function classroomsConflict(classroom1, classroom2) {
   }
   return false;
 }
+
+// to be used with file upload name.
+function shortenString(string) {
+  if (string.length < 25) return string;
+
+  return  string.substring(0, 11) + "..." + string.substring(string.length-10); 
+} 

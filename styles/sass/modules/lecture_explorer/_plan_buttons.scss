@@ -1,7 +1,7 @@
 #plans {
   // to align position: mimic plans' children positioning of accordion window children
   border: 1px solid transparent;
-  height: $lecture-explorer-plans-height;
+  height: $lecture-explorer-plan-buttons-height;
 }
 
 .plan {
@@ -76,6 +76,7 @@
   width: 100%;
   float: left;
   border-top: 1px solid rgba(200, 200, 200, 0.8);
+  background-color: white;
 
   &:hover {
     background-color: #ddd;
