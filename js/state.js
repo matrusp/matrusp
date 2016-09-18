@@ -26,7 +26,7 @@ function State(jsonObj) {
     this.version = jsonObj.version;
     this.campus = jsonObj.campus;
     this.semester = jsonObj.semester;
-    this.activePlanIndex = jsonObj.planIndex;
+    this.activePlanIndex = jsonObj.activePlanIndex;
     for (var i = 0; i < 3; i++) {
       if (i == this.activePlanIndex) {
         var isActivePlan = true;
@@ -66,7 +66,7 @@ State.prototype.delete = function() {
  * @param {Number} [planIndex]
  */
 State.prototype.addLecture = function(lecture, planIndex) {
-  if (!planIndex) {
+  if (planIndex == null) {
     planIndex = this.activePlanIndex;
   }
   this.plans[planIndex].addLecture(lecture);

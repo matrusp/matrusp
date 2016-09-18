@@ -1,19 +1,20 @@
 
-
-
 var ui = new UI();
 var state;
 var searchBox;
-if (localStorage.getItem('state')) {
+var database;
+
+state = new State();
+database = new Database();
+database.loadDB('db/db_usp.txt', 1);
+searchBox = new SearchBox();
+
+if (window.location.hash.substr(1)) {
+	ui.loadStateFromServer(window.location.hash.substr(1));
+} else if (localStorage.getItem('state')) {
+	state.delete();
 	state = new State(JSON.parse(localStorage.getItem('state')));
-} else {
-	state = new State();
+	saveStateOnLocalStorage();
 }
-
-var database = new Database();
-database.loadDB('db/db_usp.json', 1);
-searchBox= new SearchBox();
-
-
 setTimeout(function(){ui.scrollActiveCombinationToView()}, 100);
 
