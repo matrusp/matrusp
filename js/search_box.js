@@ -13,43 +13,7 @@ function SearchBox() {
 	self.heightSoFar = 0;
 	self.colorIndex = 0;
 
-	self.parseDBToLectureFormat = function(lecture) {
-		var obj = new Object();
-		obj = {
-			'code' : lecture.code,
-			'name' : lecture.name,
-			'color' : state.plans[state.activePlanIndex].lectures.length + 1,
-			'campus' : 'TODOS',
-			'selected' : 1,
-			'classrooms' : new Array()
-		};
-		lecture.classrooms.forEach(function(classroom) {
-				var specification = {
-				'data_inicio' : classroom.start_date,
-				'data_fim' : classroom.end_date,
-				'alunos_especiais' : 0,
-				'classroomCode' : classroom.code.replace(/.{5}/, ' '),/*remove year and semester to take classroom*/
-				'horas_aula' : 0,
-				'pedidos_sem_vaga' : 0,
-				'saldo_vagas' : 0,
-				'selected' : 1,
-				'vagas_ocupadas' : 0,
-				'teachers' : new Array(),
-				'schedules' : new Array()
-				};
-				classroom.schedule.forEach(function(schedules) {
-						var schedule = {
-						'day' : schedules.day,
-						'timeBegin' : schedules.begin_time,
-						'timeEnd' : schedules.end_time
-						};
-						specification.teachers.push(schedules.teacher);
-						specification.schedules.push(schedule);
-						});
-				obj.classrooms.push(specification);
-		});
-		return obj;
-	}
+
 
 	function addLectures(lectures) {
 		var suggestionLectures = self.searchResultBox.childNodes;
@@ -70,10 +34,11 @@ function SearchBox() {
 
 				var addLectureCallback = function(iterator) {
 					return function() {
-						var obj = self.parseDBToLectureFormat(lectures[iterator]);
-						state.addLecture(obj);
-						var posi = state.plans[state.activePlanIndex].lectures.length;
-						addClass(state.plans[state.activePlanIndex].lectures[posi-1].htmlElement, 'lecture-info-plan-active');
+						var activePlan = state.plans[state.activePlanIndex];
+						var numberOfLectures = activePlan.lectures.length;
+						lectures[iterator]['color'] = numberOfLectures + 1; 
+						state.addLecture(lectures[iterator]);
+						addClass(activePlan.lectures[numberOfLectures].htmlElement, 'lecture-info-plan-active');
 						searchResultBoxHide();
 						self.overSearchResultBox = false;
 						removeLecturesSuggestionList();
@@ -207,10 +172,12 @@ function SearchBox() {
 			case 13:
 			case "Enter":
 				if (self.lecturesSuggestionList[self.selectedLectureIndex]) { // if no lecture was selected skip
-					var obj = self.parseDBToLectureFormat(self.lecturesSuggestionList[self.selectedLectureIndex]);
-					state.addLecture(obj);
-					var posi = state.plans[state.activePlanIndex].lectures.length;
-					addClass(state.plans[state.activePlanIndex].lectures[posi-1].htmlElement, 'lecture-info-plan-active');
+					var lecture = self.lecturesSuggestionList[self.selectedLectureIndex];
+					var activePlan = state.plans[state.activePlanIndex];
+					var numberOfLectures = activePlan.lectures.length;
+					lecture['color'] = numberOfLectures + 1; 
+					state.addLecture(lecture);
+					addClass(activePlan.lectures[numberOfLectures].htmlElement, 'lecture-info-plan-active');
 					searchResultBoxHide();
 					self.overSearchResultBox = false;
 					removeLecturesSuggestionList();
