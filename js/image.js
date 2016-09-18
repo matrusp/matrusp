@@ -1,5 +1,5 @@
 //TODO: trocar bind para ícone adequado
-document.getElementById('download').addEventListener('click', download_picture);
+//document.getElementById('download').addEventListener('click', download_picture);
 
 function download_picture() {
   html2canvas(document.getElementById("lecture-schedule"), {
@@ -11,7 +11,8 @@ function download_picture() {
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
-    }
+    },
+    background: '#ffffff'
   });
 }
 

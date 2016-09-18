@@ -15,12 +15,19 @@
 //
 //
 
-#page-container>footer>a {
+footer {
+  width: 100%;
+  height: $footer-height;
+  bottom: 0;
+  position: relative;
+
+  >a {
     position: absolute;
     bottom: 0;
     margin: 10px 15px;
-    
-    &:last-child {
-        right: 0;
-    }
+  }
+  
+  >a:last-child {
+    right: 0;
+  }
 }

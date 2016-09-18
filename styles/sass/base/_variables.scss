@@ -9,23 +9,24 @@ $border-default: 1px solid lightgray;
 $page-max-width: 960px;
 $page-min-width: 770px;
 $main-padding: 15px;
-$header-height: 40px;
-$footer-height: $header-height;
-$header-bottom-line: $header-height / 4;
-$lecture-schedule-combinations-buttons-height: 30px;
-$lecture-schedule-max-height: 600px;
-$lecture-schedule-min-height: 500px + $lecture-schedule-combinations-buttons-height;
+$header-height: 50px;
+$footer-height: 30px;
+$header-bottom-line: $header-height / 5;
+$lecture-schedule-combination-controller-height: 100px;
+$lecture-schedule-max-height: 900px;
+$lecture-schedule-min-height: 560px;
 $lecture-schedule-padding-top: 40px;
 $lecture-explorer-max-height: $lecture-schedule-max-height;
 $lecture-explorer-min-height: $lecture-schedule-min-height;
-$lecture-explorer-plan-buttons-height: $lecture-schedule-combinations-buttons-height;
+$lecture-explorer-plan-buttons-height: 25px;
+$lecture-explorer-plans-height: $lecture-schedule-combination-controller-height;
 
 $page-min-height: $header-height + $header-bottom-line + 2 * $main-padding + $lecture-schedule-min-height + $footer-height;
 
 // Header
 $font-size-logo: 26px;
 $logo-letter-spacing: 1px;
-$icons-square-size: $header-height;
+$icons-square-size: $header-height - $header-bottom-line;
 $icons-spacing: 20px;
 $tooltip-triangle-width: 12px;
 $tooltip-triangle-height: 6px;
@@ -40,6 +41,8 @@ $column-background-line-height: 2px;
 $week-day-underline-height: 4px;
 $font-size-hour: 13px;
 $schedule-box-border-left-width: 2.3px;
+$combination-controller-margin-top: 20px;
+$combination-button-width: 34px;
 
 // Lecture Explorer
 $scroll-bar-width: 15px;

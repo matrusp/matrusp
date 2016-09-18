@@ -16,4 +16,5 @@ if (window.location.hash.substr(1)) {
 	state = new State(JSON.parse(localStorage.getItem('state')));
 	saveStateOnLocalStorage();
 }
+setTimeout(function(){ui.scrollActiveCombinationToView()}, 100);
 

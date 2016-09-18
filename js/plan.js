@@ -18,24 +18,38 @@ function Plan(jsonObj, planId, isActivePlan) {
   this.lectures = new Array();
   this.combinations = new Array();
   this.planId = planId;
-  // It is expected that div#plan-{planId} exists!
-  this.htmlElement = document.getElementById('plan-' + this.planId);
+
+  // It's expected that div#plan-{planId} exists!
+  this.html = {};
+  this.html.tab = document.getElementById('plan-' + this.planId);
+  this.html.tabName = this.html.tab.getElementsByClassName('plan-tab-name')[0];
+  this.html.tabOptionsArrow = this.html.tab.getElementsByClassName('plan-tab-options-arrow')[0];
+  this.html.clear = this.html.tab.getElementsByClassName('plan-tab-option')[0];
+  this.html.copy1 = this.html.tab.getElementsByClassName('plan-tab-option')[1];
+  this.html.copy2 = this.html.tab.getElementsByClassName('plan-tab-option')[2];
+
   this.addEventListeners();
 
-  if (jsonObj) {
-    for (var i = 0; i < jsonObj.lectures.length; i++) {
-      this.lectures.push(new Lecture(jsonObj.lectures[i], this));
-			ui.addLecture(this.lectures[i]);
+  this.load(jsonObj, isActivePlan);
+}
+
+/**
+ *
+ **/
+Plan.prototype.load = function(basePlan, isActivePlan) {
+  this.lectures = new Array();
+  this.combinations = new Array();
+  if (basePlan) {
+    for (var i = 0; i < basePlan.lectures.length; i++) {
+      this.lectures.push(new Lecture(basePlan.lectures[i], this));
+      ui.addLecture(this.lectures[i]);
     }
-    this.activeCombinationIndex = jsonObj.activeCombinationIndex;
-		this.computeCombinations();
+    this.activeCombinationIndex = basePlan.activeCombinationIndex;
+    this.computeCombinations();
     this.activeCombination = this.combinations[this.activeCombinationIndex];
     if (isActivePlan) {
-			this.setActiveCombination();
-      addClass(this.htmlElement, 'plan-active');
-			for (var i = 0; i < this.lectures.length; i++) {
-				addClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
-			}
+      this.setActiveCombination();
+      this.showPlan();
     }
   } else {
     this.activeCombinationIndex = null;
@@ -43,11 +57,7 @@ function Plan(jsonObj, planId, isActivePlan) {
   }
 }
 
-/**
- *
- **/
-
-Plan.prototype.delete = function() {	
+Plan.prototype.delete = function() {
 	this.unsetPlan();
 	while (this.lectures.length) {
 		this.lectures[0].delete();
@@ -58,6 +68,14 @@ Plan.prototype.delete = function() {
   var indexOnParent = state.plans.indexOf(this);
   state.plans.splice(indexOnParent, 1);
 	// TODO change plans constructor to include this.parent
+ }
+
+ Plan.prototype.clear = function() {
+  // commenting this generates bug?
+  this.unsetPlan();
+  while (this.lectures.length) {
+    this.lectures[0].delete();
+  }
  }
 /**
  *
@@ -71,34 +89,23 @@ Plan.prototype.update = function(classroomUpdated) {
     oldActiveCombination = this.activeCombination;
     this.unsetActiveCombination();
   }
-  this.combinations = new Array();
+
+  while (this.combinations.length > 0) {
+    this.combinations[0].delete();
+  }
   this.computeCombinations();
   this.activeCombinationIndex = this.closestCombination(oldActiveCombination, classroomUpdated);
   if (this.activeCombinationIndex != null) {
     // There is an active combination.
     this.activeCombination = this.combinations[this.activeCombinationIndex];
     this.setActiveCombination();
+    this.showPlan();
   } else {
     // If there are no combinations.
     this.activeCombination = null;
-		saveStateOnLocalStorage();
-    document.getElementById('combination-value').innerHTML = '0/0';
+    //document.getElementById('combination-value').innerHTML = '0/0';
   }
-
-  if (!classroomUpdated) {
-    // Plan.update() was called from an insertion or deletion of a lecture.
-    // Nothing more to be done.
-    return;
-  }
-
-  // If this was called by an classroom update, classroomUpdated exists.
-  // At this moment, the mouse pointer (if it's not a touch screen) is over
-  // the classroomUpdated. If it has a sibling classroom that is active it
-  // will show up as a consequence of setActiveCombination. So we update the 
-  // highlight status to it (only hides if it was displayed, naturally).
-  if (hasClass(classroomUpdated.schedules[0].htmlElement, 'schedule-box-highlight')) {
-    classroomUpdated.setHighlight();
-  }
+  saveStateOnLocalStorage();
 };
 
 /**
@@ -138,6 +145,7 @@ Plan.prototype.nextCombination = function() {
   this.activeCombinationIndex = (this.activeCombinationIndex + 1) % this.combinations.length;
   this.activeCombination = this.combinations[this.activeCombinationIndex];
   this.setActiveCombination();
+  ui.scrollActiveCombinationToView();
 };
 
 /**
@@ -148,7 +156,17 @@ Plan.prototype.previousCombination = function() {
   this.activeCombinationIndex = ((this.activeCombinationIndex - 1) + this.combinations.length) % this.combinations.length;
   this.activeCombination = this.combinations[this.activeCombinationIndex];
   this.setActiveCombination();
+  ui.scrollActiveCombinationToView();
 };
+
+Plan.prototype.setCombination = function(combination) {
+  if (!combination || this.activeCombination == combination) return;
+  this.unsetActiveCombination();
+  this.activeCombinationIndex = this.combinations.indexOf(combination);
+  this.activeCombination = combination;
+  this.setActiveCombination();
+  ui.scrollActiveCombinationToView();
+}
 
 /**
  * Adds a lecture to this plan.
@@ -369,13 +387,14 @@ Plan.prototype.setActiveCombination = function() {
 		} */
   // if there is an active combination
   if (this.activeCombination) {
+    this.activeCombination.setHighlight();
     var lecturesClassrooms = this.activeCombination.lecturesClassroom;
     for (var i = 0; i < lecturesClassrooms.length; i++) {
       lecturesClassrooms[i].showBox();
       lecturesClassrooms[i].parent.activeClassroom = lecturesClassrooms[i];
     }
 
-		document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
+		//document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
 	} else { 
     // TODO safely remove?
 		// document.getElementById('combination-value').innerHTML =  '0/0';
@@ -398,28 +417,51 @@ Plan.prototype.unsetActiveCombination = function() {
 	} */
   // if there is an active combination
   if (this.activeCombination) {
+    this.activeCombination.unsetHighlight();
     var lecturesClassrooms = this.activeCombination.lecturesClassroom;
     for (var i = 0; i < lecturesClassrooms.length; i++) {
       lecturesClassrooms[i].hideBox();
       lecturesClassrooms[i].parent.activeClassroom = null;
     }
-    document.getElementById('combination-value').innerHTML =  '0/0';
+    //document.getElementById('combination-value').innerHTML =  '0/0';
   }
 };
+
+Plan.prototype.showPlan = function() {
+  // TODO separar em ui_plan.js e plan.js. A linha abaixo fica no primeiro arquivo
+  addClass(this.html.tab, 'plan-active');
+  for (var i = 0; i < this.lectures.length; i++) {
+    addClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
+  }
+  for (var i = 0; i < this.combinations.length; i++) {
+    addClass(this.combinations[i].htmlElement, 'combination-plan-active');
+  }
+}
+
+Plan.prototype.hidePlan = function() {
+  // TODO separar em ui_plan.js e plan.js. A linha abaixo fica no primeiro arquivo
+  removeClass(this.html.tab, 'plan-active');
+  for (var i = 0; i < this.lectures.length; i++) {
+    removeClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
+  }
+  for (var i = 0; i < this.combinations.length; i++) {
+    removeClass(this.combinations[i].htmlElement, 'combination-plan-active');
+  }
+}
 
 Plan.prototype.unsetPlan = function() {
   if (this.planId == state.activePlanIndex) {
     // TODO separar em ui_plan.js e plan.js. A linha abaixo fica no primeiro arquivo
-    removeClass(this.htmlElement, 'plan-active');
+    this.hidePlan();
 		this.unsetActiveCombination();
-    for (var i = 0; i < this.lectures.length; i++) {
-			removeClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
-    }
   }
 }
 
-
+// Calls unsetPlan() on current active plan
 Plan.prototype.setPlan = function() {
+  // This cannot go below the if to prevent bug: setPlan should always display it's objects
+  this.showPlan();
+
   if (this.planId == state.activePlanIndex) {
     // This plan is already set.
     return;
@@ -427,20 +469,18 @@ Plan.prototype.setPlan = function() {
 
   state.plans[state.activePlanIndex].unsetPlan();
 	this.setActiveCombination();
-  for (var i = 0; i < this.lectures.length; i++) {
-		addClass(this.lectures[i].htmlElement, 'lecture-info-plan-active');
-  }
   state.activePlanIndex = this.planId;
 
-  // TODO separar em ui_plan.js e plan.js. A linha abaixo fica no primeiro arquivo
-  addClass(this.htmlElement, 'plan-active');
+  ui.adjustCombinationTrackWidth();
+  ui.scrollActiveCombinationToView();
 
   // TODO this is a hack to update the combination index and total combination number
   // ui below div#lecture-schedule
   if (this.lectures.length == 0) {
-    document.getElementById('combination-value').innerHTML = '0/0';
+    //document.getElementById('combination-value').innerHTML = '0/0';
 		saveStateOnLocalStorage()
   } else {
+    // TODO comentar a linha de baixo, falar com bruno
     this.setActiveCombination();
   }
 };
@@ -448,35 +488,74 @@ Plan.prototype.setPlan = function() {
 /**
  *
  **/
-Plan.prototype.copyToPlan = function(planIndex) {
-  if (planIndex == state.activePlanIndex) return;
-  var newPlan = state.plans[planIndex];
-  newPlan.activeCombinationIndex = state.plans[state.activePlanIndex].activeCombinationIndex;
-  newPlan.lectures = new Array();
-  for (var i = 0; i < state.plans[state.activePlanIndex].lectures.length; i++) {
-    newPlan.lectures.push(new Lecture(state.plans[state.activePlanIndex].lectures[i], newPlan));
-  }
-  newPlan.htmlElement = document.createElement('div');
-  newPlan.computeCombinations();
-  newPlan.update();
-  this.setActivePlan(planIndex);
+Plan.prototype.copyToPlan = function(receivingPlan) {
+  receivingPlan.clear();
+  var isActivePlan = true;
+  receivingPlan.load(this, isActivePlan);
+  receivingPlan.setPlan();
 }
 
+Plan.prototype.copy1 = function() {
+  if (this.planId != 0) {
+    this.copyToPlan(state.plans[0]);
+  } else {
+    this.copyToPlan(state.plans[1]);
+  }
+}
 
+Plan.prototype.copy2 = function() {
+  if (this.planId != 2) {
+    this.copyToPlan(state.plans[2]);
+  } else {
+    this.copyToPlan(state.plans[1]);
+  }
+}
+
+Plan.prototype.toggleOptionsOpen = function() {
+  toggleClass(this.html.tab, 'plan-options-open');
+}
+
+Plan.prototype.optionsClose = function() {
+  removeClass(this.html.tab, 'plan-options-open');
+}
+
+Plan.prototype.otherPlansOptionsClose = function() {
+  for (var i = 0; i < state.plans.length; i++) {
+    if (this == state.plans[i]) continue;
+    state.plans[i].optionsClose();
+  }
+}
+
+Plan.prototype.clearOnClick = function() {
+  this.clear();
+  this.setPlan();
+  this.toggleOptionsOpen();
+}
 
 /**
  *
  */
 Plan.prototype.addEventListeners = function() {
+  // TODO testar subir um identificador mudando state.plans[i].delete->plan.delete para
+  // state.plans[i].delete->plan.clear; com isso não precisa mais do setPlanBoundCallback
+  // pode usar direto o setPlan.bind(this); com isso tbm não precisa mais do removeEventListeners
 	this.setPlanBoundCallback = this.setPlan.bind(this);
-  this.htmlElement.addEventListener('click', this.setPlanBoundCallback);
+  this.html.tab.addEventListener('click', this.otherPlansOptionsClose.bind(this));
+  this.html.tabName.addEventListener('click', this.setPlanBoundCallback);
+  this.html.tabOptionsArrow.addEventListener('click', this.setPlanBoundCallback);
+  this.html.tabOptionsArrow.addEventListener('click', this.toggleOptionsOpen.bind(this));
+  this.html.clear.addEventListener('click', this.clearOnClick.bind(this));
+  this.html.copy1.addEventListener('click', this.copy1.bind(this));
+  this.html.copy1.addEventListener('click', this.toggleOptionsOpen.bind(this));
+  this.html.copy2.addEventListener('click', this.copy2.bind(this));
+  this.html.copy2.addEventListener('click', this.toggleOptionsOpen.bind(this));
 };
 
 /**
  *
  */
 Plan.prototype.removeEventListeners = function() {
-  this.htmlElement.removeEventListener('click', this.setPlanBoundCallback);
+  this.html.tab.removeEventListener('click', this.setPlanBoundCallback);
 };
 
 //TODO move this function to utils when pull changes in git

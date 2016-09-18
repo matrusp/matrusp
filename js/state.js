@@ -16,6 +16,11 @@
  */
 function State(jsonObj) {
   this.plans = new Array();
+  this.html = {
+    previousCombination: document.getElementsByClassName('combination-button-left')[0],
+    nextCombination: document.getElementsByClassName('combination-button-right')[0]
+  }
+  this.addEventListeners();
   if (jsonObj) {
     this.version = jsonObj.version;
     this.campus = jsonObj.campus;
@@ -32,7 +37,7 @@ function State(jsonObj) {
     // TODO this is a hack to update the combination index and total combination number
     // ui below div#lecture-schedule
     if (this.plans[this.activePlanIndex].lectures.length == 0) {
-      document.getElementById('combination-value').innerHTML = '0/0';
+      //document.getElementById('combination-value').innerHTML = '0/0';
     } else {
       this.plans[this.activePlanIndex].setActiveCombination();
     }
@@ -73,6 +78,11 @@ State.prototype.nextCombination = function() {
 State.prototype.previousCombination = function() {
   this.plans[this.activePlanIndex].previousCombination();
 }
+
+State.prototype.addEventListeners = function() {
+  this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
+  this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
+};
 
 /**
  * Full State example

@@ -34,12 +34,12 @@ body {
     font-size: $font-size;
     background-image: linear-gradient(
             to bottom,
-            $header-color-primary     $header-height,
-            $header-color-secondary   $header-height,
-            $header-color-secondary  ($header-height + ($header-bottom-line / 2)),
-            $header-color-tertiary   ($header-height + ($header-bottom-line / 2)),
-            $header-color-tertiary   ($header-height +  $header-bottom-line),
-            $header-color-background ($header-height +  $header-bottom-line),
+            $header-color-primary    ($header-height -  $header-bottom-line),
+            $header-color-secondary  ($header-height -  $header-bottom-line),
+            $header-color-secondary  ($header-height - ($header-bottom-line / 2)),
+            $header-color-tertiary   ($header-height - ($header-bottom-line / 2)),
+            $header-color-tertiary    $header-height,
+            $header-color-background  $header-height,
             $header-color-background 100%
         );
     background-repeat: no-repeat;
@@ -54,46 +54,12 @@ body {
     // TODO not sure why, but without this overflow property a scroll bar 
     // appears on the bottom 
     overflow-x: hidden;
-    
-    >header,
-    >footer {
-    // defining a position here to work with children positions
-        position: relative;
-        width: 100%;
-        height: $header-height;
-    }
 }
 
 #main {
     position: relative;
     width: calc(100% - (2 * #{$main-padding}));
-    // TODO deal with this identation, how to make it good?
-    height: calc(100% - ( (2 * #{$header-height}) 
-                          + #{$header-bottom-line} 
-                          + (2 * #{$main-padding}) ));
+    height: calc(100% - #{$header-height} - #{$footer-height} - 2 * #{$main-padding});
     min-height: $lecture-schedule-min-height;
     padding: $main-padding;
-    margin-top: $header-bottom-line;
-}
-
-#lecture-schedule,
-#lecture-explorer {
-    display: inline-block;
-    vertical-align: top;
-}
-
-#lecture-schedule {
-    // subtracting 3px to deal with standard spacing between 
-    // inline-block elements
-    width: calc((2 / 3) * 100% - 3px);
-    height: calc(100% - #{$lecture-schedule-padding-top});
-    max-height: $lecture-schedule-max-height - $lecture-schedule-padding-top;
-    padding-top: $lecture-schedule-padding-top;
-}
-
-#lecture-explorer {
-    width: calc((1 / 3) * 100% - 3px);
-    height: 100%;
-    max-height: $lecture-explorer-max-height;
-    min-height: $lecture-explorer-min-height;
 }

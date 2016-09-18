@@ -110,8 +110,14 @@ Lecture.prototype.toggleLectureOpen = function() {
  * 
  */
 Lecture.prototype.lectureSelect = function() {
+  this.stopAnimationLoop();
   this.selected = true;
   this.htmlLectureCheckbox.checked = true;
+  if (this.noClassroomsSelected()) {
+    this.htmlClassroomsCheckbox.checked = true;
+    var shouldUpdate = false;
+    this.updateAllClassroomsSelections(shouldUpdate);
+  }
 }
 
 /**
@@ -126,11 +132,10 @@ Lecture.prototype.lectureUnselect = function() {
  * Callback to the 'click' event on the lecture checkbox;
  */
 Lecture.prototype.toggleLectureSelection = function() {
-  this.selected = !this.selected;
-  if (this.selected && this.noClassroomsSelected()) {
-    this.htmlClassroomsCheckbox.checked = true;
-    var shouldUpdate = false;
-    this.updateAllClassroomsSelections(shouldUpdate);
+  if (this.selected) {
+    this.lectureUnselect();
+  } else {
+    this.lectureSelect();
   }
   this.parent.update();
 }
@@ -152,6 +157,7 @@ Lecture.prototype.disableCheckbox = function() {
 /**
  *
  */
+// TODO colocar um parametro shouldUpdate. Nao updatar quando clearing o plano.
 Lecture.prototype.delete = function() {
   for (var i = 0; i < this.classrooms.length; i++) {
     this.classrooms[i].delete();
@@ -191,7 +197,7 @@ Lecture.prototype.update = function(classroomUpdated) {
   if (this.noClassroomsSelected()) {
     this.activeClassroom = null;
     this.lectureUnselect();
-  } else if (!this.selected) {
+  } else if (this.allClassroomsSelected() || (classroomUpdated && classroomUpdated.selected)) {
     // When no classrooms were selected and right now at least one is, the lecture too
     // becomes selected. (Thinking about the use case where the user unchecks all
     // classrooms and then checks one back. I think the user wants that classroom
@@ -215,16 +221,19 @@ Lecture.prototype.moveUp = function() {
 
   // Updating the GUI
   var htmlParentElement = this.htmlElement.parentElement;
-  var htmlElementBefore = htmlParentElement.children[lectureIndex - 1];
+  var indexOnParent;
+  for (var i = 0; i < htmlParentElement.children.length; i++) {
+    if (htmlParentElement.children[i] == this.htmlElement) {
+      indexOnParent = i;
+      break;
+    }
+  }
+  var htmlElementBefore = htmlParentElement.children[indexOnParent - 1];
   // this.htmlElement doesn't have to be removed because one element can
   // exist only in one place. So when reinserting it is automatically removed
   // from its original place.
   htmlParentElement.insertBefore(this.htmlElement, htmlElementBefore);
 
-  if (this.htmlLectureCheckbox.disabled) {
-    this.lectureSelect();
-    this.enableCheckbox();
-  }
   this.parent.update();
 }
 
@@ -239,12 +248,79 @@ Lecture.prototype.moveDown = function() {
   this.parent.lectures[lectureIndex + 1].moveUp();
 }
 
-// TODO
+Lecture.prototype.showNextClassroom = function() {
+  var currentClassroomIndex = 0;
+  for (var i = 0; i < this.classrooms.length; i++) {
+    var classroomHtmlBoxExample = this.classrooms[i].schedules[0].htmlElement;
+    if (hasClass(classroomHtmlBoxExample, 'schedule-box-show')) {
+      this.classrooms[i].hideBox();
+      this.classrooms[i].unsetConflict();
+      currentClassroomIndex = i;
+      break;
+    }
+  }
+
+  var nextClassroomIndex = (currentClassroomIndex + 1) % this.classrooms.length;
+  this.classrooms[nextClassroomIndex].showBox();
+  this.classrooms[nextClassroomIndex].checkAndSetConflict();
+}
+
+Lecture.prototype.animationLoopShowEachClassroom = function() {
+  this.classrooms[0].showBox();
+  this.classrooms[0].checkAndSetConflict();
+  if (!this.hoverAnimationIntervals) {
+    // I still don't know why, but more than one interval were being
+    // created when moving lectures up/down or clicking 
+    // (on unchecked checkbox but active one (bug).
+    // To reproduce: change here to not be an array anymore, 
+    // put two lectures that conflict (every two classrooms)
+    // unselect both, select the one on top and see that the checkbox on the
+    // other one is still active, although unchecked. Click on it.)
+    // or 
+    this.hoverAnimationIntervals = Array();
+  }
+  var newIntervalId = setInterval(this.showNextClassroom.bind(this), 1000);
+  this.hoverAnimationIntervals.push(newIntervalId);
+}
+
+// side-effect: hides all boxes! Should be called before something like
+// plan.update to, in the end, show the selected boxes.
+Lecture.prototype.stopAnimationLoop = function() {
+  if (!this.hoverAnimationIntervals) {
+    return;
+  }
+  while (this.hoverAnimationIntervals.length > 0) {
+    clearInterval(this.hoverAnimationIntervals[0]);
+    // remove first element of array
+    this.hoverAnimationIntervals.splice(0, 1);
+  }
+
+  for (var i = 0; i < this.classrooms.length; i++) {
+    // Hide pending boxes. Probably, clearIntervals was called
+    // while one classroom was being displayed.
+    this.classrooms[i].hideBox();
+    this.classrooms[i].unsetConflict();
+  }
+}
+
 Lecture.prototype.setHighlight = function() {
-  this.activeClassroom.setHighlight();
+  for (var i = 0; i < this.classrooms.length; i++) {
+    this.classrooms[i].addClassInSchedules('schedule-box-highlight');
+  }
+
+  if (!this.selected) {
+    this.animationLoopShowEachClassroom();
+  }
 };
+
 Lecture.prototype.unsetHighlight = function() {
-  this.activeClassroom.unsetHighlight();
+  for (var i = 0; i < this.classrooms.length; i++) {
+    this.classrooms[i].removeClassInSchedules('schedule-box-highlight');
+  }
+
+  if (!this.selected) {
+    this.stopAnimationLoop();
+  }
 };
 
 
@@ -252,9 +328,8 @@ Lecture.prototype.unsetHighlight = function() {
  *
  */
 Lecture.prototype.addEventListeners = function() {
-  // TODO
-  //this.htmlElement.addEventListener('mouseover', this.setHighlight.bind(this));
-  //this.htmlElement.addEventListener('mouseout', this.unsetHighlight.bind(this));
+  this.htmlElement.addEventListener('mouseenter', this.setHighlight.bind(this));
+  this.htmlElement.addEventListener('mouseleave', this.unsetHighlight.bind(this));
 
   var lectureHeaderTitle = this.htmlElement.getElementsByClassName('lecture-info-header-title')[0];
   lectureHeaderTitle.addEventListener('click', this.toggleLectureOpen.bind(this));

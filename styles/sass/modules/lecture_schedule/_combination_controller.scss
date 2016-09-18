@@ -1,11 +1,95 @@
 #combination-controller {
-  @include center-block-horizontally();
-  width: 86px;
-  height: $lecture-schedule-combinations-buttons-height;
-  margin-top: 20px;
+  //@include center-block-horizontally();
+  position: relative;
+  width: calc(100% - 10px);
+  height: calc(#{$lecture-schedule-combination-controller-height} - #{$combination-controller-margin-top});
+  margin-top: $combination-controller-margin-top;
+}
 
-  >button {
+.combination-button {
+  position: absolute;
+  float: left;
+  height: 100%;
+  width: $combination-button-width;
+  top: -1px;
+  background-color: white;
+  border: $border-default;
+  z-index: 1;
+  cursor: pointer;
+
+  &>img {
+    @include center-block-horizontally();
     @include center-block-vertically();
+    position: absolute;
+    width: 30px;
+    transform: rotate(90deg);
+    opacity: 0.6;
+  }
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &:active {
+    background-color: #aaa;
   }
 }
 
+.combination-button-left {
+  left: 0;
+}
+
+.combination-button-right {
+  right: 0;
+}
+
+#combination-track-window {
+  @include center-block-horizontally();
+  height: calc(100% + 15px);
+  position: absolute;
+  float: left;
+  width: calc(100% - 2 * #{$combination-button-width} - 6px);
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+#combination-track {
+  height: 100%;
+  width: 0;
+}
+
+.combination {
+  position: relative;
+  display: none;
+  margin: 1px 5px;
+  width: 90px;
+  height: calc(100% - 4px);
+  overflow: hidden;
+  border: $border-default;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &:active {
+    background-color: #aaa;
+  }
+}
+
+.combination.combination-highlight {
+  background-color: #eee;
+  box-shadow: 0 0 3px #eee;
+}
+
+.combination.combination-plan-active {
+  display: inline-block;
+}
+
+.combination > .column:not(.time) {
+  width: calc(100% / 6);
+  background-image: none;
+  span {
+    visibility: hidden;
+  }
+}
