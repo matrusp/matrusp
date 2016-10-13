@@ -41,7 +41,7 @@ function loadCalendarApi() {
   gapi.client.load('calendar', 'v3', addEvents);
 }
 
-function get_class_begin_date(classroom, schedule) {
+function get_class_begin_date_google(classroom, schedule) {
   var string_date = classroom.data_inicio.split("/");
   var begin_date = new Date();
   begin_date.setDate(parseInt(string_date[0]));
@@ -56,11 +56,11 @@ function get_class_begin_date(classroom, schedule) {
   return final_string_date;
 }
 
-function get_schedule_start_time(schedule) {
+function get_schedule_start_time_google(schedule) {
   return schedule.timeBegin + ":00";
 }
 
-function get_schedule_end_time(schedule) {
+function get_schedule_end_time_google(schedule) {
   return schedule.timeEnd + ":00";
 }
 
@@ -72,11 +72,11 @@ function addEvents() {
       var event = {
         'summary': 'Aula de ' + get_title(active_classes[i]),
         'start': {
-          'dateTime': get_class_begin_date(active_classes[i], current_schedule[j]) + 'T' + get_schedule_start_time(current_schedule[j]),
+          'dateTime': get_class_begin_date_google(active_classes[i], current_schedule[j]) + 'T' + get_schedule_start_time_google(current_schedule[j]),
           'timeZone': 'America/Sao_Paulo'
         },
         'end': {
-          'dateTime': get_class_begin_date(active_classes[i], current_schedule[j]) + 'T' + get_schedule_end_time(current_schedule[j]),
+          'dateTime': get_class_begin_date_google(active_classes[i], current_schedule[j]) + 'T' + get_schedule_end_time_google(current_schedule[j]),
           'timeZone': 'America/Sao_Paulo'
         },
         'recurrence': [
