@@ -15,7 +15,7 @@ function get_image(callback) {
   html2canvas(document.getElementById("lecture-schedule"), {
     onrendered: function (canvas) {
       combinations.style.removeProperty("display");
-      dd.images.calendar = canvas.toDataURL("image/png");
+      dd.images.calendar = canvas.toDataURL();
       callback();
     },
     background: '#ffffff'
@@ -63,8 +63,6 @@ var dd = {
   content: [
     {
       image: 'calendar',
-      width: 480,
-      height: 480
     },
     {
       style: 'section',
@@ -114,4 +112,4 @@ function open_pdf() {
   });
 }
 
-document.getElementById('pdf').addEventListener('click',  open_pdf);
+//document.getElementById('pdf').addEventListener('click',  open_pdf);
