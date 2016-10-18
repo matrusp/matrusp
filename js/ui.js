@@ -399,12 +399,15 @@ function UI() {
 	  *
 		**/
 	 this.copyState = function() {
-		 var object = new Object();
+	   object = new Object();
 		 object = shallowCopy(state);
 		 object['plans'] = new Array();
 		 for (var i = 0; i < state.plans.length; i++) {
+			 if (state.plans[i].lectures.length == 0) {
+				 object.plans.push(null);
+				 continue;
+			 }
 			 var plan = new Object();
-			 if (state.plans[i].lectures.length == 0) continue;
 			 var active = 0;
 			 if (i == state.activePlanIndex) {
 				 active = 1;
@@ -413,19 +416,19 @@ function UI() {
 			 plan['activePlan'] = active;
 			 plan['lectures'] = new Array();
 			 for (var j = 0; j < state.plans[i].lectures.length; j++) {
-				 var lecture = new Object();
 				 var lectureState = state.plans[i].lectures[j];
+				 var lecture = new Array();
 				 lecture = shallowCopy(lectureState);
 				 lecture['classrooms'] = new Array();
 				 for (var k = 0; k < lectureState.classrooms.length; k++) {
-					 var classroom = new Object();
 					 var classroomState = lectureState.classrooms[k];
+					 var classroom = new Array();
 					 classroom = shallowCopy(lectureState.classrooms[k]);
 					 classroom['schedules'] = new Array();
 					 classroom['teachers'] = classroomState.teachers.slice(0);
 					 for (var l = 0; l < classroomState.schedules.length; l++) {
-						 var schedule = new Object();
 						 var scheduleState = classroomState.schedules[l];
+						 var schedule = new Array();
 						 schedule = shallowCopy(scheduleState);
 						 classroom.schedules.push(schedule);
 					 }
@@ -467,22 +470,28 @@ function UI() {
 				 state = new State(newState);
 				 localStorage.setItem('state', JSON.stringify(ui.copyState()));
 				 });
-		 if (!window.location.hash) {// TODO discutir se isso e interessante!
-			 window.location.href += '#' + identifier;	
-		 }
 	 }
 		
 	 function tester(obj, objOnDB) { 
-		 var keys = Object.keys(obj);
-		 for (var i = 0; i < keys.length; i++) {
-			 if (typeof(obj[keys[i]]) == 'object' || keys[i] == 'color') {
-				 continue;
+		 if (typeof(obj) == 'object') {
+			 var keys = Object.keys(obj);
+			 for (var i = 0; i < keys.length; i++) {
+				 if (typeof(obj[keys[i]]) == 'object' || keys[i] == 'color') {
+					 continue;
+				 }
+				 if (obj[keys[i]] != objOnDB[keys[i]]) {
+					 console.log('obj :', obj[keys[i]], ' key: ', keys[i]); 
+					 console.log('objOnDB :', objOnDB[keys[i]], ' key: ', keys[i]); 
+					 console.log('legal ele percebe que mudou!');
+					 obj[keys[i]] = objOnDB[keys[i]];
+				 }
 			 }
-			 if (obj[keys[i]] != objOnDB[keys[i]]) {
-				 console.log('obj :', obj[keys[i]], ' key: ', keys[i]); 
-				 console.log('objOnDB :', objOnDB[keys[i]], ' key: ', keys[i]); 
-				 console.log('legal ele percebe que mudou!');
-				 obj[keys[i]] = objOnDB[keys[i]];
+		 } else {
+			 if (obj != objOnDB) {
+				 console.log('obj :', obj);
+				 console.log('objOnDB :', objOnDB);
+				 console.log('percebeu que tava errado!');
+				 obj = objOnDB;
 			 }
 		 }
 	 }
@@ -490,26 +499,28 @@ function UI() {
 	 function seeksChanges(state) {
 		 var plans = state.plans;
 		 for (var i = 0; i < plans.length; i++) {
-			 var lectures = plans[i].lectures;
-			 for(var j = 0; j < lectures.length; j++) {
-				 var lecture = lectures[j];
-				 database.fetchLectureOnDB(lecture.code);
-				 var lectureOnDB = database.sliceObjectDB();
+			 if (plans[i]) {
+				 var lectures = plans[i].lectures;
+				 for(var j = 0; j < lectures.length; j++) {
+					 var lecture = lectures[j];
+					 database.fetchLectureOnDB(lecture.code);
+					 var lectureOnDB = database.sliceObjectDB();
 
-				 if (lectureOnDB.length == 0) continue;
-				 // this is needed because when identifier was called from main,
-				 // the BD has not yet been fully loaded
-				 lectureOnDB = lectureOnDB[0];
-				 tester(lecture, lectureOnDB);
-				 for (var l = 0; l < lecture.classrooms.length; l++) {
-					 var classroom = lecture.classrooms[l];
-					 var classroomOnDB = lectureOnDB.classrooms[l];
-					 tester(classroom, classroomOnDB);
-					 for (var k = 0; k < classroom.schedules.length; k++) {
-						 tester(classroom.schedules[k], classroomOnDB.schedules[k]);
-					 }
-					 for (var k = 0; k < classroom.teachers.length; k++) {
-						 tester(classroom.teachers[k], classroomOnDB.teachers[k]);
+					 if (lectureOnDB.length == 0) continue;
+					 // this is needed because when identifier was called from main,
+					 // the BD has not yet been fully loaded
+					 lectureOnDB = lectureOnDB[0];
+					 tester(lecture, lectureOnDB);
+					 for (var l = 0; l < lecture.classrooms.length; l++) {
+						 var classroom = lecture.classrooms[l];
+						 var classroomOnDB = lectureOnDB.classrooms[l];
+						 tester(classroom, classroomOnDB);
+						 for (var k = 0; k < classroom.schedules.length; k++) {
+							 tester(classroom.schedules[k], classroomOnDB.schedules[k]);
+						 }
+						 for (var k = 0; k < classroom.teachers.length; k++) {
+							 tester(classroom.teachers[k], classroomOnDB.teachers[0][k]);
+						 }
 					 }
 				 }
 			 }
@@ -527,7 +538,6 @@ function UI() {
 		 }
 		 return objC;
 	 }
-
 
 	 this.createIdentifierOnServer = function() {
 		 var identifier = (+new Date).toString(36);
