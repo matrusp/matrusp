@@ -43,8 +43,7 @@ function Classroom(jsonObj, parentLecture) {
     this.pedidos_sem_vaga = jsonObj.pedidos_sem_vaga;
     this.selected = jsonObj.selected;
     // Array.slice(0) copies the _entire_ array.
-    this.teachers = jsonObj.teachers.slice(0);
-    //console.log('eh igual', this.teachers == jsonObj.teachers)
+		this.addTeachers(jsonObj.teachers);
     for (var i = 0; i < jsonObj.schedules.length; i++) {
       this.schedules.push(new Schedule(jsonObj.schedules[i], this));
     }
@@ -66,6 +65,37 @@ function Classroom(jsonObj, parentLecture) {
     this.selected = null;
     this.htmlElement = null;
   }
+}
+
+Classroom.prototype.addTeachers = function(teachers) {
+	for (var i = 0; i < teachers.length; i++) {
+		if (teachers[i].length > 1) {
+			if (typeof(teachers[i]) == 'object') {
+				var tmp = teachers[i].slice(0);
+				for (var j = 0; j < tmp.length; j++) {
+					this.teachers.push(tmp[j]);
+				}
+			}	else {
+				this.teachers.push(teachers[i]);
+			}
+		} else {
+			var tmp = teachers[i].slice(0);
+			this.teachers.push(tmp[0]);
+		}
+	}
+	this.removeDuplicates(this.teachers);
+}
+
+
+Classroom.prototype.removeDuplicates = function(teachers) {
+	for (var i = 0; i < teachers.length; i++) {
+		for (var j = i+1; j < teachers.length; j++) {
+			if (JSON.stringify(teachers[i]) == JSON.stringify(teachers[j])) {
+				teachers.splice(j,1);
+				j--;
+			}
+		}
+	}
 }
 
 /**
