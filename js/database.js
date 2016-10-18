@@ -120,16 +120,21 @@ function Database() {
 								'schedules' : new Array()
 								};
 								if(specifications[4] != null) {
-								specifications[4].forEach(function(schedules) {
+								specifications[4].forEach(function(schedules) { //TODO verificar se os parametros nao sao nulls
 										var schedule = new Object();
 										schedule = {
 										'day' : schedules[0],
 										'timeBegin' : schedules[1],
 										'timeEnd' : schedules[2],
 										};
+										if (schedules[3] == "" || schedules == null) {
+											schedules[3] = 'Não disponibilisado pelo JupiterWeb';
+										}
 										specification.teachers.push(schedules[3]);
 										specification.schedules.push(schedule);
 										});
+								} else {
+									specification.teachers.push('Não disponibilizado pelo JupiterWeb');
 								}
 								//specification.numVacancies = specifications[5];
 								// specifications[5] contains information about number
