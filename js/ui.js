@@ -540,7 +540,13 @@ function UI() {
 	 }
 
 	 this.createIdentifierOnServer = function() {
-		 var identifier = (+new Date).toString(36);
+		 var identifier;
+		 if (sessionStorage.getItem('identifier') == null) {
+			 identifier = (+new Date).toString(36);
+			 sessionStorage.setItem('identifier', identifier);
+		 } else {
+			 identifier = sessionStorage.getItem('identifier');
+		 }
 		 this.saveStateOnServer(identifier);
 		 prompt('Envie esse link para quem quiser!!', window.location.href + '#' + identifier);
 	 }
