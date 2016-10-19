@@ -190,6 +190,15 @@ SearchBox.prototype.add = function(lecture, activePlan) {
 		}
 	}
 
+	var color;
+	for (var i = 0; i < state.colors.length; i++) {
+		if (state.colors[i] == 0) {
+			state.colors[i] = 1;
+			color = i;
+			break;
+		}
+	}
+	lecture['color'] = color+1;
 	state.addLecture(lecture);
 	addClass(activePlan.lectures[numberOfLectures].htmlElement, 'lecture-info-plan-active');
 	this.hideSearchBox();
@@ -209,5 +218,3 @@ SearchBox.prototype.addEventListeners = function() {
 	this.searchBox.addEventListener('keyup', this.eventKey.bind(this));
 }
 
-//TODO refatorar if elses da funcao searchBox.onkeyup
-//TODO refatorar funcoes

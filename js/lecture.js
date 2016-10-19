@@ -170,6 +170,7 @@ Lecture.prototype.delete = function() {
   this.parent.lectures.splice(indexOnParent, 1);
 
   this.parent.update();
+	state.colors[this.color-1] = 0;
 }
 
 /**

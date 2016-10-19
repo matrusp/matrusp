@@ -39,7 +39,7 @@ function Plan(jsonObj, planId, isActivePlan) {
 Plan.prototype.load = function(basePlan, isActivePlan) {
   this.lectures = new Array();
   this.combinations = new Array();
-  if (basePlan) {
+  if (basePlan != null) {
     for (var i = 0; i < basePlan.lectures.length; i++) {
       this.lectures.push(new Lecture(basePlan.lectures[i], this));
       ui.addLecture(this.lectures[i]);
@@ -474,6 +474,15 @@ Plan.prototype.setPlan = function() {
   ui.adjustCombinationTrackWidth();
   ui.scrollActiveCombinationToView();
 
+	for (var i = 0; i < state.colors.length; i++) {
+		state.colors[i] = 0;
+	}
+
+	
+	for (var i = 0; i < this.lectures.length; i++) {
+		state.colors[this.lectures[i].color-1] = 1;
+	}
+
   // TODO this is a hack to update the combination index and total combination number
   // ui below div#lecture-schedule
   if (this.lectures.length == 0) {
@@ -483,6 +492,7 @@ Plan.prototype.setPlan = function() {
     // TODO comentar a linha de baixo, falar com bruno
     this.setActiveCombination();
   }
+
 };
 
 /**
@@ -554,9 +564,6 @@ Plan.prototype.addEventListeners = function() {
 /**
  *
  */
-Plan.prototype.removeEventListeners = function() {
-  this.html.tab.removeEventListener('click', this.setPlanBoundCallback);
-};
 
 //TODO move this function to utils when pull changes in git
 

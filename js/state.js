@@ -15,26 +15,39 @@
  * @see Plan
  */
 function State(jsonObj) {
-  this.plans = new Array();
+	this.plans = new Array();
+	this.colors = new Array();
+	this.numColors = 10; // represents the number of colors on system
+	for (var i = 0; i < this.numColors; i++) { 
+		this.colors[i] = 0;
+	}
+
   this.html = {
     previousCombination: document.getElementsByClassName('combination-button-left')[0],
     nextCombination: document.getElementsByClassName('combination-button-right')[0],
     upload: document.getElementById('upload-input')
   }
+	for (var i = 0; i < 3; i++) {
+		this.plans.push(new Plan(null, i));
+	}
   this.addEventListeners();
+	this.load(jsonObj);
+}
+
+State.prototype.load = function(jsonObj) { 
   if (jsonObj) {
-    this.version = jsonObj.version;
-    this.campus = jsonObj.campus;
-    this.semester = jsonObj.semester;
-    this.activePlanIndex = jsonObj.activePlanIndex;
-    for (var i = 0; i < 3; i++) {
-      if (i == this.activePlanIndex) {
-        var isActivePlan = true;
-        this.plans.push(new Plan(jsonObj.plans[i], i, isActivePlan));
-      } else {
-        this.plans.push(new Plan(jsonObj.plans[i], i));
-      }
-    }
+		this.version = jsonObj.version;
+		this.campus = jsonObj.campus;
+		this.semester = jsonObj.semester;
+		this.activePlanIndex = jsonObj.activePlanIndex;
+		this.colors = jsonObj.colors;
+		for (var i = 0; i < jsonObj.plans.length; i++) {
+			if (i == this.activePlanIndex) {
+				this.plans[i].load(jsonObj.plans[i], true);
+			} else {
+				this.plans[i].load(jsonObj.plans[i], false);
+			}
+		}
     // TODO this is a hack to update the combination index and total combination number
     // ui below div#lecture-schedule
     if (this.plans[this.activePlanIndex].lectures.length == 0) {
@@ -47,9 +60,6 @@ function State(jsonObj) {
     this.campus = 'TODOS';
     this.semester = '20162';//chooses some standard values once they don't change
     this.activePlanIndex = 0;
-		for (var i = 0; i < 3; i++) {
-			this.plans.push(new Plan(null, i));
-		}
   }
 }
 
@@ -88,7 +98,6 @@ State.prototype.uploadFile = function() {
   reader.onload = (function parseAFile(aFile) {
     return function(e) {
       var jsonObj = JSON.parse(e.target.result);
-      console.log('jsonObj', jsonObj);
       document.getElementById('upload-name').innerHTML = shortenString(file.name);
       state.delete();
       state = new State(jsonObj);

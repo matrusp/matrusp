@@ -401,7 +401,11 @@ function UI() {
 	 this.copyState = function() {
 	   object = new Object();
 		 object = shallowCopy(state);
+		 object['colors'] = new Array();
 		 object['plans'] = new Array();
+		 for (var i = 0; i < state.colors.length; i++) {
+			 object.colors.push(state.colors[i]);
+		 }
 		 for (var i = 0; i < state.plans.length; i++) {
 			 if (state.plans[i].lectures.length == 0) {
 				 object.plans.push(null);
@@ -465,9 +469,11 @@ function UI() {
 		 this.loadJSON('data/' + identifier + '.json', function(response) {
 				 //TODO if identifier not exist show status
 				 var newState = JSON.parse(response);
-				 seeksChanges(newState);
-				 state.delete();
-				 state = new State(newState);
+				 seeksChanges(newState); 
+				 for (var i = 0; i < state.plans.length; i++) {
+					 state.plans[i].clear();
+				 }
+				 state.load(newState);
 				 localStorage.setItem('state', JSON.stringify(ui.copyState()));
 				 });
 	 }
