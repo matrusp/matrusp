@@ -25,29 +25,53 @@ function State(jsonObj) {
   this.html = {
     previousCombination: document.getElementsByClassName('combination-button-left')[0],
     nextCombination: document.getElementsByClassName('combination-button-right')[0],
-    upload: document.getElementById('upload-input')
+    upload: document.getElementById('upload-input'),
+    download: document.getElementById('download')
   }
-	for (var i = 0; i < 3; i++) {
-		this.plans.push(new Plan(null, i));
-	}
   this.addEventListeners();
-	this.load(jsonObj);
+
+  this.version = 5;
+  this.campus = 'TODOS';
+  this.semester = '20162';//chooses some standard values once they don't change
+  this.activePlanIndex = 0;
+
+  var isActivePlan = false;
+  for (var i = 0; i < 3; i++) {
+    if (i == 0) {
+      var isActivePlan = true;
+    }
+    this.plans.push(new Plan(null, i, isActivePlan));
+  }
+
+  this.load(jsonObj);
 }
 
-State.prototype.load = function(jsonObj) { 
-  if (jsonObj) {
-		this.version = jsonObj.version;
-		this.campus = jsonObj.campus;
-		this.semester = jsonObj.semester;
-		this.activePlanIndex = jsonObj.activePlanIndex;
-		this.colors = jsonObj.colors;
-		for (var i = 0; i < jsonObj.plans.length; i++) {
-			if (i == this.activePlanIndex) {
-				this.plans[i].load(jsonObj.plans[i], true);
-			} else {
-				this.plans[i].load(jsonObj.plans[i], false);
-			}
-		}
+State.prototype.delete = function() {
+   while (this.plans.length) {
+   this.plans[0].delete();
+  }
+}
+
+State.prototype.clear = function() {
+  for (var i = 0; i < this.plans.length; i++) {
+    this.plans[i].clear();
+  }
+}
+
+State.prototype.load = function(baseState) {
+  if (baseState) {
+    this.version = baseState.version;
+    this.campus = baseState.campus;
+    this.semester = baseState.semester;
+    this.activePlanIndex = baseState.activePlanIndex;
+    for (var i = 0; i < 3; i++) {
+      if (i == this.activePlanIndex) {
+        var isActivePlan = true;
+        this.plans[i].load(baseState.plans[i], isActivePlan);
+      } else {
+        this.plans[i].load(baseState.plans[i]);
+      }
+    }
     // TODO this is a hack to update the combination index and total combination number
     // ui below div#lecture-schedule
     if (this.plans[this.activePlanIndex].lectures.length == 0) {
@@ -55,18 +79,12 @@ State.prototype.load = function(jsonObj) {
     } else {
       this.plans[this.activePlanIndex].setActiveCombination();
     }
-  } else {
-    this.version = 5;
-    this.campus = 'TODOS';
-    this.semester = '20162';//chooses some standard values once they don't change
-    this.activePlanIndex = 0;
   }
 }
 
-State.prototype.delete = function() {
-	 while (this.plans.length) {
-		this.plans[0].delete();
-	}
+State.prototype.reload = function(baseState) {
+  this.clear();
+  this.load(baseState);
 }
 
 /**
@@ -99,17 +117,32 @@ State.prototype.uploadFile = function() {
     return function(e) {
       var jsonObj = JSON.parse(e.target.result);
       document.getElementById('upload-name').innerHTML = shortenString(file.name);
-      state.delete();
-      state = new State(jsonObj);
+      state.clear();
+      state.load(jsonObj);
     };
   })(file);
   reader.readAsText(file);
+}
+
+State.prototype.downloadFile = function() {
+  var objectJSON = new Object();
+  objectJSON = ui.copyState();
+
+  var dataString = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(objectJSON));
+  var element = document.createElement('a');
+  element.setAttribute("href", dataString);
+  element.style.display = 'none';
+  element.setAttribute('download', 'grade_matrusp_'+ (new Date).getFullYear() + '.json');
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 }
 
 State.prototype.addEventListeners = function() {
   this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
   this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
   this.html.upload.addEventListener('change', this.uploadFile.bind(this));
+  this.html.download.addEventListener('click', this.downloadFile.bind(this));
 };
 
 

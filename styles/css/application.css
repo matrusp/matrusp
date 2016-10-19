@@ -33,8 +33,7 @@ body {
   width: 100%;
   height: 100%;
   max-width: 960px;
-  min-width: 770px;
-  overflow-x: hidden; }
+  min-width: 770px; }
 
 #main {
   position: relative;
@@ -94,18 +93,18 @@ footer {
   bottom: 0;
   position: relative; }
   footer > a {
-    position: absolute;
-    bottom: 0;
     margin: 10px 15px; }
-  footer > a:last-child {
-    right: 0; }
+    footer > a:nth-child(1) {
+      float: left; }
+    footer > a:nth-child(2) {
+      float: right; }
 
 #lecture-schedule {
   display: inline-block;
   vertical-align: top;
   width: calc((2 / 3) * 100% - 3px);
   height: calc(100% - 40px);
-  max-height: 860px;
+  max-height: 640px;
   padding-top: 40px; }
 
 #time-table {
@@ -151,7 +150,7 @@ footer {
   vertical-align: top;
   width: calc((1 / 3) * 100% - 3px);
   height: 100%;
-  max-height: 900px;
+  max-height: 680px;
   min-height: 560px; }
 
 #search-and-add,
@@ -490,9 +489,9 @@ footer {
 
 .lecture-info.color-3 {
   background-color: #ffcf8c;
-  color: #a66100; }
+  color: #a56100; }
   .lecture-info.color-3:hover {
-    background-color: #ffc573; }
+    background-color: #ffc572; }
   .lecture-info.color-3 > .lecture-info-header > .lecture-info-up:hover,
   .lecture-info.color-3 > .lecture-info-header > .lecture-info-down:hover,
   .lecture-info.color-3 > .lecture-info-header > .lecture-info-delete:hover {
@@ -546,9 +545,9 @@ footer {
 
 .lecture-info.color-7 {
   background-color: #ffe88c;
-  color: #a68400; }
+  color: #a58400; }
   .lecture-info.color-7:hover {
-    background-color: #ffe373; }
+    background-color: #ffe372; }
   .lecture-info.color-7 > .lecture-info-header > .lecture-info-up:hover,
   .lecture-info.color-7 > .lecture-info-header > .lecture-info-down:hover,
   .lecture-info.color-7 > .lecture-info-header > .lecture-info-delete:hover {
@@ -562,11 +561,11 @@ footer {
   background-color: #ff96cb;
   color: #b00059; }
   .lecture-info.color-8:hover {
-    background-color: #ff7dbf; }
+    background-color: #ff7cbf; }
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-up:hover,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-down:hover,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-delete:hover {
-    background-color: #ff4aa6; }
+    background-color: #ff49a6; }
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-up:active,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-down:active,
   .lecture-info.color-8 > .lecture-info-header > .lecture-info-delete:active {
@@ -732,8 +731,8 @@ footer {
 
 .schedule-box.color-3 {
   background-color: #ffcf8c;
-  color: #a66100;
-  border-left: 2.3px solid #a66100; }
+  color: #a56100;
+  border-left: 2.3px solid #a56100; }
   .schedule-box.color-3 > .timespan-mini {
     background-color: #ffcf8c; }
 
@@ -780,8 +779,8 @@ footer {
 
 .schedule-box.color-7 {
   background-color: #ffe88c;
-  color: #a68400;
-  border-left: 2.3px solid #a68400; }
+  color: #a58400;
+  border-left: 2.3px solid #a58400; }
   .schedule-box.color-7 > .timespan-mini {
     background-color: #ffe88c; }
 

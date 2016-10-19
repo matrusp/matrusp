@@ -12,9 +12,7 @@ searchBox = new SearchBox();
 if (window.location.hash.substr(1)) {
 	ui.loadStateFromServer(window.location.hash.substr(1));
 } else if (localStorage.getItem('state')) {
-	for (var i = 0; i < state.plans.length; i++) {
-		state.plans[i].clear();
-	}
+	state.clear();
 	state.load(JSON.parse(localStorage.getItem('state')));
 	saveStateOnLocalStorage();
 }

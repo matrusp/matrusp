@@ -143,7 +143,7 @@ function UI() {
         {
           tag: 'div',
           class: 'classroom-teacher',
-          innerHTML: classroom.teachers.join('<br>')
+          innerHTML: removeDuplicates(classroom.teachers).join('<br>')
         }
       ]
     };
@@ -469,11 +469,8 @@ function UI() {
 		 this.loadJSON('data/' + identifier + '.json', function(response) {
 				 //TODO if identifier not exist show status
 				 var newState = JSON.parse(response);
-				 seeksChanges(newState); 
-				 for (var i = 0; i < state.plans.length; i++) {
-					 state.plans[i].clear();
-				 }
-				 state.load(newState);
+				 seeksChanges(newState);
+				 state.reload(newState);
 				 localStorage.setItem('state', JSON.stringify(ui.copyState()));
 				 });
 	 }

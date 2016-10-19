@@ -10,12 +10,25 @@
         <meta http-equiv="refresh" content="0; url=http://bcc.ime.usp.br/matrusp/" />
     <![endif]-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="MatrUSP" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://bcc.ime.usp.br/matrusp" />
+    <meta property="og:image" content="http://bcc.ime.usp.br/matrusp/matrusp.jpg" />
+    <meta property="og:site_name" content="MatrUSP" />
     <title>MATRUSP</title>
     
     <link rel="stylesheet" href="styles/css/application.css">
 </head>
 
 <body>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     <div id="page-container">
         <header>
             <span id="logo">MATRUSP</span>
@@ -109,6 +122,13 @@
                     <span id='combination-value'>0/0</span>
                     <button onclick='state.nextCombination();'>&gt</button-->
                 </div>
+                <!--<div id="facebook-share" style="margin-top: 18px">
+                    <div class="fb-share-button"
+                         data-href="http://bcc.ime.usp.br/matrusp"
+                         data-layout="button">
+                    </div>
+                    Compartilhe sua grade no facebook.
+                </div>-->
             </div>
             <div id="lecture-explorer">
                 <div id="search-and-add">
@@ -152,27 +172,35 @@
                     <input id="upload-input" type="file" accept="application/json">
                 </div>
             </div>
-            <footer><a href="">Fale Conosco / Críticas e Sugestões</a><a href="">Fork me on GitHub</a></footer>
+            <footer>
+                <a href="">Fale Conosco / Críticas e Sugestões</a>
+                <a href="">Fork me on GitHub</a>
+                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="700" data-show-faces="true" data-font="lucida grande"></div>
+            </footer>
         </div>
     </div>
-    <script type="text/javascript" src="js/custom_lib.js"></script>
-    <script type="text/javascript" src="js/ui.js"></script>
-    <script type="text/javascript" src="js/database.js"></script>
-    <script type="text/javascript" src="js/search_box.js"></script>
-    <script type="text/javascript" src="js/schedule.js"></script>
-    <script type="text/javascript" src="js/classroom.js"></script>
-    <script type="text/javascript" src="js/lecture.js"></script>
-    <script type="text/javascript" src="js/combination.js"></script>
-    <script type="text/javascript" src="js/plan.js"></script>
-    <script type="text/javascript" src="js/state.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/icalendar.js"></script>
+    <script type="text/javascript" src="js/custom_lib.js" defer></script>
+    <script type="text/javascript" src="js/ui.js" defer></script>
+    <script type="text/javascript" src="js/database.js" defer></script>
+    <script type="text/javascript" src="js/search_box.js" defer></script>
+    <script type="text/javascript" src="js/schedule.js" defer></script>
+    <script type="text/javascript" src="js/classroom.js" defer></script>
+    <script type="text/javascript" src="js/lecture.js" defer></script>
+    <script type="text/javascript" src="js/combination.js" defer></script>
+    <script type="text/javascript" src="js/plan.js" defer></script>
+    <script type="text/javascript" src="js/state.js" defer></script>
+    <script type="text/javascript" src="js/main.js" defer></script>
+    <script type="text/javascript" src="js/icalendar.js" defer></script>
     <script type="text/javascript" src="js/image.js"></script>
-    <script type="text/javascript" src="js/html2canvas.js"></script>
-    <script type="text/javascript" src='js/pdfmake.js'></script>
-    <script type="text/javascript" src='js/vfs_fonts.js'></script>
-    <script type="text/javascript" src='js/pdf.js'></script>
-    <script type="text/javascript" src="js/googlecalendar.js"></script>
-    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+    <script type="text/javascript" src="js/html2canvas.js" defer></script>
+    <script type="text/javascript" src="js/pdfmake.js" defer></script>
+    <script type="text/javascript" src="js/vfs_fonts.js" defer></script>
+    <script type="text/javascript" src="js/pdf.js" defer></script>
+    <script type="text/javascript" src="js/pdf2.js" defer></script>
+    <script type="text/javascript" src="js/jspdf.min.js"></script>
+    <script type="text/javascript" src="js/jspdf.plugin.autotable.js"></script>
+    <script type="text/javascript" src="js/googlecalendar.js" defer></script>
+    <script type="text/javascript" src="js/fbhelper.js" defer></script>
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth" defer></script>
 </body>
 </html>

@@ -52,8 +52,8 @@ body {
     max-width: $page-max-width;
     min-width: $page-min-width;
     // TODO not sure why, but without this overflow property a scroll bar 
-    // appears on the bottom 
-    overflow-x: hidden;
+    // appears on the bottom
+    //overflow-x: hidden;
 }
 
 #main {
