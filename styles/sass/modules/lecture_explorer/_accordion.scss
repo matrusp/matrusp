@@ -236,6 +236,17 @@
         }
       }
     }
+
+    .classroom-active {
+      background-color: lighten($color, 20%);
+    }
+    .classroom-active.classroom-highlight {
+      background-color: $color;
+    }
+    .classroom-active.classroom-highlight.classroom-conflict {
+      background-color: #f00;
+      color: black;
+      opacity: 0.8;
+    }
   }
 }
-
