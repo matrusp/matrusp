@@ -64,6 +64,9 @@ State.prototype.load = function(baseState) {
     this.campus = baseState.campus;
     this.semester = baseState.semester;
     this.activePlanIndex = baseState.activePlanIndex;
+		for (var i = 0; i < this.colors.length; i++) {
+			this.colors[i] = baseState.colors[i];
+		}
     for (var i = 0; i < 3; i++) {
       if (i == this.activePlanIndex) {
         var isActivePlan = true;

@@ -181,7 +181,22 @@ SearchBox.prototype.hideSearchBox = function() {
 	this.searchBox.value = '';
 }
 
+SearchBox.prototype.compareID = function(lectureA, lectureB) {
+	if (lectureA.classroomCode > lectureB.classroomCode) {
+		return 1;
+	}
+	if (lectureA.classroomCode < lectureB.classroomCode) {
+		return -1;
+	}
+	return 0;
+}
+
 SearchBox.prototype.add = function(lecture, activePlan) {
+	lecture.classrooms.sort(this.compareID);
+	for (var i = 0; i < lecture.classrooms.length; i++) {
+		lecture.classrooms[i].teachers.sort();
+	}
+	console.log('como esta saindo a lecture', lecture);
 	var numberOfLectures = activePlan.lectures.length;
 	for (var i = 0; i < activePlan.lectures.length; i++) {
 		if (lecture.code == activePlan.lectures[i].code) {
