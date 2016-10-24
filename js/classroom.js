@@ -132,6 +132,7 @@ Classroom.prototype.removeClassInSchedules = function(className) {
  */
 Classroom.prototype.showBox = function() {
   this.addClassInSchedules('schedule-box-show');
+  addClass(this.htmlElement, 'classroom-active');
 };
 
 /**
@@ -139,9 +140,11 @@ Classroom.prototype.showBox = function() {
  */
 Classroom.prototype.hideBox = function() {
   this.removeClassInSchedules('schedule-box-show');
+  removeClass(this.htmlElement, 'classroom-active');
 };
 
 Classroom.prototype.checkAndSetConflict = function() {
+  var conflictNotSet = true;
   var lecture = this.parent;
   // Look for conflicting schedules. The active classroom doesn't have any
   // conflicts because it is active (obviously). Also there are conflicts only
@@ -161,6 +164,10 @@ Classroom.prototype.checkAndSetConflict = function() {
             // This schedule (one of many for this classroom) conflicts with some other
             // schedule from an active classroom. Set conflict highlight.
             addClass(this.schedules[j].htmlElement, 'schedule-box-highlight-conflict');
+            if (conflictNotSet) {
+              conflictNotSet = false;
+              addClass(this.htmlElement, 'classroom-conflict');
+            }
           }
         }
       }
@@ -190,6 +197,7 @@ Classroom.prototype.showOnHover = function() {
   }
   this.checkAndSetConflict();
   this.showBox();
+  addClass(this.htmlElement, 'classroom-highlight');
 }
 
 /**
@@ -197,10 +205,10 @@ Classroom.prototype.showOnHover = function() {
  */
 Classroom.prototype.hideOnHoverOut = function() {
   var lecture = this.parent;
-  if (lecture.activeClassroom && this != lecture.activeClassroom) {
-    // There is an active classroom for this lecture and it's not 'this' one.
-    this.hideBox();
-    this.removeClassInSchedules('schedule-box-highlight-conflict');
+  removeClass(this.htmlElement, 'classroom-highlight');
+  this.hideBox();
+  this.removeClassInSchedules('schedule-box-highlight-conflict');
+  if (lecture.activeClassroom) {
     lecture.activeClassroom.showBox();
   }
 
