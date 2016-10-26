@@ -77,7 +77,7 @@ var getColumns = function () {
     {title: "Código", dataKey: "cod"},
     {title: "Turma", dataKey: "tur"},
     {title: "Nome", dataKey: "name"},
-    {title: "Professor", dataKey: "prof"},
+    {title: "Professor", dataKey: "prof"}
   ];
 };
 
@@ -87,8 +87,8 @@ function getData() {
   for (var i = 0; i < active_classes.length; i++) {
     var color = window.getComputedStyle(state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom[i].parent.htmlElement, null).backgroundColor.replace(/\(|\)|rgb/g, "");
     var professors = "";
-    for (var k = 0; k < active_classes[i].teachers[0].length; k++) {
-      professors = professors + active_classes[i].teachers[0][k] + "\n";
+    for (var k = 0; k < active_classes[i].teachers.length; k++) {
+      professors = professors + active_classes[i].teachers[k] + "\n";
     }
     data.push({
       cod: active_classes[i].parent.code,
