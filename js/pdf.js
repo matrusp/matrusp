@@ -1,115 +1,113 @@
-var hexDigits = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+document.getElementById('pdf').addEventListener('click',  openpdf);
 
-function rgb2hex(rgb) {
-  rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-  return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+function canvasShiftImage(oldCanvas, shiftAmt, realPdfPageHeight){
+  shiftAmt = parseInt(shiftAmt) || 0;
+  if(shiftAmt <= 0){ return oldCanvas; }
+
+  var newCanvas = document.createElement('canvas');
+  newCanvas.height = Math.min(oldCanvas.height - shiftAmt, realPdfPageHeight);
+  newCanvas.width = oldCanvas.width;
+  var ctx = newCanvas.getContext('2d');
+
+  var img = new Image();
+  img.src = oldCanvas.toDataURL();
+  ctx.drawImage(imgPreload,0,shiftAmt,imgPreload.width,imgPreload.height-shiftAmt,0,0,imgPreload.width,imgPreload.height-shiftAmt);
+
+  return newCanvas;
 }
 
-function hex(x) {
-  return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+var html2canvasSuccess = function(canvas, callback){
+  var pdf = new jsPDF('p','px'),
+    pdfInternals = pdf.internal,
+    pdfPageSize = pdfInternals.pageSize,
+    pdfScaleFactor = pdfInternals.scaleFactor,
+    pdfPageWidth = pdfPageSize.width,
+    pdfPageHeight = pdfPageSize.height,
+    totalPdfHeight = 0,
+    htmlPageHeight = canvas.height,
+    htmlScaleFactor = canvas.width / (pdfPageWidth * pdfScaleFactor);
+
+  while(totalPdfHeight < htmlPageHeight){
+    var newCanvas = canvasShiftImage(canvas, totalPdfHeight, pdfPageHeight * pdfScaleFactor);
+    pdf.addImage(newCanvas, 'png', 50, 15, pdfPageWidth-100, pdfPageWidth-100, null, 'NONE'); //note the format doesn't seem to do anything... I had it at 'pdf' and it didn't care
+
+    totalPdfHeight += (pdfPageHeight * pdfScaleFactor * htmlScaleFactor);
+
+    if(totalPdfHeight < htmlPageHeight){ pdf.addPage(); }
+  }
+  callback(pdf);
+};
+
+function generateTable(doc) {
+  doc.autoTable(getColumns(), getData(), {
+    styles: {
+      overflow: 'linebreak',
+      font: 'courier',
+      fillStyle: 'DF',
+      lineColor: [44, 62, 80],
+      lineWidth: 2,
+      halign: 'center', // left, center, right
+      valign: 'middle' // top, middle, bottom
+    },
+    headerStyles: {
+      fillColor: [44, 62, 80],
+      fontSize: 15,
+      rowHeight: 30
+    },
+    bodyStyles: {
+      fillColor: [52, 73, 94],
+      textColor: 0
+    },
+    columnStyles: {
+      email: {
+        fontStyle: 'bold'
+      }
+    },
+    startY: 330,
+    drawCell: function (cell, data) {
+      var color = (data.row.raw.color).split(", ");
+      data.doc.setFillColor(parseInt(color[0]), parseInt(color[1]), parseInt(color[2]));
+    }
+  });
+  doc.save("table.pdf");
 }
 
-function get_image(callback) {
+var getColumns = function () {
+  return [
+    {title: "Código", dataKey: "cod"},
+    {title: "Turma", dataKey: "tur"},
+    {title: "Nome", dataKey: "name"},
+    {title: "Professor", dataKey: "prof"}
+  ];
+};
+
+function getData() {
+  var data = [];
+  var active_classes = state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom;
+  for (var i = 0; i < active_classes.length; i++) {
+    var color = window.getComputedStyle(state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom[i].parent.htmlElement, null).backgroundColor.replace(/\(|\)|rgb/g, "");
+    var professors = "";
+    for (var k = 0; k < active_classes[i].teachers.length; k++) {
+      professors = professors + active_classes[i].teachers[k] + "\n";
+    }
+    data.push({
+      cod: active_classes[i].parent.code,
+      tur: active_classes[i].classroomCode,
+      name: active_classes[i].parent.name,
+      prof: professors,
+      color: color
+    });
+  }
+  return data;
+}
+
+function openpdf() {
   var combinations = document.getElementById("combination-controller");
   combinations.style.display = "none";
   html2canvas(document.getElementById("lecture-schedule"), {
-    onrendered: function (canvas) {
+    onrendered: function(canvas){
       combinations.style.removeProperty("display");
-      dd.images.calendar = canvas.toDataURL();
-      callback();
-    },
-    background: '#ffffff'
+      html2canvasSuccess(canvas, generateTable);
+    }
   });
 }
-
-function get_subtitle(callback) {
-  var active_classes = state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom;
-  for (var i = 0; i < active_classes.length; i++) {
-    var professors = "";
-    var lecture_color = rgb2hex(window.getComputedStyle(state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom[i].parent.htmlElement, null).backgroundColor);
-    for (var j = 0; j < active_classes[i].teachers.length; j++) {
-      for (var k = 0; k < active_classes[i].teachers[j].length; k++) {
-        professors = professors + active_classes[i].teachers[j][k] + "\n";
-      }
-    }
-    var array_of_objects = [
-      {
-        text: active_classes[i].parent.code,
-        color: '#000000',
-        fillColor: lecture_color
-      },
-      {
-        text: active_classes[i].classroomCode,
-        color: '#000000',
-        fillColor: lecture_color
-      },
-      {
-        text: active_classes[i].parent.name,
-        color: '#000000',
-        fillColor: lecture_color
-      },
-      {
-        text: professors,
-        color: '#000000',
-        fillColor: lecture_color
-      }
-    ];
-    dd.content[1].table.body.push(array_of_objects);
-  }
-  callback();
-}
-
-var dd = {
-  content: [
-    {
-      image: 'calendar',
-    },
-    {
-      style: 'section',
-      table: {
-        widths: [ '12%',  '7%',  '*',  '35%'],
-        body: [
-          [
-            {
-              text: 'Código',
-              color: '#000000',
-              fillColor: '#FFFFFF'
-            },
-            {
-              text: 'Turma',
-              color: '#000000',
-              fillColor: '#FFFFFF'
-            },
-            {
-              text: 'Nome',
-              color: '#000000',
-              fillColor: '#FFFFFF'
-            },
-            {
-              text: 'Professor',
-              color: '#000000',
-              fillColor: '#FFFFFF'
-            }
-          ]
-        ]
-      }
-    }
-  ],
-  images: {
-    calendar: ''
-  },
-  defaultStyle: {
-    alignment: 'center'
-  }
-};
-
-function open_pdf() {
-  dd.content[1].table.body.splice(1, dd.content[1].table.body.length-1);
-  get_image(function () {
-    get_subtitle(function () {
-      pdfMake.createPdf(dd).open();
-    });
-  });
-}
-
-//document.getElementById('pdf').addEventListener('click',  open_pdf);
