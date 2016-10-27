@@ -31,6 +31,10 @@ function handleAuthResult(authResult) {
 }
 
 function handleAuthClick(event) {
+  if (state.plans[state.activePlanIndex].activeCombination == null) {
+    alert("Insira uma ou mais matérias antes exportar para o Google Calendar");
+    return;
+  }
   gapi.auth.authorize(
     {client_id: CLIENT_ID, scope: SCOPES, immediate: immediate},
     handleAuthResult);
@@ -65,7 +69,7 @@ function get_schedule_end_time_google(schedule) {
 }
 
 function addEvents() {
-  var active_classes = state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom;
+  var active_classes = state.plans[state.activePlanIndex].activeCombination.lecturesClassroom;
   for (var i = 0; i < active_classes.length; i++) {
     var current_schedule = active_classes[i].schedules;
     for (var j = 0; j < current_schedule.length; j++) {

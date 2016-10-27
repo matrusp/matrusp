@@ -83,7 +83,7 @@ var getColumns = function () {
 
 function getData() {
   var data = [];
-  var active_classes = state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom;
+  var active_classes = state.plans[state.activePlanIndex].activeCombination.lecturesClassroom;
   for (var i = 0; i < active_classes.length; i++) {
     var color = window.getComputedStyle(state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom[i].parent.htmlElement, null).backgroundColor.replace(/\(|\)|rgb/g, "");
     var professors = "";
@@ -102,6 +102,10 @@ function getData() {
 }
 
 function openpdf() {
+  if (state.plans[state.activePlanIndex].activeCombination == null) {
+    alert("Insira uma ou mais matérias antes de gerar o arquivo pdf");
+    return;
+  }
   var combinations = document.getElementById("combination-controller");
   combinations.style.display = "none";
   html2canvas(document.getElementById("lecture-schedule"), {

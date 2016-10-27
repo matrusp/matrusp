@@ -87,7 +87,7 @@ function get_title(classroom) {
 }
 
 function build_event() {
-  var active_classes = state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom;
+  var active_classes = state.plans[state.activePlanIndex].activeCombination.lecturesClassroom;
   var events_statement = "";
   for (var i = 0; i < active_classes.length; i++) {
     var current_schedule = active_classes[i].schedules;
@@ -109,6 +109,10 @@ function build_event() {
 }
 
 function download_icalendar() {
+  if (state.plans[state.activePlanIndex].activeCombination == null) {
+    alert("Insira uma ou mais matérias antes exportar para um arquivo ics");
+    return;
+  }
   var element = document.createElement('a');
   element.style.display = 'none';
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(header_statement + build_event() + final_statement));
