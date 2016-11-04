@@ -41,8 +41,8 @@
     //      like this "- 2px".
     // TODO change 30px to variable
     width: calc(100% - (2 * #{$search-padding-horizontal})
-                     - (2 * #{$search-and-add-border-width})
-                     - 2px - 30px);
+                     - (2 * #{$search-and-add-border-width}));
+                    // - 2px - 30px); removed to hide #add-extra-activity
     padding: 0 $search-padding-horizontal;
     font-family: $font-family;
     font-size: $font-size;

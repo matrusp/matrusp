@@ -382,10 +382,10 @@ function UI() {
 			xobj.onreadystatechange = function() {
 				if (this.readyState == 4) {
 					if (this.status == 200 && this.responseText == "OK") {
-						console.log('copiado com sucesso!');
+						//console.log('copiado com sucesso!');
 						//TODO print information of success
 					} else {
-						console.log('falhou!!');
+						//console.log('falhou!!');
 						//TODO print information about fail
 					}
 				}
@@ -483,17 +483,17 @@ function UI() {
 					 continue;
 				 }
 				 if (obj[keys[i]] != objOnDB[keys[i]]) {
-					 console.log('obj :', obj[keys[i]], ' key: ', keys[i]); 
-					 console.log('objOnDB :', objOnDB[keys[i]], ' key: ', keys[i]); 
-					 console.log('legal ele percebe que mudou!');
+					//console.log('obj :', obj[keys[i]], ' key: ', keys[i]); 
+					//console.log('objOnDB :', objOnDB[keys[i]], ' key: ', keys[i]); 
+					//console.log('legal ele percebe que mudou!');
 					 obj[keys[i]] = objOnDB[keys[i]];
 				 }
 			 }
 		 } else {
 			 if (obj != objOnDB) {
-				 console.log('obj :', obj);
-				 console.log('objOnDB :', objOnDB);
-				 console.log('percebeu que tava errado!');
+				//console.log('obj :', obj);
+				//console.log('objOnDB :', objOnDB);
+				//console.log('percebeu que tava errado!');
 				 obj = objOnDB;
 			 }
 		 }

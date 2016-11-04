@@ -41,6 +41,10 @@ header {
     cursor: default;
 }
 
+.beta-tag {
+    color: $header-color-symbols;
+}
+
 #icons {
     display: inline-block;
     float: right;

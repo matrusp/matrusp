@@ -15,7 +15,7 @@
     <meta property="og:url" content="http://bcc.ime.usp.br/matrusp" />
     <meta property="og:image" content="http://bcc.ime.usp.br/matrusp/matrusp.jpg" />
     <meta property="og:site_name" content="MatrUSP" />
-    <title>MATRUSP</title>
+    <title>MatrUSP</title>
     
     <link rel="stylesheet" href="styles/css/application.css">
 </head>
@@ -31,12 +31,7 @@
     }(document, 'script', 'facebook-jssdk'));</script>
     <div id="page-container">
         <header>
-            <span id="logo">MATRUSP</span>
-            <div id='save-controller'>
-                <input id='user-identifier'> 
-                <button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value);'>Salvar</button>
-                <button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
-            </div>
+            <span id="logo">MatrUSP</span><span class="beta-tag">Beta</span>
             <ul id="icons">
                 <li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
                     <div class="hover-mask"></div>
@@ -63,6 +58,11 @@
                     <img src="images/ic_download.png" alt="">
                 </li>
             </ul>
+            <div id='save-controller'>
+                <input id='user-identifier' placeholder='Salve seu plano aqui'> 
+                <button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value);'>Salvar</button>
+                <button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
+            </div>
         </header>
         <div id="main">
             <div id="lecture-schedule">
@@ -133,7 +133,7 @@
             <div id="lecture-explorer">
                 <div id="search-and-add">
                     <input type="text" id="search" placeholder="Digite o código ou nome da matéria">
-                    <button id="add-extra-activity" onclick="ui.addLecture(lectureEx, 0);">+</button>
+                    <!--button id="add-extra-activity" onclick="ui.addLecture(lectureEx, 0);">+</button-->
                     <div id="search-result-box">
                         <!-- Dynamically populated -->
                     </div>
@@ -173,8 +173,8 @@
                 </div>
             </div>
             <footer>
-                <a href="">Fale Conosco / Críticas e Sugestões</a>
-                <a href="">Fork me on GitHub</a>
+                <span>Tendo problemas? Utilize a <a href="bcc.ime.usp.br/matrusp_v1">versão antiga</a>, ou entre em contato conosco: apoiobcc@linux.ime.usp.br</span>
+                <span>Colabore com o código no <a href="https://github.com/matrusp/matrusp">GitHub</a>!</span>
                 <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="700" data-show-faces="true" data-font="lucida grande"></div>
             </footer>
         </div>

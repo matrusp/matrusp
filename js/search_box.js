@@ -196,7 +196,7 @@ SearchBox.prototype.add = function(lecture, activePlan) {
 	for (var i = 0; i < lecture.classrooms.length; i++) {
 		lecture.classrooms[i].teachers.sort();
 	}
-	console.log('como esta saindo a lecture', lecture);
+	//console.log('como esta saindo a lecture', lecture);
 	var numberOfLectures = activePlan.lectures.length;
 	for (var i = 0; i < activePlan.lectures.length; i++) {
 		if (lecture.code == activePlan.lectures[i].code) {
