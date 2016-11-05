@@ -8,7 +8,7 @@ function generate_identifier() {
   } else {
     identifier = sessionStorage.getItem('identifier');
   }
-  this.saveStateOnServer(identifier);
+  ui.saveStateOnServer(identifier);
   window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(window.location.href + '#' + identifier), '',
     'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
 }
