@@ -325,8 +325,8 @@ footer {
   display: block; }
 
 .search-result-selected {
-  background-color: #e8ffdb;
-  color: #398417; }
+  background-color: #cacaca;
+  color: black; }
 
 #accordion {
   /* sum scroll-bar-width to hide it from the user */

@@ -471,7 +471,7 @@ function UI() {
 				 var newState = JSON.parse(response);
 				 seeksChanges(newState);
 				 state.reload(newState);
-				 localStorage.setItem('state', JSON.stringify(ui.copyState()));
+				 localStorage.setItem('state_v2', JSON.stringify(ui.copyState()));
 				 });
 	 }
 		

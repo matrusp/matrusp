@@ -11,9 +11,9 @@ searchBox = new SearchBox();
 
 if (window.location.hash.substr(1)) {
 	ui.loadStateFromServer(window.location.hash.substr(1));
-} else if (localStorage.getItem('state')) {
+} else if (localStorage.getItem('state_v2')) {
 	state.clear();
-	state.load(JSON.parse(localStorage.getItem('state')));
+	state.load(JSON.parse(localStorage.getItem('state_v2')));
 	saveStateOnLocalStorage();
 }
 setTimeout(function(){ui.scrollActiveCombinationToView()}, 100);

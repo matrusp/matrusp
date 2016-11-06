@@ -117,12 +117,7 @@
 .search-result.lecture-info {
     padding: 6px 4px;
     border-bottom: 1px solid rgba(159, 159, 159, 0.8);
-		display: block;
-		//TODO can I remove this without consequences?
-			//&:hover {
-    // background-color: $highlight-background;
-    //  color: $highlight-text;
-		//}
+    display: block;
 }
 
 .search-result-selected {
