@@ -313,6 +313,7 @@ footer {
   max-height: 300px;
   min-height: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   cursor: default;
   background-color: #FEFEFE;
   border-radius: 0 2px 2px 2px;
@@ -372,6 +373,9 @@ footer {
 .classrooms-header-checkbox,
 .classroom-info-checkbox {
   width: 20px; }
+
+.classrooms-header-checkbox {
+  visibility: hidden; }
 
 .lecture-info-up,
 .lecture-info-down,
@@ -749,6 +753,17 @@ footer {
     background-color: #ddd; }
   .plan-tab-option:active {
     background-color: #aaa; }
+
+#upload-warning {
+  right: 0;
+  bottom: 44px;
+  display: inline-block;
+  position: absolute;
+  color: red;
+  visibility: hidden; }
+
+#upload-warning.upload-warning-old-version {
+  visibility: visible; }
 
 #upload-button {
   position: absolute;

@@ -90,6 +90,12 @@
   width: $width-lecture-checkbox;
 }
 
+// This is here as a decision to abandon this functionality
+// but it can be of use later on.
+.classrooms-header-checkbox {
+  visibility: hidden;
+}
+
 .lecture-info-up,
 .lecture-info-down,
 .lecture-info-delete {

@@ -570,6 +570,6 @@ Plan.prototype.addEventListeners = function() {
 
 function saveStateOnLocalStorage() {
 	if (state) {
-		localStorage.setItem('state_v2', JSON.stringify(ui.copyState(state)));
+		localStorage.setItem('state', JSON.stringify(ui.copyState(state)));
 	}
 }

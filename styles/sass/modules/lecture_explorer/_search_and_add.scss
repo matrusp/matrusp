@@ -107,6 +107,7 @@
     max-height: 300px;
     min-height: 10px;
     overflow-y: auto;
+    overflow-x: hidden;
     cursor: default;
     background-color: $white;
     border-radius: 0 2px 2px 2px;

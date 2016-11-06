@@ -30,7 +30,8 @@ function State(jsonObj) {
   }
   this.addEventListeners();
 
-  this.version = 5;
+  // variable set on main.js
+  this.version = matrusp_current_state_version;
   this.campus = 'TODOS';
   this.semester = '20162';//chooses some standard values once they don't change
   this.activePlanIndex = 0;
@@ -60,6 +61,10 @@ State.prototype.clear = function() {
 
 State.prototype.load = function(baseState) {
   if (baseState) {
+    if (!baseState.version || baseState.version < matrusp_current_state_version) {
+      // if the state being loaded is not updated, don't load.
+      return false;
+    }
     this.version = baseState.version;
     this.campus = baseState.campus;
     this.semester = baseState.semester;
@@ -82,7 +87,9 @@ State.prototype.load = function(baseState) {
     } else {
       this.plans[this.activePlanIndex].setActiveCombination();
     }
+    return true;
   }
+  return false;
 }
 
 State.prototype.reload = function(baseState) {
@@ -119,9 +126,21 @@ State.prototype.uploadFile = function() {
   reader.onload = (function parseAFile(aFile) {
     return function(e) {
       var jsonObj = JSON.parse(e.target.result);
+      if (!jsonObj.version || jsonObj.version < matrusp_current_state_version) {
+        // if the state being loaded is not updated, warn and don't load.
+        addClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
+        return false;
+      }
       document.getElementById('upload-name').innerHTML = shortenString(file.name);
       state.clear();
-      state.load(jsonObj);
+      if (state.load(jsonObj)) {
+        removeClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
+      } else {
+        // the way it is right now, this case never happens:
+        // state.load() only return false if the json doesn't have .version or it is an old version
+        // but this is also checked in this method, 10 lines above.
+        addClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
+      }
     };
   })(file);
   reader.readAsText(file);
@@ -135,7 +154,11 @@ State.prototype.downloadFile = function() {
   var element = document.createElement('a');
   element.setAttribute("href", dataString);
   element.style.display = 'none';
-  element.setAttribute('download', 'grade_matrusp_'+ (new Date).getFullYear() + '.json');
+  if (document.getElementById('user-identifier').value) {
+    element.setAttribute('download', document.getElementById('user-identifier').value + '.json');
+  } else {
+    element.setAttribute('download', 'matrusp_'+ (new Date).getFullYear() + '.json');
+  }
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
