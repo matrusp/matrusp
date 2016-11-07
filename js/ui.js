@@ -38,8 +38,8 @@ function UI() {
     positionEnd = 'calc((100% / 18) * (' + hourEnd + ' - ' + hourBegin + ' - 1 + (60 - ' + minBegin + ') / 60 + ' + minEnd + ' / 60) + 1px)'; 
 
     return { 
-      positionBegin, 
-      positionEnd 
+      'positionBegin': positionBegin, 
+      'positionEnd': positionEnd 
     };
   }
 
