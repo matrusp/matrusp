@@ -466,7 +466,7 @@ function UI() {
 			 //TODO print info about use		
 			 return;
 		 }
-		 this.loadJSON('data/' + identifier + '.json', function(response) {
+		 this.loadJSON('data/' + identifier.replace(/[^\w]/g, '') + '.json', function(response) {
 				 //TODO if identifier not exist show status
 				 var newState = JSON.parse(response);
 				 seeksChanges(newState);
