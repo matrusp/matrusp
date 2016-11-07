@@ -78,8 +78,12 @@ SearchBox.prototype.searchResultBoxHide = function() {
 	}
 };
 
-SearchBox.prototype.toggleSearchResultBox = function() {
-	this.overSearchResultBox = !this.overSearchResultBox;
+SearchBox.prototype.mouseOverSearchResultBox = function() {
+	this.overSearchResultBox = true;
+};
+
+SearchBox.prototype.mouseOutSearchResultBox = function() {
+	this.overSearchResultBox = false;
 };
 
 SearchBox.prototype.eventKey = function(e) {
@@ -228,8 +232,8 @@ SearchBox.prototype.removeLecturesSuggestionList = function() {
 SearchBox.prototype.addEventListeners = function() {
 	this.searchBox.addEventListener('focus', this.searchResultBoxShow.bind(this));
 	this.searchBox.addEventListener('blur', this.searchResultBoxHide.bind(this));
-	this.searchResultBox.addEventListener('mouseover', this.toggleSearchResultBox.bind(this));
-	this.searchResultBox.addEventListener('mouseout', this.toggleSearchResultBox.bind(this));
+	this.searchResultBox.addEventListener('mouseover', this.mouseOverSearchResultBox.bind(this));
+	this.searchResultBox.addEventListener('mouseout', this.mouseOutSearchResultBox.bind(this));
 	this.searchBox.addEventListener('keyup', this.eventKey.bind(this));
 }
 
