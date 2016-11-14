@@ -370,9 +370,10 @@ function UI() {
 	/**
 	 *
 	 */
-	 this.saveStateOnServer = function(identifier) {
+	 this.saveStateOnServer = function(identifier, share) {
 		if (!identifier || identifier == '') {
 			//TODO print info about use		
+			 alert('É necessário preencher o nome do identificador');
 			return;
 		}
 			var objectJSON = new Object();
@@ -383,10 +384,16 @@ function UI() {
 				if (this.readyState == 4) {
 					if (this.status == 200 && this.responseText == "OK") {
 						//console.log('copiado com sucesso!');
-						//TODO print information of success
+						//TODO print information of successo
+						if (!share) { 
+							// if the createIdentifierOnServer called this function 
+							// another alert has already been shown
+							alert('Identificador salvo com sucesso!!');
+						}
 					} else {
 						//console.log('falhou!!');
 						//TODO print information about fail
+						alert('Algum erro ocorreu, salve o identificador novamente');
 					}
 				}
 			};
@@ -464,6 +471,7 @@ function UI() {
 	 this.loadStateFromServer = function(identifier) {
 		 if (!identifier || identifier == '') {
 			 //TODO print info about use		
+			 alert('É necessário preencher o nome do identificador');
 			 return;
 		 }
 		 this.loadJSON('data/' + identifier.replace(/[^\w]/g, '') + '.json', function(response) {
@@ -514,7 +522,9 @@ function UI() {
 					 // the BD has not yet been fully loaded
 					 lectureOnDB = lectureOnDB[0];
 					 tester(lecture, lectureOnDB);
+					 lectureOnDB.classrooms.sort(searchBox.compareID);
 					 for (var l = 0; l < lecture.classrooms.length; l++) {
+						 lecture.classrooms[l].teachers.sort();
 						 var classroom = lecture.classrooms[l];
 						 var classroomOnDB = lectureOnDB.classrooms[l];
 						 tester(classroom, classroomOnDB);
@@ -550,7 +560,7 @@ function UI() {
 		 } else {
 			 identifier = sessionStorage.getItem('identifier');
 		 }
-		 this.saveStateOnServer(identifier);
+		 this.saveStateOnServer(identifier, true);
 		 window.location.hash = identifier;
 		 prompt('Envie esse link para quem quiser!!', window.location.href);
 	 }
@@ -558,4 +568,3 @@ function UI() {
 
 
 
-//TODO get the absulute path to folders, the implemented way may not work properly
