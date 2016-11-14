@@ -551,7 +551,8 @@ function UI() {
 			 identifier = sessionStorage.getItem('identifier');
 		 }
 		 this.saveStateOnServer(identifier);
-		 prompt('Envie esse link para quem quiser!!', window.location.href + '#' + identifier);
+		 window.location.hash = identifier;
+		 prompt('Envie esse link para quem quiser!!', window.location.href);
 	 }
 }
 

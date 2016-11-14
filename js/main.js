@@ -13,6 +13,7 @@ searchBox = new SearchBox();
 
 if (window.location.hash.substr(1)) {
 	ui.loadStateFromServer(window.location.hash.substr(1));
+	history.pushState('', document.title, window.location.pathname);
 } else if (localStorage.getItem('state')) {
 	state.clear();
 	state.load(JSON.parse(localStorage.getItem('state')));
