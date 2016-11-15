@@ -128,7 +128,7 @@ function Database() {
 										'timeEnd' : schedules[2],
 										};
 										if (schedules[3] == "" || schedules == null) {
-											schedules[3] = 'Não disponibilisado pelo JupiterWeb';
+											schedules[3] = 'Não disponibilizado pelo JupiterWeb';
 										}
 										specification.teachers.push(schedules[3]);
 										specification.schedules.push(schedule);
