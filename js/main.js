@@ -8,7 +8,7 @@ var matrusp_current_state_version = 6;
 
 state = new State();
 database = new Database();
-database.loadDB('db/20162.txt', 1);
+database.loadDB('db/db_usp.txt', 1);
 searchBox = new SearchBox();
 
 if (window.location.hash.substr(1)) {
