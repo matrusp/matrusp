@@ -78,7 +78,7 @@ function Database() {
 		}
 
 		this.result.sort(function(first, second) {
-			return first.score - second.score;
+			return second.score - first.score;
 		});
 		this.result.forEach(function(t) {
 			delete t.score;
@@ -106,7 +106,7 @@ function Database() {
 						description[2].forEach(function(specifications) {
 								var specification = new Object();
 								specification = {
-								'classroomCode' : specifications[0].replace(/.{5}/, ' '),
+								'classroomCode' : new Array(),
 								'data_inicio' : specifications[1],
 								'data_fim' : specifications[2],
 								'type' : specifications[3],
@@ -119,6 +119,7 @@ function Database() {
 								'teachers' : new Array(),
 								'schedules' : new Array()
 								};
+								specification.classroomCode.push(specifications[0].replace(/.{5}/, ''));
 								if(specifications[4] != null) {
 								specifications[4].forEach(function(schedules) { //TODO verificar se os parametros nao sao nulls
 										var schedule = new Object();
@@ -141,6 +142,7 @@ function Database() {
 								// of vacancies
 								lecture.classrooms.push(specification);
 						});
+						searchBox.aggregateAndSortLectures(lecture);
 						self.db[semester][campus][lecture.code] = lecture;
 				});
 				}
