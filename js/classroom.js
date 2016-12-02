@@ -32,10 +32,9 @@ function Classroom(jsonObj, parentLecture) {
   this.teachers = new Array();
   this.schedules = new Array();
   if (jsonObj) {
-    //TODO: rever data de inicio/fim
 		this.data_inicio = jsonObj.data_inicio;
 		this.data_fim = jsonObj.data_fim;
-    this.classroomCode = jsonObj.classroomCode;
+    this.classroomCode = new Array(); 
     this.horas_aula = jsonObj.horas_aula;
     this.vagas_ocupadas = jsonObj.vagas_ocupadas;
     this.alunos_especiais = jsonObj.alunos_especiais;
@@ -47,6 +46,11 @@ function Classroom(jsonObj, parentLecture) {
     for (var i = 0; i < jsonObj.schedules.length; i++) {
       this.schedules.push(new Schedule(jsonObj.schedules[i], this));
     }
+		if (jsonObj.classroomCode) {
+			for (var i = 0; i < jsonObj.classroomCode.length; i++) {
+				this.classroomCode.push(jsonObj.classroomCode[i]);
+			}
+		}
     this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
     if (this.selected) {
       addClass(this.htmlElement, 'classroom-selected');

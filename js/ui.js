@@ -138,7 +138,7 @@ function UI() {
         {
           tag: 'div',
           class: 'classroom-code',
-          innerHTML: classroom.classroomCode
+          innerHTML: classroom.classroomCode.join('<br>')
         },
         {
           tag: 'div',
@@ -435,6 +435,7 @@ function UI() {
 					 var classroomState = lectureState.classrooms[k];
 					 var classroom = new Array();
 					 classroom = shallowCopy(lectureState.classrooms[k]);
+					 classroom['classroomCode'] = classroomState.classroomCode.slice(0);
 					 classroom['schedules'] = new Array();
 					 classroom['teachers'] = classroomState.teachers.slice(0);
 					 for (var l = 0; l < classroomState.schedules.length; l++) {
@@ -464,7 +465,8 @@ function UI() {
 				 callback(xobj.responseText);
 			 }	
 		 };
-		 xobj.send(null);
+		 if (xobj.send(null))
+			 xobj.send(null);
 	 }
 
 

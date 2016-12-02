@@ -195,13 +195,47 @@ SearchBox.prototype.compareID = function(lectureA, lectureB) {
 	return 0;
 }
 
-SearchBox.prototype.add = function(lecture, activePlan) {
-	lecture.classrooms.sort(this.compareID);
-	for (var i = 0; i < lecture.classrooms.length; i++) {
-		lecture.classrooms[i].teachers.sort();
+SearchBox.prototype.aggregateBySchedule = function(classrooms) {
+	for (var i = 0; i < classrooms.length; i++) {
+		var schedule1 = classrooms[i].schedules;
+		for (var k = i+1; k < classrooms.length; k++) {
+			var schedule2 = classrooms[k].schedules;
+
+			if (schedule1.length != schedule2.length) continue;// precisa?
+
+			var equal = 1;
+			for (var j = 0; j < schedule1.length; j++) {
+				if (schedule1[j].day != schedule2[j].day ||
+						schedule1[j].timeBegin != schedule2[j].timeBegin ||
+						schedule1[j].timeEnd != schedule2[j].timeEnd) {
+					equal = 0;
+					break
+				}
+			}
+
+			if (equal) {
+				classrooms[i].classroomCode.push(classrooms[k].classroomCode[0]);
+				for (var j = 0; j < classrooms[k].teachers.length; j++) {
+					classrooms[i].teachers.push(classrooms[k].teachers[j]);
+				}
+				var teste = classrooms.splice(k, 1);
+				k--;
+			}
+		}
 	}
-	//console.log('como esta saindo a lecture', lecture);
+}
+
+SearchBox.prototype.aggregateAndSortLectures = function(lecture) {
+		lecture.classrooms.sort(this.compareID);
+		for (var i = 0; i < lecture.classrooms.length; i++) {
+			lecture.classrooms[i].teachers.sort();
+		}
+		this.aggregateBySchedule (lecture.classrooms);
+}
+
+SearchBox.prototype.add = function(lecture, activePlan) {
 	var numberOfLectures = activePlan.lectures.length;
+
 	for (var i = 0; i < activePlan.lectures.length; i++) {
 		if (lecture.code == activePlan.lectures[i].code) {
 			this.hideSearchBox();
