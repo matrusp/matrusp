@@ -372,7 +372,6 @@ function UI() {
 	 */
 	 this.saveStateOnServer = function(identifier, share) {
 		if (!identifier || identifier == '') {
-			//TODO print info about use		
 			 alert('É necessário preencher o nome do identificador');
 			return;
 		}
@@ -383,8 +382,6 @@ function UI() {
 			xobj.onreadystatechange = function() {
 				if (this.readyState == 4) {
 					if (this.status == 200 && this.responseText == "OK") {
-						//console.log('copiado com sucesso!');
-						//TODO print information of successo
 						if (!share) { 
 							// if the createIdentifierOnServer called this function 
 							// another alert has already been shown
@@ -392,7 +389,6 @@ function UI() {
 						}
 					} else {
 						//console.log('falhou!!');
-						//TODO print information about fail
 						alert('Algum erro ocorreu, salve o identificador novamente');
 					}
 				}
@@ -457,27 +453,30 @@ function UI() {
 	  *
 		**/
 	 this.loadJSON = function(pathAndNameOfJSON, callback) {
+		 var check = 1;
 		 var xobj = new XMLHttpRequest();
 		 xobj.overrideMimeType("application/json");
 		 xobj.open('GET', pathAndNameOfJSON, true);
 		 xobj.onreadystatechange = function() {
 			 if(xobj.readyState == 4 && xobj.status == 200) {
 				 callback(xobj.responseText);
-			 }	
+			 } else if (xobj.status == 404) {//TODO investigate why came to here 3 times
+				 if (check) {
+					 alert ('Identificador não encontrado');
+					 check = 0;
+				 }
+			 }
 		 };
-		 if (xobj.send(null))
-			 xobj.send(null);
+		 xobj.send(null);
 	 }
 
 
 	 this.loadStateFromServer = function(identifier) {
 		 if (!identifier || identifier == '') {
-			 //TODO print info about use		
 			 alert('É necessário preencher o nome do identificador');
 			 return;
 		 }
 		 this.loadJSON('data/' + identifier.replace(/[^\w]/g, '') + '.json', function(response) {
-				 //TODO if identifier not exist show status
 				 var newState = JSON.parse(response);
 				 seeksChanges(newState);
 				 state.reload(newState);
