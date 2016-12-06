@@ -195,13 +195,24 @@ SearchBox.prototype.compareID = function(lectureA, lectureB) {
 	return 0;
 }
 
+SearchBox.prototype.testFunctionCompareID = function (lectureA, lectureB) {
+	var actual = this.compareID (lectureA, lectureB);
+	var expected;
+	if (lectureA.classroomCode > lectureB.classroomCode) expected = 1;
+	if (lectureA.classroomCode < lectureB.classroomCode) expected = -1;
+	else expected = 0;
+	
+	if (actual != expected) return false;
+	else return true;
+}
+
 SearchBox.prototype.aggregateBySchedule = function(classrooms) {
 	for (var i = 0; i < classrooms.length; i++) {
 		var schedule1 = classrooms[i].schedules;
 		for (var k = i+1; k < classrooms.length; k++) {
 			var schedule2 = classrooms[k].schedules;
 
-			if (schedule1.length != schedule2.length) continue;// precisa?
+			if (schedule1.length != schedule2.length) continue;
 
 			var equal = 1;
 			for (var j = 0; j < schedule1.length; j++) {
