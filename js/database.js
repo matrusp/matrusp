@@ -17,71 +17,59 @@ function Database() {
 			.replace(/[ÒÓÔÕÖØ]/g, "O")
 			.replace(/[ÙÚÛÜ]/g, "U")
 			.replace(/Ý/g, "Y")
-			.replace(/ß/g, "B");
+			.replace(/ß/g, "SS");
 	}
 
-	function calcScore(haystack, needle, value) {
-		needle.lastIndex = 0;
-		var tmp = haystack.match(needle);
-		if(tmp === null) return 0;
+	function trigramsFromString(str) {
+		var trigrams = new Array();
 
-		return tmp.length * value;
+		str.split(" ").forEach(function(substr) {
+			trigrams.push(substr[0] + "#");
+			if(substr.length > 2) trigrams.push(substr[0] + substr[1]  + substr[2]  + "!");
+			trigrams.push(substr + "$"); //exact word match
+		});
+			
+		for(var i = 0; i < str.length; i++) {
+			if(i < str.length - 2)
+				trigrams.push(str[i] + str[i+1] + str[i+2]);
+			if(str.length < 5) //small words will be treated as acronyms e.g GA, SD
+				trigrams.push(str[i] + "#");
+		}
+
+		trigrams.push(str + "&"); //exact match
+ 
+		return trigrams;
 	}
 
 	this.fetchLectureOnDB = function(word) {
 		word = changingSpecialCharacters(word);
-
-		var searchWholeString = new Array;
-		var searchPartialString = new Array;
-		word.split(" ").forEach(function(character) {
-				if(character != "") {
-				searchWholeString.push(new RegExp("\\b" + character + "\\b", "g"));
-				searchPartialString.push(new RegExp(character, "g"));
-				}
-				});
-
-		this.result = new Array;
+		var self = this;
 		for(var code in this.currDB) {
-			var haystack = this.currDB[code];
-			var exactly = false;
-			var score = 0;
-			for(var i = 0; i < searchWholeString.length; i++) {
-				var tmpScore = 0;
-				searchWholeString[i].lastIndex = 0;
-				if(searchWholeString[i].test(haystack.code)) {
-					exactly = true;
-					break;
-				}
-
-				var nameWithoutSpecialChar =  changingSpecialCharacters(haystack.name);
-				tmpScore += calcScore(nameWithoutSpecialChar, searchWholeString[i], 100);
-				tmpScore += calcScore(nameWithoutSpecialChar, searchPartialString[i], 10);
-				tmpScore += calcScore(haystack.code, searchPartialString[i], 10);
-
-				if(tmpScore) {
-					score += tmpScore;
-				}	else {
-					score = 0;
-					break;
-				}
-			}
-
-			if(exactly) {
-				this.result = [haystack];
-				break;
-			}
-			if(score) {
-				haystack.score = score;
-				this.result.score = score;
-				this.result.push(haystack);
+			if(code === word) {
+				this.result = [self.currDB[code]];
+				return;
 			}
 		}
 
-		this.result.sort(function(first, second) {
-			return second.score - first.score;
+		var scores = new Object();
+		this.result = new Array();
+
+		trigramsFromString(word).forEach(function(trigram) {
+			if(self.currDB.trigrams[trigram]) {
+				var weight = Math.sqrt(Math.log(self.currDB.trigrams.length/self.currDB.trigrams[trigram].length));
+
+				self.currDB.trigrams[trigram].forEach(function(code) {
+					if(!scores[code]) {
+						self.result.push(self.currDB[code]);
+						scores[code] = 0;
+					}
+					scores[code] += weight;
+				});
+			}
 		});
-		this.result.forEach(function(t) {
-			delete t.score;
+
+		this.result.sort(function(first, second) {
+			return scores[second.code] - scores[first.code];
 		});
 	}
 
@@ -94,6 +82,8 @@ function Database() {
 				self.db[semester] = new Object();
 				for(var campus in myJSON) {
 				self.db[semester][campus] = new Object();
+				self.db[semester][campus].trigrams = new Object();
+				self.db[semester][campus].trigrams.length = 0;
 				myJSON[campus].forEach(function(description) {
 						var lecture = new Object();
 						lecture = {
@@ -142,8 +132,20 @@ function Database() {
 								// of vacancies
 								lecture.classrooms.push(specification);
 						});
-						searchBox.aggregateAndSortLectures(lecture);
 						self.db[semester][campus][lecture.code] = lecture;
+
+						var trigramList = self.db[semester][campus].trigrams;
+						
+						trigramsFromString(lecture.code).forEach(function(trigram){
+							if(!trigramList[trigram]) trigramList[trigram] = [];
+							trigramList[trigram].push(lecture.code);
+							trigramList.length++;
+						});
+						trigramsFromString(changingSpecialCharacters(lecture.name)).forEach(function(trigram){
+							if(!trigramList[trigram]) trigramList[trigram] = [];
+							trigramList[trigram].push(lecture.code);
+							trigramList.length++;
+						});
 				});
 				}
 				self.currDB = self.db[semester][campus];
