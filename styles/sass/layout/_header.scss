@@ -1,3 +1,4 @@
+
 // 
 //
 // Header Layout
@@ -26,7 +27,15 @@ header {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    background-image: linear-gradient(to top, #1495AB 5px, #64C6D3 5px, #64C6D3 10px,  #FBA71C 10px, #FBA71C 100%);
+    background-image: linear-gradient(
+            to top,
+            $header-color-tertiary $header-bottom-line,
+            $header-color-secondary $header-bottom-line,
+            $header-color-secondary ($header-bottom-line * 2),
+            $header-color-primary ($header-bottom-line * 2),
+            $header-color-primary 100%
+        );
+    background-repeat: no-repeat;
 }
 
 #logo,
