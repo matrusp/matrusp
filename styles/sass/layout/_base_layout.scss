@@ -32,17 +32,8 @@ body {
     overflow: auto;
     font-family: $font-family;
     font-size: $font-size;
-    background-image: linear-gradient(
-            to bottom,
-            $header-color-primary    ($header-height -  $header-bottom-line),
-            $header-color-secondary  ($header-height -  $header-bottom-line),
-            $header-color-secondary  ($header-height - ($header-bottom-line / 2)),
-            $header-color-tertiary   ($header-height - ($header-bottom-line / 2)),
-            $header-color-tertiary    $header-height,
-            $header-color-background  $header-height,
-            $header-color-background 100%
-        );
-    background-repeat: no-repeat;
+    background: $header-color-background;
+    
 }
 
 #page-container {
