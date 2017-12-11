@@ -29,13 +29,14 @@ header {
     align-items: center;
     background-image: linear-gradient(
             to top,
-            $header-color-tertiary $header-bottom-line,
+            $header-color-tertiary ($header-bottom-line / 2),
+            $header-color-secondary ($header-bottom-line / 2),
             $header-color-secondary $header-bottom-line,
-            $header-color-secondary ($header-bottom-line * 2),
-            $header-color-primary ($header-bottom-line * 2),
+            $header-color-primary $header-bottom-line,
             $header-color-primary 100%
         );
     background-repeat: no-repeat;
+	padding-bottom: $header-bottom-line;
 }
 
 #logo,
