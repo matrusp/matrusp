@@ -23,17 +23,44 @@ function Database() {
 	function trigramsFromString(str) {
 		var trigrams = new Array();
 
-		str.split(" ").forEach(function(substr) {
-			trigrams.push(substr[0] + "#");
-			if(substr.length > 2) trigrams.push(substr[0] + substr[1]  + substr[2]  + "!");
-			trigrams.push(substr + "$"); //exact word match
-		});
+		var words = str.split(" ");
+		for(var i = 0; i < words.length; i++) {
 			
-		for(var i = 0; i < str.length; i++) {
-			if(i < str.length - 2)
-				trigrams.push(str[i] + str[i+1] + str[i+2]);
-			if(str.length < 5) //small words will be treated as acronyms e.g GA, SD
-				trigrams.push(str[i] + "#");
+			switch(words[i])
+			{
+				case "DE":
+				case "A":
+				case "EM":
+				case "NO":
+				case "NA":
+				case "E":
+				case "O":
+				case "AO":
+				case "AS":
+				case "AOS":
+					words.splice(i,1);
+					i--;
+					continue;
+					break;
+			}
+
+			var word = words[i];
+
+			trigrams.push(word[0] + "#");
+			if(word.length > 2) trigrams.push(word[0] + word[1]  + word[2]  + "!");
+			trigrams.push(word + "$"); //exact word match
+
+			for(var j = 0; j < word.length; j++) {
+				if(j < word.length - 2)
+					trigrams.push(word[j] + word[j+1] + word[j+2]);
+				if(words.length === 1 && word.length < 5) { //small words will be treated as acronyms e.g GA, SD
+					trigrams.push(word[j] + "#");
+					if(j > 0) trigrams.push(word[j-1] + word[j] + "%");
+				}
+			}
+
+			if(i > 0)
+				trigrams.push(words[i-1][0] + words[i][0] + "%"); //sequential first letters
 		}
 
 		trigrams.push(str + "&"); //exact match
