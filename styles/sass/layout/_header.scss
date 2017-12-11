@@ -19,10 +19,14 @@ header {
     // defining a position here to work with children positions
     position: relative;
     width: 100%;
-    height: $header-height;
     user-select: none;
     // TODO autoprefixer will include this, when linked delete this next line
     -webkit-user-select: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    background-image: linear-gradient(to top, #1495AB 5px, #64C6D3 5px, #64C6D3 10px,  #FBA71C 10px, #FBA71C 100%);
 }
 
 #logo,
@@ -39,6 +43,7 @@ header {
     letter-spacing: $logo-letter-spacing;
     color: $header-color-symbols;
     cursor: default;
+    flex: 1 0 auto;
 }
 
 .beta-tag {
@@ -49,6 +54,7 @@ header {
     display: inline-block;
     float: right;
     padding-right: $header-height / 2;
+    flex: 0 0 auto;
 }
 
 #icalendar:focus {
