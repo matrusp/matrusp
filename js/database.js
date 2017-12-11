@@ -56,15 +56,14 @@ function Database() {
 
 		trigramsFromString(word).forEach(function(trigram) {
 			if(self.currDB.trigrams[trigram]) {
-				var weight = Math.sqrt(Math.log(self.currDB.trigrams.length/self.currDB.trigrams[trigram].length));
-
-				self.currDB.trigrams[trigram].forEach(function(code) {
+				
+				for(var code in self.currDB.trigrams[trigram]) {
 					if(!scores[code]) {
 						self.result.push(self.currDB[code]);
 						scores[code] = 0;
 					}
-					scores[code] += weight;
-				});
+					scores[code] += self.currDB.trigrams[trigram][code];
+				}
 			}
 		});
 
@@ -82,8 +81,21 @@ function Database() {
 				self.db[semester] = new Object();
 				for(var campus in myJSON) {
 				self.db[semester][campus] = new Object();
-				self.db[semester][campus].trigrams = new Object();
+				var trigramList = self.db[semester][campus].trigrams = new Object();
 				self.db[semester][campus].trigrams.length = 0;
+                
+                function addToTrigramList(trigram,lecture) {
+					if(!trigramList[trigram]) {
+					  trigramList[trigram] = {length: 0};
+					}
+					if(!trigramList[trigram][lecture.code]) {
+					  trigramList[trigram][lecture.code] = 0;
+					}
+					trigramList[trigram][lecture.code]++;
+					trigramList[trigram].length++;
+					trigramList.length++;
+				}
+
 				myJSON[campus].forEach(function(description) {
 						var lecture = new Object();
 						lecture = {
@@ -134,19 +146,16 @@ function Database() {
 						});
 						self.db[semester][campus][lecture.code] = lecture;
 
-						var trigramList = self.db[semester][campus].trigrams;
-						
-						trigramsFromString(lecture.code).forEach(function(trigram){
-							if(!trigramList[trigram]) trigramList[trigram] = [];
-							trigramList[trigram].push(lecture.code);
-							trigramList.length++;
-						});
-						trigramsFromString(changingSpecialCharacters(lecture.name)).forEach(function(trigram){
-							if(!trigramList[trigram]) trigramList[trigram] = [];
-							trigramList[trigram].push(lecture.code);
-							trigramList.length++;
-						});
-				});
+						trigramsFromString(changingSpecialCharacters(lecture.name)).forEach(function(trigram) {addToTrigramList(trigram,lecture)});
+						trigramsFromString(lecture.code).forEach(function(trigram) {addToTrigramList(trigram,lecture)});
+					});
+					
+					for(var trigram in trigramList) {
+					  var weight = Math.sqrt(Math.log(trigramList.length/trigramList[trigram].length));
+					  for(var code in trigramList[trigram]) {
+						trigramList[trigram][code] = weight * Math.log(1+trigramList[trigram][code]);
+					  }
+					}
 				}
 				self.currDB = self.db[semester][campus];
 		});
