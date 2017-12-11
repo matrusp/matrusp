@@ -20,10 +20,26 @@ function Database() {
 			.replace(/ß/g, "SS");
 	}
 
+	function romanize(num) {
+	  var lookup = {M:1000,CM:900,D:500,CD:400,C:100,XC:90,L:50,XL:40,X:10,IX:9,V:5,IV:4,I:1},roman = '';
+	  for (var i in lookup ) {
+		while ( num >= lookup[i] ) {
+		  roman += i;
+		  num -= lookup[i];
+		}
+	  }
+	  return roman;
+	}
+
 	function trigramsFromString(str) {
 		var trigrams = new Array();
 
 		var words = str.split(" ");
+
+		if(words.length > 1 && !isNaN(words[words.length - 1]))
+			words[words.length - 1] = romanize(parseInt(words[words.length - 1]));
+			
+
 		for(var i = 0; i < words.length; i++) {
 			
 			switch(words[i])
