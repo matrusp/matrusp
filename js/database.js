@@ -46,10 +46,16 @@ function Database() {
 			switch(words[i])
 			{
 				case "DE":
+				case "DA":
+				case "DO":
+				case "DAS":
+				case "DOS":
 				case "A":
 				case "EM":
 				case "NO":
 				case "NA":
+				case "NOS":
+				case "NAS":
 				case "E":
 				case "O":
 				case "AO":
