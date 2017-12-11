@@ -42,7 +42,11 @@ function Database() {
 	}
 
 	this.fetchLectureOnDB = function(word) {
-		word = changingSpecialCharacters(word);
+		word = changingSpecialCharacters(word).trim();
+		if(word === "") {
+			this.result = [];
+			return;
+		}
 		var self = this;
 		for(var code in this.currDB) {
 			if(code === word) {
@@ -68,7 +72,7 @@ function Database() {
 		});
 
 		this.result.sort(function(first, second) {
-			return scores[second.code] - scores[first.code];
+			return scores[second.code]/Math.log(second.name.length) - scores[first.code]/Math.log(first.name.length);
 		});
 	}
 
