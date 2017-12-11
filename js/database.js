@@ -42,6 +42,7 @@ function Database() {
 
 		for(var i = 0; i < words.length; i++) {
 			
+			if(i > 0)
 			switch(words[i])
 			{
 				case "DE":
@@ -53,6 +54,7 @@ function Database() {
 				case "O":
 				case "AO":
 				case "AS":
+				case "OS":
 				case "AOS":
 					words.splice(i,1);
 					i--;
