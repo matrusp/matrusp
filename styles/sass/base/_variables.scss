@@ -7,7 +7,7 @@ $border-default: 1px solid lightgray;
 
 // Base
 $page-max-width: 960px;
-$page-min-width: 770px;
+$page-min-width: 0px;
 $main-padding: 15px;
 $header-height: 50px;
 $footer-height: 30px;
@@ -15,9 +15,12 @@ $header-bottom-line: $header-height / 5;
 $lecture-schedule-combination-controller-height: 100px;
 $lecture-schedule-max-height: 680px;
 $lecture-schedule-min-height: 560px;
+$lecture-schedule-basis: 460px;
 $lecture-schedule-padding-top: 40px;
+$lecture-schedule-padding-bottom: 40px;
 $lecture-explorer-max-height: $lecture-schedule-max-height;
 $lecture-explorer-min-height: $lecture-schedule-min-height;
+$lecture-explorer-basis: 250px;
 $lecture-explorer-plan-buttons-height: 25px;
 $lecture-explorer-plans-height: $lecture-schedule-combination-controller-height;
 

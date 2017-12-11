@@ -20,10 +20,10 @@
   vertical-align: top;
   // subtracting 3px to deal with standard spacing between 
   // inline-block elements
-  width: calc((2 / 3) * 100% - 3px);
-  height: calc(100% - #{$lecture-schedule-padding-top});
   max-height: $lecture-schedule-max-height - $lecture-schedule-padding-top;
   padding-top: $lecture-schedule-padding-top;
+  padding-bottom: $lecture-schedule-padding-bottom;
+  flex: 2 0 $lecture-schedule-basis;
 }
 
 #time-table {

@@ -49,8 +49,8 @@ body {
 
 #main {
     position: relative;
-    width: calc(100% - (2 * #{$main-padding}));
-    height: calc(100% - #{$header-height} - #{$footer-height} - 2 * #{$main-padding});
     min-height: $lecture-schedule-min-height;
     padding: $main-padding;
+	display: flex;
+	flex-wrap: wrap;
 }
