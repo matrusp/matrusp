@@ -6,6 +6,28 @@ function Database() {
   this.db = new Object();
   this.currDB = new Object(); //Needed because I don't have reference to semester inside of function fetchLectureOnDB
 
+  this.stopwords_ptBR = [
+  "DE",
+  "DA",
+  "DO",
+  "DAS",
+  "DOS",
+  "A",
+  "EM",
+  "NO",
+  "NA",
+  "NOS",
+  "NAS",
+  "E",
+  "O",
+  "AO",
+  "AS",
+  "OS",
+  "AOS",
+  "PARA",
+  "POR"
+  ];
+  
   function changingSpecialCharacters(word) {
     return word.toUpperCase()
       .replace(/[ÀÁÂÃÄÅ]/g, "A")
@@ -46,42 +68,19 @@ function Database() {
     return roman;
   }
 
-  function trigramsFromString(str) {
+  this.trigramsFromString = function(str) {
     var trigrams = new Array();
-
+    
     var words = str.split(" ");
 
     if (words.length > 1 && !isNaN(words[words.length - 1]))
       words[words.length - 1] = romanize(parseInt(words[words.length - 1]));
 
+    words = words.filter(function(word,i) { 
+		return i == 0 || this.stopwords_ptBR.indexOf(word) === -1;
+    }.bind(this));
 
     for (var i = 0; i < words.length; i++) {
-
-      if (i > 0)
-        switch (words[i]) {
-          case "DE":
-          case "DA":
-          case "DO":
-          case "DAS":
-          case "DOS":
-          case "A":
-          case "EM":
-          case "NO":
-          case "NA":
-          case "NOS":
-          case "NAS":
-          case "E":
-          case "O":
-          case "AO":
-          case "AS":
-          case "OS":
-          case "AOS":
-            words.splice(i, 1);
-            i--;
-            continue;
-            break;
-        }
-
       var word = words[i];
 
       trigrams.push(word[0] + "#");
@@ -91,7 +90,7 @@ function Database() {
       for (var j = 0; j < word.length; j++) {
         if (j < word.length - 2)
           trigrams.push(word[j] + word[j + 1] + word[j + 2]);
-        if (words.length === 1 && word.length < 5) { //small words will be treated as acronyms e.g GA, SD
+        if (i === 0 && word.length < 5) { //small first words will be treated as acronyms e.g GA, SD
           trigrams.push(word[j] + "#");
           if (j > 0) trigrams.push(word[j - 1] + word[j] + "%");
         }
@@ -123,7 +122,7 @@ function Database() {
     var scores = new Object();
     this.result = new Array();
 
-    trigramsFromString(word).forEach(function(trigram) {
+    this.trigramsFromString(word).forEach(function(trigram) {
       if (self.currDB.trigrams[trigram]) {
 
         for (var code in self.currDB.trigrams[trigram]) {
@@ -217,10 +216,10 @@ function Database() {
           });
           self.db[semester][campus][lecture.code] = lecture;
 
-          trigramsFromString(changingSpecialCharacters(lecture.name)).forEach(function(trigram) {
+          self.trigramsFromString(changingSpecialCharacters(lecture.name)).forEach(function(trigram) {
             addToTrigramList(trigram, lecture)
           });
-          trigramsFromString(lecture.code).forEach(function(trigram) {
+          self.trigramsFromString(lecture.code).forEach(function(trigram) {
             addToTrigramList(trigram, lecture)
           });
         });
