@@ -68,7 +68,7 @@ function Database() {
     return roman;
   }
 
-  this.trigramsFromString = function(str) {
+  this.trigramsFromString = function(str,asAcronym = false) {
     var trigrams = new Array();
     
     var words = str.split(" ");
@@ -84,14 +84,14 @@ function Database() {
       var word = words[i];
 
       trigrams.push(word[0] + "#");
-      if (word.length > 2) trigrams.push(word[0] + word[1] + word[2] + "!");
+      if (i === 0 && word.length > 2) trigrams.push(word[0] + word[1] + word[2] + "!");
       trigrams.push(word + "$"); //exact word match
 
       for (var j = 0; j < word.length; j++) {
         if (j < word.length - 2)
           trigrams.push(word[j] + word[j + 1] + word[j + 2]);
-        if (i === 0 && word.length < 5) { //small first words will be treated as acronyms e.g GA, SD
-          trigrams.push(word[j] + "#");
+        if (asAcronym && i === 0 && word.length < 5) { //small first words will be treated as acronyms e.g GA, SD
+          //trigrams.push(word[j] + "#");
           if (j > 0) trigrams.push(word[j - 1] + word[j] + "%");
         }
       }
@@ -122,7 +122,7 @@ function Database() {
     var scores = new Object();
     this.result = new Array();
 
-    this.trigramsFromString(word).forEach(function(trigram) {
+    this.trigramsFromString(word,true).forEach(function(trigram) {
       if (self.currDB.trigrams[trigram]) {
 
         for (var code in self.currDB.trigrams[trigram]) {
@@ -136,7 +136,7 @@ function Database() {
     });
 
     this.result.sort(function(first, second) {
-      return scores[second.code] / Math.log(second.name.length) - scores[first.code] / Math.log(first.name.length);
+      return scores[second.code]/Math.log(3+second.name.length) - scores[first.code]/Math.log(3+first.name.length);
     });
   }
 
@@ -227,6 +227,7 @@ function Database() {
         for (var trigram in trigramList) {
           var weight = Math.sqrt(Math.log(trigramList.length / trigramList[trigram].length));
           for (var code in trigramList[trigram]) {
+            if(code === "length") continue;
             trigramList[trigram][code] = weight * Math.log(1 + trigramList[trigram][code]);
           }
         }
