@@ -92,7 +92,7 @@ function Database() {
       for (var j = 0; j < word.length; j++) {
         if (j < word.length - 2)
           trigrams.push(word[j] + word[j + 1] + word[j + 2]);
-        if (asAcronym && i === 0 && word.length < 5) { //small first words will be treated as acronyms e.g GA, SD
+        if (asAcronym && word.length < 5) { //small first words will be treated as acronyms e.g GA, SD
           //trigrams.push(word[j] + "#");
           if (j > 0) trigrams.push(word[j - 1] + word[j] + "%");
         }
