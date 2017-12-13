@@ -70,6 +70,8 @@ function Database() {
 
   this.trigramsFromString = function(str,asAcronym = false) {
     var trigrams = new Array();
+
+    str = str.replace(/(\b[IVXLCM]+)\s+(?=[IVXLCM])/g,"$1");
     
     var words = str.split(" ");
 
