@@ -20,6 +20,7 @@
   border-radius: 0 0 2px 2px;
   cursor: pointer;
   overflow: hidden;
+  opacity: 0.5;
 
   &:not(:first-child) {
     // size of border
@@ -29,6 +30,7 @@
 
 .plan-active {
   z-index: 2;
+  opacity: 1;
 }
 
 .plan-options-open {
