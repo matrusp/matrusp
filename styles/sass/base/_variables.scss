@@ -23,7 +23,7 @@ $lecture-explorer-min-height: $lecture-schedule-min-height;
 $lecture-explorer-basis: 250px;
 $lecture-explorer-plan-buttons-height: 25px;
 $lecture-explorer-plans-height: $lecture-schedule-combination-controller-height;
-
+$flex-spacer-basis: 4px;
 $page-min-height: $header-height + $header-bottom-line + 2 * $main-padding + $lecture-schedule-min-height + $footer-height;
 
 // Header
@@ -46,6 +46,7 @@ $font-size-hour: 13px;
 $schedule-box-border-left-width: 2.3px;
 $combination-controller-margin-top: 20px;
 $combination-button-width: 34px;
+$column-margin-horizontal: 2px;
 
 // Lecture Explorer
 $scroll-bar-width: 15px;

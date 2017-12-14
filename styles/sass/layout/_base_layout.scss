@@ -16,6 +16,7 @@
 //         header
 //         div#main
 //           div#lecture-schedule
+//			 div.flex-spacer
 //           div#lecture-explorer
 //         footer
 //
@@ -53,4 +54,8 @@ body {
     padding: $main-padding;
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.flex-spacer {
+	flex: 0 0 $flex-spacer-basis;
 }

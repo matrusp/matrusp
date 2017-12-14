@@ -29,6 +29,7 @@
 #time-table {
   width: 100%;
   height: calc(100% - #{$lecture-schedule-combination-controller-height});
+  display: flex;
 }
 
 .column {
@@ -38,7 +39,7 @@
 }
 
 .column.time {
-  width: $column-time-width;
+  flex: 0 0 $column-time-width;
 }
 
 .hour {
@@ -59,8 +60,8 @@
   background-size:cover;
   background-position:center;
   position: relative;
-  // 4.5px empirically set to fill the parent div with these columns.
-  width: calc((100% - #{$column-time-width} - (7 * 4.5px)) / 6);
+  flex: 1 0 auto;
+  margin: 0 $column-margin-horizontal;
 }
 
 .week-day {
