@@ -7,7 +7,7 @@ $border-default: 1px solid lightgray;
 
 // Base
 $page-max-width: 960px;
-$page-min-width: 0px;
+$page-min-width: 485px;
 $main-padding: 15px;
 $header-height: 50px;
 $footer-height: 30px;
@@ -27,6 +27,7 @@ $flex-spacer-basis: 4px;
 $page-min-height: $header-height + $header-bottom-line + 2 * $main-padding + $lecture-schedule-min-height + $footer-height;
 
 // Header
+$header-spacing: 12px;
 $font-size-logo: 26px;
 $logo-letter-spacing: 1px;
 $icons-square-size: $header-height - $header-bottom-line;

@@ -31,7 +31,12 @@
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 <header>
-    <span id="logo">MatrUSP</span><span class="beta-tag">Beta</span>
+    <div><span id="logo">MatrUSP</span><span class="beta-tag">Beta</span></div>
+    <div id='save-controller'>
+	<input id='user-identifier' placeholder='Salve seu plano aqui'> 
+	<button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value, false);'>Salvar</button>
+	<button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
+    </div>
     <ul id="icons">
 	<li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
 	    <div class="hover-mask"></div>
@@ -58,11 +63,6 @@
 	    <img src="images/ic_download.png" alt="">
 	</li>
     </ul>
-    <div id='save-controller'>
-	<input id='user-identifier' placeholder='Salve seu plano aqui'> 
-	<button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value, false);'>Salvar</button>
-	<button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
-    </div>
 </header>
     <div id="page-container">
         <div id="main">
@@ -178,7 +178,7 @@
             <footer>
                 <span>Tendo problemas? Utilize a <a href="http://bcc.ime.usp.br/matrusp_v1">versão antiga</a>, ou entre em contato conosco: apoiobcc@linux.ime.usp.br</span>
                 <span>Colabore com o código no <a href="https://github.com/matrusp/matrusp">GitHub</a>!</span>
-                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="700" data-show-faces="true" data-font="lucida grande"></div>
+                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="485" data-show-faces="true" data-font="lucida grande"></div>
             </footer>
         </div>
     </div>
