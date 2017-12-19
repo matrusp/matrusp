@@ -1,3 +1,4 @@
+
 // 
 //
 // Header Layout
@@ -19,10 +20,27 @@ header {
     // defining a position here to work with children positions
     position: relative;
     width: 100%;
-    height: $header-height;
     user-select: none;
     // TODO autoprefixer will include this, when linked delete this next line
     -webkit-user-select: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    background-image: linear-gradient(
+            to top,
+            $header-color-tertiary ($header-bottom-line / 2),
+            $header-color-secondary ($header-bottom-line / 2),
+            $header-color-secondary $header-bottom-line,
+            $header-color-primary $header-bottom-line,
+            $header-color-primary 100%
+        );
+    background-repeat: no-repeat;
+	padding-bottom: $header-bottom-line;
+
+	>* {
+	    margin: 0 $header-spacing;
+	}
 }
 
 #logo,
@@ -31,7 +49,6 @@ header {
 }
 
 #logo {
-    padding-left: $header-height / 2;
     font-size: $font-size-logo;
     font-weight: bold;
     // line-height equal to its height, centralizes the text
@@ -39,6 +56,7 @@ header {
     letter-spacing: $logo-letter-spacing;
     color: $header-color-symbols;
     cursor: default;
+    flex: 0 0 auto;
 }
 
 .beta-tag {
@@ -48,7 +66,7 @@ header {
 #icons {
     display: inline-block;
     float: right;
-    padding-right: $header-height / 2;
+    flex: 0 0 auto;
 }
 
 #icalendar:focus {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,7 @@
     <meta property="og:url" content="http://bcc.ime.usp.br/matrusp" />
     <meta property="og:image" content="http://bcc.ime.usp.br/matrusp/matrusp.jpg" />
     <meta property="og:site_name" content="MatrUSP" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MatrUSP</title>
     
     <link rel="stylesheet" href="styles/css/application.css">
@@ -29,41 +30,41 @@
     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7";
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
+<header>
+    <div><span id="logo">MatrUSP</span><span class="beta-tag">Beta</span></div>
+    <div id='save-controller'>
+	<input id='user-identifier' placeholder='Salve seu plano aqui'> 
+	<button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value, false);'>Salvar</button>
+	<button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
+    </div>
+    <ul id="icons">
+	<li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
+	    <div class="hover-mask"></div>
+	    <img src="images/ic_calendar.png" alt="">
+	    <ul class="onclick-menu-content">
+		<li><button id="google">Exportar para o calendário do Google</button></li>
+		<li><button id="ics">Exportar para arquivo .ics</button></li>
+	    </ul>
+	</li>
+	<li class="icon" id="pdf" data-description="Imprimir">
+	    <div class="hover-mask"></div>
+	    <img src="images/ic_print.png" alt="">
+	</li>
+	<li class="icon" id="email" data-description="Enviar por E-mail" onclick='ui.createIdentifierOnServer();'>
+	    <div class="hover-mask"></div>
+	    <img src="images/ic_email.png" alt="">
+	</li>
+	<li class="icon" id="fbshare" data-description="Compartilhar pelo Facebook">
+	    <div class="hover-mask"></div>
+	    <img src="images/ic_facebook.png" alt="">
+	</li>
+	<li class="icon" id="download" data-description="Fazer download">
+	    <div class="hover-mask"></div>
+	    <img src="images/ic_download.png" alt="">
+	</li>
+    </ul>
+</header>
     <div id="page-container">
-        <header>
-            <span id="logo">MatrUSP</span><span class="beta-tag">Beta</span>
-            <ul id="icons">
-                <li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
-                    <div class="hover-mask"></div>
-                    <img src="images/ic_calendar.png" alt="">
-                    <ul class="onclick-menu-content">
-                        <li><button id="google">Exportar para o calendário do Google</button></li>
-                        <li><button id="ics">Exportar para arquivo .ics</button></li>
-                    </ul>
-                </li>
-                <li class="icon" id="pdf" data-description="Imprimir">
-                    <div class="hover-mask"></div>
-                    <img src="images/ic_print.png" alt="">
-                </li>
-                <li class="icon" id="email" data-description="Enviar por E-mail" onclick='ui.createIdentifierOnServer();'>
-                    <div class="hover-mask"></div>
-                    <img src="images/ic_email.png" alt="">
-                </li>
-                <li class="icon" id="fbshare" data-description="Compartilhar pelo Facebook">
-                    <div class="hover-mask"></div>
-                    <img src="images/ic_facebook.png" alt="">
-                </li>
-                <li class="icon" id="download" data-description="Fazer download">
-                    <div class="hover-mask"></div>
-                    <img src="images/ic_download.png" alt="">
-                </li>
-            </ul>
-            <div id='save-controller'>
-                <input id='user-identifier' placeholder='Salve seu plano aqui'> 
-                <button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value, false);'>Salvar</button>
-                <button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
-            </div>
-        </header>
         <div id="main">
             <div id="lecture-schedule">
                 <div id="time-table">
@@ -130,6 +131,7 @@
                     Compartilhe sua grade no facebook.
                 </div>-->
             </div>
+            <div class='flex-spacer'></div>
             <div id="lecture-explorer">
                 <div id="search-and-add">
                     <input type="text" id="search" placeholder="Digite o código ou nome da matéria">
@@ -176,7 +178,7 @@
             <footer>
                 <span>Tendo problemas? Utilize a <a href="http://bcc.ime.usp.br/matrusp_v1">versão antiga</a>, ou entre em contato conosco: apoiobcc@linux.ime.usp.br</span>
                 <span>Colabore com o código no <a href="https://github.com/matrusp/matrusp">GitHub</a>!</span>
-                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="700" data-show-faces="true" data-font="lucida grande"></div>
+                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="485" data-show-faces="true" data-font="lucida grande"></div>
             </footer>
         </div>
     </div>
