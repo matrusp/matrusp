@@ -228,11 +228,12 @@ function Database() {
 
         for (var trigram in trigramList) {
           var weight = Math.sqrt(Math.log(trigramList.length / trigramList[trigram].length));
+          delete trigramList[trigram].length;
           for (var code in trigramList[trigram]) {
-            if(code === "length") continue;
             trigramList[trigram][code] = weight * Math.log(1 + trigramList[trigram][code]);
           }
         }
+        delete trigramList.length;
       }
       self.currDB = self.db[semester][campus];
     });
