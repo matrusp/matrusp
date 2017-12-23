@@ -108,15 +108,17 @@ function Database() {
   }
 
   this.fetchLectureOnDB = function(word) {
+
+    if(!this.currDB.trigrams) return;
+
     word = changingSpecialCharacters(word).trim();
     if (word === "") {
       this.result = [];
       return;
     }
-    var self = this;
     for (var code in this.currDB) {
       if (code === word) {
-        this.result = [self.currDB[code]];
+        this.result = [this.currDB[code]];
         return;
       }
     }
@@ -125,17 +127,17 @@ function Database() {
     this.result = new Array();
 
     this.trigramsFromString(word,true).forEach(function(trigram) {
-      if (self.currDB.trigrams[trigram]) {
+      if (this.currDB.trigrams[trigram]) {
 
-        for (var code in self.currDB.trigrams[trigram]) {
+        for (var code in this.currDB.trigrams[trigram]) {
           if (!scores[code]) {
-            self.result.push(self.currDB[code]);
+            this.result.push(this.currDB[code]);
             scores[code] = 0;
           }
-          scores[code] += self.currDB.trigrams[trigram][code];
+          scores[code] += this.currDB.trigrams[trigram][code];
         }
       }
-    });
+    }.bind(this));
 
     this.result.sort(function(first, second) {
       return scores[second.code]/Math.log(3+second.name.length) - scores[first.code]/Math.log(3+first.name.length);
