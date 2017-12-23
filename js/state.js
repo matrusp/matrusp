@@ -21,6 +21,7 @@ function State(jsonObj) {
 	for (var i = 0; i < this.numColors; i++) { 
 		this.colors[i] = 0;
 	}
+	this.lastColor = 0;
 
   this.html = {
     previousCombination: document.getElementsByClassName('combination-button-left')[0],
@@ -66,6 +67,7 @@ State.prototype.load = function(baseState) {
 			alert ('Este identificador não é mais valido');
       return false;
     }
+    this.lastColor = baseState.lastColor || 0;
     this.version = baseState.version;
     this.campus = baseState.campus;
     this.semester = baseState.semester;

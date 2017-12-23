@@ -254,9 +254,9 @@ SearchBox.prototype.add = function(lecture, activePlan) {
 		}
 	}
 
-	this.lastColor = this.lastColor % state.colors.length || 0;
+	state.lastColor = state.lastColor % state.colors.length || 0;
 	
-	lecture['color'] = 1 + this.lastColor++; //colors are 1-based
+	lecture['color'] = 1 + state.lastColor++; //colors are 1-based
 	state.addLecture(lecture);
 	addClass(activePlan.lectures[numberOfLectures].htmlElement, 'lecture-info-plan-active');
 	this.hideSearchBox();
