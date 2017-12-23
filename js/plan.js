@@ -472,7 +472,6 @@ Plan.prototype.setPlan = function() {
 	this.setActiveCombination();
   state.activePlanIndex = this.planId;
 
-  ui.adjustCombinationTrackWidth();
   ui.scrollActiveCombinationToView();
 
 	for (var i = 0; i < state.colors.length; i++) {

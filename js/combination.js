@@ -30,9 +30,6 @@ function Combination(combinationIndices, plan) {
 }
 
 Combination.prototype.delete = function() {
-  if (this.parent.combinations.length == 1) {
-    this.htmlElement.parentNode.style.width = '0px';
-  }
   this.htmlElement.parentNode.removeChild(this.htmlElement);
 
   // All htmlElements removed, now remove itself from the plan and

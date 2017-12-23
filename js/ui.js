@@ -307,29 +307,15 @@ function UI() {
 
     combinationTrack.appendChild(combinationBoard);
 
-    // setTimeout is used because the html element combinationTrack was
-    // just created and it takes some time to have its dimentions calculated
-    // by the browser engine.
-    setTimeout((function() {
-      this.adjustCombinationTrackWidth();}).bind(this), 1);
-
     return combinationBoard;
   }
 
-  this.adjustCombinationTrackWidth = function() {
-    var ct = document.getElementById('combination-track');
-    var cs = ct.getElementsByClassName('combination-plan-active');
-    if (cs.length == 0) return 0;
-    ct.style.width = ((cs[0].offsetWidth + 10) * cs.length) + "px";
-  }
-
   this.scrollActiveCombinationToView = function() {
-    var ctw = document.getElementById('combination-track-window');
-    var cs = ctw.getElementsByClassName('combination-plan-active');
-    if (cs.length == 0 || state.activePlanIndex == undefined || state.activePlanIndex == null) return 0;
+    if (combinationTrack.children.length === 0 || state.activePlanIndex == undefined || state.activePlanIndex == null) return 0;
     var activePlan = state.plans[state.activePlanIndex];
     if (activePlan.activeCombinationIndex == undefined || activePlan.activeCombinationIndex == null) return 1;
-    var cc = cs[activePlan.activeCombinationIndex];
+    var cc = combinationTrack.children[activePlan.activeCombinationIndex];
+    var ctw = combinationTrack;
     if (cc.offsetLeft < ctw.scrollLeft) {
       ctw.scrollLeft = cc.offsetLeft;
     } else if (cc.offsetLeft + cc.offsetWidth > ctw.scrollLeft + ctw.offsetWidth) {

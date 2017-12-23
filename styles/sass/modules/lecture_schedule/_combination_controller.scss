@@ -49,13 +49,14 @@
   position: absolute;
   float: left;
   width: calc(100% - 2 * #{$combination-button-width} - 6px);
-  overflow-x: scroll;
-  overflow-y: hidden;
 }
 
 #combination-track {
   height: 100%;
-  width: 0;
+  width: auto;
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .combination {
