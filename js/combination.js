@@ -25,7 +25,9 @@ function Combination(combinationIndices, plan) {
     this.lecturesClassroom.push(plan.lectures[i].classrooms[classroomIndex]);
   }
 
-  this.htmlElement = ui.createCombinationBoard(this);
+  Object.defineProperty(this, "htmlElement", {get: function () {
+    return this.mHtmlElement || (this.mHtmlElement = ui.createCombinationBoard(this));
+  }});
   this.addEventListeners();
 }
 
