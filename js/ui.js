@@ -257,38 +257,15 @@ function UI() {
 
   this.createCombinationBoard = function(combination) {
     var combinationBoardTreeObj = {
-      tag: 'div',
+      tag: 'canvas',
       class: 'combination',
-      children: [
-        {
-          tag: 'div',
-          class: 'column'
-        },
-        {
-          tag: 'div',
-          class: 'column'
-        },
-        {
-          tag: 'div',
-          class: 'column'
-        },
-        {
-          tag: 'div',
-          class: 'column'
-        },
-        {
-          tag: 'div',
-          class: 'column'
-        },
-        {
-          tag: 'div',
-          class: 'column'
-        }
-      ]
+      width: 90,
+      height: 90
     };
 
     var combinationBoard = createHtmlElementTree(combinationBoardTreeObj);
-    var weekdaysColumns = combinationBoard.getElementsByClassName('column');
+    var ctx = combinationBoard.getContext('2d');
+    var columnHeight = parseInt(window.getComputedStyle(document.getElementById('time-table').getElementsByClassName('column')[0]).getPropertyValue("height"),10);
 
     var classrooms = combination.lecturesClassroom;
     for (var i = 0; i < classrooms.length; i++) {
@@ -297,11 +274,20 @@ function UI() {
         var schedule = classroom.schedules[j];
         var day = indexOfDay(schedule.day);
         var deep = true;
-        var scheduleBoxCopy = schedule.htmlElement.cloneNode(deep);
-        addClass(scheduleBoxCopy, 'schedule-box-show');
-        addClass(scheduleBoxCopy, 'schedule-box-highlight');
-        removeClass(scheduleBoxCopy, 'schedule-box-highlight-conflict');
-        weekdaysColumns[day].appendChild(scheduleBoxCopy);
+		
+		addClass(schedule.htmlElement,'schedule-box-highlight');
+		var css = window.getComputedStyle(schedule.htmlElement);
+
+		var boxTop = Math.round(parseInt(css.getPropertyValue("top"),10)/columnHeight*90);
+		var boxHeight = Math.round(parseInt(css.getPropertyValue("height"),10)/columnHeight*90);
+		var boxLeft = day*15+1;
+
+		ctx.fillStyle = css.getPropertyValue("background-color");
+		ctx.fillRect(boxLeft, boxTop, 13, boxHeight);
+		ctx.fillStyle = css.getPropertyValue("border-left-color");
+		ctx.fillRect(boxLeft, boxTop, 2, boxHeight);
+
+		removeClass(schedule.htmlElement,'schedule-box-highlight');
       }
     }
 
