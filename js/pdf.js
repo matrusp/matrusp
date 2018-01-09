@@ -107,10 +107,10 @@ function openpdf() {
     return;
   }
   var combinations = document.getElementById("combination-controller");
-  combinations.style.display = "none";
+  combinations.style.visibility = "hidden";
   html2canvas(document.getElementById("lecture-schedule"), {
     onrendered: function(canvas){
-      combinations.style.removeProperty("display");
+      combinations.style.removeProperty("visibility");
       html2canvasSuccess(canvas, generateTable);
     }
   });
