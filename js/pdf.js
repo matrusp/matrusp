@@ -110,13 +110,14 @@ function openpdf() {
   var combinations = document.getElementById("combination-controller");
   combinations.style.visibility = "hidden";
 
-  var newTab = window.open('','_blank');
+  if(!navigator.msSaveOrOpenBlob) var newTab = window.open('','_blank');
 
   html2canvas(document.getElementById("lecture-schedule"), {
     onrendered: function(canvas){
       combinations.style.removeProperty("visibility");
-      var pdf = generatePDFfromCanvas(canvas);
-      newTab.location.href = URL.createObjectURL(pdf.output('blob'));
+      var blob = generatePDFfromCanvas(canvas).output('blob');
+      if(navigator.msSaveOrOpenBlob) navigator.msSaveOrOpenBlob(blob,"matrusp.pdf");
+      else newTab.location.href = URL.createObjectURL(blob);
     }
   });
 }
