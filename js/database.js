@@ -68,7 +68,7 @@ function Database() {
     return roman;
   }
 
-  this.trigramsFromString = function(str,asAcronym = false) {
+  this.trigramsFromString = function(str,asAcronym) {
     var trigrams = new Array();
 
     str = str.replace(/(\b[IVXLCM]+)\s+(?=[IVXLCM])/g,"$1");
