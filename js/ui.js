@@ -431,12 +431,18 @@ function UI() {
 		 xobj.open('GET', pathAndNameOfJSON, true);
 		 xobj.onreadystatechange = function() {
 			 if(xobj.readyState == 4 && xobj.status == 200) {
+				 localStorage.setItem(pathAndNameOfJSON,xobj.responseText);
 				 callback(xobj.responseText);
-			 } else if (xobj.status == 404) {//TODO investigate why came to here 3 times
+			 } else { 
+			 if (xobj.status == 404) {//TODO investigate why came to here 3 times
 				 if (check) {
 					 alert ('Identificador não encontrado');
 					 check = 0;
-				 }
+					 }
+				}
+			 	var cached;
+			 	if(cached = localStorage.getItem(pathAndNameOfJSON))
+			 		callback(cached);
 			 }
 		 };
 		 xobj.send(null);
