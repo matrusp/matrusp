@@ -72,10 +72,6 @@
   // TODO transitions doesn't work well with 'auto' values
   //      so take this off or come up with some solution.
   //transition: all .4s;
-
-  >.lecture-info-name {
-    width: calc(100% - #{$width-lecture-code} - 4px);
-  }
 }
 
 .lecture-info-checkbox {
@@ -178,6 +174,13 @@
   }
 }
 
+.lecture-info-name {
+  width: calc(100% - #{$width-lecture-code} - 4px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .lecture-open {
   >.lecture-classrooms {
     height: auto;
@@ -190,6 +193,10 @@
 
   .lecture-info-code {
     vertical-align: middle;
+  }
+
+  .lecture-info-name {
+    white-space: normal;
   }
 }
 
