@@ -24,9 +24,7 @@
 
 html, body {
     width: 100%;
-    height: 100%;
     min-width: $page-min-width;
-    min-height: $page-min-height;
 }
 
 body {
@@ -50,7 +48,6 @@ body {
 
 #main {
     position: relative;
-    min-height: $lecture-schedule-min-height;
     padding: $main-padding;
 	display: flex;
 	flex-wrap: wrap;

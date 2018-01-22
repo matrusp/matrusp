@@ -34,10 +34,8 @@
 //
 
 #accordion {
-  /* sum scroll-bar-width to hide it from the user */
-  height: calc(100% + #{$scroll-bar-width});
-  width: calc(100% + #{$scroll-bar-width});
-  overflow: scroll;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 // TODO compare these properties with those inside "_base_lecture_info.scss"

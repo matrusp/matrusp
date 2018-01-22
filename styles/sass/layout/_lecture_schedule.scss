@@ -20,7 +20,7 @@
   vertical-align: top;
   // subtracting 3px to deal with standard spacing between 
   // inline-block elements
-  max-height: $lecture-schedule-max-height - $lecture-schedule-padding-top;
+  height: $lecture-schedule-height - $lecture-schedule-padding-top;
   padding-top: $lecture-schedule-padding-top;
   padding-bottom: $lecture-schedule-padding-bottom;
   flex: 2 0 $lecture-schedule-basis;
@@ -49,7 +49,6 @@
   // (setting line-height to zero,  miraculously!), we get
   // 06:00 aligned with top border and 00:00 aligned with 
   // bottom border (that's actually its upper border).
-  min-height: ($lecture-schedule-min-height - $lecture-schedule-padding-top - $lecture-schedule-combination-controller-height) / 18;
   font-size: $font-size-hour;
   line-height: 0;
 }
