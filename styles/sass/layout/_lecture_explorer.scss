@@ -20,7 +20,7 @@
     display: inline-block;
     position: relative;
     vertical-align: top;
-    min-height: $lecture-explorer-min-height;
+    height: $lecture-explorer-height;
 	flex: 1 0 $lecture-explorer-basis;
 	min-width: 0;
 }
