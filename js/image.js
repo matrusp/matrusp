@@ -15,10 +15,3 @@ function download_picture() {
     background: '#ffffff'
   });
 }
-
-window.onresize  = window.onload = function() {
-  var columns = document.getElementsByClassName("column");
-  for (var i = 1; i < columns.length; i++) {
-    columns[i].style.backgroundSize =  columns[i].offsetWidth + "px " + columns[i].offsetHeight + "px";
-  }
-};

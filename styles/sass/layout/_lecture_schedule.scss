@@ -55,9 +55,9 @@
 
 .column:not(.time) {
   background-image: url('../../images/stripes.gif');
-  background-repeat:no-repeat;
-  background-size:cover;
-  background-position:center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
   position: relative;
   flex: 1 0 auto;
   margin: 0 $column-margin-horizontal;
