@@ -16,7 +16,7 @@ function canvasShiftImage(oldCanvas, shiftAmt, realPdfPageHeight){
   return newCanvas;
 }
 
-var generatePDFfromCanvas = function(canvas){
+var html2canvasSuccess = function(canvas, callback){
   var pdf = new jsPDF('p','px'),
     pdfInternals = pdf.internal,
     pdfPageSize = pdfInternals.pageSize,
@@ -26,7 +26,6 @@ var generatePDFfromCanvas = function(canvas){
     totalPdfHeight = 0,
     htmlPageHeight = canvas.height,
     htmlScaleFactor = canvas.width / (pdfPageWidth * pdfScaleFactor);
-    pdf.setProperties({title:'MatrUSP - Grade Horária',subject:'Grade horária gerada pelo MatrUSP',author:'MatrUSP (http://bcc.ime.usp.br/matrusp)'});
 
   while(totalPdfHeight < htmlPageHeight){
     var newCanvas = canvasShiftImage(canvas, totalPdfHeight, pdfPageHeight * pdfScaleFactor);
@@ -36,8 +35,7 @@ var generatePDFfromCanvas = function(canvas){
 
     if(totalPdfHeight < htmlPageHeight){ pdf.addPage(); }
   }
-  generateTable(pdf);
-  return pdf;
+  callback(pdf);
 };
 
 function generateTable(doc) {
@@ -71,6 +69,7 @@ function generateTable(doc) {
       data.doc.setFillColor(parseInt(color[0]), parseInt(color[1]), parseInt(color[2]));
     }
   });
+  doc.save("table.pdf");
 }
 
 var getColumns = function () {
@@ -109,14 +108,10 @@ function openpdf() {
   }
   var combinations = document.getElementById("combination-controller");
   combinations.style.visibility = "hidden";
-
-  var newTab = window.open('','_blank');
-
   html2canvas(document.getElementById("lecture-schedule"), {
     onrendered: function(canvas){
       combinations.style.removeProperty("visibility");
-      var pdf = generatePDFfromCanvas(canvas);
-      newTab.location.href = URL.createObjectURL(pdf.output('blob'));
+      html2canvasSuccess(canvas, generateTable);
     }
   });
 }
