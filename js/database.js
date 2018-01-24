@@ -144,6 +144,20 @@ function Database() {
     });
   }
 
+  this.fetchLectureByCode = function(word) {
+    word = changingSpecialCharacters(word).trim();
+    if (word === "") {
+      this.result = [];
+      return;
+    }
+    for (var code in this.currDB) {
+      if (code === word) {
+        this.result = [this.currDB[code]];
+        return;
+      }
+    }
+  }
+
 
   this.loadDB = function(pathAndNameOfJSON, semester) {
     var self = this;

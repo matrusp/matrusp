@@ -493,27 +493,14 @@ function UI() {
 				 var lectures = plans[i].lectures;
 				 for(var j = 0; j < lectures.length; j++) {
 					 var lecture = lectures[j];
-					 database.fetchLectureOnDB(lecture.code);
+					 database.fetchLectureByCode(lecture.code);
 					 var lectureOnDB = database.sliceObjectDB();
 
 					 if (lectureOnDB.length == 0) continue;
 					 // this is needed because when identifier was called from main,
 					 // the BD has not yet been fully loaded
 					 lectureOnDB = lectureOnDB[0];
-					 tester(lecture, lectureOnDB);
-					 lectureOnDB.classrooms.sort(searchBox.compareID);
-					 for (var l = 0; l < lecture.classrooms.length; l++) {
-						 lecture.classrooms[l].teachers.sort();
-						 var classroom = lecture.classrooms[l];
-						 var classroomOnDB = lectureOnDB.classrooms[l];
-						 tester(classroom, classroomOnDB);
-						 for (var k = 0; k < classroom.schedules.length; k++) {
-							 tester(classroom.schedules[k], classroomOnDB.schedules[k]);
-						 }
-						 for (var k = 0; k < classroom.teachers.length; k++) {
-							 tester(classroom.teachers[k], classroomOnDB.teachers[0][k]);
-						 }
-					 }
+					 Object.assign(lectures[j],lectureOnDB);
 				 }
 			 }
 		 }
