@@ -6,6 +6,7 @@ function Database() {
   this.db = new Object();
   this.currDB = new Object(); //Needed because I don't have reference to semester inside of function fetchLectureOnDB
   this.loaded = false;
+  this.loadedCallbacks = [];
 
   this.stopwords_ptBR = [
   "DE",
@@ -110,8 +111,12 @@ function Database() {
 
   this.fetchLectureOnDB = function(word, callbacks) {
 
-    //while(!this.loaded) { }
-    if(!this.loaded) console.log("DB not loaded!");
+    if(!callbacks) return;
+
+    if(!this.loaded) { 
+      this.loadedCallbacks.push(function() { this.fetchLectureOnDB(word,callbacks); }.bind(this)); 
+      return; 
+    }
 
     var result = [];
 
@@ -152,6 +157,13 @@ function Database() {
   }
 
   this.fetchLectureByCode = function(word, callbacks) {
+    if(!callbacks) return;
+
+    if(!this.loaded) { 
+      this.loadedCallbacks.push(function() { this.fetchLectureByCode(word,callbacks); }.bind(this)); 
+      return; 
+    }
+    
     var result = [];
 
     word = changingSpecialCharacters(word).trim();
@@ -264,6 +276,7 @@ function Database() {
           }
           delete trigramList.length;
           self.loaded = true;
+          self.loadedCallbacks.forEach(function(callback) { callback(); });
         });
       }
       self.currDB = self.db[semester][campus];
