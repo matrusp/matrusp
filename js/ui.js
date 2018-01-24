@@ -430,20 +430,19 @@ function UI() {
 		 xobj.overrideMimeType("application/json");
 		 xobj.open('GET', pathAndNameOfJSON, true);
 		 xobj.onreadystatechange = function() {
-			 if(xobj.readyState == 4 && xobj.status == 200) {
-				 localStorage.setItem(pathAndNameOfJSON,xobj.responseText);
-				 callback(xobj.responseText);
-			 } else { 
-			 if (xobj.status == 404) {//TODO investigate why came to here 3 times
-				 if (check) {
-					 alert ('Identificador não encontrado');
-					 check = 0;
-					 }
-				}
-			 	var cached;
-			 	if(cached = localStorage.getItem(pathAndNameOfJSON))
-			 		callback(cached);
-			 }
+			 if(xobj.readyState == 4)
+			 {
+				if(xobj.status == 200) {
+					localStorage.setItem(pathAndNameOfJSON,xobj.responseText);
+					callback(xobj.responseText);
+				 } 
+				 else {//TODO investigate why came to here 3 times
+					var cached;
+					if(cached = localStorage.getItem(pathAndNameOfJSON))
+						callback(cached);
+					else if (xobj.status == 404) alert ('Identificador não encontrado');
+				 }
+		 	}
 		 };
 		 xobj.send(null);
 	 }
@@ -493,14 +492,9 @@ function UI() {
 				 var lectures = plans[i].lectures;
 				 for(var j = 0; j < lectures.length; j++) {
 					 var lecture = lectures[j];
-					 database.fetchLectureByCode(lecture.code);
-					 var lectureOnDB = database.sliceObjectDB();
-
-					 if (lectureOnDB.length == 0) continue;
-					 // this is needed because when identifier was called from main,
-					 // the BD has not yet been fully loaded
-					 lectureOnDB = lectureOnDB[0];
-					 Object.assign(lectures[j],lectureOnDB);
+					 database.fetchLectureByCode(lecture.code, {success: function(result) {
+							 Object.assign(lectures[j],result[0]);
+					 	}});
 				 }
 			 }
 		 }
