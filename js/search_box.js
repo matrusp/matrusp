@@ -163,15 +163,16 @@ SearchBox.prototype.eventKey = function(e) {
 	var fetchValue = this.searchBox.value;
 	this.removeLecturesSuggestionList();
 	if(fetchValue.length > 0) {
-		database.fetchLectureOnDB(fetchValue);
-		this.lecturesSuggestionList = database.sliceObjectDB();
-		if(this.lecturesSuggestionList.length > 0) {
-			this.addLectures(this.lecturesSuggestionList);
-			this.searchResultBox.style.visibility = 'visible';
-		} else {
-			this.searchResultBox.style.visibility = 'hidden';
-			this.overSearchResultBox = false;
-		}
+		database.fetchLectureOnDB(fetchValue,{success: function(result) {
+			this.lecturesSuggestionList = result.slice(0,100);
+			if(this.lecturesSuggestionList.length > 0) {
+				this.addLectures(this.lecturesSuggestionList);
+				this.searchResultBox.style.visibility = 'visible';
+			} else {
+				this.searchResultBox.style.visibility = 'hidden';
+				this.overSearchResultBox = false;
+			}
+		}.bind(this)});
 	} else {
 		this.searchResultBox.style.visibility = 'hidden';
 		this.overSearchResultBox = false;

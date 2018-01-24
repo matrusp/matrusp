@@ -5,6 +5,7 @@
 function Database() {
   this.db = new Object();
   this.currDB = new Object(); //Needed because I don't have reference to semester inside of function fetchLectureOnDB
+  this.loaded = false;
 
   this.stopwords_ptBR = [
   "DE",
@@ -107,31 +108,35 @@ function Database() {
     return trigrams;
   }
 
-  this.fetchLectureOnDB = function(word) {
+  this.fetchLectureOnDB = function(word, callbacks) {
 
-    if(!this.currDB.trigrams) return;
+    //while(!this.loaded) { }
+    if(!this.loaded) console.log("DB not loaded!");
+
+    var result = [];
 
     word = changingSpecialCharacters(word).trim();
     if (word === "") {
-      this.result = [];
+      result = [];
+      if(callbacks.failure) callbacks.failure(result);
       return;
     }
     for (var code in this.currDB) {
       if (code === word) {
-        this.result = [this.currDB[code]];
+        result = [this.currDB[code]];
+        if(callbacks.success) callbacks.success(result);
         return;
       }
     }
 
     var scores = new Object();
-    this.result = new Array();
 
     this.trigramsFromString(word,true).forEach(function(trigram) {
       if (this.currDB.trigrams[trigram]) {
 
         for (var code in this.currDB.trigrams[trigram]) {
           if (!scores[code]) {
-            this.result.push(this.currDB[code]);
+            result.push(this.currDB[code]);
             scores[code] = 0;
           }
           scores[code] += this.currDB.trigrams[trigram][code];
@@ -139,23 +144,30 @@ function Database() {
       }
     }.bind(this));
 
-    this.result.sort(function(first, second) {
+    result.sort(function(first, second) {
       return scores[second.code]/Math.log(3+second.name.length) - scores[first.code]/Math.log(3+first.name.length);
     });
+
+    if(callbacks.success) callbacks.success(result);
   }
 
-  this.fetchLectureByCode = function(word) {
+  this.fetchLectureByCode = function(word, callbacks) {
+    var result = [];
+
     word = changingSpecialCharacters(word).trim();
     if (word === "") {
-      this.result = [];
+      result = [];
+      if(callbacks.failure) callbacks.failure(result);
       return;
     }
     for (var code in this.currDB) {
       if (code === word) {
-        this.result = [this.currDB[code]];
+        result = [this.currDB[code]];
+        if(callbacks.success) callbacks.success(result);
         return;
       }
     }
+    if(callbacks.failure) callbacks.failure(result);
   }
 
 
@@ -184,7 +196,7 @@ function Database() {
           trigramList.length++;
         }
 
-        myJSON[campus].forEach(function(description) {
+        var promises = myJSON[campus].map(function(description) {
           var lecture = new Object();
           lecture = {
             'code': description[0],
@@ -242,14 +254,17 @@ function Database() {
           });
         });
 
-        for (var trigram in trigramList) {
-          var weight = Math.sqrt(Math.log(trigramList.length / trigramList[trigram].length));
-          delete trigramList[trigram].length;
-          for (var code in trigramList[trigram]) {
-            trigramList[trigram][code] = weight * Math.log(1 + trigramList[trigram][code]);
+        Promise.all(promises).then(function() {
+            for (var trigram in trigramList) {
+            var weight = Math.sqrt(Math.log(trigramList.length / trigramList[trigram].length));
+            delete trigramList[trigram].length;
+            for (var code in trigramList[trigram]) {
+              trigramList[trigram][code] = weight * Math.log(1 + trigramList[trigram][code]);
+            }
           }
-        }
-        delete trigramList.length;
+          delete trigramList.length;
+          self.loaded = true;
+        });
       }
       self.currDB = self.db[semester][campus];
     });
