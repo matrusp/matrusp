@@ -108,10 +108,8 @@ function openpdf() {
   }
   var combinations = document.getElementById("combination-controller");
   combinations.style.visibility = "hidden";
-  html2canvas(document.getElementById("lecture-schedule"), {
-    onrendered: function(canvas){
+  html2canvas(document.getElementById("lecture-schedule")).then(function(canvas) {
       combinations.style.removeProperty("visibility");
       html2canvasSuccess(canvas, generateTable);
-    }
-  });
+    });
 }
