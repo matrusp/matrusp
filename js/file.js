@@ -3,21 +3,35 @@ function uploadFile(file) {
   var reader = new FileReader();
   reader.onload = (function parseAFile(aFile) {
     return function(e) {
-      var jsonObj = JSON.parse(e.target.result);
-      if (!jsonObj.version || jsonObj.version < matrusp_current_state_version) {
-        // if the state being loaded is not updated, warn and don't load.
-        addClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
-        return false;
+      var uploadWarning = document.getElementById('upload-warning');
+      try {
+        var jsonObj = JSON.parse(e.target.result);
+        if (!jsonObj.version) {
+          uploadWarning.innerHTML = "Arquivo inválido!";
+          addClass(uploadWarning, 'upload-warning-old-version');
+          return false;
+        }
+        else if(jsonObj.version < matrusp_current_state_version) {
+          // if the state being loaded is not updated, warn and don't load.
+          uploadWarning.innerHTML = "Arquivo da versão antiga é incompatível!";
+          addClass(uploadWarning, 'upload-warning-old-version');
+          return false;
+        }
+        document.getElementById('upload-name').innerHTML = shortenString(file.name);
+        state.clear();
+        if (state.load(jsonObj)) {
+          removeClass(uploadWarning, 'upload-warning-old-version');
+        } else {
+          // the way it is right now, this case never happens:
+          // state.load() only return false if the json doesn't have .version or it is an old version
+          // but this is also checked in this method, 10 lines above.
+          addClass(uploadWarning, 'upload-warning-old-version');
+        }
       }
-      document.getElementById('upload-name').innerHTML = shortenString(file.name);
-      state.clear();
-      if (state.load(jsonObj)) {
-        removeClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
-      } else {
-        // the way it is right now, this case never happens:
-        // state.load() only return false if the json doesn't have .version or it is an old version
-        // but this is also checked in this method, 10 lines above.
-        addClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
+      catch(e) {
+        uploadWarning.innerHTML = "Arquivo inválido!";
+        addClass(uploadWarning, 'upload-warning-old-version');
+        return false;
       }
     };
   })(file);
