@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # Atualizar a data abaixo sempre que for feito deploy, para garantir que os arquivos cacheados serão atualizados.
-# 20/01/201
+# 25/01/2018
 
 index.html
 js/classroom.js
@@ -9,7 +9,8 @@ js/custom_lib.js
 js/database.js
 js/fbhelper.js
 js/googlecalendar.js
-js/html2canvas.js
+js/es6-promise.auto.min.js
+js/html2canvas.min.js
 js/icalendar.js
 js/image.js
 js/jspdf.min.js
