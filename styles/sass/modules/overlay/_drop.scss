@@ -30,6 +30,7 @@
 
 #drop-overlay.overlay-show {
   opacity: 1;
+  pointer-events: all;
   pointer-events: initial;
 }
 

@@ -35,11 +35,12 @@ function uploadFile(file) {
       }
     };
   })(file);
-  reader.readAsText(file);
+  if(file) reader.readAsText(file);
 }
 
 function handleDrop(e) {
-  e.preventDefault(); 
+  e.preventDefault();
+  e.stopPropagation();
 
   var dt = e.dataTransfer;
   if (dt.items) {
@@ -54,6 +55,7 @@ function handleDrop(e) {
   } 
   else if(dt.files) {
     for (var i=0; i < dt.files.length; i++) {
+      var f = dt.files[i];
       uploadFile(f);
       this.classList.remove('overlay-show');
       return;
@@ -64,6 +66,6 @@ function handleDrop(e) {
 document.getElementById('upload-input').addEventListener('change', function(e) { uploadFile(this.files[0]); });
 var dropoverlay = document.getElementById('drop-overlay');
 document.addEventListener('dragenter', function(e) { dropoverlay.classList.add('overlay-show'); });
-dropoverlay.addEventListener('dragover', function(e) { e.preventDefault();});
+dropoverlay.addEventListener('dragover', function(e) { e.preventDefault(); e.stopPropagation();});
 dropoverlay.addEventListener('drop', handleDrop);
 dropoverlay.addEventListener('dragleave', function(e) { this.classList.remove('overlay-show'); });
