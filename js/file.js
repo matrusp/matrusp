@@ -42,13 +42,14 @@ function handleDrop(e) {
   e.preventDefault();
   e.stopPropagation();
 
+  this.classList.remove('overlay-show');
+
   var dt = e.dataTransfer;
   if (dt.items) {
     for (var i=0; i < dt.items.length; i++) {
       if (dt.items[i].kind == "file") {
         var f = dt.items[i].getAsFile();
         uploadFile(f);
-        this.classList.remove('overlay-show');
         return;
       }
     }
@@ -57,7 +58,6 @@ function handleDrop(e) {
     for (var i=0; i < dt.files.length; i++) {
       var f = dt.files[i];
       uploadFile(f);
-      this.classList.remove('overlay-show');
       return;
     }  
   }
