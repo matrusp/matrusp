@@ -25,6 +25,7 @@ js/search_box.js
 js/state.js
 js/ui.js
 js/vfs_fonts.js
+js/file.js
 styles/css/application.css
 images/ic_add.png
 images/ic_arrow_down.png
