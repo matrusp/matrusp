@@ -1,0 +1,46 @@
+// 
+//
+// Drop Overlay
+// =======================
+//
+// This file sets the drop overlay layout.
+// 
+// Affected HTML
+// -------------
+// html > body > div#drop-overlay
+//
+
+#drop-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(#000000,0.8);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity ease-in-out 0.2s;
+  pointer-events: none;
+  z-index: 99;
+}
+
+#drop-overlay.overlay-show {
+  opacity: 1;
+  pointer-events: initial;
+}
+
+#drop-overlay img {
+  margin: 8px;
+}
+
+#drop-overlay * {
+  pointer-events: none;
+}
+
+#drop-overlay.overlay-show ~ * {
+  filter: blur(2px);
+}

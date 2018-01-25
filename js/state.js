@@ -123,34 +123,6 @@ State.prototype.previousCombination = function() {
   this.plans[this.activePlanIndex].previousCombination();
 }
 
-// TODO remover essa funcao daqui?? faz sentido ela ser do state?
-State.prototype.uploadFile = function() {
-  var file = this.html.upload.files[0];
-
-  var reader = new FileReader();
-  reader.onload = (function parseAFile(aFile) {
-    return function(e) {
-      var jsonObj = JSON.parse(e.target.result);
-      if (!jsonObj.version || jsonObj.version < matrusp_current_state_version) {
-        // if the state being loaded is not updated, warn and don't load.
-        addClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
-        return false;
-      }
-      document.getElementById('upload-name').innerHTML = shortenString(file.name);
-      state.clear();
-      if (state.load(jsonObj)) {
-        removeClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
-      } else {
-        // the way it is right now, this case never happens:
-        // state.load() only return false if the json doesn't have .version or it is an old version
-        // but this is also checked in this method, 10 lines above.
-        addClass(document.getElementById('upload-warning'), 'upload-warning-old-version');
-      }
-    };
-  })(file);
-  reader.readAsText(file);
-}
-
 State.prototype.downloadFile = function() {
   var objectJSON = new Object();
   objectJSON = ui.copyState();
@@ -172,7 +144,6 @@ State.prototype.downloadFile = function() {
 State.prototype.addEventListeners = function() {
   this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
   this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
-  this.html.upload.addEventListener('change', this.uploadFile.bind(this));
   this.html.download.addEventListener('click', this.downloadFile.bind(this));
 };
 
