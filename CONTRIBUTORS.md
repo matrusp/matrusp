@@ -3,7 +3,7 @@ Contribuidores do MatrUSP (ordenados alfabeticamente)
 
 * **[Bruno de Oliveira Endo](https://github.com/brunoendo)**
 
-  * Segunda versão da interface do MatrUSP: controle do estado da interface e diagramação
+  * Segunda versão do MatrUSP: controle do estado da interface e diagramação
 
 * **[José Coelho de Pina](https://github.com/coelhodepina)**
 
@@ -11,16 +11,16 @@ Contribuidores do MatrUSP (ordenados alfabeticamente)
 
 * **[José Ernesto Young Rodrigues](https://github.com/jyrodrigues)**
 
-  * Segunda versão da interface do MatrUSP: design e implementação da interface de combinações
+  * Segunda versão do MatrUSP: design e implementação da interface de combinações
 
 * **[Pedro Paulo Vezza Campos](https://github.com/pedropaulovc)**
 
-  * Crawler para o JupiterWeb
-  * Adaptações do MatrUFSC para a USP
+  * Primeira versão do MatrUSP: Crawler para o JupiterWeb
+  * Primeira versão do MatrUSP: Adaptações do MatrUFSC para a USP
 
 * **[Rafael Marinaro Verona](https://github.com/raverona)**
 
-  * Segunda versão da interface do MatrUSP: exportar para PDF, Google Calendar
+  * Segunda versão do MatrUSP: exportar para PDF, Google Calendar
 
 * **[Ramiro Polla](https://github.com/ramiropolla)**
 
