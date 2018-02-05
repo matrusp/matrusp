@@ -85,7 +85,7 @@ function loadDB (json) {
         // of vacancies
         lecture.classrooms.push(specification);
       });
-      lecturesObjectStore.add(lecture);
+      lecturesObjectStore.put(lecture);
 
       trigramsFromString(changingSpecialCharacters(lecture.name)).forEach(function(trigram) {
         addToTrigramList(trigram, lecture)
@@ -104,7 +104,7 @@ function loadDB (json) {
         for (var code in trigrams[trigram]) {
           trigrams[trigram][code] = weight * Math.log(1 + trigrams[trigram][code]);
         }
-      trigramsObjectStore.add(trigrams[trigram],trigram);
+      trigramsObjectStore.put(trigrams[trigram],trigram);
       }
       delete trigrams.length;
       transaction.oncomplete = e => self.close();

@@ -17,6 +17,8 @@ self.onmessage = e => {
 function fetchLectureOnDB (word) {
   var result = [];
   
+  word = changingSpecialCharacters(word).trim();
+  
   //Search for exact code in the lectures database. In case of a match, send message with the found lecture and kill the worker.
   if(word.length === 7) //Exact code match will only happen if search is 7 characters long
   {
@@ -28,8 +30,6 @@ function fetchLectureOnDB (word) {
       }
     }
   }
-  
-  word = changingSpecialCharacters(word).trim();
   var scores = new Object();
   var transaction = self.idb.transaction(["trigrams","lectures"]);
 
