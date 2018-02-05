@@ -161,18 +161,23 @@ SearchBox.prototype.eventKey = function(e) {
 	this.selectedLectureIndex = -1;// if new key was press, reset for new search
 	this.heightSoFar = 0;
 	var fetchValue = this.searchBox.value;
-	this.removeLecturesSuggestionList();
 	if(fetchValue.length > 0) {
-		database.fetchLectureOnDB(fetchValue,{success: function(result) {
-			this.lecturesSuggestionList = result.slice(0,100);
+		if(this.searchWorker) this.searchWorker.terminate();
+		this.searchWorker = new Worker("js/dbsearch.js");
+		
+		this.searchWorker.onmessage = e => {
+			this.lecturesSuggestionList = e.data;
 			if(this.lecturesSuggestionList.length > 0) {
+				this.removeLecturesSuggestionList();
 				this.addLectures(this.lecturesSuggestionList);
 				this.searchResultBox.style.visibility = 'visible';
 			} else {
 				this.searchResultBox.style.visibility = 'hidden';
 				this.overSearchResultBox = false;
 			}
-		}.bind(this)});
+		}
+		this.searchWorker.postMessage(fetchValue);
+
 	} else {
 		this.searchResultBox.style.visibility = 'hidden';
 		this.overSearchResultBox = false;

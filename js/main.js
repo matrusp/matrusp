@@ -2,13 +2,10 @@
 var ui = new UI();
 var state;
 var searchBox;
-var database;
 // Old codebase was using 5
 var matrusp_current_state_version = 6;
 
 state = new State();
-database = new Database();
-database.loadDB('db/db_usp.txt', 1);
 searchBox = new SearchBox();
 
 if (window.location.hash.substr(1)) {
@@ -21,3 +18,4 @@ if (window.location.hash.substr(1)) {
 }
 setTimeout(function(){ui.scrollActiveCombinationToView()}, 100);
 
+dbworker = new Worker("js/dbupdate.js");
