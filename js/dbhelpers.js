@@ -71,7 +71,7 @@ function trigramsFromString(str,asAcronym) {
     words[words.length - 1] = romanize(parseInt(words[words.length - 1]));
 
   words = words.filter(function(word,i) { 
-      return i == 0 || stopwords_ptBR.indexOf(word) === -1;
+      return word !== "" && (i == 0 || stopwords_ptBR.indexOf(word) === -1);
   }.bind(this));
 
   for (var i = 0; i < words.length; i++) {
