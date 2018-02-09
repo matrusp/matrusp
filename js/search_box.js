@@ -13,6 +13,18 @@ function SearchBox() {
 	this.heightSoFar = 0;
 	this.addEventListeners();
 
+	this.searchWorker = new Worker("js/dbsearch.js");
+	this.searchWorker.onmessage = e => {
+		this.lecturesSuggestionList = e.data;
+		if(this.lecturesSuggestionList.length > 0) {
+			this.removeLecturesSuggestionList();
+			this.addLectures(this.lecturesSuggestionList);
+			this.searchResultBox.style.visibility = 'visible';
+		} else {
+			this.searchResultBox.style.visibility = 'hidden';
+			this.overSearchResultBox = false;
+		}
+	}
 }
 
 
@@ -162,20 +174,6 @@ SearchBox.prototype.eventKey = function(e) {
 	this.heightSoFar = 0;
 	var fetchValue = this.searchBox.value;
 	if(fetchValue.length > 0) {
-		if(this.searchWorker) this.searchWorker.terminate();
-		this.searchWorker = new Worker("js/dbsearch.js");
-		
-		this.searchWorker.onmessage = e => {
-			this.lecturesSuggestionList = e.data;
-			if(this.lecturesSuggestionList.length > 0) {
-				this.removeLecturesSuggestionList();
-				this.addLectures(this.lecturesSuggestionList);
-				this.searchResultBox.style.visibility = 'visible';
-			} else {
-				this.searchResultBox.style.visibility = 'hidden';
-				this.overSearchResultBox = false;
-			}
-		}
 		this.searchWorker.postMessage(fetchValue);
 
 	} else {
