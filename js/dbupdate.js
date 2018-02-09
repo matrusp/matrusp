@@ -1,12 +1,9 @@
-self.importScripts("dbhelpers.js");
-
-fetch('../db/db_usp.txt').then(response => {
-  response.json().then(json => {
-    var dbrequest = self.indexedDB.open("MatruspDB");
+var idbPromise = new Promise((resolve,reject) => {
+  var dbrequest = self.indexedDB.open("MatruspDB");
     
     dbrequest.onsuccess = e => {
       self.idb = e.target.result;
-      loadDB(json);
+      resolve(e.target.result);
     };
 
     dbrequest.onerror = e => self.close(); //TODO: handle db opening error;
@@ -15,8 +12,15 @@ fetch('../db/db_usp.txt').then(response => {
       var lectureStore = e.target.result.createObjectStore("lectures", { keyPath: 'code' });
       var trigramStore = e.target.result.createObjectStore("trigrams");
     };
-  });
 });
+
+self.importScripts("dbhelpers.js");
+
+var fetchPromise = fetch('../db/db_usp.txt');
+
+Promise.all([fetchPromise, idbPromise]).then(responses => {
+  responses[0].json().then(json => loadDB (json));
+}).catch(e => self.close);
 
 function loadDB (json) {
   var campus = "TODOS"; // Hardcoded - Change when server-side parser changes
@@ -35,8 +39,7 @@ function loadDB (json) {
     trigrams[trigram].length++;
     trigrams.length++;
   }
-    var transaction = self.idb.transaction(["lectures","trigrams"], "readwrite");
-    var lecturesObjectStore = transaction.objectStore("lectures");
+    var lecturesObjectStore = self.idb.transaction(["lectures"], "readwrite").objectStore("lectures");
     var lecturesMapPromise = json[campus].map(function(description) {
       var lecture = new Object();
       lecture = {
@@ -95,8 +98,8 @@ function loadDB (json) {
       });
     });
 
-    var trigramsObjectStore = transaction.objectStore("trigrams");
     Promise.all(lecturesMapPromise).then(function() {
+      var trigramsObjectStore = self.idb.transaction(["trigrams"], "readwrite").objectStore("trigrams");
       for (var trigram in trigrams) {
         if (trigram === 'length') continue;
         var weight = Math.sqrt(Math.log(trigrams.length / trigrams[trigram].length));
@@ -107,6 +110,6 @@ function loadDB (json) {
       trigramsObjectStore.put(trigrams[trigram],trigram);
       }
       delete trigrams.length;
-      transaction.oncomplete = e => self.close();
+      trigramsObjectStore.transaction.oncomplete = e => self.close();
     });
 }

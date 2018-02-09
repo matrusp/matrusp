@@ -1,3 +1,4 @@
+dbworker = new Worker("js/dbupdate.js");
 
 var ui = new UI();
 var state;
@@ -18,4 +19,3 @@ if (window.location.hash.substr(1)) {
 }
 setTimeout(function(){ui.scrollActiveCombinationToView()}, 100);
 
-dbworker = new Worker("js/dbupdate.js");
