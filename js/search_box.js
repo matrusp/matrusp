@@ -30,9 +30,10 @@ function SearchBox() {
 
 SearchBox.prototype.addLectures = function(lectures) {
 	var suggestionLectures = this.searchResultBox.childNodes;
+	var fragment = document.createDocumentFragment();
 	for(var i = 0; i < lectures.length; i++) {
 
-		var searchResultLectureInfo = createAndAppendChild(this.searchResultBox, 'div', {
+		var searchResultLectureInfo = createAndAppendChild(fragment, 'div', {
 				'class' : ['search-result', 'lecture-info']
 				});
 		var lectureInfoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
@@ -76,6 +77,7 @@ SearchBox.prototype.addLectures = function(lectures) {
 		searchResultLectureInfo.addEventListener('mouseenter', selectLectureCallback(i, searchResultLectureInfo).bind(this));
 		searchResultLectureInfo.addEventListener('mouseleave', deselectLectureCallback(searchResultLectureInfo).bind(this));
 	}
+	this.searchResultBox.appendChild(fragment);
 }
 
 SearchBox.prototype.searchResultBoxShow = function() {
