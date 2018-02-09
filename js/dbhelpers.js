@@ -93,7 +93,5 @@ function trigramsFromString(str,asAcronym) {
       trigrams.push(words[i - 1][0] + words[i][0] + "%"); //sequential first letters
   }
 
-  trigrams.push(str + "&"); //exact match
-
   return trigrams;
 }
