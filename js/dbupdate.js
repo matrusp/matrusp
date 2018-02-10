@@ -1,5 +1,7 @@
+self.importScripts("dbhelpers.js");
+
 var idbPromise = new Promise((resolve,reject) => {
-  var dbrequest = self.indexedDB.open("MatruspDB");
+  var dbrequest = self.indexedDB.open(IDB_NAME);
     
     dbrequest.onsuccess = e => {
       self.idb = e.target.result;
@@ -13,8 +15,6 @@ var idbPromise = new Promise((resolve,reject) => {
       var trigramStore = e.target.result.createObjectStore("trigrams");
     };
 });
-
-self.importScripts("dbhelpers.js");
 
 var fetchPromise = fetch('../db/db_usp.txt');
 
