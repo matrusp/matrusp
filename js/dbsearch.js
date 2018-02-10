@@ -1,6 +1,6 @@
 self.importScripts("dbhelpers.js");
 
-var dbrequest = self.indexedDB.open("MatruspDB");
+var dbrequest = self.indexedDB.open(IDB_NAME);
   
 dbrequest.onsuccess = ev => {
   self.idb = ev.target.result;
@@ -17,11 +17,6 @@ dbrequest.onsuccess = ev => {
 };
 
 dbrequest.onerror = e => self.close(); //TODO: handle db opening error;
-
-dbrequest.onupgradeneeded = e => {
-  var lectureStore = e.target.result.createObjectStore("lectures", { keyPath: 'code' });
-  var trigramStore = e.target.result.createObjectStore("trigrams");
-};
 
 //These arrays will cache in RAM data fetched from the DB
 self.lastQueries = []; //Last 5 queries: search and result

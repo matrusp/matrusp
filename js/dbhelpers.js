@@ -1,3 +1,5 @@
+var IDB_NAME = "MatruspDB";
+
 var stopwords_ptBR = [
 "DE",
 "DA",
