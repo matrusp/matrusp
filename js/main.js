@@ -1,4 +1,8 @@
-dbworker = new Worker("js/dbupdate.js");
+if('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('serviceworker.js');
+}
+
+var dbworker = new Worker("js/dbupdate.js");
 
 var ui = new UI();
 var state;
