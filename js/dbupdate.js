@@ -1,24 +1,6 @@
 self.importScripts("dbhelpers.js");
 
-var idbPromise = new Promise((resolve,reject) => {
-  var dbrequest = self.indexedDB.open(IDB_NAME);
-    
-    dbrequest.onsuccess = e => {
-      self.idb = e.target.result;
-      resolve(e.target.result);
-    };
-
-    dbrequest.onerror = e => self.close(); //TODO: handle db opening error;
-
-    dbrequest.onupgradeneeded = e => {
-      var lectureStore = e.target.result.createObjectStore("lectures", { keyPath: 'code' });
-      var trigramStore = e.target.result.createObjectStore("trigrams");
-    };
-});
-
-var fetchPromise = fetch('../db/db_usp.txt');
-
-Promise.all([fetchPromise, idbPromise]).then(responses => {
+Promise.all([fetch('../db/db_usp.txt'), openIDB().then(idb => self.idb = idb)]).then(responses => {
   self.postMessage(0.1);
   responses[0].json().then(json => loadDB (json));
 }).catch(e => { self.postMessage(1); self.close(); });

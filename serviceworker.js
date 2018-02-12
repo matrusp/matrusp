@@ -1,6 +1,6 @@
 var CACHE_NAME = "Matrusp";
 
-var cacheDirs = [
+self.cacheDirs = [
   "./",
   "js/classroom.js",
   "js/combination.js",
@@ -41,32 +41,31 @@ var cacheDirs = [
   "images/ic_print.png",
   "images/ic_upload.png",
   "images/stripes.gif"
-];
+  ].map(dir => new URL(dir,self.location.href));
 
 self.addEventListener('install', e => {
-  cacheDirs = cacheDirs.map(dir => new URL(dir,self.location.href));
-  e.waitUntil(Promise.all(cacheDirs.map(dir => fromCache(new Request(dir.href)))));
+  e.waitUntil(Promise.all(self.cacheDirs.map(dir => fromCache(new Request(dir.href)))));
 });
 
 self.addEventListener('fetch', e => {
-  if(cacheDirs.some(dir => dir == e.request.url)) {
+  if(self.cacheDirs.some(dir => dir == e.request.url)) {
     e.respondWith(fromCache(e.request.clone()));
   }
 
-  else e.respondWith(fetch(e.request.clone()).catch(e => {}));
+  else e.respondWith(fetch(e.request.clone()));
 });
 
 function fromCache(request) {
-  return self.caches.open(CACHE_NAME).then(cache => cache.match(request)).then(response => {
+  return self.caches.open(CACHE_NAME).then(cache => cache.match(request).then(response => {
     if(!response) {
       var fetchPromise = fetch(request);
-      fetchPromise.then(newresponse => self.caches.open(CACHE_NAME).then(cache => cache.add(request,newresponse))).catch(e => {});
+      fetchPromise.then(newresponse => self.caches.open(CACHE_NAME).then(cache => cache.add(request,newresponse)));
       return fetchPromise;
     }
 
     fetch(request.url, {method: 'GET', headers: {'If-None-Match': response.headers.get("ETag")}}).then(newresponse => newresponse.ok ? self.caches.open(CACHE_NAME).then(cache => cache.add(request,newresponse)) : false).catch(e => {});
     return response;
-  });
+  }));
 }
 
 function refresh(response) {

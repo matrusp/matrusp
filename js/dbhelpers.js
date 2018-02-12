@@ -97,3 +97,20 @@ function trigramsFromString(str,asAcronym) {
 
   return trigrams;
 }
+
+function openIDB() {
+  return new Promise((resolve,reject) => {
+    var dbrequest = self.indexedDB.open(IDB_NAME);
+
+    dbrequest.onsuccess = e => {
+      resolve(e.target.result);
+    };
+
+    dbrequest.onerror = e => { throw e; reject(e); };
+
+    dbrequest.onupgradeneeded = e => {
+      var lectureStore = e.target.result.createObjectStore("lectures", { keyPath: 'code' });
+      var trigramStore = e.target.result.createObjectStore("trigrams");
+    };
+  });
+}
