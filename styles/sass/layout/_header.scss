@@ -27,15 +27,7 @@ header {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    background-image: linear-gradient(
-            to top,
-            $header-color-tertiary ($header-bottom-line / 2),
-            $header-color-secondary ($header-bottom-line / 2),
-            $header-color-secondary $header-bottom-line,
-            $header-color-primary $header-bottom-line,
-            $header-color-primary 100%
-        );
-    background-repeat: no-repeat;
+    background: linear-gradient(to top, darken($header-color-primary, 10%) 10px, $header-color-primary 10px, $header-color-primary 100%);
 	padding-bottom: $header-bottom-line;
 
 	>* {
@@ -89,4 +81,15 @@ header {
 
 *:focus {
     outline: 0;
+}
+
+#loading-bar {
+	  position:  absolute;
+	  margin: 0;
+	  bottom: 0;
+	  left: 0;
+	  width: 0%;
+	  height: 10px;
+	  background: linear-gradient(to top, $header-color-tertiary 50%, $header-color-secondary 50%, $header-color-secondary 100%);
+	  transition: width ease-in-out 0.2s;
 }

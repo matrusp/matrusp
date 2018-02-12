@@ -14,6 +14,7 @@ function UI() {
     weekdays.push(lectureScheduleColumns[i]);
   }
   var combinationTrack = document.getElementById('combination-track');
+  var loadingBar = document.getElementById('loading-bar');
 
 
   // Functions
@@ -523,6 +524,10 @@ function UI() {
 		 this.saveStateOnServer(identifier, true);
 		 window.location.hash = identifier;
 		 prompt('Envie esse link para quem quiser!!', window.location.href);
+	 }
+
+	 this.setLoadingBar = function (load) {
+	 	loadingBar.style.width = load * 100 + '%';
 	 }
 }
 
