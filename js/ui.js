@@ -422,44 +422,12 @@ function UI() {
 		 return object;
 	 }
 
-	 /**
-	  *
-		**/
-	 this.loadJSON = function(pathAndNameOfJSON, callback) {
-		 var check = 1;
-		 var xobj = new XMLHttpRequest();
-		 xobj.overrideMimeType("application/json");
-		 xobj.open('GET', pathAndNameOfJSON, true);
-		 xobj.onreadystatechange = function() {
-			 if(xobj.readyState == 4)
-			 {
-				if(xobj.status == 200) {
-					localStorage.setItem(pathAndNameOfJSON,xobj.responseText);
-					callback(xobj.responseText);
-				 } 
-				 else {//TODO investigate why came to here 3 times
-					var cached;
-					if(cached = localStorage.getItem(pathAndNameOfJSON))
-						callback(cached);
-					else if (xobj.status == 404) alert ('Identificador não encontrado');
-				 }
-		 	}
-		 };
-		 xobj.send(null);
-	 }
-
-
 	 this.loadStateFromServer = function(identifier) {
 		 if (!identifier || identifier == '') {
 			 alert('É necessário preencher o nome do identificador');
 			 return;
 		 }
-		 this.loadJSON('data/' + identifier.replace(/[^\w]/g, '') + '.json', function(response) {
-				 var newState = JSON.parse(response);
-				 seeksChanges(newState);
-				 state.reload(newState);
-				 localStorage.setItem('state', JSON.stringify(ui.copyState()));
-				 });
+		 fetch(`data/${identifier.replace(/[^\w]/g, '')}.json`).then(response => response.json()).then(json => state.reload(json));
 	 }
 		
 	 function tester(obj, objOnDB) { 
