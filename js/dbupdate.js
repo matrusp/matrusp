@@ -19,10 +19,12 @@ var idbPromise = new Promise((resolve,reject) => {
 var fetchPromise = fetch('../db/db_usp.txt');
 
 Promise.all([fetchPromise, idbPromise]).then(responses => {
+  self.postMessage(0.1);
   responses[0].json().then(json => loadDB (json));
-}).catch(e => self.close);
+}).catch(e => { self.postMessage(1); self.close(); });
 
 function loadDB (json) {
+  self.postMessage(0.2);
   var campus = "TODOS"; // Hardcoded - Change when server-side parser changes
   var trigrams = { length: 0 };
 
@@ -99,6 +101,7 @@ function loadDB (json) {
     });
 
     Promise.all(lecturesMapPromise).then(function() {
+      self.postMessage(0.5);
       var trigramsObjectStore = self.idb.transaction(["trigrams"], "readwrite").objectStore("trigrams");
       for (var trigram in trigrams) {
         if (trigram === 'length') continue;
@@ -110,6 +113,6 @@ function loadDB (json) {
       trigramsObjectStore.put(trigrams[trigram],trigram);
       }
       delete trigrams.length;
-      trigramsObjectStore.transaction.oncomplete = e => self.close();
+      trigramsObjectStore.transaction.oncomplete = e => {self.postMessage(1); self.close()};
     });
 }

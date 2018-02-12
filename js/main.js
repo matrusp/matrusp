@@ -10,6 +10,10 @@ var searchBox;
 // Old codebase was using 5
 var matrusp_current_state_version = 6;
 
+dbworker.onmessage = e => {
+	ui.setLoadingBar(e.data);
+}
+
 state = new State();
 searchBox = new SearchBox();
 
