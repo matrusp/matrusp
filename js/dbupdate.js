@@ -1,6 +1,16 @@
 self.importScripts("dbhelpers.js");
 
-Promise.all([fetch('../db/db_usp.txt'), openIDB().then(idb => self.idb = idb)]).then(responses => {
+var idbPromise = openIDB().then(idb => self.idb = idb).then(idb => {
+  var storePromises = [];
+  for (var i = 0, storeName; storeName = idb.objectStoreNames[i]; i++) { 
+    storePromises.push(
+      new Promise((resolve, reject) => idb.transaction(storeName,"readwrite").objectStore(storeName).clear().onsuccess = e => resolve(storeName))
+    );
+  }
+  return Promise.all(storePromises);
+});
+
+Promise.all([fetch('../db/db_usp.txt'),idbPromise]).then(responses => {
   self.postMessage(0.1);
   responses[0].json().then(json => loadDB (json));
 }).catch(e => { self.postMessage(1); self.close(); });
