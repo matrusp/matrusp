@@ -5,7 +5,6 @@ self.cacheDirs = [
   "js/classroom.js",
   "js/combination.js",
   "js/custom_lib.js",
-  "js/database.js",
   "js/fbhelper.js",
   "js/googlecalendar.js",
   "js/es6-promise.auto.min.js",
