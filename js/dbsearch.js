@@ -32,7 +32,7 @@ function fetchLectureOnDB() {
   }
   
   var scores = new Object();
-  var transaction = self.idb.transaction(["trigrams","lectures"]);
+  var transaction = self.idb.transaction("trigrams");
 
   var trigramPromises = trigramsFromString(search,true).map(trigram => new Promise((resolve, reject) =>  {
     for(var i = 0, trigramCache; trigramCache = lastTrigrams[i]; i++) {
@@ -59,6 +59,7 @@ function fetchLectureOnDB() {
       return scores[second] - scores[first];
     });
 
+    var transaction = self.idb.transaction("lectures");
     var resultPromises = result.slice(0,50).map(lectureCode => new Promise((resolve, reject) => {
       for(var i = 0, cachedQuery; cachedQuery = self.lastQueries[i]; i++)
         for(var j = 0, lecture; lecture = cachedQuery.result[j]; j++)
