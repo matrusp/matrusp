@@ -1,9 +1,7 @@
 self.importScripts("dbhelpers.js");
 
-var dbrequest = self.indexedDB.open(IDB_NAME);
-  
-dbrequest.onsuccess = ev => {
-  self.idb = ev.target.result;
+openIDB().then(idb => {
+  self.idb = idb;
 
   self.onmessage = e => {
     if(!e.data || e.data === '') return;
@@ -14,9 +12,7 @@ dbrequest.onsuccess = ev => {
     }
     else self.search = changingSpecialCharacters(e.data).trim();
   };
-};
-
-dbrequest.onerror = e => self.close(); //TODO: handle db opening error;
+}).catch(e => self.close());
 
 //These arrays will cache in RAM data fetched from the DB
 self.lastQueries = []; //Last 5 queries: search and result
