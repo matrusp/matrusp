@@ -38,20 +38,25 @@ function Plan(jsonObj, planId, isActivePlan) {
  **/
  // TODO caso em que basePlan == null e isActivePlan eh valido existe! trata-la!
 Plan.prototype.load = function(basePlan, isActivePlan) {
-  this.lectures = new Array();
+this.lectures = new Array();
   this.combinations = new Array();
   if (basePlan != null) {
-    for (var i = 0; i < basePlan.lectures.length; i++) {
-      this.lectures.push(new Lecture(basePlan.lectures[i], this));
-      ui.addLecture(this.lectures[i]);
-    }
-    this.activeCombinationIndex = basePlan.activeCombinationIndex;
-    this.computeCombinations();
-    this.activeCombination = this.combinations[this.activeCombinationIndex];
-    if (isActivePlan) {
-      this.setActiveCombination();
-      this.showPlan();
-    }
+    openIDB().then(idb => basePlan.lectures.map(lecture => new Promise((resolve,reject) => {
+	  idb.transaction("lectures").objectStore("lectures").get(lecture.code).onsuccess = e => {
+	    lecture = new Lecture(Object.assign(lecture, e.target.result || {}), this);
+		this.lectures.push(lecture);
+		ui.addLecture(lecture);
+		resolve(lecture);
+	  };
+    }))).then(lecturePromises => Promise.all(lecturePromises).then(all => {
+	  this.activeCombinationIndex = basePlan.activeCombinationIndex;
+	  this.computeCombinations();
+	  this.activeCombination = this.combinations[this.activeCombinationIndex];
+	  if (isActivePlan) {
+	    this.setActiveCombination();
+	    this.showPlan();
+	  }
+	}));
   } else {
     this.activeCombinationIndex = null;
     this.activeCombination = null;
