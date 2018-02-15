@@ -1,18 +1,21 @@
 self.importScripts("dbhelpers.js");
 
-var idbPromise = openIDB().then(idb => self.idb = idb).then(idb => {
-  var storePromises = [];
-  for (var i = 0, storeName; storeName = idb.objectStoreNames[i]; i++) { 
-    storePromises.push(
-      new Promise((resolve, reject) => idb.transaction(storeName,"readwrite").objectStore(storeName).clear().onsuccess = e => resolve(storeName))
-    );
-  }
-  return Promise.all(storePromises);
-});
+if(!navigator.onLine) {
+  self.postMessage(1);
+  self.close();
+}
 
-Promise.all([fetch('../db/db_usp.txt'),idbPromise]).then(responses => {
+fetch('../db/db_usp.txt').then(response => {
   self.postMessage(0.1);
-  responses[0].json().then(json => loadDB (json));
+  openIDB().then(idb => self.idb = idb).then(idb => {
+    var clearPromises = [];
+    var transaction = idb.transaction(["lectures","trigrams"],"readwrite");
+    clearPromises.push(new Promise((resolve, reject) => transaction.objectStore("lectures").clear().onsuccess = e => resolve("lectures")));
+    clearPromises.push(new Promise((resolve, reject) => transaction.objectStore("trigrams").clear().onsuccess = e => resolve("trigrams")));
+    return Promise.all(clearPromises).then(storePromises => idb);
+  }).then(idb => {
+    response.json().then(json => loadDB (json));
+  });
 }).catch(e => { self.postMessage(1); self.close(); });
 
 function loadDB (json) {
