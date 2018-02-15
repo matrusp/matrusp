@@ -1,0 +1,10 @@
+{
+  "name": "MatrUSP Beta",
+  "short_name": "MatrUSP",
+  "start_url": ".",
+  "display": "minimal-ui",
+  "description": "Gerenciador de grades USP",
+  "background_color": "white",
+  "lang": "pt_BR",
+  "theme_color": "#FBA71C",
+}
