@@ -61,19 +61,16 @@ function fromCache(request) {
       return fetchPromise;
     }
 
-    fetch(request.url, {method: 'GET', headers: {'If-None-Match': response.headers.get("ETag")}}).then(newresponse => newresponse.ok ? self.caches.open(CACHE_NAME).then(cache => cache.add(request,newresponse)) : false).catch(e => {});
+    fetch(request.url, {method: 'GET', headers: {'If-None-Match': response.headers.get("ETag")}}).then(newresponse => newresponse.ok ? self.caches.open(CACHE_NAME).then(cache => {cache.add(request,newresponse); refresh()}) : false).catch(e => {});
     return response;
   }));
 }
 
-function refresh(response) {
-  return self.clients.matchAll().then(function (clients) {
-    clients.forEach(function (client) {
-    var message = {
-        type: 'refresh',
-        url: response.url,eTag: response.headers.get('ETag')
-      };
-    client.postMessage(JSON.stringify(message));
+function refresh() {
+  if(self.refreshTimeout) clearTimeout(self.refreshTimeout);
+  self.refreshTimeout = setTimeout(() => self.clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage('refresh');
     });
-  });
+  }),1000);
 }
