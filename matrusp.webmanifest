@@ -2,9 +2,44 @@
   "name": "MatrUSP Beta",
   "short_name": "MatrUSP",
   "start_url": ".",
-  "display": "minimal-ui",
+  "display": "standalone",
   "description": "Gerenciador de grades USP",
   "background_color": "white",
   "lang": "pt_BR",
   "theme_color": "#FBA71C",
+  "icons": [{
+    "src": "images/matrusp16.png",
+    "sizes": "16x16",
+    "type": "image/png"
+  },
+  {
+    "src": "images/matrusp24.png",
+    "sizes": "24x24",
+    "type": "image/png"
+  },
+  {
+    "src": "images/matrusp32.png",
+    "sizes": "32x32",
+    "type": "image/png"
+  },
+  {
+    "src": "images/matrusp48.png",
+    "sizes": "48x48",
+    "type": "image/png"
+  },
+  {
+    "src": "images/matrusp64.png",
+    "sizes": "64x64",
+    "type": "image/png"
+  },
+  {
+    "src": "images/matrusp128.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  },
+  {
+    "src": "images/matrusp192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }]
 }
