@@ -51,7 +51,7 @@ function get_utc_current_date_and_time() {
 }
 
 function generate_uid(schedule) {
-  return new Date().toISOString().replace(/-|:|\./g, "") + "-" + schedule.parent.parent.code + "T" + schedule.parent.classroomCode.replace(/ /g, "") + "D" + get_week_day_string(schedule) + "@" + document.location.hostname;
+  return new Date().toISOString().replace(/-|:|\./g, "") + "-" + schedule.parent.parent.code + "T" + schedule.parent.classroomCode[0].replace(/ /g, "") + "D" + get_week_day_string(schedule) + "@" + document.location.hostname;
 }
 
 function get_class_end_date(classroom) {
