@@ -6,15 +6,17 @@ if(!navigator.onLine) {
 }
 
 fetch('../db/db_usp.txt').then(response => {
+  if(!response.ok) throw new Error();
+  
   self.postMessage(0.1);
-  openIDB().then(idb => self.idb = idb).then(idb => {
+  return openIDB().then(idb => self.idb = idb).then(idb => {
     var clearPromises = [];
     var transaction = idb.transaction(["lectures","trigrams"],"readwrite");
     clearPromises.push(new Promise((resolve, reject) => transaction.objectStore("lectures").clear().onsuccess = e => resolve("lectures")));
     clearPromises.push(new Promise((resolve, reject) => transaction.objectStore("trigrams").clear().onsuccess = e => resolve("trigrams")));
     return Promise.all(clearPromises).then(storePromises => idb);
   }).then(idb => {
-    response.json().then(json => loadDB (json));
+    return response.json().then(json => loadDB (json));
   });
 }).catch(e => { self.postMessage(1); self.close(); });
 
