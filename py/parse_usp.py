@@ -43,7 +43,7 @@ def main():
 		#u'6', u'74', u'61', u'99', u'14', u'93', u'41', u'92', u'42', u'55', u'4',
 		# u'43', u'76', u'44', u'45', u'83', u'47', u'46', u'75', u'87', u'21', u'90',
 		#u'71', u'100', u'1', u'30', u'64', u'31', u'85', u'36', u'32', u'38', u'33']
-		codigos_unidades = list(map(extrai_codigo, links_unidades))
+		codigos_unidades = list(map(extrai_codigo_unidade, links_unidades))
 	else:
 		codigos_unidades = args.unidades
 	logger.info(" - %d unidades de ensino encontradas - " % (len(codigos_unidades)))
@@ -112,7 +112,7 @@ async def iterar_unidade(codigo):
 
 	return materias
 
-def extrai_codigo(x):
+def extrai_codigo_unidade(x):
 	return re.search("codcg=(\d+)", x.get('href')).group(1)
 
 #Tabelas sem tabelas dentro
@@ -120,6 +120,8 @@ def eh_tabela_folha(tag):
 	return tag.name == "table" and tag.table == None
 
 async def parsear_materia(materia):
+	if not materia:
+		return
 	async with sem:
 		logger.debug(f" -      Obtendo turmas de {materia[0]} - {materia[1]}")
 		codigo = materia[0]
@@ -171,6 +173,10 @@ async def parsear_materia(materia):
 
 		materia = parsear_info_materia(tabelas_folha)
 
+		if not materia:
+			logger.warning(f" -      Disciplina {codigo} não possui informações cadastradas no Jupiter. Ignorando...")
+			return;
+
 		materia['turmas'] = turmas
 
 		logger.debug(f" -      Salvando {codigo}")
@@ -200,7 +206,7 @@ def parsear_info_materia(tabelas_folha):
 			strings = list(folha.stripped_strings)
 			info['unidade'] = strings[0]
 			info['departamento'] = strings[1]
-			search = re.search("Disciplina:\s+([A-Z0-9]{7})\s-\s(.+)", strings[2])
+			search = re.search("Disciplina:\s+([A-Z0-9\s]{7})\s-\s(.+)", strings[2])
 			assert search != None, f"{strings[2]} não é um nome de disciplina válido ({folha})"
 			info['codigo'] = search.group(1)
 			info['nome'] = search.group(2)
@@ -278,7 +284,7 @@ def parsear_info_turma(tabela):
 	return info
 
 def parsear_vagas(tabela):
-	vagas = []
+	vagas = {}
 	accum = None
 	for tr in tabela.find_all("tr"):
 		tds = tr.find_all("td")
@@ -288,17 +294,16 @@ def parsear_vagas(tabela):
 			continue
 		elif len(tds) == 5 and tds[0] != "": #Novo tipo de vaga (Obrigatória, Optativa, ...)
 			if accum != None:
-				vagas.append(accum)
-			accum = (tds[0], to_int(tds[1]), to_int(tds[2]), to_int(tds[3]), to_int(tds[4]), [])
+				vagas[tipo] = accum
+			tipo = tds[0]
+			accum = {'vagas': to_int(tds[1]), 'inscritos': to_int(tds[2]), 'pendentes': to_int(tds[3]), 'matriculados': to_int(tds[4]), 'grupos': {}}
 		elif len(tds) == 6: #Detalhamento das vagas (IME - Matemática Bacharelado, Qualquer Unidade da
                       #USP, ...)
-			detalhamento = (tds[1], to_int(tds[2]), to_int(tds[3]), to_int(tds[4]), to_int(tds[5]))
-			accum[5].append(detalhamento)
+			grupo = tds[1]
+			detalhamento = {'vagas': to_int(tds[2]), 'inscritos': to_int(tds[3]), 'pendentes': to_int(tds[4]), 'matriculados': to_int(tds[5])}
+			accum['grupos'][grupo] = detalhamento
 	if accum != None:
-		vagas.append(accum)
-#		import pprint
-#		pp = pprint.PrettyPrinter(indent=2)
-#		pp.pprint(vagas)
+		vagas[tipo] = accum
 	return vagas
 
 def to_int(string):
@@ -353,7 +358,8 @@ def parsear_horario(tabela):
 
 #Retorna um par (codigo, nome), exemplo: (u'MAC0323', u'Estruturas de Dados')
 def extrai_materia(x):
-	return (re.search("sgldis=([A-Z0-9]+)", x.get('href')).group(1), x.string)
+	search = re.search("sgldis=([A-Z0-9\s]{7})", x.get('href'))
+	return (search.group(1), x.string) if search else None
 
 def limpar_diretorio(diretorio):
 	for the_file in os.listdir(diretorio):
@@ -392,7 +398,7 @@ if __name__ == "__main__":
 	ch.setFormatter(logging.Formatter('%(message)s'))
 	logger.addHandler(ch)
 
-	fh = logging.FileHandler(time.strftime('%Y-%m-%d %H-%M-%S '+__file__+'.log'))
+	fh = logging.FileHandler(time.strftime('%Y-%m-%d_%H-%M-%S_'+__file__+'.log'))
 	fh.setLevel(logging.DEBUG)
 	fh.setFormatter(logging.Formatter('[%(asctime)s] %(module)s %(levelname)s: %(message)s'))
 	logger.addHandler(fh)
