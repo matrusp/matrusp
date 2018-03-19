@@ -28,7 +28,7 @@ def main():
 
 	logger.info(" - Obtendo a lista de todas as unidades de ensino - ")
 	if not args.unidades:
-		response = urllib.request.urlopen('https://uspdigital.usp.br/jupiterweb/jupColegiadoLista?tipo=D')
+		response = urllib.request.urlopen('https://uspdigital.usp.br/jupiterweb/jupColegiadoLista?tipo=T')
 		soup = BeautifulSoup(response.read(), "html5lib")
 
 		#Lista de tags do BeautifulSoup da forma [<a
@@ -58,16 +58,16 @@ def main():
 
 	materias_json = json.dumps(materias)
 	
-	arq = open(os.path.join(args.db_dir, "db.json") ,"w")
+	arq = open(os.path.join(args.db_dir, args.out) ,"w")
 	arq.write(materias_json)
 	arq.close()
 
 	if not args.nogzip:
-		arq = open(os.path.join(args.db_dir, "db.json.gz") ,"wb")
+		arq = open(os.path.join(args.db_dir, args.out + ".gz") ,"wb")
 		arq.write(gzip.compress(bytes(materias_json,'utf-8')))
 		arq.close()
 
-	logger.info(f" -    {len(materias)} materias com oferecimento")
+	logger.info(f" -   {len(materias)} materias salvas")
 
 	logger.info(" - FIM! -")
 	logger.info(f" - \n - Tempo de execução: {time.perf_counter() - t} segundos")
@@ -103,10 +103,10 @@ async def iterar_unidades(codigos_unidades):
 
 async def iterar_unidade(codigo):
 	logger.debug(" -    Obtendo as materias da unidade %s - " % (codigo))
-	response = await session.get('https://uspdigital.usp.br/jupiterweb/jupDisciplinaLista?letra=A-Z&tipo=D&codcg=' + codigo, timeout = 120)
+	response = await session.get('https://uspdigital.usp.br/jupiterweb/jupDisciplinaLista?letra=A-Z&tipo=T&codcg=' + codigo, timeout = 120)
 	assert response.status == 200
 	soup = BeautifulSoup(await response.text(), "html5lib")
-	links_materias = soup.find_all('a', href=re.compile("obterDisciplina"))
+	links_materias = soup.find_all('a', href=re.compile("obterTurma"))
 	materias = list(map(extrai_materia, links_materias))
 	logger.debug(f" -   {len(materias)} materias encontradas na unidade {codigo} - ")
 
@@ -140,9 +140,6 @@ async def parsear_materia(materia):
 				return
 		except:
 			logger.exception(f" -      Não foi possível obter turmas de {materia[0]} - {materia[1]}")
-			return
-	
-		if re.compile("existe oferecimento").search(response):
 			return
 	
 		logger.debug(f" -      Analisando turmas de {materia[0]} - {materia[1]}")
@@ -378,7 +375,8 @@ if __name__ == "__main__":
 	parser.add_argument('-u','--unidades', help=  "iterar apenas estes códigos de unidade", nargs = '+')
 	parser.add_argument('-s','--simultaneidade',help = "número de pedidos HTTP simultâneos", type=int, default=100)
 	parser.add_argument('-t','--timeout',help = "tempo máximo (segundos) do pedido HTTP", type=int, default=120)
-	parser.add_argument('--nogzip',help = "não compactar os arquivos de saída", type=bool, default=False)
+	parser.add_argument('-o','--out',help="arquivo de saída do banco de dados completo", type=str, default="db.json")
+	parser.add_argument('--nogzip',help = "não compactar os arquivos de saída", action='store_true')
 	args = parser.parse_args()
 
 	if not args.diretorio_destino:
