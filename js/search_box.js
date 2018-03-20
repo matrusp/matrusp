@@ -38,11 +38,11 @@ SearchBox.prototype.addLectures = function(lectures) {
 				});
 		var lectureInfoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
 				'class' : 'lecture-info-code',
-				'innerHTML' : lectures[i]['code']
+				'innerHTML' : lectures[i]['codigo']
 				});
 		var lectureInfoDescription = createAndAppendChild(searchResultLectureInfo, 'div', {
 				'class' : 'lecture-info-description', 
-				'innerHTML' : lectures[i]['name']
+				'innerHTML' : lectures[i]['nome']
 				});
 
 
@@ -260,7 +260,7 @@ SearchBox.prototype.add = function(lecture, activePlan) {
 		}
 	}
 
-	state.lastColor = state.lastColor % state.colors.length || 0;
+	state.lastColor = state.lastColor % state.numColors || 0;
 	
 	lecture['color'] = 1 + state.lastColor++; //colors are 1-based
 	state.addLecture(lecture);

@@ -51,16 +51,16 @@ function get_utc_current_date_and_time() {
 }
 
 function generate_uid(schedule) {
-  return new Date().toISOString().replace(/-|:|\./g, "") + "-" + schedule.parent.parent.code + "T" + schedule.parent.classroomCode[0].replace(/ /g, "") + "D" + get_week_day_string(schedule) + "@" + document.location.hostname;
+  return new Date().toISOString().replace(/-|:|\./g, "") + "-" + schedule.parent.parent.code + "T" + schedule.parent.code.replace(/ /g, "") + "D" + get_week_day_string(schedule) + "@" + document.location.hostname;
 }
 
 function get_class_end_date(classroom) {
-  var date = classroom.data_fim.split("/");
+  var date = classroom.dateEnd.split("/");
   return date[2] + date[1] + date[0];
 }
 
 function get_class_begin_date(classroom, schedule) {
-  var string_date = classroom.data_inicio.split("/");
+  var string_date = classroom.dateBegin.split("/");
   var begin_date = new Date();
   begin_date.setDate(parseInt(string_date[0]));
   begin_date.setMonth(parseInt(string_date[1]) - 1);
@@ -83,7 +83,7 @@ function get_schedule_end_time(schedule) {
 }
 
 function get_title(classroom) {
-  return classroom.parent.code + " - " + classroom.parent.name;
+  return `${classroom.parent.name} (${classroom.parent.code})`;
 }
 
 function build_event() {
@@ -101,6 +101,7 @@ function build_event() {
       events_statement += "SEQUENCE:0\n";
       events_statement += "STATUS:CONFIRMED\n";
       events_statement += "SUMMARY: Aula de " + get_title(active_classes[i]) + "\n";
+      events_statement += "DESCRIPTION: " + active_classes[i].obs + "\n";
       events_statement += "TRANSP:OPAQUE\n";
       events_statement += "END:VEVENT\n";
     }

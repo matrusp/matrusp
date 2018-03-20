@@ -109,7 +109,7 @@ function openIDB() {
     dbrequest.onerror = e => { throw e; reject(e); };
 
     dbrequest.onupgradeneeded = e => {
-      var lectureStore = e.target.result.createObjectStore("lectures", { keyPath: 'code' });
+      var lectureStore = e.target.result.createObjectStore("lectures", { keyPath: 'codigo' });
       var trigramStore = e.target.result.createObjectStore("trigrams");
     };
   });

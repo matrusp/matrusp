@@ -13,8 +13,7 @@ else location.href = "https://bcc.ime.usp.br/matrusp_v1";
 var ui = new UI();
 var state;
 var searchBox;
-// Old codebase was using 5
-var matrusp_current_state_version = 6;
+var matrusp_current_state_version = 7;
 
 dbworker.onmessage = e => {
 	ui.setLoadingBar(e.data);

@@ -63,13 +63,13 @@ function fetchLectureOnDB() {
     var resultPromises = result.slice(0,50).map(lectureCode => new Promise((resolve, reject) => {
       for(var i = 0, cachedQuery; cachedQuery = self.lastQueries[i]; i++)
         for(var j = 0, lecture; lecture = cachedQuery.result[j]; j++)
-          if(lecture.code === lectureCode) return resolve(lecture);
+          if(lecture.codigo === lectureCode) return resolve(lecture);
       transaction.objectStore("lectures").get(lectureCode).onsuccess = e => resolve(e.target.result);
-    }).then(lecture => {scores[lecture.code] /= Math.log(3+lecture.name.length); return lecture;}));
+    }).then(lecture => {scores[lecture.codigo] /= Math.log(3+lecture.nome.length); return lecture;}));
     
     Promise.all(resultPromises).then(result => {
       result.sort(function(first, second) {
-        return scores[second.code] - scores[first.code];
+        return scores[second.codigo] - scores[first.codigo];
       });
 
       submitResult({search: search, result: result}, true);

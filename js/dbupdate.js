@@ -5,7 +5,7 @@ if(!navigator.onLine) {
   self.close();
 }
 
-fetch('../db/db_usp.txt').then(response => {
+fetch('../db/db.json').then(response => {
   if(!response.ok) throw new Error();
   
   self.postMessage(0.1);
@@ -18,11 +18,10 @@ fetch('../db/db_usp.txt').then(response => {
   }).then(idb => {
     return response.json().then(json => loadDB (json));
   });
-}).catch(e => { self.postMessage(1); self.close(); });
+}).catch(e => { console.error(e); self.postMessage(1); self.close(); });
 
 function loadDB (json) {
   self.postMessage(0.2);
-  var campus = "TODOS"; // Hardcoded - Change when server-side parser changes
   var trigrams = { length: 0 };
 
   function addToTrigramList(trigram, lecture) {
@@ -31,68 +30,21 @@ function loadDB (json) {
         length: 0
       };
     }
-    if (!trigrams[trigram][lecture.code]) {
-      trigrams[trigram][lecture.code] = 0;
+    if (!trigrams[trigram][lecture.codigo]) {
+      trigrams[trigram][lecture.codigo] = 0;
     }
-    trigrams[trigram][lecture.code]++;
+    trigrams[trigram][lecture.codigo]++;
     trigrams[trigram].length++;
     trigrams.length++;
   }
     var lecturesObjectStore = self.idb.transaction(["lectures"], "readwrite").objectStore("lectures");
-    var lecturesMapPromise = json[campus].map(function(description) {
-      var lecture = new Object();
-      lecture = {
-        'code': description[0],
-        'name': description[1],
-        'selected': 1,
-        'campus': 'TODOS',
-        'classrooms': new Array()
-      };
-      description[2].forEach(function(specifications) {
-        var specification = new Object();
-        specification = {
-          'classroomCode': new Array(),
-          'data_inicio': specifications[1],
-          'data_fim': specifications[2],
-          'type': specifications[3],
-          'selected': 1,
-          'alunos_especiais': 0,
-          'horas_aula': 0,
-          'pedidos_sem_vaga': 0,
-          'saldo_vagas': 0,
-          'vagas_ocupadas': 0,
-          'teachers': new Array(),
-          'schedules': new Array()
-        };
-        specification.classroomCode.push(specifications[0].replace(/.{5}/, ''));
-        if (specifications[4] != null) {
-          specifications[4].forEach(function(schedules) { //TODO verificar se os parametros nao sao nulls
-            var schedule = new Object();
-            schedule = {
-              'day': schedules[0],
-              'timeBegin': schedules[1],
-              'timeEnd': schedules[2],
-            };
-            if (schedules[3] == "" || schedules == null) {
-              schedules[3] = 'Não disponibilizado pelo JupiterWeb';
-            }
-            specification.teachers.push(schedules[3]);
-            specification.schedules.push(schedule);
-          });
-        } else {
-          specification.teachers.push('Não disponibilizado pelo JupiterWeb');
-        }
-        //specification.numVacancies = specifications[5];
-        // specifications[5] contains information about number
-        // of vacancies
-        lecture.classrooms.push(specification);
-      });
+    var lecturesMapPromise = json.map(lecture => {
       lecturesObjectStore.put(lecture);
 
-      trigramsFromString(changingSpecialCharacters(lecture.name)).forEach(function(trigram) {
+      trigramsFromString(changingSpecialCharacters(lecture.nome)).forEach(function(trigram) {
         addToTrigramList(trigram, lecture)
       });
-      trigramsFromString(lecture.code).forEach(function(trigram) {
+      trigramsFromString(lecture.codigo).forEach(function(trigram) {
         addToTrigramList(trigram, lecture)
       });
     });

@@ -47,8 +47,8 @@
     <div><span id="logo">MatrUSP</span><span class="beta-tag">Beta</span></div>
     <div id='save-controller'>
 	<input id='user-identifier' placeholder='Salve seu plano aqui'> 
-	<button onclick='ui.saveStateOnServer(document.getElementById("user-identifier").value, false);'>Salvar</button>
-	<button onclick='ui.loadStateFromServer(document.getElementById("user-identifier").value);'>Carregar</button>
+	<button id='save-button'>Salvar</button>
+	<button id='load-button'>Carregar</button>
     </div>
     <ul id="icons">
 	<li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
@@ -186,6 +186,7 @@
                         <div class="plan-tab-option"> Copiar p/ 2 </div>
                     </div>
 				</div>
+				<div><div>Créditos Aula: <span id='lecture-credits'></span></div><div>Créditos Trabalho: <span id='work-credits'></span></div></div>
                 <div id="upload-warning">Arquivo da versão antiga é incompatível!</div>
                 <label id="upload-button">
                     <div id="upload-name"> Upload de Grade </div>

@@ -41,9 +41,14 @@ Plan.prototype.load = function(basePlan, isActivePlan) {
 this.lectures = new Array();
   this.combinations = new Array();
   if (basePlan != null) {
-    openIDB().then(idb => basePlan.lectures.map(lecture => new Promise((resolve,reject) => {
-	  idb.transaction("lectures").objectStore("lectures").get(lecture.code).onsuccess = e => {
-	    lecture = new Lecture(Object.assign(lecture, e.target.result || {}), this);
+    openIDB().then(idb => basePlan.lectures.map(baseLecture => new Promise((resolve,reject) => {
+	  idb.transaction("lectures").objectStore("lectures").get(baseLecture.code).onsuccess = e => {
+	    if(!e.target.result) reject();
+	    var lecture = new Lecture(Object.assign({'color': baseLecture.color, 'selected': baseLecture.selected}, e.target.result || {}), this);
+	    lecture.classrooms.forEach(classroom => {
+	    	if (baseLecture.classrooms.indexOf(classroom.code) == -1)
+	    		classroom.toggleClassroomSelection(true);
+	    });
 		this.lectures.push(lecture);
 		ui.addLecture(lecture);
 		resolve(lecture);
@@ -180,7 +185,7 @@ Plan.prototype.setCombination = function(combination) {
  * @param {Lecture} lecture
  */
 Plan.prototype.addLecture = function(lecture) {
-	var newLecture = new Lecture(lecture, this);
+  var newLecture = new Lecture(lecture, this);
   this.lectures.push(newLecture);
   ui.addLecture(newLecture);
   this.update();
@@ -399,6 +404,8 @@ Plan.prototype.setActiveCombination = function() {
       lecturesClassrooms[i].showBox();
       lecturesClassrooms[i].parent.activeClassroom = lecturesClassrooms[i];
     }
+    document.getElementById('lecture-credits').innerHTML = this.activeCombination.lectureCredits;
+    document.getElementById('work-credits').innerHTML = this.activeCombination.workCredits;
 
 		//document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
 	} else { 
@@ -478,11 +485,6 @@ Plan.prototype.setPlan = function() {
   state.activePlanIndex = this.planId;
 
   ui.scrollActiveCombinationToView();
-
-	for (var i = 0; i < state.colors.length; i++) {
-		state.colors[i] = 0;
-	}
-
 	
 	for (var i = 0; i < this.lectures.length; i++) {
 		state.colors[this.lectures[i].color-1] = 1;
@@ -574,6 +576,6 @@ Plan.prototype.addEventListeners = function() {
 
 function saveStateOnLocalStorage() {
 	if (state) {
-		localStorage.setItem('state', JSON.stringify(ui.copyState(state)));
+		localStorage.setItem('state', state.toJSON());
 	}
 }

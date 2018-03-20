@@ -31,25 +31,16 @@ function Classroom(jsonObj, parentLecture) {
   this.parent = parentLecture;
   this.teachers = new Array();
   this.schedules = new Array();
+  this.obs = jsonObj.observacoes;
+  this.selected = true;
   if (jsonObj) {
-		this.data_inicio = jsonObj.data_inicio;
-		this.data_fim = jsonObj.data_fim;
-    this.classroomCode = new Array(); 
-    this.horas_aula = jsonObj.horas_aula;
-    this.vagas_ocupadas = jsonObj.vagas_ocupadas;
-    this.alunos_especiais = jsonObj.alunos_especiais;
-    this.saldo_vagas = jsonObj.saldo_vagas;
-    this.pedidos_sem_vaga = jsonObj.pedidos_sem_vaga;
-    this.selected = jsonObj.selected;
-    // Array.slice(0) copies the _entire_ array.
-		this.addTeachers(jsonObj.teachers);
-    for (var i = 0; i < jsonObj.schedules.length; i++) {
-      this.schedules.push(new Schedule(jsonObj.schedules[i], this));
-    }
-		if (jsonObj.classroomCode) {
-			for (var i = 0; i < jsonObj.classroomCode.length; i++) {
-				this.classroomCode.push(jsonObj.classroomCode[i]);
-			}
+		this.dateBegin = jsonObj.inicio;
+		this.dateEnd = jsonObj.fim;
+		this.code = jsonObj.codigo
+		this.addTeachers([].concat.apply([],jsonObj.horario.map(x => x.professores)))
+    if(jsonObj.horario)
+		for (var i = 0; i < jsonObj.horario.length; i++) {
+		  this.schedules.push(new Schedule(jsonObj.horario[i], this));
 		}
     this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
     if (this.selected) {
@@ -57,16 +48,9 @@ function Classroom(jsonObj, parentLecture) {
     }
     this.addEventListeners();
   } else {
-		this.data_inicio = null; 
-		this.data_fim = null;
+		this.dateBegin = null; 
+		this.dateEnd = null;
     this.classroomCode = null;
-    this.horas_aula = null;
-    this.vagas_ofertadas = null;
-    this.vagas_ocupadas = null;
-    this.alunos_especiais = null;
-    this.saldo_vagas = null;
-    this.pedidos_sem_vaga = null;
-    this.selected = null;
     this.htmlElement = null;
   }
 }
