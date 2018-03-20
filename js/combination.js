@@ -15,6 +15,8 @@
 function Combination(combinationIndices, plan) {
   this.parent = plan;
   this.lecturesClassroom = new Array();
+  this.lectureCredits = 0;
+  this.workCredits = 0;
 
   for (var i = 0; i < combinationIndices.length; i++) {
     var classroomIndex = combinationIndices[i];
@@ -22,7 +24,10 @@ function Combination(combinationIndices, plan) {
       // Lecture not selected
       continue;
     }
-    this.lecturesClassroom.push(plan.lectures[i].classrooms[classroomIndex]);
+    classroom = plan.lectures[i].classrooms[classroomIndex];
+    this.lecturesClassroom.push(classroom);
+    this.lectureCredits += classroom.parent.lectureCredits;
+    this.workCredits += classroom.parent.workCredits;
   }
 
   Object.defineProperty(this, "htmlElement", {get: function () {

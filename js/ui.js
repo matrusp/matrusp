@@ -141,7 +141,7 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
     {
       tag: 'div',
       class: 'classroom-code',
-      innerHTML: classroom.classroomCode.join('<br>')
+      innerHTML: classroom.code.slice(-2)
     },
     {
       tag: 'div',
@@ -259,7 +259,6 @@ UI.prototype.createCombinationBoard = function(combination) {
     for (var j = 0; j < classroom.schedules.length; j++) {
       var schedule = classroom.schedules[j];
       var day = indexOfDay(schedule.day);
-      var deep = true;
 
       addClass(schedule.htmlElement, 'schedule-box-highlight');
       var css = window.getComputedStyle(schedule.htmlElement);
@@ -327,32 +326,6 @@ UI.prototype.removeLecture = function(lecture) {
 
 /**
  *
- */
-UI.prototype.saveStateOnServer = function(identifier, share) {
-  if (!identifier || identifier == '') {
-    this.showBanner('É necessário preencher o nome do identificador', 2000);
-    return;
-  }
-
-  fetch(`./php/save.php?identifier=${encodeURIComponent(identifier)}`, {
-    method: 'POST',
-    body: `data=${encodeURIComponent(JSON.stringify(this.copyState()))}`,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    }
-  }).then(response => {
-    if (response.ok)
-      this.showBanner(`Identificador "${identifier}" salvo com sucesso`, 2000);
-    else
-      this.showBanner('Algum erro ocorreu, salve o identificador novamente', 2000);
-  }).catch(error => {
-    this.showBanner('Algum erro ocorreu, salve o identificador novamente', 2000);
-    throw error;
-  });
-}
-
-/**
- *
  **/
 UI.prototype.copyState = function() {
   object = new Object();
@@ -384,7 +357,7 @@ UI.prototype.copyState = function() {
         var classroomState = lectureState.classrooms[k];
         var classroom = new Array();
         classroom = shallowCopy(lectureState.classrooms[k]);
-        classroom['classroomCode'] = classroomState.classroomCode.slice(0);
+        classroom['code'] = classroomState.code;
         classroom['schedules'] = new Array();
         classroom['teachers'] = classroomState.teachers.slice(0);
         for (var l = 0; l < classroomState.schedules.length; l++) {
@@ -400,28 +373,6 @@ UI.prototype.copyState = function() {
     object.plans.push(plan);
   }
   return object;
-}
-
-UI.prototype.loadStateFromServer = function(identifier) {
-  if (!identifier || identifier == '') {
-    this.showBanner('É necessário preencher o nome do identificador', 2000);
-    return;
-  }
-  fetch(`data/${identifier.replace(/[^\w]/g, '')}.json`).then(response => {
-    if (response.ok)
-      response.json().then(json => {
-        state.reload(json);
-        this.showBanner(`Identificador "${identifier}" carregado com sucesso`, 2000);
-      });
-    else
-    if (response.status === 404)
-      this.showBanner('Identificador não encontrado no servidor', 2000);
-    else
-      this.showBanner('Não foi possível carregar o identificador. Tente novamente', 2000);
-  }).catch(error => {
-    this.showBanner('Não foi possível carregar o identificador. Tente novamente', 2000);
-    throw error
-  });
 }
 
 function tester(obj, objOnDB) {
@@ -474,19 +425,6 @@ function shallowCopy(obj) {
     }
   }
   return objC;
-}
-
-UI.prototype.createIdentifierOnServer = function() {
-  var identifier;
-  if (sessionStorage.getItem('identifier') == null) {
-    identifier = (+new Date).toString(36);
-    sessionStorage.setItem('identifier', identifier);
-  } else {
-    identifier = sessionStorage.getItem('identifier');
-  }
-  this.saveStateOnServer(identifier, true);
-  window.location.hash = identifier;
-  prompt('Envie esse link para quem quiser!!', window.location.href);
 }
 
 UI.prototype.setLoadingBar = function(load) {
