@@ -147,6 +147,10 @@ async def parsear_materia(materia):
 		tabelas_folha = soup.find_all(eh_tabela_folha)
 		turmas = parsear_turmas(tabelas_folha)
 
+		if not turmas:
+			logger.warning(f" -      Disciplina {codigo} não possui turmas válidas cadastradas no Jupiter. Ignorando...")
+			return;
+
 		logger.debug(f" -      Obtendo informações de {materia[0]} - {materia[1]}")
 		try:
 			response2 = await session.get('https://uspdigital.usp.br/jupiterweb/obterDisciplina?print=true&sgldis=' + codigo, timeout = args.timeout, verify_ssl=False)
@@ -222,9 +226,14 @@ def parsear_turmas(tabelas_folha):
 	for folha in tabelas_folha:
 		if folha.find_all(text=re.compile("Código\s+da\s+Turma", flags=re.UNICODE)):
 			if info != None:
-				info['horario'] = horario
-				info['vagas'] = vagas
-				turmas.append(info)
+				if not horario:
+					logger.warn(f" -      Turma {info.codigo} não possui horário cadastrado");
+				elif not vagas:
+					logger.warn(f" -      Turma {info.codigo} não possui vagas cadastradas");
+				else:
+					info['horario'] = horario
+					info['vagas'] = vagas
+					turmas.append(info)
 			info = parsear_info_turma(folha)
 		elif folha.find_all(text="Horário"):
 			horario = parsear_horario(folha)
