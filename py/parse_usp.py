@@ -227,9 +227,9 @@ def parsear_turmas(tabelas_folha):
 		if folha.find_all(text=re.compile("Código\s+da\s+Turma", flags=re.UNICODE)):
 			if info != None:
 				if not horario:
-					logger.warn(f" -      Turma {info.codigo} não possui horário cadastrado");
+					logger.warn(f" -      Turma {info['codigo']} não possui horário cadastrado");
 				elif not vagas:
-					logger.warn(f" -      Turma {info.codigo} não possui vagas cadastradas");
+					logger.warn(f" -      Turma {info['codigo']} não possui vagas cadastradas");
 				else:
 					info['horario'] = horario
 					info['vagas'] = vagas
