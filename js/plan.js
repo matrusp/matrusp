@@ -41,27 +41,34 @@ Plan.prototype.load = function(basePlan, isActivePlan) {
 this.lectures = new Array();
   this.combinations = new Array();
   if (basePlan != null) {
-    openIDB().then(idb => basePlan.lectures.map(baseLecture => new Promise((resolve,reject) => {
-	  idb.transaction("lectures").objectStore("lectures").get(baseLecture.code).onsuccess = e => {
-	    if(!e.target.result) reject();
-	    var lecture = new Lecture(Object.assign({'color': baseLecture.color, 'selected': baseLecture.selected}, e.target.result || {}), this);
-	    lecture.classrooms.forEach(classroom => {
+    openIDB().then(idb => {
+	  var lecturePromises = basePlan.lectures.map(baseLecture => new Promise((resolve,reject) => {
+	  	idbrequest = idb.transaction("lectures").objectStore("lectures").get(baseLecture.code);
+	  	idbrequest.onsuccess = e => {
+	  	  if(e.target.result)
+			return resolve(e.target.result);
+		  else
+			return resolve(fetch(`db/${baseLecture.code}.json`).then(response => response.json()));
+	  	  };
+    	}).then(lectureInfo => {
+		  var lecture = new Lecture(Object.assign({'color': baseLecture.color, 'selected': baseLecture.selected}, lectureInfo || {}), this);
+	      lecture.classrooms.forEach(classroom => {
 	    	if (baseLecture.classrooms.indexOf(classroom.code) == -1)
 	    		classroom.toggleClassroomSelection(true);
-	    });
-		this.lectures.push(lecture);
-		ui.addLecture(lecture);
-		resolve(lecture);
-	  };
-    }))).then(lecturePromises => Promise.all(lecturePromises).then(all => {
-	  this.activeCombinationIndex = basePlan.activeCombinationIndex;
-	  this.computeCombinations();
-	  this.activeCombination = this.combinations[this.activeCombinationIndex];
-	  if (isActivePlan) {
-	    this.setActiveCombination();
-	    this.showPlan();
-	  }
-	}));
+	      });
+		  this.lectures.push(lecture);
+		  ui.addLecture(lecture);
+		  return lecture;
+	    }));
+      Promise.all(lecturePromises).then(all => {
+	    this.activeCombinationIndex = basePlan.activeCombinationIndex;
+	    this.computeCombinations();
+	    this.activeCombination = this.combinations[this.activeCombinationIndex];
+	    if (isActivePlan) {
+		  this.setActiveCombination();
+		  this.showPlan();
+	    }
+	})});
   } else {
     this.activeCombinationIndex = null;
     this.activeCombination = null;
