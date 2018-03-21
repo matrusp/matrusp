@@ -36,11 +36,12 @@ function Classroom(jsonObj, parentLecture) {
   if (jsonObj) {
 		this.dateBegin = jsonObj.inicio;
 		this.dateEnd = jsonObj.fim;
-		this.code = jsonObj.codigo
-		this.addTeachers([].concat.apply([],jsonObj.horario.map(x => x.professores)))
-    if(jsonObj.horario)
-		for (var i = 0; i < jsonObj.horario.length; i++) {
-		  this.schedules.push(new Schedule(jsonObj.horario[i], this));
+		this.code = jsonObj.codigo;
+		if(jsonObj.horario) {
+		  this.addTeachers([].concat.apply([],jsonObj.horario.map(x => x.professores)))
+		  for (var i = 0; i < jsonObj.horario.length; i++) {
+		    this.schedules.push(new Schedule(jsonObj.horario[i], this));
+		  }
 		}
     this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
     if (this.selected) {

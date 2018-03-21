@@ -194,6 +194,7 @@ State.prototype.saveOnServer = function(identifier) {
 State.prototype.toJSON = function() {
 	var stateData = {};
 	stateData.version = this.version;
+	stateData.lastColor = this.lastColor;
 	stateData.plans = [];
 	stateData.activePlanIndex = this.activePlanIndex;
 	this.plans.forEach(plan => {
