@@ -1,18 +1,17 @@
+self.importScripts("dexie.min.js")
 self.importScripts("dbhelpers.js");
 
-openIDB().then(idb => {
-  self.idb = idb;
+self.onmessage = e => {
+  if(!e.data || e.data.q === '') return;
 
-  self.onmessage = e => {
-    if(!e.data || e.data === '') return;
+  e.data.q = changingSpecialCharacters(e.data.q).trim();
 
-    if(!self.search) {
-      self.search = changingSpecialCharacters(e.data).trim();
-      fetchLectureOnDB();
-    }
-    else self.search = changingSpecialCharacters(e.data).trim();
-  };
-}).catch(e => self.close());
+  if(!self.search) {
+    self.search = e.data;
+    fetchLectureOnDB();
+  }
+  else self.search = e.data;
+};
 
 //These arrays will cache in RAM data fetched from the DB
 self.lastQueries = []; //Last 5 queries: search and result
@@ -32,18 +31,17 @@ function fetchLectureOnDB() {
   }
   
   var scores = new Object();
-  var transaction = self.idb.transaction("trigrams");
 
-  var trigramPromises = trigramsFromString(search,true).map(trigram => new Promise((resolve, reject) =>  {
+  var trigramPromises = trigramsFromString(search.q,true).map(trigram => new Promise((resolve, reject) =>  {
     for(var i = 0, trigramCache; trigramCache = lastTrigrams[i]; i++) {
       if(trigramCache[0] == trigram) {
         return resolve(trigramCache[1]);
       }
     }
-    transaction.objectStore("trigrams").get(trigram).onsuccess = e => {
-      if(e.target.result) if (self.lastTrigrams.unshift([trigram,e.target.result]) > 32) self.lastTrigrams.length = 32;
-      return resolve(e.target.result);
-    }
+    return resolve(matruspDB.trigrams.get(trigram).then(result => {
+      if(result) if (self.lastTrigrams.unshift([trigram, result]) > 32) self.lastTrigrams.length = 32;
+      return result
+    }));
   }).then(trigramScores => {
     for(var code in trigramScores) {
       if(!scores[code]) { 
@@ -59,15 +57,21 @@ function fetchLectureOnDB() {
       return scores[second] - scores[first];
     });
 
-    var transaction = self.idb.transaction("lectures");
     var resultPromises = result.slice(0,50).map(lectureCode => new Promise((resolve, reject) => {
       for(var i = 0, cachedQuery; cachedQuery = self.lastQueries[i]; i++)
         for(var j = 0, lecture; lecture = cachedQuery.result[j]; j++)
           if(lecture.codigo === lectureCode) return resolve(lecture);
-      transaction.objectStore("lectures").get(lectureCode).onsuccess = e => resolve(e.target.result);
+      resolve(matruspDB.lectures.get(lectureCode))
     }).then(lecture => {scores[lecture.codigo] /= Math.log(3+lecture.nome.length); return lecture;}));
     
     Promise.all(resultPromises).then(result => {
+      result = result.filter(lecture => {
+        res = true;
+        if(search.unidade) res &= lecture.unidade == search.unidade;
+        if(search.departamento) res &= lecture.departamento == search.departamento;
+        return res;
+      })
+
       result.sort(function(first, second) {
         return scores[second.codigo] - scores[first.codigo];
       });

@@ -1,5 +1,3 @@
-var IDB_NAME = "MatruspDB";
-
 var stopwords_ptBR = [
 "DE",
 "DA",
@@ -98,19 +96,9 @@ function trigramsFromString(str,asAcronym) {
   return trigrams;
 }
 
-function openIDB() {
-  return new Promise((resolve,reject) => {
-    var dbrequest = self.indexedDB.open(IDB_NAME);
+var matruspDB = new Dexie("MatruspDB");
 
-    dbrequest.onsuccess = e => {
-      resolve(e.target.result);
-    };
-
-    dbrequest.onerror = e => { throw e; reject(e); };
-
-    dbrequest.onupgradeneeded = e => {
-      var lectureStore = e.target.result.createObjectStore("lectures", { keyPath: 'codigo' });
-      var trigramStore = e.target.result.createObjectStore("trigrams");
-    };
-  });
-}
+matruspDB.version(1).stores({
+  lectures: "&codigo, unidade, departamento",
+  trigrams: ""
+});
