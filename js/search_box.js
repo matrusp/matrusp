@@ -176,7 +176,7 @@ SearchBox.prototype.eventKey = function(e) {
 	this.heightSoFar = 0;
 	var fetchValue = this.searchBox.value;
 	if(fetchValue.length > 0) {
-		this.searchWorker.postMessage(fetchValue);
+		this.searchWorker.postMessage({"q": fetchValue, "unidade": "Instituto de Ciências Matemáticas e de Computação"});
 
 	} else {
 		this.searchResultBox.style.visibility = 'hidden';
