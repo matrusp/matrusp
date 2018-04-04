@@ -24,6 +24,7 @@ self.cacheDirs = [
   "js/ui.js",
   "js/vfs_fonts.js",
   "js/file.js",
+  "js/dexie.min.js",
   "js/dbhelpers.js",
   "js/dbsearch.js",
   "js/dbupdate.js",
