@@ -153,10 +153,12 @@
             <div id="lecture-explorer">
                 <div id="search-and-add">
                     <input type="text" id="search" placeholder="Digite o código ou nome da matéria">
-                    <!--button id="add-extra-activity" onclick="ui.addLecture(lectureEx, 0);">+</button-->
-                    <div id="search-result-box">
-                        <!-- Dynamically populated -->
+                    
+                    <div id="search-options">
+                    	<select id="search-unit"></select>
+                    	<select id="search-department"></select>
                     </div>
+				<div id="search-result-box" style="visibility: hidden;"></div>
                 </div>
                 <div id="accordion-window">
                     <div id="accordion">
@@ -164,36 +166,36 @@
                     </div>
                 </div>
 				<div id="plans">
-                    <div id="plan-0" class="plan">
+                    <div id="plan-0" class="plan plan-active">
                         <div class="plan-tab plan-tab-name">Plano 1</div>
-                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"/></div>
+                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"></div>
                         <div class="plan-tab-option"> Limpar </div>
                         <div class="plan-tab-option"> Copiar p/ 2 </div>
                         <div class="plan-tab-option"> Copiar p/ 3 </div>
                     </div>
                     <div id="plan-1" class="plan">
                         <div class="plan-tab plan-tab-name">Plano 2</div>
-                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"/></div>
+                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"></div>
                         <div class="plan-tab-option"> Limpar </div>
                         <div class="plan-tab-option"> Copiar p/ 1 </div>
                         <div class="plan-tab-option"> Copiar p/ 3 </div>
                     </div>
                     <div id="plan-2" class="plan">
                         <div class="plan-tab plan-tab-name">Plano 3</div>
-                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"/></div>
+                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"></div>
                         <div class="plan-tab-option"> Limpar </div>
                         <div class="plan-tab-option"> Copiar p/ 1 </div>
                         <div class="plan-tab-option"> Copiar p/ 2 </div>
                     </div>
 				</div>
-				<div><div>Créditos Aula: <span id='lecture-credits'></span></div><div>Créditos Trabalho: <span id='work-credits'></span></div></div>
+				<div><div>Créditos Aula: <span id="lecture-credits"></span></div><div>Créditos Trabalho: <span id="work-credits"></span></div></div>
                 <div id="upload-warning">Arquivo da versão antiga é incompatível!</div>
                 <label id="upload-button">
                     <div id="upload-name"> Upload de Grade </div>
-                    <img src="images/ic_upload.png" />
+                    <img src="images/ic_upload.png">
                     <input id="upload-input" type="file" accept="application/json">
-                </div>
-            </div>
+                </label>
+			</div>
             <footer>
                 <span>Tendo problemas? Utilize a <a href="http://bcc.ime.usp.br/matrusp_v1">versão antiga</a>, ou entre em contato conosco: apoiobcc@linux.ime.usp.br</span>
                 <span>Colabore com o código no <a href="https://github.com/matrusp/matrusp">GitHub</a>!</span>

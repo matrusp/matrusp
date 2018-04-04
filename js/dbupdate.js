@@ -6,14 +6,17 @@ if(!navigator.onLine) {
   self.close();
 }
 
-fetch('../db/db.json').then(response => {
-  if(!response.ok) throw new Error();
-  
-  self.postMessage(0.1);
-  return response.json().then(json => loadDB (json));
-}).catch(e => { console.error(e); self.postMessage(1); self.close(); });
+matruspDB.metadata.get('ETag').then((etag) => {
+  fetch('../db/db.json', {method: 'GET', headers: {'If-None-Match': etag || ''}}).then(response => {
+    if(!response.ok) throw new Error();
 
-function loadDB (json) {
+    self.postMessage(0.1);
+    matruspDB.metadata.put(response.headers.get("ETag"),'ETag');
+    return response.json().then(json => loadDB (json));
+  }).catch(e => { console.error(e); self.postMessage(1); self.close(); });
+});
+
+function loadDB (lectures) {
   self.postMessage(0.2);
   var trigrams = { length: 0 };
 
@@ -30,33 +33,38 @@ function loadDB (json) {
     trigrams[trigram].length++;
     trigrams.length++;
   }
-    var lecturesPromise = matruspDB.lectures.bulkPut(json);
-    json.forEach(lecture => {
-      trigramsFromString(changingSpecialCharacters(lecture.nome)).forEach(trigram => {
-        addToTrigramList(trigram, lecture)
-      });
-      trigramsFromString(lecture.codigo).forEach(trigram => {
-        addToTrigramList(trigram, lecture)
-      });
+
+  var lecturesPromise = matruspDB.lectures.bulkPut(lectures);
+
+  var units = {};
+  lectures.forEach(lecture => {
+    trigramsFromString(changingSpecialCharacters(lecture.nome)).forEach(trigram => {
+      addToTrigramList(trigram, lecture)
+    });
+    trigramsFromString(lecture.codigo).forEach(trigram => {
+      addToTrigramList(trigram, lecture)
     });
 
-    lecturesPromise.then(async () => {
-      self.postMessage(0.5);
-      for(var trigram in trigrams) {
-        if (trigram === 'length') return;
-        var weight = Math.sqrt(Math.log(trigrams.length / trigrams[trigram].length));
-        delete trigrams[trigram].length;
-        for (var code in trigrams[trigram]) {
-          trigrams[trigram][code] = weight * Math.log(1 + trigrams[trigram][code]);
-        }
-        await matruspDB.trigrams.put(trigrams[trigram],trigram);
-      }
-      self.postMessage(0.7);
-      delete trigrams.length;
-      var trigramsPromise = matruspDB.trigrams.bulkPut(Object.values(trigrams), Object.keys(trigrams));
-      trigramsPromise.then(() => {
-        self.postMessage(1); 
-        self.close();
-      });
-    });
+    if(!units[lecture.unidade]) units[lecture.unidade] = new Set();
+    units[lecture.unidade].add(lecture.departamento);
+  });
+
+  var unitsPromise = matruspDB.units.bulkPut(Object.values(units).map(set => [...set]), Object.keys(units));
+  
+  for(var trigram in trigrams) {
+    if (trigram === 'length') continue;
+    var weight = Math.sqrt(Math.log(trigrams.length / trigrams[trigram].length));
+    delete trigrams[trigram].length;
+    for (var code in trigrams[trigram]) {
+      trigrams[trigram][code] = weight * Math.log(1 + trigrams[trigram][code]);
+    }
+  }
+  self.postMessage(0.3);
+  delete trigrams.length;
+  var trigramsPromise = matruspDB.trigrams.bulkPut(Object.values(trigrams), Object.keys(trigrams));
+
+  Promise.all([lecturesPromise,trigramsPromise,unitsPromise]).then(() => {
+    self.postMessage(1); 
+    self.close();
+  });
 }

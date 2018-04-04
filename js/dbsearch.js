@@ -1,4 +1,5 @@
-self.importScripts("dexie.min.js")
+self.importScripts("dexie.min.js");
+self.importScripts("quickselect.js");
 self.importScripts("dbhelpers.js");
 
 self.onmessage = e => {
@@ -52,32 +53,36 @@ function fetchLectureOnDB() {
     }
   }));
 
-  Promise.all(trigramPromises).then(all => {
-    result.sort(function(first, second) {
-      return scores[second] - scores[first];
+  Promise.all(trigramPromises).then(async all => {
+
+    var lectures = [];
+    var dbquery;
+    if(search.unidade) {
+      if(search.departamento) {
+        dbquery = matruspDB.lectures.where({'unidade': search.unidade, 'departamento': search.departamento});
+      }
+      else {
+        dbquery = matruspDB.lectures.where('[unidade+departamento]').between([search.unidade,Dexie.minKey],[search.unidade,Dexie.maxKey]);
+      }
+      dbquery = dbquery.and(lecture => scores[lecture.codigo]);
+      lectures = await dbquery.toArray();
+      quickselect(lectures,50,(a,b) => scores[b.codigo] - scores[a.codigo]);
+      lectures = lectures.splice(0,50);
+    }
+    else {
+      quickselect(result,50,(a,b) => scores[b] - scores[a]);
+      dbquery = matruspDB.lectures.where('codigo').anyOf(result.splice(0,50));
+      lectures = await dbquery.toArray();
+    }
+
+    lectures.forEach(lecture => {
+      scores[lecture.codigo] /= Math.log(3+lecture.nome.length);
     });
 
-    var resultPromises = result.slice(0,50).map(lectureCode => new Promise((resolve, reject) => {
-      for(var i = 0, cachedQuery; cachedQuery = self.lastQueries[i]; i++)
-        for(var j = 0, lecture; lecture = cachedQuery.result[j]; j++)
-          if(lecture.codigo === lectureCode) return resolve(lecture);
-      resolve(matruspDB.lectures.get(lectureCode))
-    }).then(lecture => {scores[lecture.codigo] /= Math.log(3+lecture.nome.length); return lecture;}));
-    
-    Promise.all(resultPromises).then(result => {
-      result = result.filter(lecture => {
-        res = true;
-        if(search.unidade) res &= lecture.unidade == search.unidade;
-        if(search.departamento) res &= lecture.departamento == search.departamento;
-        return res;
-      })
+    lectures.sort((a, b) => 
+      scores[b.codigo] - scores[a.codigo]);
 
-      result.sort(function(first, second) {
-        return scores[second.codigo] - scores[first.codigo];
-      });
-
-      submitResult({search: search, result: result}, true);
-    });
+    submitResult({search: search, result: lectures}, true);
   });
 }
 

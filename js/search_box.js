@@ -6,12 +6,16 @@ function SearchBox() {
 
 	this.searchBox = document.getElementById('search');
 	this.searchResultBox = document.getElementById('search-result-box');
+	this.unitSelect = document.getElementById('search-unit');
+	this.deptSelect = document.getElementById('search-department');
 	this.overSearchResultBox = false; 
 	// needed because when mouse is over search-result-box container event listener 'blur' dosen't have act // TODO arrumar esse comentario
 	this.selectedLectureIndex = -1;
 	this.lecturesSuggestionList = new Array();
 	this.heightSoFar = 0;
 	this.addEventListeners();
+
+	this.populateUnitSelect();
 
 	this.searchWorker = new Worker("js/dbsearch.js");
 	this.searchWorker.onmessage = e => {
@@ -21,7 +25,9 @@ function SearchBox() {
 			this.addLectures(this.lecturesSuggestionList);
 			this.searchResultBox.style.visibility = 'visible';
 		} else {
-			this.searchResultBox.style.visibility = 'hidden';
+			this.removeLecturesSuggestionList();
+			this.addEmptySearchResult();
+			this.searchResultBox.style.visibility = 'visible';
 			this.overSearchResultBox = false;
 		}
 	}
@@ -91,6 +97,13 @@ SearchBox.prototype.searchResultBoxHide = function() {
 		this.searchResultBox.style.visibility = 'hidden';
 	}
 };
+
+SearchBox.prototype.addEmptySearchResult = function() {
+	createAndAppendChild(this.searchResultBox, 'div', {
+		'id': 'emptyResultMessage',
+		'innerHTML': 'Nenhum resultado'
+	});
+}
 
 SearchBox.prototype.mouseOverSearchResultBox = function() {
 	this.overSearchResultBox = true;
@@ -176,7 +189,7 @@ SearchBox.prototype.eventKey = function(e) {
 	this.heightSoFar = 0;
 	var fetchValue = this.searchBox.value;
 	if(fetchValue.length > 0) {
-		this.searchWorker.postMessage({"q": fetchValue, "unidade": "Instituto de Ciências Matemáticas e de Computação"});
+		this.searchWorker.postMessage({"q": fetchValue, "unidade": document.getElementById('search-unit').value});
 
 	} else {
 		this.searchResultBox.style.visibility = 'hidden';
@@ -274,11 +287,54 @@ SearchBox.prototype.removeLecturesSuggestionList = function() {
 	}
 }
 
+SearchBox.prototype.unitSelectChanged = function() {
+	this.populateDeptSelect();
+}
+
+SearchBox.prototype.populateUnitSelect = async function() {
+	var fragment = document.createDocumentFragment();
+	createAndAppendChild(fragment,'option',{
+		'value': '',
+		'innerHTML': 'Todas as unidades'
+	});
+	
+	var units = await matruspDB.units.toCollection().primaryKeys();
+	units.forEach(unit => createAndAppendChild(fragment,'option', {
+		'innerHTML': unit
+	}));
+
+	this.unitSelect.appendChild(fragment);
+}
+
+SearchBox.prototype.populateDeptSelect = async function() {
+	if(!this.unitSelect.value) {
+		this.deptSelect.innerHTML = '';
+		this.deptSelect.disabled = true;
+		return;
+	}
+
+	var fragment = document.createDocumentFragment();
+	createAndAppendChild(fragment,'option',{
+		'value': '',
+		'innerHTML': 'Todos os departamentos'
+	});
+
+	var depts = await matruspDB.units.get(this.unitSelect.value);
+	depts.forEach(dept => createAndAppendChild(fragment,'option', {
+		'innerHTML': dept
+	}));
+
+	this.deptSelect.innerHTML = '';
+	this.deptSelect.appendChild(fragment);
+	this.deptSelect.disabled = false;
+}
+
 SearchBox.prototype.addEventListeners = function() {
 	this.searchBox.addEventListener('focus', this.searchResultBoxShow.bind(this));
 	this.searchBox.addEventListener('blur', this.searchResultBoxHide.bind(this));
 	this.searchResultBox.addEventListener('mouseover', this.mouseOverSearchResultBox.bind(this));
 	this.searchResultBox.addEventListener('mouseout', this.mouseOutSearchResultBox.bind(this));
 	this.searchBox.addEventListener('keyup', this.eventKey.bind(this));
+	this.unitSelect.addEventListener('change', this.unitSelectChanged.bind(this));
 }
 
