@@ -100,7 +100,7 @@ SearchBox.prototype.searchResultBoxHide = function() {
 
 SearchBox.prototype.addEmptySearchResult = function() {
 	createAndAppendChild(this.searchResultBox, 'div', {
-		'id': 'emptyResultMessage',
+		'class': ['search-result', 'empty-result'],
 		'innerHTML': 'Nenhum resultado'
 	});
 }
