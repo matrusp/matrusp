@@ -311,30 +311,30 @@ SearchBox.prototype.populateUnitSelect = async function() {
 		'innerHTML': unit
 	}));
 
+	this.unitSelect.innerHTML = '';
 	this.unitSelect.appendChild(fragment);
 }
 
 SearchBox.prototype.populateDeptSelect = async function() {
-	if(!this.unitSelect.value) {
-		this.deptSelect.innerHTML = '';
-		this.deptSelect.disabled = true;
-		return;
-	}
-
 	var fragment = document.createDocumentFragment();
 	createAndAppendChild(fragment,'option',{
 		'value': '',
 		'innerHTML': 'Todos os departamentos'
 	});
 
-	var depts = await matruspDB.units.get(this.unitSelect.value);
-	depts.forEach(dept => createAndAppendChild(fragment,'option', {
-		'innerHTML': dept
-	}));
+	if(this.unitSelect.value) {
+		var depts = await matruspDB.units.get(this.unitSelect.value);
+		depts.forEach(dept => createAndAppendChild(fragment,'option', {
+			'innerHTML': dept
+		}));
+		this.deptSelect.disabled = false;
+	}
+	else {
+		this.deptSelect.disabled = true;
+	}
 
 	this.deptSelect.innerHTML = '';
 	this.deptSelect.appendChild(fragment);
-	this.deptSelect.disabled = false;
 }
 
 SearchBox.prototype.addEventListeners = function() {
