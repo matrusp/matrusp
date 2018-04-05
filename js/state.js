@@ -89,7 +89,7 @@ State.prototype.load = function(baseState) {
   	}
     if (!baseState.version || baseState.version < matrusp_current_state_version) {
       // if the state being loaded is not updated, don't load.
-			ui.showBanner('Este identificador não é mais valido');
+			ui.showBanner('Este identificador não é mais válido.');
       return false;
     }
     this.lastColor = baseState.lastColor || 0;
@@ -143,10 +143,7 @@ State.prototype.previousCombination = function() {
 }
 
 State.prototype.downloadFile = function() {
-  var objectJSON = new Object();
-  objectJSON = ui.copyState();
-
-  var dataString = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(objectJSON));
+  var dataString = "data:text/json;charset=utf-8," + encodeURIComponent(this.toJSON());
   var element = document.createElement('a');
   element.setAttribute("href", dataString);
   element.style.display = 'none';
