@@ -15,7 +15,13 @@ function SearchBox() {
 	this.heightSoFar = 0;
 	this.addEventListeners();
 
-	this.populateUnitSelect();
+	this.populateUnitSelect().then(async () => {
+		if(searchArgs = JSON.parse(localStorage.getItem("search-args"))) {
+			this.unitSelect.value = searchArgs.unidade;
+			await this.populateDeptSelect();
+			this.deptSelect.value = searchArgs.departamento;
+		}
+	});
 
 	this.searchWorker = new Worker("js/dbsearch.js");
 	this.searchWorker.onmessage = e => {
@@ -189,7 +195,9 @@ SearchBox.prototype.eventKey = function(e) {
 	this.heightSoFar = 0;
 	var fetchValue = this.searchBox.value;
 	if(fetchValue.length > 0) {
-		this.searchWorker.postMessage({"q": fetchValue, "unidade": document.getElementById('search-unit').value});
+		var searchArgs = { "q": fetchValue, "unidade": this.unitSelect.value,  "departamento": this.deptSelect.value };
+		this.searchWorker.postMessage(searchArgs);	
+		localStorage.setItem("search-args", JSON.stringify(searchArgs));
 
 	} else {
 		this.searchResultBox.style.visibility = 'hidden';
