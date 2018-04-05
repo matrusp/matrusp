@@ -36,5 +36,5 @@
  *
  */
 Schedule.prototype.delete = function() {
-  this.htmlElement.parentNode.removeChild(this.htmlElement);
+  this.htmlElement.remove();
 }
