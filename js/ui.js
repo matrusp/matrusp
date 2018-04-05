@@ -325,57 +325,6 @@ UI.prototype.removeLecture = function(lecture) {
   }
 }
 
-/**
- *
- **/
-UI.prototype.copyState = function() {
-  object = new Object();
-  object = shallowCopy(state);
-  object['colors'] = new Array();
-  object['plans'] = new Array();
-  for (var i = 0; i < state.colors.length; i++) {
-    object.colors.push(state.colors[i]);
-  }
-  for (var i = 0; i < state.plans.length; i++) {
-    if (state.plans[i].lectures.length == 0) {
-      object.plans.push(null);
-      continue;
-    }
-    var plan = new Object();
-    var active = 0;
-    if (i == state.activePlanIndex) {
-      active = 1;
-    }
-    plan = shallowCopy(state.plans[i]);
-    plan['activePlan'] = active;
-    plan['lectures'] = new Array();
-    for (var j = 0; j < state.plans[i].lectures.length; j++) {
-      var lectureState = state.plans[i].lectures[j];
-      var lecture = new Array();
-      lecture = shallowCopy(lectureState);
-      lecture['classrooms'] = new Array();
-      for (var k = 0; k < lectureState.classrooms.length; k++) {
-        var classroomState = lectureState.classrooms[k];
-        var classroom = new Array();
-        classroom = shallowCopy(lectureState.classrooms[k]);
-        classroom['code'] = classroomState.code;
-        classroom['schedules'] = new Array();
-        classroom['teachers'] = classroomState.teachers.slice(0);
-        for (var l = 0; l < classroomState.schedules.length; l++) {
-          var scheduleState = classroomState.schedules[l];
-          var schedule = new Array();
-          schedule = shallowCopy(scheduleState);
-          classroom.schedules.push(schedule);
-        }
-        lecture.classrooms.push(classroom);
-      }
-      plan.lectures.push(lecture);
-    }
-    object.plans.push(plan);
-  }
-  return object;
-}
-
 function tester(obj, objOnDB) {
   if (typeof(obj) == 'object') {
     var keys = Object.keys(obj);
