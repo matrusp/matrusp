@@ -17,7 +17,8 @@
 
 
 #lecture-explorer {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     position: relative;
     vertical-align: top;
     height: $lecture-explorer-height;
@@ -33,13 +34,18 @@
 
 #search-and-add {
     position: relative;
-    height: $search-and-add-height;
+    flex: 0 0 auto;
     margin-bottom: 10px;
 }
 
+#explorer-footer {
+	flex: 0 0 auto;
+	display: flex;
+	margin-top: 10px;
+}
+
 #accordion-window {
-    // '-10px' comes from the (above) #search-and-add{margin-bottom: 10px;}
-    height: calc(100% - #{$search-and-add-height} - 10px - #{$lecture-explorer-plans-height});
+    flex: 1 0 0;
     overflow: hidden;
     border: $border-default;
     border-radius: 2px;
