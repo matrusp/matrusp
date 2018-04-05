@@ -31,21 +31,15 @@
     border-style: solid;
     border-width: $search-and-add-border-width;
     border-radius: 2px;
-    box-sizing: content-box;
-    
-    
+    box-sizing: border-box;
 }
         
 #search {
-    // TODO make mixing to deal with spacing between inline elements
-    //      like this "- 2px".
-    // TODO change 30px to variable
-    width: calc(100% - (2 * #{$search-padding-horizontal})
-                     - (2 * #{$search-and-add-border-width}));
-                    // - 2px - 30px); removed to hide #add-extra-activity
+    width: 100%;
     padding: 0 $search-padding-horizontal;
     font-family: $font-family;
     font-size: $font-size;
+    height: $search-box-height;
 
     &:focus {
         z-index: 11;
@@ -68,39 +62,15 @@
     }
 }
 
-#add-extra-activity {
-    float: right;
-    width: calc(30px - 2 * #{$search-and-add-border-width} - 2px);
-    padding: 0;
-    // TODO change font size to a variable or change plus
-    //      sign to an image or css drawing.
-    font-size: 20px;
-    line-height: 100%;
-    cursor: pointer;
-    background-color: $white;
-
-    &:focus {
-        outline: none;
-    }
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    &:active {
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-}
-
 // it's visible only on #search:focus
 #search-result-box {
     position: absolute;
     // TODO change top to variable; it is 1px more than the 
     //      search box height.
-    top: 27px;
+    top: ($search-box-height - 1);
     z-index: 10;
     display: block;
-    width: calc(100% - 2 * #{$search-and-add-border-width});
+    width: 100%;
     height: auto;
     // TODO change [max/min]-height to variable.
     // TODO check if with more lectures than max-height it breaks.
@@ -115,6 +85,13 @@
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
 }
 
+.search-result.empty-result {
+    color: gray;
+    font-size: larger;
+    margin: 20px 8px;
+    text-align: center;
+}
+
 .search-result.lecture-info {
     padding: 6px 4px;
     border-bottom: 1px solid rgba(159, 159, 159, 0.8);
@@ -124,4 +101,8 @@
 .search-result-selected {
         background-color: $highlight-background;
         color: $highlight-text;
+}
+
+#search-options input, #search-options select {
+	max-width: 100%;
 }
