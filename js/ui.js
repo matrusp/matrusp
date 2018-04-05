@@ -304,7 +304,8 @@ UI.prototype.addLecture = function(lecture) {
     for (var j = 0; j < classroom.schedules.length; j++) {
       var schedule = classroom.schedules[j];
       var day = indexOfDay(schedule.day);
-      this.weekdays[day].appendChild(schedule.htmlElement);
+      if(day < this.weekdays.length)
+        this.weekdays[day].appendChild(schedule.htmlElement);
     }
   }
 }
