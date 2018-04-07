@@ -19,6 +19,8 @@
   width: 220px;
   align-items: center;
   display: inline-flex;
+  margin: 12px;
+  flex: 1 1 auto;
 
   &:hover {
     background-color: #ddd;

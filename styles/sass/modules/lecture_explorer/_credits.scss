@@ -1,4 +1,19 @@
 #credits {
-  display: inline-block;
+  display: inline-flex;
   flex: 1 0 auto;
+  align-items: center;
+}
+
+.credit-wrapper {
+  display: flex;
+  flex-direction: column;
+  color: #444;
+  text-align: center;
+  width: 60px;
+  flex: 1 0 auto;
+}
+
+#lecture-credits, #work-credits {
+  font-size: x-large;
+  margin: 4px 8px;
 }
