@@ -38,7 +38,7 @@ function Plan(jsonObj, planId, isActivePlan) {
  **/
  // TODO caso em que basePlan == null e isActivePlan eh valido existe! trata-la!
 Plan.prototype.load = function(basePlan, isActivePlan) {
-this.lectures = new Array();
+  this.lectures = new Array();
   this.combinations = new Array();
   if (basePlan != null) {
 	  var lecturePromises = basePlan.lectures.map(baseLecture =>
@@ -53,11 +53,11 @@ this.lectures = new Array();
 			if (baseLecture.classrooms.indexOf(classroom.code) == -1)
 				classroom.toggleClassroomSelection(true);
 		  });
-		  this.lectures.push(lecture);
 		  ui.addLecture(lecture);
 		  return lecture;
 		}));
-	  Promise.all(lecturePromises).then(all => {
+	  Promise.all(lecturePromises).then(lectures => {
+	  	this.lectures = lectures;
 		this.activeCombinationIndex = basePlan.activeCombinationIndex;
 		this.computeCombinations();
 		this.activeCombination = this.combinations[this.activeCombinationIndex];
