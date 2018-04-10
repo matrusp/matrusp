@@ -59,9 +59,9 @@ State.prototype.clear = function() {
 
 State.prototype.load = function(baseState) {
   if (baseState) {
-  	if(baseState.version == 6 && matrusp_current_state_version == 7) {
+  	if(baseState.version == 6) {
   		var newState = {};
-		newState.version = matrusp_current_state_version;
+		newState.version = 7;
 		newState.plans = [];
 		newState.activePlanIndex = baseState.activePlanIndex;
 		baseState.plans.forEach(plan => {
