@@ -118,6 +118,9 @@ Plan.prototype.update = function(classroomUpdated) {
   } else {
     // If there are no combinations.
     this.activeCombination = null;
+    document.getElementById('lecture-credits').innerHTML = '0';
+    document.getElementById('work-credits').innerHTML = '0';
+
     //document.getElementById('combination-value').innerHTML = '0/0';
   }
   saveStateOnLocalStorage();
