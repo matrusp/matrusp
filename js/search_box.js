@@ -6,6 +6,9 @@ function SearchBox() {
 
 	this.searchBox = document.getElementById('search');
 	this.searchResultBox = document.getElementById('search-result-box');
+	this.searchOptionsSummary = document.getElementById('search-options-summary');
+	this.searchOptionsBox = document.getElementById('search-options');
+	this.campusSelect = document.getElementById('search-campus')
 	this.unitSelect = document.getElementById('search-unit');
 	this.deptSelect = document.getElementById('search-department');
 	this.overSearchResultBox = false; 
@@ -15,13 +18,7 @@ function SearchBox() {
 	this.heightSoFar = 0;
 	this.addEventListeners();
 
-	this.populateUnitSelect().then(async () => {
-		if(searchArgs = JSON.parse(localStorage.getItem("search-args"))) {
-			this.unitSelect.value = searchArgs.unidade;
-			await this.populateDeptSelect();
-			this.deptSelect.value = searchArgs.departamento;
-		}
-	});
+	this.populateAllSelects();
 
 	this.searchWorker = new Worker("js/dbsearch.js");
 	this.searchWorker.onmessage = e => {
@@ -195,10 +192,11 @@ SearchBox.prototype.eventKey = function(e) {
 	this.heightSoFar = 0;
 	var fetchValue = this.searchBox.value;
 	if(fetchValue.length > 0) {
-		var searchArgs = { "q": fetchValue, "unidade": this.unitSelect.value,  "departamento": this.deptSelect.value };
-		this.searchWorker.postMessage(searchArgs);	
-		localStorage.setItem("search-args", JSON.stringify(searchArgs));
-
+		if(this.options)
+			var searchArgs = {"q": fetchValue, "options": this.options};
+		else
+			var searchArgs = {"q": fetchValue};
+		this.searchWorker.postMessage(searchArgs);
 	} else {
 		this.searchResultBox.style.visibility = 'hidden';
 		this.overSearchResultBox = false;
@@ -295,18 +293,53 @@ SearchBox.prototype.removeLecturesSuggestionList = function() {
 	}
 }
 
-SearchBox.prototype.unitSelectChanged = function() {
-	this.populateDeptSelect();
+SearchBox.prototype.optionsChanged = function() {
+	this.options = {"campus": this.campusSelect.value, "unit": this.unitSelect.value,  "department": this.deptSelect.value };
+	localStorage.setItem("search-options", JSON.stringify(this.options));
+	this.searchOptionsSummary.innerHTML = `Buscando em <span class='selected-option'>${this.options.department || 'todos os departamentos'}</span> 
+	                                       de <span class='selected-option'>${this.options.unit || 'todas as unidades'}</span> 
+	                                       ${this.options.campus ? ' no campus ' + "<span class='selected-option'>" + this.options.campus : "em <span class='selected-option'>todos os campi"}</span>`;
 }
 
-SearchBox.prototype.populateUnitSelect = async function() {
+SearchBox.prototype.campusSelectChanged = async function() {
+	await this.populateUnitSelect(this.campusSelect.value);
+	await this.populateDeptSelect(this.unitSelect.value);
+	this.optionsChanged();
+}
+
+SearchBox.prototype.unitSelectChanged = async function() {
+	await this.populateDeptSelect(this.unitSelect.value);
+	this.optionsChanged();
+}
+
+SearchBox.prototype.populateCampusSelect = async function() {
+	var fragment = document.createDocumentFragment();
+	createAndAppendChild(fragment,'option',{
+		'value': '',
+		'innerHTML': 'Todos os campi'
+	});
+	
+	var campi = await matruspDB.campi.toCollection().primaryKeys();
+	campi.forEach(campus => createAndAppendChild(fragment,'option', {
+		'innerHTML': campus
+	}));
+
+	this.campusSelect.innerHTML = '';
+	this.campusSelect.appendChild(fragment);
+}
+
+SearchBox.prototype.populateUnitSelect = async function(campus) {
 	var fragment = document.createDocumentFragment();
 	createAndAppendChild(fragment,'option',{
 		'value': '',
 		'innerHTML': 'Todas as unidades'
 	});
+
+	if(campus)
+		var units = await matruspDB.campi.get(campus);
+	else
+		var units = await matruspDB.units.toCollection().primaryKeys();
 	
-	var units = await matruspDB.units.toCollection().primaryKeys();
 	units.forEach(unit => createAndAppendChild(fragment,'option', {
 		'innerHTML': unit
 	}));
@@ -315,15 +348,15 @@ SearchBox.prototype.populateUnitSelect = async function() {
 	this.unitSelect.appendChild(fragment);
 }
 
-SearchBox.prototype.populateDeptSelect = async function() {
+SearchBox.prototype.populateDeptSelect = async function(unit) {
 	var fragment = document.createDocumentFragment();
 	createAndAppendChild(fragment,'option',{
 		'value': '',
 		'innerHTML': 'Todos os departamentos'
 	});
 
-	if(this.unitSelect.value) {
-		var depts = await matruspDB.units.get(this.unitSelect.value);
+	if(unit) {
+		var depts = await matruspDB.units.get(unit);
 		depts.forEach(dept => createAndAppendChild(fragment,'option', {
 			'innerHTML': dept
 		}));
@@ -337,12 +370,35 @@ SearchBox.prototype.populateDeptSelect = async function() {
 	this.deptSelect.appendChild(fragment);
 }
 
+SearchBox.prototype.populateAllSelects = function() {
+	return this.populateCampusSelect().then(async () => {
+		if(this.options = JSON.parse(localStorage.getItem("search-options"))) {
+			this.campusSelect.value = this.options.campus;
+			await this.populateUnitSelect(this.options.campus);
+			this.unitSelect.value = this.options.unit;
+			await this.populateDeptSelect(this.options.unit);
+			this.deptSelect.value = this.options.department;
+			this.optionsChanged();
+		}
+		else {
+			await this.populateUnitSelect();
+		}
+	});
+}
+
+SearchBox.prototype.optionsSummaryClick = function() {
+	this.searchOptionsBox.classList.toggle('show');
+}
+
 SearchBox.prototype.addEventListeners = function() {
 	this.searchBox.addEventListener('focus', this.searchResultBoxShow.bind(this));
 	this.searchBox.addEventListener('blur', this.searchResultBoxHide.bind(this));
 	this.searchResultBox.addEventListener('mouseover', this.mouseOverSearchResultBox.bind(this));
 	this.searchResultBox.addEventListener('mouseout', this.mouseOutSearchResultBox.bind(this));
 	this.searchBox.addEventListener('keyup', this.eventKey.bind(this));
+	this.campusSelect.addEventListener('change', this.campusSelectChanged.bind(this));
 	this.unitSelect.addEventListener('change', this.unitSelectChanged.bind(this));
+	this.deptSelect.addEventListener('change', this.optionsChanged.bind(this));
+	this.searchOptionsSummary.addEventListener('click',this.optionsSummaryClick.bind(this));
 }
 

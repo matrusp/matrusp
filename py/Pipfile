@@ -9,6 +9,7 @@ aiohttp = "*"
 python-dateutil = "*"
 "beautifulsoup4" = "*"
 aiodns = "*"
+multi-key-dict = "*"
 
 [dev-packages]
 
