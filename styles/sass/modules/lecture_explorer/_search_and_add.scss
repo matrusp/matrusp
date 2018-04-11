@@ -103,6 +103,26 @@
         color: $highlight-text;
 }
 
+#search-options {
+    visibility: hidden;
+    padding-top: 4px;
+    height: 0;
+}
+
+#search-options.show {
+    visibility: visible;
+    height: auto;
+}
+
 #search-options input, #search-options select {
 	max-width: 100%;
+}
+
+#search-options-summary {
+    margin: 2px 0px;
+    cursor: pointer;
+    & .selected-option {
+        color: $header-color-tertiary;
+        font-weight: bold;
+    }
 }

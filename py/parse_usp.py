@@ -19,36 +19,49 @@ import argparse
 import time
 import logging
 import gzip
+from multi_key_dict import multi_key_dict
 
 #Limpa o DB_DIR antes de inserir os dados novos
 remover_antigos = True
+
+campus_unidades = multi_key_dict();
+campus_unidades[86,27,39,7,22,3,16,9,2,12,48,8,5,10,67,23,6,66,14,26,93,41,92,42,4,37,43,44,45,83,47,46,87,21,31,85,71,32,38,33] = "São Paulo";
+campus_unidades[98,94,60,89,81,59,96,91,17,58,95] = "Ribeirão Preto";
+campus_unidades[88] = "Lorena";
+campus_unidades[18,97,99,55,76,75,90] = "São Carlos";
+campus_unidades[11,64] = "Piracicaba";
+campus_unidades[25,61] = "Bauru";
+campus_unidades[74] = "Pirassununga";
+campus_unidades[30] = "São Sebastião";
+
+codigos_unidades = {};
 
 def main():
 	t = time.perf_counter()
 
 	logger.info(" - Obtendo a lista de todas as unidades de ensino - ")
-	if not args.unidades:
-		response = urllib.request.urlopen('https://uspdigital.usp.br/jupiterweb/jupColegiadoLista?tipo=T')
-		soup = BeautifulSoup(response.read(), "html5lib")
 
-		#Lista de tags do BeautifulSoup da forma [<a
-		#href="jupColegiadoMenu.jsp?codcg=33&amp;tipo=D&amp;nomclg=Museu+Paulista">Museu
-		#Paulista</a>, ...]
-		links_unidades = soup.find_all('a', href=re.compile("jupColegiadoMenu"))
+	response = urllib.request.urlopen('https://uspdigital.usp.br/jupiterweb/jupColegiadoLista?tipo=T')
+	soup = BeautifulSoup(response.read(), "html5lib")
+
+	#Lista de tags do BeautifulSoup da forma [<a
+	#href="jupColegiadoMenu.jsp?codcg=33&amp;tipo=D&amp;nomclg=Museu+Paulista">Museu
+	#Paulista</a>, ...]
+	links_unidades = soup.find_all('a', href=re.compile("jupColegiadoMenu"))
+
+
+	map_unidades = map(extrai_info_unidade, links_unidades)
+	#Lista de unidades de ensino
+	global codigos_unidades
+	codigos_unidades = {key:value for (key, value) in map_unidades}
 	
-		#Lista de codigos de unidades de ensino.
-		#Normalmente: [u'86', u'27', u'39', u'98', u'7', u'22', u'94', u'88', u'18',
-		#u'97', u'3', u'11', u'16', u'9', u'60', u'2', u'89', u'12', u'81', u'48',
-		#u'59', u'96', u'91', u'8', u'5', u'17', u'10', u'23', u'25', u'58', u'95',
-		#u'6', u'74', u'61', u'99', u'14', u'93', u'41', u'92', u'42', u'55', u'4',
-		# u'43', u'76', u'44', u'45', u'83', u'47', u'46', u'75', u'87', u'21', u'90',
-		#u'71', u'100', u'1', u'30', u'64', u'31', u'85', u'36', u'32', u'38', u'33']
-		codigos_unidades = list(map(extrai_codigo_unidade, links_unidades))
-	else:
-		codigos_unidades = args.unidades
 	logger.info(" - %d unidades de ensino encontradas - " % (len(codigos_unidades)))
 
-	tasks_materias = loop.run_until_complete(iterar_unidades(codigos_unidades))
+	if not args.unidades:
+		tasks_materias = loop.run_until_complete(iterar_unidades(codigos_unidades.values()))
+	else:
+		tasks_materias = loop.run_until_complete(iterar_unidades(args.unidades))
+	
 	materias = []
 
 	for task in tasks_materias[0]:
@@ -112,8 +125,8 @@ async def iterar_unidade(codigo):
 
 	return materias
 
-def extrai_codigo_unidade(x):
-	return re.search("codcg=(\d+)", x.get('href')).group(1)
+def extrai_info_unidade(x):
+	return (x.string, re.search("codcg=(\d+)", x.get('href')).group(1))
 
 #Tabelas sem tabelas dentro
 def eh_tabela_folha(tag):
@@ -207,6 +220,7 @@ def parsear_info_materia(tabelas_folha):
 			strings = list(folha.stripped_strings)
 			info['unidade'] = strings[0]
 			info['departamento'] = strings[1]
+			info['campus'] = campus_unidades.get(int(codigos_unidades[info['unidade']]), "Outro")
 			search = re.search("Disciplina:\s+([A-Z0-9\s]{7})\s-\s(.+)", strings[2])
 			assert search != None, f"{strings[2]} não é um nome de disciplina válido ({folha})"
 			info['codigo'] = search.group(1)

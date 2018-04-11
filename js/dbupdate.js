@@ -36,6 +36,7 @@ function loadDB (lectures) {
 
   var lecturesPromise = matruspDB.lectures.bulkPut(lectures);
 
+  var campi = {};
   var units = {};
   lectures.forEach(lecture => {
     trigramsFromString(changingSpecialCharacters(lecture.nome)).forEach(trigram => {
@@ -47,9 +48,13 @@ function loadDB (lectures) {
 
     if(!units[lecture.unidade]) units[lecture.unidade] = new Set();
     units[lecture.unidade].add(lecture.departamento);
+
+    if(!campi[lecture.campus]) campi[lecture.campus] = new Set();
+    campi[lecture.campus].add(lecture.unidade);
   });
 
   var unitsPromise = matruspDB.units.bulkPut(Object.values(units).map(set => [...set]), Object.keys(units));
+  var campiPromise = matruspDB.campi.bulkPut(Object.values(campi).map(set => [...set]), Object.keys(campi));
   
   for(var trigram in trigrams) {
     if (trigram === 'length') continue;
@@ -63,7 +68,7 @@ function loadDB (lectures) {
   delete trigrams.length;
   var trigramsPromise = matruspDB.trigrams.bulkPut(Object.values(trigrams), Object.keys(trigrams));
 
-  Promise.all([lecturesPromise,trigramsPromise,unitsPromise]).then(() => {
+  Promise.all([lecturesPromise,trigramsPromise,unitsPromise,campiPromise]).then(() => {
     self.postMessage(1); 
     self.close();
   });
