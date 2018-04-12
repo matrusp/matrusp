@@ -141,7 +141,7 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
     {
       tag: 'div',
       class: 'classroom-code',
-      innerHTML: classroom.code.slice(-2)
+      innerHTML: classroom.shortCode
     },
     {
       tag: 'div',

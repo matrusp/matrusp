@@ -37,9 +37,26 @@ function Lecture(jsonObj, parentPlan) {
     this.htmlLectureArrowUp = this.htmlElement.getElementsByClassName('lecture-info-up')[0];
     this.htmlLectureArrowDown = this.htmlElement.getElementsByClassName('lecture-info-down')[0];
     this.htmlClassroomsCheckbox = this.htmlElement.getElementsByClassName('classrooms-header-checkbox')[0];
-    for (var i = 0; i < jsonObj.turmas.length; i++) {
-      this.classrooms.push(new Classroom(jsonObj.turmas[i], this));
-    }
+    
+    var linkedT = [];
+    var linkedP = [];
+    jsonObj.turmas.forEach(classroom => {
+      switch(classroom.tipo) {
+        case "Teórica Vinculada":
+          linkedT.push(classroom);
+          break;
+        case "Prática Vinculada":
+          linkedP.push(classroom);
+          break;
+        default:
+          this.classrooms.push(new Classroom(classroom, this));
+          break;
+      }
+    });
+
+    linkedP.forEach(p => {
+      this.classrooms.push(Classroom.fromLinked(linkedT.find(t => t.codigo == p.codigo_teorica),p,this));
+    });
 
     this.appendHTMLChildren();
     this.updateClassroomsCheckbox();
