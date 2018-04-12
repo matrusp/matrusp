@@ -96,6 +96,11 @@
     padding: 6px 4px;
     border-bottom: 1px solid rgba(159, 159, 159, 0.8);
     display: block;
+
+    & .lecture-info-description {
+        color: #666;
+        margin-top: 4px;
+    }
 }
 
 .search-result-selected {

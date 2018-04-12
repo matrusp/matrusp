@@ -27,6 +27,9 @@ function Lecture(jsonObj, parentPlan) {
     this.name = jsonObj.nome;
     this.lectureCredits = jsonObj.creditos_aula;
     this.workCredits = jsonObj.creditos_trabalho;
+    this.unit = jsonObj.unidade;
+    this.department = jsonObj.departamento;
+    this.campus = jsonObj.campus;
     this.color = jsonObj.color;
     this.selected = jsonObj.selected;
     this.htmlElement = ui.createLectureInfo(this);
