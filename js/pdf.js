@@ -92,7 +92,7 @@ function getData() {
     }
     data.push({
       cod: active_classes[i].parent.code,
-      tur: active_classes[i].classroomCode,
+      tur: active_classes[i].shortCode,
       name: active_classes[i].parent.name,
       prof: professors,
       color: color
