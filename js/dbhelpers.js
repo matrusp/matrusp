@@ -99,7 +99,7 @@ function trigramsFromString(str,asAcronym) {
 var matruspDB = new Dexie("MatruspDB");
 
 matruspDB.version(1).stores({
-  lectures: "&codigo, campus, [unidade+departamento]",
+  lectures: "&codigo, campus, [unidade+departamento], *periodos",
   trigrams: "",
   metadata: "",
   units: "",

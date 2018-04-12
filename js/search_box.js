@@ -11,6 +11,10 @@ function SearchBox() {
 	this.campusSelect = document.getElementById('search-campus')
 	this.unitSelect = document.getElementById('search-unit');
 	this.deptSelect = document.getElementById('search-department');
+	this.timeCheckboxes = [];
+	for(var i = 0, checkbox; checkbox = this.searchOptionsBox.elements['timeframes[]'][i]; i++) {
+		this.timeCheckboxes.push(checkbox);
+	}
 	this.overSearchResultBox = false; 
 	// needed because when mouse is over search-result-box container event listener 'blur' dosen't have act // TODO arrumar esse comentario
 	this.selectedLectureIndex = -1;
@@ -18,7 +22,7 @@ function SearchBox() {
 	this.heightSoFar = 0;
 	this.addEventListeners();
 
-	this.populateAllSelects();
+	this.populateOptions();
 
 	this.searchWorker = new Worker("js/dbsearch.js");
 	this.searchWorker.onmessage = e => {
@@ -303,13 +307,15 @@ SearchBox.prototype.removeLecturesSuggestionList = function() {
 }
 
 SearchBox.prototype.optionsChanged = function() {
-	this.options = {"campus": this.campusSelect.value, "unit": this.unitSelect.value,  "department": this.deptSelect.value };
-	localStorage.setItem("search-options", JSON.stringify(this.options));
+	this.options = {"campus": this.campusSelect.value, 
+					"unit": this.unitSelect.value,  
+					"department": this.deptSelect.value,
+					};
 	
-	var summaryText = 'Buscando ';
+	var summaryText = 'Buscando';
 	
 	if(!this.options.campus && !this.options.unit)
-		summaryText += 'em <span class="selected-option">todos os campi</span>';
+		summaryText += ' em <span class="selected-option">todos os campi</span>';
 	else if(this.options.unit) {
 		if(this.options.department) {
 			var unitPrep = 'de';
@@ -321,16 +327,24 @@ SearchBox.prototype.optionsChanged = function() {
 			if(this.options.unit.indexOf('Centro') == 0) unitPrep = 'do';
 			if(this.options.unit.indexOf('Museu') == 0) unitPrep = 'do';
 			
-			summaryText += `em <span class="selected-option">${this.options.department}</span> ${unitPrep} <span class="selected-option">${this.options.unit}</span>`;
+			summaryText += ` em <span class="selected-option">${this.options.department}</span> ${unitPrep} <span class="selected-option">${this.options.unit}</span>`;
 		}
 		else
-			summaryText += `em <span class="selected-option">${this.options.unit}</span>`;
+			summaryText += ` em <span class="selected-option">${this.options.unit}</span>`;
 	}
 	else if(this.options.campus) {
-			summaryText += `no campus <span class="selected-option">${this.options.campus}</span>`
+			summaryText += ` no campus <span class="selected-option">${this.options.campus}</span>`
+	}
+
+
+	var timeframes = this.timeCheckboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+	if(timeframes.length && timeframes.length != this.timeCheckboxes.length) {
+		this.options.timeframes = timeframes;
+		summaryText += ` em período <span class="selected-option">${this.options.timeframes.join('</span> ou <span class="selected-option">')}</span>`
 	}
 
 	this.searchOptionsSummary.innerHTML = summaryText;
+	localStorage.setItem("search-options", JSON.stringify(this.options));
 }
 
 SearchBox.prototype.campusSelectChanged = async function() {
@@ -403,9 +417,15 @@ SearchBox.prototype.populateDeptSelect = async function(unit) {
 	this.deptSelect.appendChild(fragment);
 }
 
-SearchBox.prototype.populateAllSelects = function() {
+SearchBox.prototype.populateOptions = function() {
+	this.options = JSON.parse(localStorage.getItem("search-options")) || {};
+	if(this.options.timeframes) {
+		this.timeCheckboxes.forEach(checkbox => 
+			checkbox.checked = this.options.timeframes.indexOf(checkbox.value) > -1
+		);
+	}
 	return this.populateCampusSelect().then(async () => {
-		if(this.options = JSON.parse(localStorage.getItem("search-options"))) {
+		if(this.options) {
 			this.campusSelect.value = this.options.campus;
 			await this.populateUnitSelect(this.options.campus);
 			this.unitSelect.value = this.options.unit;
@@ -433,5 +453,6 @@ SearchBox.prototype.addEventListeners = function() {
 	this.unitSelect.addEventListener('change', this.unitSelectChanged.bind(this));
 	this.deptSelect.addEventListener('change', this.optionsChanged.bind(this));
 	this.searchOptionsSummary.addEventListener('click',this.optionsSummaryClick.bind(this));
+	this.timeCheckboxes.forEach(checkbox => checkbox.addEventListener('change', this.optionsChanged.bind(this)));
 }
 

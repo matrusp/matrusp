@@ -34,6 +34,33 @@ function loadDB (lectures) {
     trigrams.length++;
   }
 
+  lectures.forEach(lecture => {
+    var timeframes = new Set();
+    if(!lecture.turmas) return;
+    lecture.turmas.forEach(classroom => {
+      if(!classroom || !classroom.horario) return;
+      classroom.horario.forEach(schedule => {
+        if(!schedule) return;
+        hourInit = parseInt(schedule.inicio.slice(0,2));
+        if(hourInit < 12)
+          timeframes.add("matutino");
+        else if(hourInit < 18)
+          timeframes.add("vespertino");
+        else
+          timeframes.add("noturno");
+
+        hourEnd = parseInt(schedule.fim.slice(0,2));
+        if(hourEnd > 19) 
+          timeframes.add("noturno");
+        else if(hourEnd > 13)
+          timeframes.add("vespertino");
+        else
+          timeframes.add("matutino");
+      });
+    });
+    lecture.periodos = [...timeframes];
+  });
+
   var lecturesPromise = matruspDB.lectures.bulkPut(lectures);
 
   var campi = {};
