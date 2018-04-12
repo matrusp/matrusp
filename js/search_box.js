@@ -349,7 +349,7 @@ SearchBox.prototype.optionsChanged = function() {
 
 SearchBox.prototype.campusSelectChanged = async function() {
 	await this.populateUnitSelect(this.campusSelect.value);
-	await this.populateDeptSelect(this.unitSelect.value);
+	//await this.populateDeptSelect(this.unitSelect.value);
 	this.optionsChanged();
 }
 
@@ -375,6 +375,8 @@ SearchBox.prototype.populateCampusSelect = async function() {
 }
 
 SearchBox.prototype.populateUnitSelect = async function(campus) {
+	selectedUnit = this.unitSelect.value;
+
 	var fragment = document.createDocumentFragment();
 	createAndAppendChild(fragment,'option',{
 		'value': '',
@@ -388,11 +390,15 @@ SearchBox.prototype.populateUnitSelect = async function(campus) {
 	
 	units.forEach(unit => createAndAppendChild(fragment,'option', {
 		'value': unit,
-		'innerHTML': unit
+		'innerHTML': unit,
+		'selected': unit == selectedUnit
 	}));
 
 	this.unitSelect.innerHTML = '';
 	this.unitSelect.appendChild(fragment);
+
+	if(!this.unitSelect.value)
+		this.populateDeptSelect();
 }
 
 SearchBox.prototype.populateDeptSelect = async function(unit) {
