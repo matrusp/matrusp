@@ -31,17 +31,18 @@ function Classroom(jsonObj, parentLecture) {
   this.parent = parentLecture;
   this.teachers = new Array();
   this.schedules = new Array();
-  this.obs = jsonObj.observacoes;
   this.selected = true;
   if (jsonObj) {
 		this.dateBegin = jsonObj.inicio;
 		this.dateEnd = jsonObj.fim;
 		this.code = jsonObj.codigo;
+		this.shortCode = this.code.slice(-2);
+		this.obs = jsonObj.observacoes;
 		if(jsonObj.horario) {
-		  this.addTeachers([].concat.apply([],jsonObj.horario.map(x => x.professores)))
-		  for (var i = 0; i < jsonObj.horario.length; i++) {
-		    this.schedules.push(new Schedule(jsonObj.horario[i], this));
-		  }
+			this.addTeachers([].concat.apply([],jsonObj.horario.map(x => x.professores)))
+			for (var i = 0; i < jsonObj.horario.length; i++) {
+		    	this.schedules.push(new Schedule(jsonObj.horario[i], this));
+			}
 		}
     this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
     if (this.selected) {
@@ -54,6 +55,33 @@ function Classroom(jsonObj, parentLecture) {
     this.classroomCode = null;
     this.htmlElement = null;
   }
+}
+
+Classroom.fromLinked = function(jsonT,jsonP,parentLecture) {
+	var classroom = new Classroom(null,parentLecture);
+	classroom.dateBegin = jsonT.inicio;
+	classroom.dateEnd = jsonT.fim;
+	classroom.code = `${jsonT.codigo}+${jsonP.codigo.slice(-2)}`;
+	classroom.shortCode = `${jsonT.codigo.slice(-2)}+${jsonP.codigo.slice(-2)}`;
+	classroom.obs = jsonT.observacoes + '\n' + jsonP.observacoes;
+	if(jsonT.horario) {
+		classroom.addTeachers([].concat.apply([],jsonT.horario.map(x => x.professores)))
+		for (var i = 0; i < jsonT.horario.length; i++) {
+			classroom.schedules.push(new Schedule(jsonT.horario[i], classroom));
+	  	}
+	}
+	if(jsonP.horario) {
+		classroom.addTeachers([].concat.apply([],jsonP.horario.map(x => x.professores)))
+		for (var i = 0; i < jsonP.horario.length; i++) {
+			classroom.schedules.push(new Schedule(jsonP.horario[i], classroom));
+		}
+	}
+	classroom.htmlElement = ui.createClassroomInfo(classroom, parentLecture.code);
+    if (classroom.selected) {
+      addClass(classroom.htmlElement, 'classroom-selected');
+    }
+    classroom.addEventListeners();
+	return classroom;
 }
 
 Classroom.prototype.addTeachers = function(teachers) {
