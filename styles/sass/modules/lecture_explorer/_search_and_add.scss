@@ -121,6 +121,8 @@
 #search-options-summary {
     margin: 2px 0px;
     cursor: pointer;
+    color: #666;
+    
     & .selected-option {
         color: $header-color-tertiary;
         font-weight: bold;
