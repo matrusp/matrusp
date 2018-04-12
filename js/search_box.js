@@ -297,9 +297,32 @@ SearchBox.prototype.removeLecturesSuggestionList = function() {
 SearchBox.prototype.optionsChanged = function() {
 	this.options = {"campus": this.campusSelect.value, "unit": this.unitSelect.value,  "department": this.deptSelect.value };
 	localStorage.setItem("search-options", JSON.stringify(this.options));
-	this.searchOptionsSummary.innerHTML = `Buscando em <span class='selected-option'>${this.options.department || 'todos os departamentos'}</span> 
-	                                       de <span class='selected-option'>${this.options.unit || 'todas as unidades'}</span> 
-	                                       ${this.options.campus ? ' no campus ' + "<span class='selected-option'>" + this.options.campus : "em <span class='selected-option'>todos os campi"}</span>`;
+	
+	var summaryText = 'Buscando ';
+	
+	if(!this.options.campus && !this.options.unit)
+		summaryText += 'em <span class="selected-option">todos os campi</span>';
+	else if(this.options.unit) {
+		if(this.options.department) {
+			var unitPrep = 'de';
+			if(this.options.unit.indexOf('Escola') == 0) unitPrep = 'da';
+			if(this.options.unit.indexOf('Faculdade') == 0) unitPrep = 'da';
+			if(this.options.unit.indexOf('Licenciatura') == 0) unitPrep = 'da';
+			if(this.options.unit.indexOf('Pró-Reitoria') == 0) unitPrep = 'da';
+			if(this.options.unit.indexOf('Instituto') == 0) unitPrep = 'do';
+			if(this.options.unit.indexOf('Centro') == 0) unitPrep = 'do';
+			if(this.options.unit.indexOf('Museu') == 0) unitPrep = 'do';
+			
+			summaryText += `em <span class="selected-option">${this.options.department}</span> ${unitPrep} <span class="selected-option">${this.options.unit}</span>`;
+		}
+		else
+			summaryText += `em <span class="selected-option">${this.options.unit}</span>`;
+	}
+	else if(this.options.campus) {
+			summaryText += `no campus <span class="selected-option">${this.options.campus}</span>`
+	}
+
+	this.searchOptionsSummary.innerHTML = summaryText;
 }
 
 SearchBox.prototype.campusSelectChanged = async function() {
