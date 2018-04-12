@@ -281,7 +281,8 @@ SearchBox.prototype.add = function(lecture, activePlan) {
 
 	state.lastColor = state.lastColor % state.numColors || 0;
 	
-	lecture['color'] = 1 + state.lastColor++; //colors are 1-based
+	lecture.color = 1 + state.lastColor++; //colors are 1-based
+	lecture.selected = 1;
 	state.addLecture(lecture);
 	addClass(activePlan.lectures[numberOfLectures].htmlElement, 'lecture-info-plan-active');
 	this.hideSearchBox();
