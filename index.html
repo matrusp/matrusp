@@ -153,12 +153,17 @@
             <div id="lecture-explorer">
                 <div id="search-and-add">
                     <input type="text" id="search" placeholder="Digite o código ou nome da matéria">
-                    <div id="search-options-summary">Buscando em <span class="selected-option">todos os departamentos</span> de <span class="selected-option">todas as unidades</span></div>
-                    <div id="search-options">
+                    <div id="search-options-summary">Buscando em <span class="selected-option">todos os campi</span></div>
+                    <form id="search-options">
                     	<select id="search-campus"><option value="">Todos os campi</option></select>
                     	<select id="search-unit"><option value="">Todas as unidades</option></select>
                     	<select id="search-department" disabled><option value="">Todos os departamentos</option></select>
-                    </div>
+                    	<div>
+							<input type="checkbox" name="timeframes[]" value="matutino" checked>Matutino</input>
+							<input type="checkbox" name="timeframes[]" value="vespertino" checked>Vespertino</input>
+							<input type="checkbox" name="timeframes[]" value="noturno" checked>Noturno</input>
+                    	</div>
+                    </form>
 				<div id="search-result-box" style="visibility: hidden;"></div>
                 </div>
                 <div id="accordion-window">
