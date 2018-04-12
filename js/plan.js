@@ -492,10 +492,6 @@ Plan.prototype.setPlan = function() {
   state.activePlanIndex = this.planId;
 
   ui.scrollActiveCombinationToView();
-	
-	for (var i = 0; i < this.lectures.length; i++) {
-		state.colors[this.lectures[i].color-1] = 1;
-	}
 
   // TODO this is a hack to update the combination index and total combination number
   // ui below div#lecture-schedule
@@ -513,9 +509,26 @@ Plan.prototype.setPlan = function() {
  *
  **/
 Plan.prototype.copyToPlan = function(receivingPlan) {
+  var planData = {};
+  planData.activeCombinationIndex = this.activeCombinationIndex;
+  planData.lectures = [];
+  this.lectures.forEach(lecture => {
+    var lectureData = {};
+    lectureData.code = lecture.code;
+    lectureData.color = lecture.color;
+    lectureData.selected = lecture.selected;
+    lectureData.classrooms = [];
+    
+    lecture.classrooms.forEach(classroom => {
+    	if(classroom.selected)
+    		lectureData.classrooms.push(classroom.code);
+    });
+  
+    planData.lectures.push(lectureData);
+  });
+
   receivingPlan.clear();
-  var isActivePlan = true;
-  receivingPlan.load(this, isActivePlan);
+  receivingPlan.load(planData, true);
   receivingPlan.setPlan();
 }
 
