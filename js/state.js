@@ -73,7 +73,7 @@ State.prototype.load = function(baseState) {
 				var lectureData = {};
 				lectureData.code = lecture.code;
 				lectureData.color = lecture.color;
-				lectureData.selected = lecture.selected == 1;
+				lectureData.selected = lecture.selected;
 				lectureData.classrooms = [];
 
 				lecture.classrooms.forEach(classroom => {

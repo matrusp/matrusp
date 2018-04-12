@@ -20,7 +20,6 @@
 function Lecture(jsonObj, parentPlan) {
   this.parent = parentPlan;
   this.classrooms = new Array();
-  this.selected = true;
   // activeClassroom is set after combinations are computed (last thing of creating a plan)
   this.activeClassroom = null;
   if (jsonObj) {
@@ -29,6 +28,7 @@ function Lecture(jsonObj, parentPlan) {
     this.lectureCredits = jsonObj.creditos_aula;
     this.workCredits = jsonObj.creditos_trabalho;
     this.color = jsonObj.color;
+    this.selected = jsonObj.selected;
     this.htmlElement = ui.createLectureInfo(this);
     this.htmlLectureCheckbox = this.htmlElement.getElementsByClassName('lecture-info-checkbox')[0];
     this.htmlLectureArrowUp = this.htmlElement.getElementsByClassName('lecture-info-up')[0];
