@@ -56,29 +56,22 @@ function fetchLectureOnDB() {
   Promise.all(trigramPromises).then(async all => {
 
     var lectures = [];
-    var dbquery
-    if(search.options.campus) {
-      if(search.options.unit && search.options.department) {
-        dbquery = matruspDB.lectures.where({'campus':search.options.campus, 'unidade': search.options.unit, 'departamento': search.options.department});
-      }
-      else if(search.options.unit) {
-        dbquery = matruspDB.lectures.where('[campus+unidade+departamento]').between([search.options.campus,search.options.unit,Dexie.minKey],[search.options.campus,search.options.unit,Dexie.maxKey]);
-      }
-      else {
-        dbquery = matruspDB.lectures.where('[campus+unidade+departamento]').between([search.options.campus,Dexie.minKey,Dexie.minKey],[search.options.campus,Dexie.maxKey,Dexie.maxKey]);
-      }
-      dbquery = dbquery.and(lecture => scores[lecture.codigo]);
-      lectures = await dbquery.toArray();
-      quickselect(lectures,50,(a,b) => scores[b.codigo] - scores[a.codigo]);
-      lectures = lectures.splice(0,50);
-    }
-    else if(search.options.unit) {
+    var dbquery;
+    
+    if(search.options.unit) {
       if(search.options.department) {
         dbquery = matruspDB.lectures.where({'unidade': search.options.unit, 'departamento': search.options.department});
       }
       else {
         dbquery = matruspDB.lectures.where('[unidade+departamento]').between([search.options.unit,Dexie.minKey],[search.options.unit,Dexie.maxKey]);
       }
+      dbquery = dbquery.and(lecture => scores[lecture.codigo]);
+      lectures = await dbquery.toArray();
+      quickselect(lectures,50,(a,b) => scores[b.codigo] - scores[a.codigo]);
+      lectures = lectures.splice(0,50);
+    }
+    else if(search.options.campus) {
+      dbquery = matruspDB.lectures.where('campus').equals(search.options.campus);
       dbquery = dbquery.and(lecture => scores[lecture.codigo]);
       lectures = await dbquery.toArray();
       quickselect(lectures,50,(a,b) => scores[b.codigo] - scores[a.codigo]);

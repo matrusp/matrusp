@@ -373,6 +373,7 @@ SearchBox.prototype.populateUnitSelect = async function(campus) {
 		var units = await matruspDB.units.toCollection().primaryKeys();
 	
 	units.forEach(unit => createAndAppendChild(fragment,'option', {
+		'value': unit,
 		'innerHTML': unit
 	}));
 
