@@ -45,13 +45,21 @@ SearchBox.prototype.addLectures = function(lectures) {
 		var searchResultLectureInfo = createAndAppendChild(fragment, 'div', {
 				'class' : ['search-result', 'lecture-info']
 				});
-		var lectureInfoCode = createAndAppendChild(searchResultLectureInfo, 'div', {
-				'class' : 'lecture-info-code',
-				'innerHTML' : lectures[i]['codigo']
+		createAndAppendChild(searchResultLectureInfo, 'div', {
+				'class' : 'lecture-info-title',
+				'innerHTML' : `${lectures[i].codigo} - ${lectures[i].nome}`
 				});
-		var lectureInfoDescription = createAndAppendChild(searchResultLectureInfo, 'div', {
-				'class' : 'lecture-info-description', 
-				'innerHTML' : lectures[i]['nome']
+		
+		var searchResultLectureDescription = createAndAppendChild(searchResultLectureInfo, 'div', {
+				'class': 'lecture-info-description'
+				});
+		createAndAppendChild(searchResultLectureDescription, 'div', {
+				'class' : 'lecture-info-unit',
+				'innerHTML': `${lectures[i].unidade}`
+				});
+		createAndAppendChild(searchResultLectureDescription, 'div', {
+				'class' : 'lecture-info-department',
+				'innerHTML': lectures[i].departamento
 				});
 
 
