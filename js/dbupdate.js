@@ -7,13 +7,19 @@ if(!navigator.onLine) {
 }
 
 matruspDB.metadata.get('ETag').then((etag) => {
-  fetch('../db/db.json', {method: 'GET', headers: {'If-None-Match': etag || ''}}).then(response => {
+  fetch('../db/db.json', {method: 'GET', headers: {'If-None-Match': etag || ''}}).then(async response => {
     if(!response.ok) throw new Error();
 
     self.postMessage(0.1);
-    matruspDB.metadata.put(response.headers.get("ETag"),'ETag');
-    return response.json().then(json => loadDB (json));
-  }).catch(e => { console.error(e); self.postMessage(1); self.close(); });
+    await loadDB (await response.json());
+    await matruspDB.metadata.put(response.headers.get("ETag"),"ETag");
+    self.postMessage(1);
+    self.close();
+  }).catch(e => { 
+    console.error(e); 
+    self.postMessage(1); 
+    self.close(); 
+  });
 });
 
 function loadDB (lectures) {
@@ -95,8 +101,5 @@ function loadDB (lectures) {
   delete trigrams.length;
   var trigramsPromise = matruspDB.trigrams.bulkPut(Object.values(trigrams), Object.keys(trigrams));
 
-  Promise.all([lecturesPromise,trigramsPromise,unitsPromise,campiPromise]).then(() => {
-    self.postMessage(1); 
-    self.close();
-  });
+  return Promise.all([lecturesPromise,trigramsPromise,unitsPromise,campiPromise]);
 }
