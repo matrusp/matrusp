@@ -415,11 +415,12 @@ Plan.prototype.setActiveCombination = function() {
     document.getElementById('work-credits').innerHTML = this.activeCombination.workCredits;
 
 		//document.getElementById('combination-value').innerHTML = (this.activeCombinationIndex + 1) + '/' + this.combinations.length;
-	} else { 
-    // TODO safely remove?
-		// document.getElementById('combination-value').innerHTML =  '0/0';
-	}
-	saveStateOnLocalStorage();
+  } 
+  else { 
+    document.getElementById('lecture-credits').innerHTML = '0';
+    document.getElementById('work-credits').innerHTML = '0';
+  }
+  saveStateOnLocalStorage();
 };
 
 /**
@@ -488,8 +489,10 @@ Plan.prototype.setPlan = function() {
   }
 
   state.plans[state.activePlanIndex].unsetPlan();
-	this.setActiveCombination();
+  this.setActiveCombination();
   state.activePlanIndex = this.planId;
+
+  
 
   ui.scrollActiveCombinationToView();
 
