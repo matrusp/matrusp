@@ -108,10 +108,54 @@
         color: $highlight-text;
 }
 
+#search-options-summary {
+    margin: 2px 0px;
+    cursor: pointer;
+    color: #666;
+
+    flex: 1 0 0;
+    
+    & .selected-option {
+        color: $header-color-tertiary;
+        font-weight: bold;
+    }
+}
+
+#search-summary-wrapper {
+    display: flex;
+}
+
+#search-options-clear {
+    background: white;
+    border: none;
+    color: gray;
+
+    white-space: nowrap;
+    visibility: hidden;
+    flex: 0 0 0;
+
+    &.show {    
+        visibility: visible;
+        margin-left: 4px;
+        flex: 0 0 auto;
+    }
+
+    &:hover {
+        color: #333;
+    }
+
+    &:active {
+        color: black;
+    }
+}
+
 #search-options {
     visibility: hidden;
     padding-top: 4px;
     height: 0;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    grid-gap: 4px;
 }
 
 #search-options.show {
@@ -119,17 +163,43 @@
     height: auto;
 }
 
+#search-options label {
+    display: block;
+    color: #333;
+    text-align: center;
+}
+
 #search-options input, #search-options select {
 	max-width: 100%;
 }
 
-#search-options-summary {
-    margin: 2px 0px;
-    cursor: pointer;
-    color: #666;
-    
-    & .selected-option {
-        color: $header-color-tertiary;
-        font-weight: bold;
+#search-options select {
+    width: 100%;
+}
+
+#campus-select-label {
+    grid-row: 2;
+    grid-column: 1;
+}
+
+#unit-select-label {
+    grid-row: 2;
+    grid-column: 2;
+}
+
+#department-select-label {
+    grid-row: 3;
+    grid-column: 2;
+}
+
+#search-options-timeframes {
+    grid-row: 4;
+    grid-column: 1/-1;
+
+    margin-top: 8px;
+    text-align: center;
+
+    & label {
+        display: inline;
     }
 }
