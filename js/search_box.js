@@ -385,7 +385,6 @@ SearchBox.prototype.buildSummaryText = function() {
 
 SearchBox.prototype.campusSelectChanged = async function() {
 	await this.populateUnitSelect(this.campusSelect.value);
-	//await this.populateDeptSelect(this.unitSelect.value);
 	this.optionsChanged();
 }
 
@@ -459,24 +458,30 @@ SearchBox.prototype.populateDeptSelect = async function(unit) {
 	this.deptSelect.appendChild(fragment);
 }
 
-SearchBox.prototype.populateOptions = function() {
+SearchBox.prototype.populateOptions = async function() {
 	this.timeCheckboxes.forEach(checkbox => 
 		checkbox.checked = !this.options.timeframes || this.options.timeframes.indexOf(checkbox.value) > -1
 	);
 
-	return this.populateCampusSelect().then(async () => {
-		if(this.options) {
-			this.campusSelect.value = this.options.campus || '';
-			await this.populateUnitSelect(this.options.campus);
-			this.unitSelect.value = this.options.unit || '';
-			await this.populateDeptSelect(this.options.unit);
-			this.deptSelect.value = this.options.department || '';
-			this.optionsChanged();
-		}
-		else {
-			await this.populateUnitSelect();
-		}
-	});
+	this.populateCampusSelect()
+	if(this.options) {
+		this.campusSelect.value = this.options.campus || '';
+		await this.populateUnitSelect(this.options.campus);
+		this.unitSelect.value = this.options.unit || '';
+		await this.populateDeptSelect(this.options.unit);
+		this.deptSelect.value = this.options.department || '';
+		this.optionsChanged();
+	}
+	else {
+		await this.populateUnitSelect();
+	}
+
+	try {IDBKeyRange.only([1])}
+	catch(e) {
+		this.deptSelect.disabled = this.unitSelect.disabled = true;
+		this.timeCheckboxes.forEach(checkbox => checkbox.disabled = true);
+		document.getElementById('search-options-browser-error').style.display = '';
+	}
 }
 
 SearchBox.prototype.optionsSummaryClick = function() {

@@ -203,3 +203,9 @@
         display: inline;
     }
 }
+
+#search-options-browser-error {
+    grid-row: -1;
+    grid-column: 1/-1;
+    color: #666;
+}
