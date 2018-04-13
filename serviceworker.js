@@ -3,6 +3,7 @@ var CACHE_NAME = "Matrusp";
 self.cacheDirs = [
   "./",
   "matrusp.webmanifest",
+  "js/redirect.js",
   "js/classroom.js",
   "js/combination.js",
   "js/custom_lib.js",
