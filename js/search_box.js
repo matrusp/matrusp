@@ -225,6 +225,7 @@ SearchBox.prototype.hideSearchBox = function() {
 	this.overSearchResultBox = false;
 	this.removeLecturesSuggestionList();
 	this.searchBox.value = '';
+	this.clearButton.classList.remove('show-search');
 }
 
 SearchBox.prototype.compareID = function(lectureA, lectureB) {
