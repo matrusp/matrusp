@@ -317,23 +317,27 @@ SearchBox.prototype.optionsChanged = function() {
 	if(!this.options.campus && !this.options.unit)
 		summaryText += ' em <span class="selected-option">todos os campi</span>';
 	else if(this.options.unit) {
-		if(this.options.department) {
+		if(this.options.department && this.options.department != this.options.unit) {
 			var unitPrep = 'de';
-			if(this.options.unit.indexOf('Escola') == 0) unitPrep = 'da';
-			if(this.options.unit.indexOf('Faculdade') == 0) unitPrep = 'da';
-			if(this.options.unit.indexOf('Licenciatura') == 0) unitPrep = 'da';
-			if(this.options.unit.indexOf('Pró-Reitoria') == 0) unitPrep = 'da';
-			if(this.options.unit.indexOf('Instituto') == 0) unitPrep = 'do';
-			if(this.options.unit.indexOf('Centro') == 0) unitPrep = 'do';
-			if(this.options.unit.indexOf('Museu') == 0) unitPrep = 'do';
+			if(this.options.unit.search(/Escola|Faculdade|Licenciatura|Pró-Reitoria/) == 0) unitPrep = 'da';
+			if(this.options.unit.search(/Instituto|Centro|Museu/) == 0) unitPrep = 'do';
 			
-			summaryText += ` em <span class="selected-option">${this.options.department}</span> ${unitPrep} <span class="selected-option">${this.options.unit}</span>`;
+			if(this.options.department.search(/Departamento|Interdepartamentais|Disciplinas/) > -1)
+				summaryText += ` em <span class="selected-option">${this.options.department}</span>`;
+			else
+				summaryText += ` no departamento de <span class="selected-option">${this.options.department}</span>`;
+
+			if(this.options.department.indexOf(this.options.unit) == -1)
+				summaryText += ` ${unitPrep} <span class="selected-option">${this.options.unit}</span>`
 		}
 		else
 			summaryText += ` em <span class="selected-option">${this.options.unit}</span>`;
 	}
 	else if(this.options.campus) {
-			summaryText += ` no campus <span class="selected-option">${this.options.campus}</span>`
+		if(this.options.campus == 'Outro')
+			summaryText += ` em <span class="selected-option">outros campi</span>`
+		else
+			summaryText += ` no campus de <span class="selected-option">${this.options.campus}</span>`
 	}
 
 
