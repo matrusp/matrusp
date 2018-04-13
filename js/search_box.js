@@ -11,6 +11,7 @@ function SearchBox() {
 	this.campusSelect = document.getElementById('search-campus')
 	this.unitSelect = document.getElementById('search-unit');
 	this.deptSelect = document.getElementById('search-department');
+	this.clearButton = document.getElementById('search-options-clear');
 	this.timeCheckboxes = [];
 	for(var i = 0, checkbox; checkbox = this.searchOptionsBox.elements['timeframes[]'][i]; i++) {
 		this.timeCheckboxes.push(checkbox);
@@ -22,6 +23,7 @@ function SearchBox() {
 	this.heightSoFar = 0;
 	this.addEventListeners();
 
+	this.options = JSON.parse(localStorage.getItem("search-options")) || {};
 	this.populateOptions();
 
 	this.searchWorker = new Worker("js/dbsearch.js");
@@ -311,7 +313,17 @@ SearchBox.prototype.optionsChanged = function() {
 					"unit": this.unitSelect.value,  
 					"department": this.deptSelect.value,
 					};
-	
+
+	if(Object.values(this.options).some(v => v))
+		this.clearButton.classList.add('show');
+	else
+		this.clearButton.classList.remove('show');
+
+	this.searchOptionsSummary.innerHTML = this.buildSummaryText();
+	localStorage.setItem("search-options", JSON.stringify(this.options));
+}
+
+SearchBox.prototype.buildSummaryText = function() {
 	var summaryText = 'Buscando';
 	
 	if(!this.options.campus && !this.options.unit)
@@ -320,15 +332,17 @@ SearchBox.prototype.optionsChanged = function() {
 		if(this.options.department && this.options.department != this.options.unit) {
 			var unitPrep = 'de';
 			if(this.options.unit.search(/Escola|Faculdade|Licenciatura|Pró-Reitoria/) == 0) unitPrep = 'da';
-			if(this.options.unit.search(/Instituto|Centro|Museu/) == 0) unitPrep = 'do';
-			
-			if(this.options.department.search(/Departamento|Interdepartamentais|Disciplinas/) > -1)
-				summaryText += ` em <span class="selected-option">${this.options.department}</span>`;
-			else
-				summaryText += ` no departamento de <span class="selected-option">${this.options.department}</span>`;
+			if(this.options.unit.search(/Instituto|Centro|Museu|Hospital/) == 0) unitPrep = 'do';
 
-			if(this.options.department.indexOf(this.options.unit) == -1)
-				summaryText += ` ${unitPrep} <span class="selected-option">${this.options.unit}</span>`
+			var dept = this.options.department.replace(new RegExp(`${unitPrep} (${this.options.unit}|${this.options.unit.match(/\b[A-Z]/g).join('')})`),'')
+			
+
+			if(this.options.department.search(/Departamento|Interdepartamenta(l|is)|Disciplinas/) > -1)
+				summaryText += ` em <span class="selected-option">${dept}</span>`;
+			else
+				summaryText += ` no departamento de <span class="selected-option">${dept}</span>`;
+
+			summaryText += ` ${unitPrep} <span class="selected-option">${this.options.unit}</span>`
 		}
 		else
 			summaryText += ` em <span class="selected-option">${this.options.unit}</span>`;
@@ -347,8 +361,7 @@ SearchBox.prototype.optionsChanged = function() {
 		summaryText += ` em período <span class="selected-option">${this.options.timeframes.join('</span> ou <span class="selected-option">')}</span>`
 	}
 
-	this.searchOptionsSummary.innerHTML = summaryText;
-	localStorage.setItem("search-options", JSON.stringify(this.options));
+	return summaryText;
 }
 
 SearchBox.prototype.campusSelectChanged = async function() {
@@ -428,19 +441,17 @@ SearchBox.prototype.populateDeptSelect = async function(unit) {
 }
 
 SearchBox.prototype.populateOptions = function() {
-	this.options = JSON.parse(localStorage.getItem("search-options")) || {};
-	if(this.options.timeframes) {
-		this.timeCheckboxes.forEach(checkbox => 
-			checkbox.checked = this.options.timeframes.indexOf(checkbox.value) > -1
-		);
-	}
+	this.timeCheckboxes.forEach(checkbox => 
+		checkbox.checked = !this.options.timeframes || this.options.timeframes.indexOf(checkbox.value) > -1
+	);
+
 	return this.populateCampusSelect().then(async () => {
 		if(this.options) {
-			this.campusSelect.value = this.options.campus;
+			this.campusSelect.value = this.options.campus || '';
 			await this.populateUnitSelect(this.options.campus);
-			this.unitSelect.value = this.options.unit;
+			this.unitSelect.value = this.options.unit || '';
 			await this.populateDeptSelect(this.options.unit);
-			this.deptSelect.value = this.options.department;
+			this.deptSelect.value = this.options.department || '';
 			this.optionsChanged();
 		}
 		else {
@@ -451,6 +462,11 @@ SearchBox.prototype.populateOptions = function() {
 
 SearchBox.prototype.optionsSummaryClick = function() {
 	this.searchOptionsBox.classList.toggle('show');
+}
+
+SearchBox.prototype.clearOptions = function() {
+	this.options = {};
+	this.populateOptions();
 }
 
 SearchBox.prototype.addEventListeners = function() {
@@ -464,5 +480,6 @@ SearchBox.prototype.addEventListeners = function() {
 	this.deptSelect.addEventListener('change', this.optionsChanged.bind(this));
 	this.searchOptionsSummary.addEventListener('click',this.optionsSummaryClick.bind(this));
 	this.timeCheckboxes.forEach(checkbox => checkbox.addEventListener('change', this.optionsChanged.bind(this)));
+	this.clearButton.addEventListener('click',this.clearOptions.bind(this));
 }
 

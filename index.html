@@ -153,15 +153,22 @@
             <div id="lecture-explorer">
                 <div id="search-and-add">
                     <input type="text" id="search" placeholder="Digite o código ou nome da matéria">
-                    <div id="search-options-summary">Buscando em <span class="selected-option">todos os campi</span></div>
+                    <div id="search-summary-wrapper">
+						<div id="search-options-summary">Buscando em <span class="selected-option">todos os campi</span></div>
+						<button id="search-options-clear" type="button">&#x2715; Limpar</button>
+                    </div>
                     <form id="search-options">
-                    	<select id="search-campus"><option value="">Todos os campi</option></select>
-                    	<select id="search-unit"><option value="">Todas as unidades</option></select>
-                    	<select id="search-department" disabled><option value="">Todos os departamentos</option></select>
-                    	<div>
-							<input type="checkbox" name="timeframes[]" value="matutino" checked>Matutino</input>
-							<input type="checkbox" name="timeframes[]" value="vespertino" checked>Vespertino</input>
-							<input type="checkbox" name="timeframes[]" value="noturno" checked>Noturno</input>
+                    	<label id="campus-select-label" class="select-label"><div>Campus</div>
+                    	<select name="campus" id="search-campus"><option value="">Todos os campi</option></select></label>
+                    	<label id="unit-select-label" class="select-label"><div>Unidade</div>
+                    	<select name="unit" id="search-unit"><option value="">Todas as unidades</option></select></label>
+                    	<label id="department-select-label" class="select-label"><select name="department" id="search-department" disabled><option value="">Todos os departamentos</option></select>
+                    	<div>Departamento</div></label>
+                    	<div id="search-options-timeframes">
+                    		<div>Período</div>
+							<label><input type="checkbox" name="timeframes[]" value="matutino" checked>Matutino</input></label>
+							<label><input type="checkbox" name="timeframes[]" value="vespertino" checked>Vespertino</input></label>
+							<label><input type="checkbox" name="timeframes[]" value="noturno" checked>Noturno</input></label>
                     	</div>
                     </form>
 				<div id="search-result-box" style="visibility: hidden;"></div>
