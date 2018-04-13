@@ -134,7 +134,7 @@
     visibility: hidden;
     flex: 0 0 0;
 
-    &.show {    
+    &.show-options, &.show-search {    
         visibility: visible;
         margin-left: 4px;
         flex: 0 0 auto;
