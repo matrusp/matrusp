@@ -5,10 +5,7 @@ if('serviceWorker' in navigator) {
 	});
 }
 
-if('Worker' in window) {
-	var dbworker = new Worker("js/dbupdate.js");
-}
-else location.href = "https://bcc.ime.usp.br/matrusp_v1";
+var dbworker = new Worker("js/dbupdate.js");
 
 var ui = new UI();
 var state;
