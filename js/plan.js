@@ -114,7 +114,7 @@ Plan.prototype.update = function(classroomUpdated) {
     // There is an active combination.
     this.activeCombination = this.combinations[this.activeCombinationIndex];
     this.setActiveCombination();
-    if(this.isActivePlan) this.showPlan();
+    if(this.planId == state.activePlanIndex) this.showPlan();
   } else {
     // If there are no combinations.
     this.activeCombination = null;
