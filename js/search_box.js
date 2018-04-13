@@ -211,9 +211,12 @@ SearchBox.prototype.eventKey = function(e) {
 		else
 			var searchArgs = {"q": fetchValue};
 		this.searchWorker.postMessage(searchArgs);
+		this.searchOptionsBox.classList.remove('show');
+		this.clearButton.classList.add('show-search');
 	} else {
 		this.searchResultBox.style.visibility = 'hidden';
 		this.overSearchResultBox = false;
+		this.clearButton.classList.remove('show-search');
 	}
 }
 
@@ -315,9 +318,9 @@ SearchBox.prototype.optionsChanged = function() {
 					};
 
 	if(Object.values(this.options).some(v => v))
-		this.clearButton.classList.add('show');
+		this.clearButton.classList.add('show-options');
 	else
-		this.clearButton.classList.remove('show');
+		this.clearButton.classList.remove('show-options');
 
 	this.searchOptionsSummary.innerHTML = this.buildSummaryText();
 	localStorage.setItem("search-options", JSON.stringify(this.options));
@@ -465,6 +468,9 @@ SearchBox.prototype.optionsSummaryClick = function() {
 }
 
 SearchBox.prototype.clearOptions = function() {
+	this.searchBox.value = '';
+	this.clearButton.classList.remove('show-search');
+	
 	this.options = {};
 	this.populateOptions();
 }
