@@ -336,16 +336,32 @@ SearchBox.prototype.buildSummaryText = function() {
 			var unitPrep = 'de';
 			if(this.options.unit.search(/Escola|Faculdade|Licenciatura|Pró-Reitoria/) == 0) unitPrep = 'da';
 			if(this.options.unit.search(/Instituto|Centro|Museu|Hospital/) == 0) unitPrep = 'do';
-
-			var dept = this.options.department.replace(new RegExp(`${unitPrep} (${this.options.unit}|${this.options.unit.match(/\b[A-Z]/g).join('')})`),'')
 			
+			if(this.options.department.search(/Interunidades/) > -1) {
+				summaryText += ` <span class="selected-option">${this.options.department}</span>`;
+			}
+			else {
+				if(this.options.unit.search(/Escola Politécnica/) > -1)
+					var unitAcronym = "Poli";
+				else
+					var unitAcronym = this.options.unit.match(/\b[A-Z]/g).join('');
+				
+				var dept = this.options.department.replace(new RegExp(`${unitPrep} (${this.options.unit}|${unitAcronym})`),'').trim();
 
-			if(this.options.department.search(/Departamento|Interdepartamenta(l|is)|Disciplinas/) > -1)
-				summaryText += ` em <span class="selected-option">${dept}</span>`;
-			else
-				summaryText += ` no departamento de <span class="selected-option">${dept}</span>`;
+				if(dept == "Disciplinas") {
+					summaryText += ` em <span class="selected-option">${this.options.unit}</span>`;
+				}
+				else {
+					if(dept.search(/Interdepartamenta(l|is)/) > -1)
+						summaryText += ` <span class="selected-option">disciplinas interdepartamentais</span>`
+					else if(dept.search(/Departamento/) == 0)
+						summaryText += ` no <span class="selected-option">${dept}</span>`;
+					else
+						summaryText += ` no departamento de <span class="selected-option">${dept}</span>`;
 
-			summaryText += ` ${unitPrep} <span class="selected-option">${this.options.unit}</span>`
+					summaryText += ` ${unitPrep} <span class="selected-option">${unitAcronym}</span>`;
+				}
+			}
 		}
 		else
 			summaryText += ` em <span class="selected-option">${this.options.unit}</span>`;
@@ -470,7 +486,7 @@ SearchBox.prototype.optionsSummaryClick = function() {
 SearchBox.prototype.clearOptions = function() {
 	this.searchBox.value = '';
 	this.clearButton.classList.remove('show-search');
-	
+
 	this.options = {};
 	this.populateOptions();
 }
