@@ -85,7 +85,7 @@
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
 }
 
-#search:focus:valid ~ #search-result-box:not(:empty) {
+#search:focus:valid ~ #search-result-box:not(:empty), #search-result-box:not(:empty):active {
     visibility: visible;
 }
 
@@ -116,6 +116,7 @@
     margin: 2px 0px;
     user-select: none;
     color: gray;
+    cursor: pointer;
 
     flex: 1 0 0;
     
