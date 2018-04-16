@@ -44,7 +44,8 @@
   // 100% - 2 * padding
   width: calc(100% - 2px);
   padding: 1px;
-	display: none;
+  display: none;
+  user-select: none;
 }
 
 .lecture-info-plan-active {
@@ -66,7 +67,6 @@
   padding: 7px 0 7px 8px;
   overflow: hidden;
   line-height: 30px;
-  cursor: pointer;
   // TODO transitions doesn't work well with 'auto' values
   //      so take this off or come up with some solution.
   //transition: all .4s;
@@ -97,7 +97,6 @@
   top: 0;
   width: $width-lecture-delete;
   height: 100%;
-  cursor: pointer;
 
   >img {
     @include center-block-horizontally();
@@ -232,6 +231,10 @@
 
     &:hover {
       background-color: lighten($color, 15%);
+    }
+
+    &:active {
+      background-color: lighten($color, 10%);
     }
 
     >.lecture-info-header {
