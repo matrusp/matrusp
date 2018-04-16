@@ -15,7 +15,6 @@
   background-color: white;
   border: $border-default;
   z-index: 1;
-  cursor: pointer;
 
   &>img {
     @include center-block-horizontally();
@@ -67,7 +66,6 @@
   height: calc(100% - 4px);
   overflow: hidden;
   border: $border-default;
-  cursor: pointer;
 
   &:hover {
     background-color: #ddd;

@@ -24,7 +24,7 @@
     height: $icons-square-size;
     margin-left: $icons-spacing;
     vertical-align: top;
-    cursor: pointer;
+    user-select: none;
     
     >.hover-mask, 
     >img {

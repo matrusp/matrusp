@@ -114,14 +114,22 @@
 
 #search-options-summary {
     margin: 2px 0px;
-    cursor: pointer;
-    color: #666;
+    user-select: none;
+    color: gray;
 
     flex: 1 0 0;
     
     & .selected-option {
         color: $header-color-tertiary;
         font-weight: bold;
+    }
+
+    &:hover {
+        color: #333;
+    }
+
+    &:active {
+        color: black;
     }
 }
 
@@ -160,6 +168,7 @@
     display: grid;
     grid-template-columns: 120px 1fr;
     grid-gap: 4px;
+    user-select: none;
 }
 
 #search-options.show {

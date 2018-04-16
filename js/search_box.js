@@ -310,7 +310,7 @@ SearchBox.prototype.buildSummaryText = function() {
 	var summaryText = 'Buscando';
 	
 	if(!this.options.campus && !this.options.unit)
-		summaryText += ' em <span class="selected-option">todos os campi</span>';
+		summaryText += ' em **todos os campi**';
 	else if(this.options.unit) {
 		if(this.options.department && this.options.department != this.options.unit) {
 			var unitPrep = 'de';
@@ -318,7 +318,7 @@ SearchBox.prototype.buildSummaryText = function() {
 			if(this.options.unit.search(/Instituto|Centro|Museu|Hospital/) == 0) unitPrep = 'do';
 			
 			if(this.options.department.search(/Interunidades/) > -1) {
-				summaryText += ` <span class="selected-option">${this.options.department}</span>`;
+				summaryText += ` **${this.options.department}**`;
 			}
 			else {
 				if(this.options.unit.search(/Escola Politécnica/) > -1)
@@ -329,38 +329,46 @@ SearchBox.prototype.buildSummaryText = function() {
 				var dept = this.options.department.replace(new RegExp(`${unitPrep} (${this.options.unit}|${unitAcronym})`),'').trim();
 
 				if(dept == "Disciplinas") {
-					summaryText += ` em <span class="selected-option">${this.options.unit}</span>`;
+					var unitPrep = 'em';
+					if(this.options.unit.search(/Escola|Faculdade|Licenciatura|Pró-Reitoria/) == 0) unitPrep = 'na';
+					if(this.options.unit.search(/Instituto|Centro|Museu|Hospital/) == 0) unitPrep = 'no';
+					summaryText += ` ${unitPrep} **${this.options.unit}**`;
 				}
 				else {
 					if(dept.search(/Interdepartamenta(l|is)/) > -1)
-						summaryText += ` <span class="selected-option">disciplinas interdepartamentais</span>`
+						summaryText += ` **disciplinas interdepartamentais**`
 					else if(dept.search(/Departamento/) == 0)
-						summaryText += ` no <span class="selected-option">${dept}</span>`;
+						summaryText += ` no **${dept}**`;
 					else
-						summaryText += ` no departamento de <span class="selected-option">${dept}</span>`;
+						summaryText += ` no departamento de **${dept}**`;
 
-					summaryText += ` ${unitPrep} <span class="selected-option">${unitAcronym}</span>`;
+					summaryText += ` ${unitPrep} **${unitAcronym}**`;
 				}
 			}
 		}
-		else
-			summaryText += ` em <span class="selected-option">${this.options.unit}</span>`;
+		else {
+			var unitPrep = 'em';
+			if(this.options.unit.search(/Escola|Faculdade|Licenciatura|Pró-Reitoria/) == 0) unitPrep = 'na';
+			if(this.options.unit.search(/Instituto|Centro|Museu|Hospital/) == 0) unitPrep = 'no';
+			
+			summaryText += ` ${unitPrep} **${this.options.unit}**`;
+		}
 	}
 	else if(this.options.campus) {
 		if(this.options.campus == 'Outro')
-			summaryText += ` em <span class="selected-option">outros campi</span>`
+			summaryText += ` em **outros campi**`;
 		else
-			summaryText += ` no campus de <span class="selected-option">${this.options.campus}</span>`
+			summaryText += ` no campus de **${this.options.campus}**`
 	}
 
 
 	var timeframes = this.timeCheckboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 	if(timeframes.length && timeframes.length != this.timeCheckboxes.length) {
 		this.options.timeframes = timeframes;
-		summaryText += ` em período <span class="selected-option">${this.options.timeframes.join('</span> ou <span class="selected-option">')}</span>`
+		summaryText += ` em período **${this.options.timeframes.join('** ou **')}**`
 	}
 
-	return summaryText;
+	return summaryText.replace(/\*\*([^\*]+)\*\*/g,'<span class="selected-option">$1</span>');
 }
 
 SearchBox.prototype.campusSelectChanged = async function() {
