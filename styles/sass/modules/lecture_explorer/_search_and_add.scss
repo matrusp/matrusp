@@ -85,6 +85,10 @@
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
 }
 
+#search:focus:valid ~ #search-result-box:not(:empty) {
+    visibility: visible;
+}
+
 .search-result.empty-result {
     color: gray;
     font-size: larger;

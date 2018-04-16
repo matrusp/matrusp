@@ -32,12 +32,9 @@ function SearchBox() {
 		if(this.lecturesSuggestionList.length > 0) {
 			this.removeLecturesSuggestionList();
 			this.addLectures(this.lecturesSuggestionList);
-			this.searchResultBox.style.visibility = 'visible';
 		} else {
 			this.removeLecturesSuggestionList();
 			this.addEmptySearchResult();
-			this.searchResultBox.style.visibility = 'visible';
-			this.overSearchResultBox = false;
 		}
 	}
 }
@@ -103,18 +100,6 @@ SearchBox.prototype.addLectures = function(lectures) {
 	this.searchResultBox.appendChild(fragment);
 }
 
-SearchBox.prototype.searchResultBoxShow = function() {
-	if(this.searchBox.value) {
-		this.searchResultBox.style.visibility = 'visible';
-	}
-};
-
-SearchBox.prototype.searchResultBoxHide = function() {
-	if(!this.overSearchResultBox) {
-		this.searchResultBox.style.visibility = 'hidden';
-	}
-};
-
 SearchBox.prototype.addEmptySearchResult = function() {
 	createAndAppendChild(this.searchResultBox, 'div', {
 		'class': ['search-result', 'empty-result'],
@@ -143,7 +128,7 @@ SearchBox.prototype.eventKey = function(e) {
 	switch(keyPress) {
 		case 27:
 		case "Escape":
-			this.searchResultBox.style.visibility = 'hidden';
+			this.searchBox.blur();
 			return;
 		case 40:
 		case "ArrowDown":
@@ -214,18 +199,9 @@ SearchBox.prototype.eventKey = function(e) {
 		this.searchOptionsBox.classList.remove('show');
 		this.clearButton.classList.add('show-search');
 	} else {
-		this.searchResultBox.style.visibility = 'hidden';
 		this.overSearchResultBox = false;
 		this.clearButton.classList.remove('show-search');
 	}
-}
-
-SearchBox.prototype.hideSearchBox = function() {
-	this.searchResultBox.style.visibility = 'hidden';
-	this.overSearchResultBox = false;
-	this.removeLecturesSuggestionList();
-	this.searchBox.value = '';
-	this.clearButton.classList.remove('show-search');
 }
 
 SearchBox.prototype.compareID = function(lectureA, lectureB) {
@@ -292,7 +268,7 @@ SearchBox.prototype.add = function(lecture, activePlan) {
 
 	for (var i = 0; i < activePlan.lectures.length; i++) {
 		if (lecture.code == activePlan.lectures[i].code) {
-			this.hideSearchBox();
+			this.searchBox.value = '';
 			return;
 		}
 	}
@@ -303,7 +279,7 @@ SearchBox.prototype.add = function(lecture, activePlan) {
 	lecture.selected = 1;
 	state.addLecture(lecture);
 	addClass(activePlan.lectures[numberOfLectures].htmlElement, 'lecture-info-plan-active');
-	this.hideSearchBox();
+	this.searchBox.value = '';
 }
 
 SearchBox.prototype.removeLecturesSuggestionList = function() {
@@ -317,6 +293,9 @@ SearchBox.prototype.optionsChanged = function() {
 					"unit": this.unitSelect.value,  
 					"department": this.deptSelect.value,
 					};
+
+	var searchArgs = {"q": this.searchBox.value, "options": this.options};
+	this.searchWorker.postMessage(searchArgs);
 
 	if(Object.values(this.options).some(v => v))
 		this.clearButton.classList.add('show-options');
@@ -498,8 +477,6 @@ SearchBox.prototype.clearOptions = function() {
 }
 
 SearchBox.prototype.addEventListeners = function() {
-	this.searchBox.addEventListener('focus', this.searchResultBoxShow.bind(this));
-	this.searchBox.addEventListener('blur', this.searchResultBoxHide.bind(this));
 	this.searchResultBox.addEventListener('mouseover', this.mouseOverSearchResultBox.bind(this));
 	this.searchResultBox.addEventListener('mouseout', this.mouseOutSearchResultBox.bind(this));
 	this.searchBox.addEventListener('keyup', this.eventKey.bind(this));
