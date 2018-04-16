@@ -451,7 +451,7 @@ SearchBox.prototype.populateOptions = async function() {
 		checkbox.checked = !this.options.timeframes || this.options.timeframes.indexOf(checkbox.value) > -1
 	);
 
-	this.populateCampusSelect()
+	await this.populateCampusSelect();
 	if(this.options) {
 		this.campusSelect.value = this.options.campus || '';
 		await this.populateUnitSelect(this.options.campus);
