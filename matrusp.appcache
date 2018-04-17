@@ -1,44 +1,4 @@
 CACHE MANIFEST
-# Atualizar a data abaixo sempre que for feito deploy, para garantir que os arquivos cacheados serão atualizados.
-# 28/02/2018
-
-index.html
-js/classroom.js
-js/combination.js
-js/custom_lib.js
-js/database.js
-js/fbhelper.js
-js/googlecalendar.js
-js/es6-promise.auto.min.js
-js/html2canvas.min.js
-js/icalendar.js
-js/image.js
-js/jspdf.min.js
-js/jspdf.plugin.autotable.js
-js/lecture.js
-js/main.js
-js/pdf.js
-js/plan.js
-js/polyfill.js
-js/schedule.js
-js/search_box.js
-js/state.js
-js/ui.js
-js/vfs_fonts.js
-js/file.js
-styles/css/application.css
-images/ic_add.png
-images/ic_arrow_down.png
-images/ic_arrow_up.png
-images/ic_calendar.png
-images/ic_close.png
-images/ic_delete.png
-images/ic_download.png
-images/ic_email.png
-images/ic_facebook.png
-images/ic_print.png
-images/ic_upload.png
-images/stripes.gif
 
 NETWORK:
 *
