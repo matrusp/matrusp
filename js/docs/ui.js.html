@@ -34,14 +34,20 @@
 function UI() {
   // DOM Objects Reference Variables
   // ===============================
-  var accordion = document.getElementById('accordion');
-  var weekdays = new Array();
+  this.accordion = document.getElementById('accordion');
+  this.combinationTrack = document.getElementById('combination-track');
+  this.loadingBar = document.getElementById('loading-bar');
+  this.banner = document.getElementById('msg-banner');
+  this.bannerMsg = document.getElementById('msg-banner-message');
+
+  this.weekdays = new Array();
   // Ignores i == 0 because it's the time column
-  var lectureScheduleColumns = document.getElementsByClassName('column');
-  for(var i = 1; i &lt; lectureScheduleColumns.length; i++) {
-    weekdays.push(lectureScheduleColumns[i]);
+  this.lectureScheduleColumns = document.getElementsByClassName('column');
+  for (var i = 1; i &lt; this.lectureScheduleColumns.length; i++) {
+    this.weekdays.push(this.lectureScheduleColumns[i]);
   }
 
+  document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 
   // Functions
   // =========
@@ -55,206 +61,372 @@ function UI() {
    *  positionEnd : &lt;i>string&lt;/i> 
    * }&lt;/code>&lt;/pre>
    */
-  function calcPositionForTime(schedule) {
-    var hourBegin = schedule.timeBegin.substr(0,2);
-    var minBegin = schedule.timeBegin.substr(3,2);
-    var hourEnd = schedule.timeEnd.substr(0,2);
-    var minEnd = schedule.timeEnd.substr(3,2);
+  UI.prototype.calcPositionForTime = function(schedule) {
+    var hourBegin = schedule.timeBegin.substr(0, 2);
+    var minBegin = schedule.timeBegin.substr(3, 2);
+    var hourEnd = schedule.timeEnd.substr(0, 2);
+    var minEnd = schedule.timeEnd.substr(3, 2);
 
     positionBegin = 'calc((100% / 18) * (' + hourBegin + ' + (' + minBegin + ' / 60) - 6) + 1px)';
-    positionEnd = 'calc((100% / 18) * (' + hourEnd + ' - ' + hourBegin + ' - 1 + (60 - ' + minBegin + ') / 60 + ' + minEnd + ' / 60) + 1px)'; 
+    positionEnd = 'calc((100% / 18) * (' + hourEnd + ' - ' + hourBegin + ' - 1 + (60 - ' + minBegin + ') / 60 + ' + minEnd + ' / 60) + 1px)';
 
-    return { 
-      positionBegin, 
-      positionEnd 
+    return {
+      'positionBegin': positionBegin,
+      'positionEnd': positionEnd
     };
   }
+}
 
-  /**
-   * Creates boxes that represent lecture schedules in the schedule table.
-   * &lt;br>
-   * Generates HTML elements with this form:
-   *
-   * &lt;pre>&lt;code>&amp;ltdiv class="lecture"&amp;gt
-   *   &amp;ltspan class="timespan"&amp;gt10:00 11:40&amp;lt/span&amp;gt
-   *   &amp;ltspan class="lecture-code"&amp;gtMAC0110&amp;lt/span&amp;gt
-   * &amp;lt/div&amp;gt&lt;/code>&lt;/pre>
-   *
-   * @param {Schedule} schedule
-   * @param {String} lectureCode
-   * @return {div}
-   */
-  this.createScheduleBox = function(schedule) {
-    // Lecture -> Classroom -> Schedule
-    var lecture = schedule.parent.parent;
-    var scheduleBoxTreeObj = {
+/**
+ * Creates boxes that represent lecture schedules in the schedule table.
+ * &lt;br>
+ * Generates HTML elements with this form:
+ *
+ * &lt;pre>&lt;code>&amp;ltdiv class="lecture"&amp;gt
+ *   &amp;ltspan class="timespan"&amp;gt10:00 11:40&amp;lt/span&amp;gt
+ *   &amp;ltspan class="lecture-code"&amp;gtMAC0110&amp;lt/span&amp;gt
+ * &amp;lt/div&amp;gt&lt;/code>&lt;/pre>
+ *
+ * @param {Schedule} schedule
+ * @param {String} lectureCode
+ * @return {div}
+ */
+UI.prototype.createScheduleBox = function(schedule) {
+  // Lecture -> Classroom -> Schedule
+  var lecture = schedule.parent.parent;
+  var scheduleBoxTreeObj = {
+    tag: 'div',
+    class: ['schedule-box', 'color-' + lecture.color],
+    children: [{
+        tag: 'span',
+        class: ['timespan', 'timespan-begin'],
+        innerHTML: schedule.timeBegin
+      },
+      {
+        tag: 'span',
+        class: ['timespan', 'timespan-end'],
+        innerHTML: schedule.timeEnd
+      },
+      {
+        tag: 'span',
+        class: 'lecture-code',
+        innerHTML: lecture.code
+      }
+    ]
+  };
+
+
+  var hourBegin = parseInt(schedule.timeBegin.substr(0, 2), 10);
+  var minBegin = parseInt(schedule.timeBegin.substr(3, 2), 10);
+  var hourEnd = parseInt(schedule.timeEnd.substr(0, 2), 10);
+  var minEnd = parseInt(schedule.timeEnd.substr(3, 2), 10);
+  // if the box is too small and can only fit the lecture code inside
+  if (((hourEnd - hourBegin) * 60 + minEnd - minBegin) &lt;= 60) {
+    scheduleBoxTreeObj.children[0].class.push('timespan-mini');
+    scheduleBoxTreeObj.children[1].class.push('timespan-mini');
+  }
+
+  var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
+
+  var timePosition = this.calcPositionForTime(schedule);
+  scheduleBox.style.top = timePosition.positionBegin;
+  scheduleBox.style.height = timePosition.positionEnd;
+
+  return scheduleBox;
+}
+
+
+/**
+ * Creates boxes that represent lecture schedules in the schedule table.
+ * &lt;br>
+ * Generates HTML elements with this form:
+ *
+ * &lt;pre>&lt;code>&amp;ltdiv class="lecture-classrooms"&amp;gt
+ *     &amp;ltdiv class="classroom-info"&amp;gt
+ *       &amp;ltinput type="checkbox" id="classroom-01" name="MAC0110"&amp;gt
+ *       &amp;ltlabel class="classroom" for="classroom-01"&amp;gt
+ *         &amp;ltdiv class="classroom-number"&amp;gtN1&amp;lt/div&amp;gt
+ *         &amp;ltdiv class="classroom-teacher"&amp;gtNome do Professor&amp;lt/div&amp;gt
+ *         &amp;ltdiv class="classroom-toggle"&amp;gt+&amp;lt/div&amp;gt
+ *       &amp;lt/label&amp;gt
+ *     &amp;lt/div&amp;gt
+ * &amp;lt/div&amp;gt&lt;/pre>&lt;/code>
+ *
+ *
+ * @param {Schedule} schedule
+ * @param {String} lectureCode
+ * @return {div}
+ */
+UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
+  var classroomInfoTreeObj = {
+    tag: 'div',
+    class: 'classroom-info',
+    children: [{
+        tag: 'input',
+        type: 'checkbox',
+        class: 'classroom-info-checkbox',
+        checked: classroom.selected
+      },
+      {
         tag: 'div',
-        class: ['schedule-box', 'color-' + lecture.color],
-        children: [
-        {
-          tag: 'span',
-          class: 'timespan',
-          innerHTML: schedule.timeBegin + ' ' + schedule.timeEnd
-        },
-        {
-          tag: 'span',
-          class: 'lecture-code',
-          innerHTML: lecture.code
-        }
-      ]
-    };
+        class: 'classroom-code',
+        innerHTML: classroom.shortCode
+      },
+      {
+        tag: 'div',
+        class: 'classroom-teacher',
+        innerHTML: removeDuplicates(classroom.teachers).join('&lt;br>')
+      }
+    ]
+  };
 
-    var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
+  var classroomInfo = createHtmlElementTree(classroomInfoTreeObj);
+  return classroomInfo;
+}
 
-    var timePosition = calcPositionForTime(schedule);
-    scheduleBox.style.top = timePosition.positionBegin;
-    scheduleBox.style.height = timePosition.positionEnd;
-
-    return scheduleBox;
-  }
-
-
-  /**
-   * Creates boxes that represent lecture schedules in the schedule table.
-   * &lt;br>
-   * Generates HTML elements with this form:
-   *
-   * &lt;pre>&lt;code>&amp;ltdiv class="lecture-classrooms"&amp;gt
-   *     &amp;ltdiv class="classroom-info"&amp;gt
-   *       &amp;ltinput type="checkbox" id="classroom-01" name="MAC0110"&amp;gt
-   *       &amp;ltlabel class="classroom" for="classroom-01"&amp;gt
-   *         &amp;ltdiv class="classroom-number"&amp;gtN1&amp;lt/div&amp;gt
-   *         &amp;ltdiv class="classroom-teacher"&amp;gtNome do Professor&amp;lt/div&amp;gt
-   *         &amp;ltdiv class="classroom-toggle"&amp;gt+&amp;lt/div&amp;gt
-   *       &amp;lt/label&amp;gt
-   *     &amp;lt/div&amp;gt
-   * &amp;lt/div&amp;gt&lt;/pre>&lt;/code>
-   *
-   *
-   * @param {Schedule} schedule
-   * @param {String} lectureCode
-   * @return {div}
-   */
-  this.createClassroomInfo = function(classroom, lectureCode) {
-    var classroomInfoTreeObj = {
-      tag: 'div',
-      class: 'classroom-info',
-      children: [
-        {
+/**
+ * Creates the Info section of a lecture, inside lecture explorer.
+ *
+ * @param {Lecture} lecture
+ * @return {HTML_Element} div.lecture-info
+ */
+UI.prototype.createLectureInfo = function(lecture) {
+  var lectureInfoTreeObj = {
+    tag: 'div',
+    class: ['lecture-info', 'color-' + lecture.color],
+    children: [{
+        tag: 'div',
+        class: 'lecture-info-header',
+        children: [{
+            tag: 'input',
+            type: 'checkbox',
+            class: 'lecture-info-checkbox',
+            checked: lecture.selected
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-header-title',
+            children: [{
+                tag: 'div',
+                class: 'lecture-info-code',
+                innerHTML: lecture.code
+              },
+              {
+                tag: 'div',
+                class: 'lecture-info-name',
+                innerHTML: lecture.name
+              }
+            ]
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-up',
+            children: [{
+              tag: 'img',
+              src: 'images/ic_arrow_up.png'
+            }]
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-down',
+            children: [{
+              tag: 'img',
+              src: 'images/ic_arrow_down.png'
+            }]
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-delete',
+            children: [{
+              tag: 'img',
+              src: 'images/ic_close.png'
+            }]
+          }
+        ]
+      },
+      {
+        tag: 'div',
+        class: 'lecture-classrooms',
+        children: [{
           tag: 'div',
-          class: 'classroom-code',
-          innerHTML: classroom.classroomCode
-        },
-        {
-          tag: 'div',
-          class: 'classroom-teacher',
-          innerHTML: classroom.teachers.join('&lt;br>')
-        },
-        {
-          tag: 'div',
-          class: 'classroom-toggle',
-          innerHTML: 'x'
-        }
-      ]
-    };
-
-    var classroomInfo = createHtmlElementTree(classroomInfoTreeObj);
-    return classroomInfo;
-  }
-
-  /**
-   * Creates the Info section of a lecture, inside lecture explorer.
-   *
-   * @param {Lecture} lecture
-   * @return {HTML_Element} div.lecture-info
-   */
-  this.createLectureInfo = function(lecture) {
-    var lectureInfoTreeObj = {
-      tag: 'div',
-      class: ['lecture-info', 'color-' + lecture.color],
-      children: [
-        {
-          tag: 'div',
-          class: 'lecture-info-header',
-          children: [
-            {
-              tag: 'div',
-              class: 'lecture-info-header-title',
-              children: [
-                {
-                  tag: 'div',
-                  class: 'lecture-info-code',
-                  innerHTML: lecture.code
-                },
-                {
-                  tag: 'div',
-                  class: 'lecture-info-name',
-                  innerHTML: lecture.name
-                }
-              ]
+          class: 'classrooms-header',
+          children: [{
+              tag: 'input',
+              type: 'checkbox',
+              class: 'classrooms-header-checkbox'
             },
             {
               tag: 'div',
-              class: 'lecture-info-delete',
-              children: [
-                {
-                  tag: 'img',
-                  src: 'images/ic_close.png'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          tag: 'div',
-          class: 'lecture-classrooms',
-          children: [
+              class: 'classroom-code',
+              innerHTML: 'Turma'
+            },
             {
               tag: 'div',
-              class: 'classrooms-header',
-              children: [
-                {
-                  tag: 'div',
-                  class: 'classroom-code',
-                  innerHTML: 'Turma'
-                },
-                {
-                  tag: 'div',
-                  class: 'classroom-teacher',
-                  innerHTML: 'Professor'
-                },
-                {
-                  tag: 'div',
-                  class: 'classroom-toggle',
-                  innerHTML: 'x'
-                }
-              ]
+              class: 'classroom-teacher',
+              innerHTML: 'Professor'
             }
           ]
-        }
-      ]
-    }
-
-    var lectureInfo = createHtmlElementTree(lectureInfoTreeObj);
-    return lectureInfo;
+        }]
+      }
+    ]
   }
 
-  /**
-   *
-   */
-  this.addLecture = function(lecture) {
-    accordion.appendChild(lecture.htmlElement);
-    for (var i = 0; i &lt; lecture.classrooms.length; i++) {
-      var classroom = lecture.classrooms[i];
-      for (var j = 0; j &lt; classroom.schedules.length; j++) {
-        var schedule = classroom.schedules[j];
-        var day = indexOfDay(schedule.day);
-        weekdays[day].appendChild(schedule.htmlElement);
+  var lectureInfo = createHtmlElementTree(lectureInfoTreeObj);
+  return lectureInfo;
+}
+
+UI.prototype.createCombinationBoard = function(combination) {
+  var combinationBoardTreeObj = {
+    tag: 'canvas',
+    class: 'combination',
+    width: 90,
+    height: 90
+  };
+
+  var combinationBoard = createHtmlElementTree(combinationBoardTreeObj);
+  var ctx = combinationBoard.getContext('2d');
+  var columnHeight = parseInt(window.getComputedStyle(document.getElementById('time-table').getElementsByClassName('column')[0]).getPropertyValue("height"), 10);
+
+  var classrooms = combination.lecturesClassroom;
+  for (var i = 0; i &lt; classrooms.length; i++) {
+    var classroom = classrooms[i];
+    for (var j = 0; j &lt; classroom.schedules.length; j++) {
+      var schedule = classroom.schedules[j];
+      var day = indexOfDay(schedule.day);
+
+      addClass(schedule.htmlElement, 'schedule-box-highlight');
+      var css = window.getComputedStyle(schedule.htmlElement);
+
+      var boxTop = Math.round(parseInt(css.getPropertyValue("top"), 10) / columnHeight * 90);
+      var boxHeight = Math.round(parseInt(css.getPropertyValue("height"), 10) / columnHeight * 90);
+      var boxLeft = day * 15 + 1;
+
+      ctx.fillStyle = css.getPropertyValue("background-color");
+      ctx.fillRect(boxLeft, boxTop, 13, boxHeight);
+      ctx.fillStyle = css.getPropertyValue("border-left-color");
+      ctx.fillRect(boxLeft, boxTop, 2, boxHeight);
+
+      removeClass(schedule.htmlElement, 'schedule-box-highlight');
+    }
+  }
+
+  this.combinationTrack.appendChild(combinationBoard);
+
+  return combinationBoard;
+}
+
+UI.prototype.scrollActiveCombinationToView = function() {
+  if (this.combinationTrack.children.length === 0 || state.activePlanIndex == undefined || state.activePlanIndex == null) return 0;
+  var activePlan = state.plans[state.activePlanIndex];
+  if (activePlan.activeCombinationIndex == undefined || activePlan.activeCombinationIndex == null) return 1;
+  var cc = this.combinationTrack.children[activePlan.activeCombinationIndex];
+  var ctw = this.combinationTrack;
+  if (cc.offsetLeft &lt; ctw.scrollLeft) {
+    ctw.scrollLeft = cc.offsetLeft;
+  } else if (cc.offsetLeft + cc.offsetWidth > ctw.scrollLeft + ctw.offsetWidth) {
+    ctw.scrollLeft = cc.offsetLeft + cc.offsetWidth - ctw.offsetWidth;
+  }
+}
+
+/**
+ *
+ */
+UI.prototype.addLecture = function(lecture) {
+  this.accordion.appendChild(lecture.htmlElement);
+  for (var i = 0; i &lt; lecture.classrooms.length; i++) {
+    var classroom = lecture.classrooms[i];
+    for (var j = 0; j &lt; classroom.schedules.length; j++) {
+      var schedule = classroom.schedules[j];
+      var day = indexOfDay(schedule.day);
+      if (day &lt; this.weekdays.length)
+        this.weekdays[day].appendChild(schedule.htmlElement);
+    }
+  }
+}
+
+/**
+ *
+ */
+UI.prototype.removeLecture = function(lecture) {
+  this.accordion.removeChild(lecture.htmlElement);
+  for (var i = 0; i &lt; lecture.classrooms.length; i++) {
+    var classroom = lecture.classrooms[i];
+    for (var j = 0; j &lt; classroom.schedules.length; j++) {
+      var schedule = classroom.schedules[j];
+      var day = indexOfDay(schedule.day);
+      this.weekdays[day].removeChild(schedule.htmlElement);
+    }
+  }
+}
+
+function tester(obj, objOnDB) {
+  if (typeof(obj) == 'object') {
+    var keys = Object.keys(obj);
+    for (var i = 0; i &lt; keys.length; i++) {
+      if (typeof(obj[keys[i]]) == 'object' || keys[i] == 'color') {
+        continue;
+      }
+      if (obj[keys[i]] != objOnDB[keys[i]]) {
+        //console.log('obj :', obj[keys[i]], ' key: ', keys[i]); 
+        //console.log('objOnDB :', objOnDB[keys[i]], ' key: ', keys[i]); 
+        //console.log('legal ele percebe que mudou!');
+        obj[keys[i]] = objOnDB[keys[i]];
+      }
+    }
+  } else {
+    if (obj != objOnDB) {
+      //console.log('obj :', obj);
+      //console.log('objOnDB :', objOnDB);
+      //console.log('percebeu que tava errado!');
+      obj = objOnDB;
+    }
+  }
+}
+
+function seeksChanges(state) {
+  var plans = state.plans;
+  for (var i = 0; i &lt; plans.length; i++) {
+    if (plans[i]) {
+      var lectures = plans[i].lectures;
+      for (var j = 0; j &lt; lectures.length; j++) {
+        var lecture = lectures[j];
+        database.fetchLectureByCode(lecture.code, {
+          success: function(result) {
+            Object.assign(lectures[j], result[0]);
+          }
+        });
       }
     }
   }
 }
-</code></pre>
+
+function shallowCopy(obj) {
+  var objC = new Object();
+  var keys = Object.keys(obj);
+  for (var i = 0; i &lt; keys.length; i++) {
+    if (typeof(obj[keys[i]]) == 'array' || typeof(obj[keys[i]]) == 'object') {} else {
+      objC[keys[i]] = obj[keys[i]];
+    }
+  }
+  return objC;
+}
+
+UI.prototype.setLoadingBar = function(load) {
+  this.loadingBar.style.width = load * 100 + '%';
+}
+
+UI.prototype.showBanner = function(message, time) {
+  this.bannerMsg.innerHTML = message;
+  this.banner.classList.add('banner-open');
+
+  if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
+  if (time)
+    this.bannerTimeout = setTimeout(() => this.closeBanner(), time);
+}
+
+UI.prototype.closeBanner = function() {
+  this.banner.classList.remove('banner-open');
+}</code></pre>
         </article>
     </section>
 
@@ -264,13 +436,13 @@ function UI() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="SearchBox.html">SearchBox</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#saveStateOnLocalStorage">saveStateOnLocalStorage</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 31 2016 18:06:15 GMT-0300 (BRT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 19 2018 19:31:25 GMT-0300 (E. South America Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

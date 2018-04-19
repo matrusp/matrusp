@@ -34,7 +34,9 @@
  * @example
  *  var combinationExemple = {
  *    parent: {@link Plan},
- *    classrooms: [{@link Classroom}], // classrooms.length === parent.lectures.length
+ *    lecturesClassrooms: [{@link Classroom}], // classrooms.length === parent.lectures.length
+ *    lectureCredits: 0,
+ *    workCredits:0,
  *    htmlElement: div
  *  }
  *
@@ -43,7 +45,8 @@
 function Combination(combinationIndices, plan) {
   this.parent = plan;
   this.lecturesClassroom = new Array();
-  this.htmlElement  = null;
+  this.lectureCredits = 0;
+  this.workCredits = 0;
 
   for (var i = 0; i &lt; combinationIndices.length; i++) {
     var classroomIndex = combinationIndices[i];
@@ -51,8 +54,28 @@ function Combination(combinationIndices, plan) {
       // Lecture not selected
       continue;
     }
-    this.lecturesClassroom.push(plan.lectures[i].classrooms[classroomIndex]);
+    classroom = plan.lectures[i].classrooms[classroomIndex];
+    this.lecturesClassroom.push(classroom);
+    this.lectureCredits += classroom.parent.lectureCredits;
+    this.workCredits += classroom.parent.workCredits;
   }
+
+  Object.defineProperty(this, "htmlElement", {get: function () {
+    return this.mHtmlElement || (this.mHtmlElement = ui.createCombinationBoard(this));
+  }});
+  this.addEventListeners();
+}
+
+/**
+ *
+ */
+Combination.prototype.delete = function() {
+  this.htmlElement.parentNode.removeChild(this.htmlElement);
+
+  // All htmlElements removed, now remove itself from the plan and
+  // update it.
+  var indexOnParent = this.parent.combinations.indexOf(this);
+  this.parent.combinations.splice(indexOnParent, 1);
 }
 
 /**
@@ -68,7 +91,32 @@ Combination.prototype.getSimilarityScore = function(otherCombination) {
     }
   }
   return sameClassroomsCounter;
-};</code></pre>
+};
+
+/**
+ *
+ */
+Combination.prototype.setHighlight = function() {
+  addClass(this.htmlElement, 'combination-highlight');
+};
+
+/**
+ *
+ */
+Combination.prototype.unsetHighlight = function() {
+  removeClass(this.htmlElement, 'combination-highlight');
+};
+
+/**
+ *
+ */
+Combination.prototype.setCombination = function() {
+  this.parent.setCombination(this);
+};
+
+Combination.prototype.addEventListeners = function() {
+  this.htmlElement.addEventListener('click', this.setCombination.bind(this));
+}</code></pre>
         </article>
     </section>
 
@@ -78,13 +126,13 @@ Combination.prototype.getSimilarityScore = function(otherCombination) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="SearchBox.html">SearchBox</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#saveStateOnLocalStorage">saveStateOnLocalStorage</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 31 2016 18:06:15 GMT-0300 (BRT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 19 2018 19:31:25 GMT-0300 (E. South America Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

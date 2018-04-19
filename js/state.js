@@ -5,19 +5,18 @@
  *
  * @example
  *  var stateExemple = {
- *    version: 5,
- *    campus: "TODOS",
- *    semester: "20162",
- *    planIndex: 0,
- *    plans: [{@link Plan()}]
+ *    version: 7,
+ *    lastColor: 0,
+ *    activePlanIndex: 0,
+ *    plans: [{@link Plan}]
  *  }
  *
  * @see Plan
  */
 function State(jsonObj) {
-	this.plans = new Array();
-	this.numColors = 10; // represents the number of colors on system
-	this.lastColor = 0;
+  this.plans = new Array();
+  this.numColors = 10; // represents the number of colors on system
+  this.lastColor = 0;
 
   this.html = {
     previousCombination: document.getElementsByClassName('combination-button-left')[0],
@@ -46,50 +45,58 @@ function State(jsonObj) {
 }
 
 State.prototype.delete = function() {
-   while (this.plans.length) {
-   this.plans[0].delete();
+  while (this.plans.length) {
+    this.plans[0].delete();
   }
 }
 
+/**
+ * Clears the current state
+ */
 State.prototype.clear = function() {
   for (var i = 0; i < this.plans.length; i++) {
     this.plans[i].clear();
   }
 }
 
+/**
+ * Load state data
+ *
+ * @param {baseState} BaseState State or json data to load
+ */
 State.prototype.load = function(baseState) {
   if (baseState) {
-  	if(baseState.version == 6) {
-  		var newState = {};
-		newState.version = 7;
-		newState.plans = [];
-		newState.activePlanIndex = baseState.activePlanIndex;
-		baseState.plans.forEach(plan => {
-			if(!plan) return;
-			var planData = {};
-			planData.activeCombinationIndex = plan.activeCombinationIndex;
-			planData.lectures = [];
-			plan.lectures.forEach(lecture => {
-				var lectureData = {};
-				lectureData.code = lecture.code;
-				lectureData.color = lecture.color;
-				lectureData.selected = lecture.selected;
-				lectureData.classrooms = [];
+    if (baseState.version == 6) {
+      var newState = {};
+      newState.version = 7;
+      newState.plans = [];
+      newState.activePlanIndex = baseState.activePlanIndex;
+      baseState.plans.forEach(plan => {
+        if (!plan) return;
+        var planData = {};
+        planData.activeCombinationIndex = plan.activeCombinationIndex;
+        planData.lectures = [];
+        plan.lectures.forEach(lecture => {
+          var lectureData = {};
+          lectureData.code = lecture.code;
+          lectureData.color = lecture.color;
+          lectureData.selected = lecture.selected;
+          lectureData.classrooms = [];
 
-				lecture.classrooms.forEach(classroom => {
-					if(classroom.selected)
-						lectureData.classrooms.push('20181' + classroom.classroomCode);
-				});
+          lecture.classrooms.forEach(classroom => {
+            if (classroom.selected)
+              lectureData.classrooms.push('20181' + classroom.classroomCode);
+          });
 
-				planData.lectures.push(lectureData);
-			});
-			newState.plans.push(planData);
-		});
-		return this.load(newState);
-  	}
+          planData.lectures.push(lectureData);
+        });
+        newState.plans.push(planData);
+      });
+      return this.load(newState);
+    }
     if (!baseState.version || baseState.version < matrusp_current_state_version) {
       // if the state being loaded is not updated, don't load.
-			ui.showBanner('Este identificador não é mais válido.');
+      ui.showBanner('Este identificador não é mais válido.');
       return false;
     }
     this.lastColor = baseState.lastColor || 0;
@@ -116,6 +123,11 @@ State.prototype.load = function(baseState) {
   return false;
 }
 
+/**
+ * Clears the state and loads a new one
+ *
+ * @param {baseState} BaseState State or json data to load
+ */
 State.prototype.reload = function(baseState) {
   this.clear();
   this.load(baseState);
@@ -134,14 +146,23 @@ State.prototype.addLecture = function(lecture, planIndex) {
   this.plans[planIndex].addLecture(lecture);
 };
 
+/**
+ * Selects the next combination in the active plan.
+ */
 State.prototype.nextCombination = function() {
   this.plans[this.activePlanIndex].nextCombination();
 }
 
+/**
+ * Selects the previous combination in the active plan.
+ */
 State.prototype.previousCombination = function() {
   this.plans[this.activePlanIndex].previousCombination();
 }
 
+/**
+ * Downloads the state as serialized JSON file.
+ */
 State.prototype.downloadFile = function() {
   var dataString = "data:text/json;charset=utf-8," + encodeURIComponent(this.toJSON());
   var element = document.createElement('a');
@@ -150,7 +171,7 @@ State.prototype.downloadFile = function() {
   if (document.getElementById('user-identifier').value) {
     element.setAttribute('download', document.getElementById('user-identifier').value + '.json');
   } else {
-    element.setAttribute('download', 'matrusp_'+ (new Date).getFullYear() + '.json');
+    element.setAttribute('download', 'matrusp_' + (new Date).getFullYear() + '.json');
   }
   document.body.appendChild(element);
   element.click();
@@ -161,10 +182,15 @@ State.prototype.addEventListeners = function() {
   this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
   this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
   this.html.download.addEventListener('click', this.downloadFile.bind(this));
-  this.html.save.addEventListener('click',() => this.saveOnServer(this.html.identifier.value));
-  this.html.load.addEventListener('click',() => this.loadFromServer(this.html.identifier.value));
+  this.html.save.addEventListener('click', () => this.saveOnServer(this.html.identifier.value));
+  this.html.load.addEventListener('click', () => this.loadFromServer(this.html.identifier.value));
 };
 
+/**
+ * Saves the state on the server as a serialized JSON file.
+ *
+ * @param {identifier} Identifier The identifier that will point to this state on the server
+ */
 State.prototype.saveOnServer = function(identifier) {
   if (!identifier || identifier == '') {
     ui.showBanner('É necessário preencher o nome do identificador', 2000);
@@ -188,35 +214,43 @@ State.prototype.saveOnServer = function(identifier) {
   });
 }
 
+/**
+ * Serialize state as a JSON string
+ */
 State.prototype.toJSON = function() {
-	var stateData = {};
-	stateData.version = this.version;
-	stateData.lastColor = this.lastColor;
-	stateData.plans = [];
-	stateData.activePlanIndex = this.activePlanIndex;
-	this.plans.forEach(plan => {
-		var planData = {};
-		planData.activeCombinationIndex = plan.activeCombinationIndex;
-		planData.lectures = [];
-		plan.lectures.forEach(lecture => {
-			var lectureData = {};
-			lectureData.code = lecture.code;
-			lectureData.color = lecture.color;
-			lectureData.selected = lecture.selected;
-			lectureData.classrooms = [];
-			
-			lecture.classrooms.forEach(classroom => {
-				if(classroom.selected)
-					lectureData.classrooms.push(classroom.code);
-			});
+  var stateData = {};
+  stateData.version = this.version;
+  stateData.lastColor = this.lastColor;
+  stateData.plans = [];
+  stateData.activePlanIndex = this.activePlanIndex;
+  this.plans.forEach(plan => {
+    var planData = {};
+    planData.activeCombinationIndex = plan.activeCombinationIndex;
+    planData.lectures = [];
+    plan.lectures.forEach(lecture => {
+      var lectureData = {};
+      lectureData.code = lecture.code;
+      lectureData.color = lecture.color;
+      lectureData.selected = lecture.selected;
+      lectureData.classrooms = [];
 
-			planData.lectures.push(lectureData);
-		});
-		stateData.plans.push(planData);
-	});
-	return JSON.stringify(stateData);
+      lecture.classrooms.forEach(classroom => {
+        if (classroom.selected)
+          lectureData.classrooms.push(classroom.code);
+      });
+
+      planData.lectures.push(lectureData);
+    });
+    stateData.plans.push(planData);
+  });
+  return JSON.stringify(stateData);
 }
 
+/**
+ * Loads the state from the server.
+ *
+ * @param {identifier} Identifier The identifier to fetch on the server
+ */
 State.prototype.loadFromServer = function(identifier) {
   if (!identifier || identifier == '') {
     ui.showBanner('É necessário preencher o nome do identificador', 2000);
@@ -238,7 +272,3 @@ State.prototype.loadFromServer = function(identifier) {
     throw error
   });
 }
-
-
-
-

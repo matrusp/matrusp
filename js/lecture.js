@@ -7,16 +7,15 @@
  *  var lectureExample = {
  *    code: "SCC0502",
  *    name: "Algoritmos e Estruturas de Dados I",
- *    color: "lightblue",
- *    campus: "TODOS",
- *    selected: 1,
+ *    color: 1,
+ *    campus: "São Carlos",
+ *    selected: true,
  *    classrooms: [{@link Classroom}],
  *    htmlElement: div.lecture-info
  *  }
  *
  * @see UI#createLectureInfo
  */
- // IMPORTANT: the 'ui' variable must be already set up!
 function Lecture(jsonObj, parentPlan) {
   this.parent = parentPlan;
   this.classrooms = new Array();
@@ -61,17 +60,6 @@ function Lecture(jsonObj, parentPlan) {
     this.appendHTMLChildren();
     this.updateClassroomsCheckbox();
     this.addEventListeners();
-  } else {
-    this.code = null;
-    this.name = null;
-    this.color = null;
-    this.campus = null;
-    this.selected = null;
-    this.htmlElement = null;
-    this.htmlLectureCheckbox = null;
-    this.htmlLectureArrowUp = null;
-    this.htmlLectureArrowDown = null;
-    this.htmlClassroomsCheckbox = null;
   }
 }
 

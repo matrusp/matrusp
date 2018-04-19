@@ -33,31 +33,132 @@
  *
  * @example
  *  var stateExemple = {
- *    version: 5,
- *    campus: "TODOS",
- *    semester: "20162",
- *    planIndex: 0,
- *    plans: [{@link Plan()}]
+ *    version: 7,
+ *    lastColor: 0,
+ *    activePlanIndex: 0,
+ *    plans: [{@link Plan}]
  *  }
  *
  * @see Plan
  */
 function State(jsonObj) {
   this.plans = new Array();
-  if (jsonObj) {
-    this.version = jsonObj.version;
-    this.campus = jsonObj.campus;
-    this.semester = jsonObj.semester;
-    this.activePlanIndex = jsonObj.planIndex;
-    for (var i = 0; i &lt; jsonObj.plans.length; i++) {
-      this.plans.push(new Plan(jsonObj.plans[i]));
-    }
-  } else {
-    this.version = null;
-    this.campus = null;
-    this.semester = null;
-    this.activePlanIndex = null;
+  this.numColors = 10; // represents the number of colors on system
+  this.lastColor = 0;
+
+  this.html = {
+    previousCombination: document.getElementsByClassName('combination-button-left')[0],
+    nextCombination: document.getElementsByClassName('combination-button-right')[0],
+    upload: document.getElementById('upload-input'),
+    download: document.getElementById('download'),
+    save: document.getElementById('save-button'),
+    load: document.getElementById('load-button'),
+    identifier: document.getElementById('user-identifier')
   }
+  this.addEventListeners();
+
+  // variable set on main.js
+  this.version = matrusp_current_state_version;
+  this.activePlanIndex = 0;
+
+  var isActivePlan = false;
+  for (var i = 0; i &lt; 3; i++) {
+    if (i == 0) {
+      var isActivePlan = true;
+    }
+    this.plans.push(new Plan(null, i, isActivePlan));
+  }
+
+  this.load(jsonObj);
+}
+
+State.prototype.delete = function() {
+  while (this.plans.length) {
+    this.plans[0].delete();
+  }
+}
+
+/**
+ * Clears the current state
+ */
+State.prototype.clear = function() {
+  for (var i = 0; i &lt; this.plans.length; i++) {
+    this.plans[i].clear();
+  }
+}
+
+/**
+ * Load state data
+ *
+ * @param {baseState} BaseState State or json data to load
+ */
+State.prototype.load = function(baseState) {
+  if (baseState) {
+    if (baseState.version == 6) {
+      var newState = {};
+      newState.version = 7;
+      newState.plans = [];
+      newState.activePlanIndex = baseState.activePlanIndex;
+      baseState.plans.forEach(plan => {
+        if (!plan) return;
+        var planData = {};
+        planData.activeCombinationIndex = plan.activeCombinationIndex;
+        planData.lectures = [];
+        plan.lectures.forEach(lecture => {
+          var lectureData = {};
+          lectureData.code = lecture.code;
+          lectureData.color = lecture.color;
+          lectureData.selected = lecture.selected;
+          lectureData.classrooms = [];
+
+          lecture.classrooms.forEach(classroom => {
+            if (classroom.selected)
+              lectureData.classrooms.push('20181' + classroom.classroomCode);
+          });
+
+          planData.lectures.push(lectureData);
+        });
+        newState.plans.push(planData);
+      });
+      return this.load(newState);
+    }
+    if (!baseState.version || baseState.version &lt; matrusp_current_state_version) {
+      // if the state being loaded is not updated, don't load.
+      ui.showBanner('Este identificador não é mais válido.');
+      return false;
+    }
+    this.lastColor = baseState.lastColor || 0;
+    this.version = baseState.version;
+    this.activePlanIndex = baseState.activePlanIndex;
+
+    for (var i = 0; i &lt; 3; i++) {
+      if (i == this.activePlanIndex) {
+        var isActivePlan = true;
+        this.plans[i].load(baseState.plans[i], isActivePlan);
+      } else {
+        this.plans[i].load(baseState.plans[i]);
+      }
+    }
+    // TODO this is a hack to update the combination index and total combination number
+    // ui below div#lecture-schedule
+    if (this.plans[this.activePlanIndex].lectures.length == 0) {
+      //document.getElementById('combination-value').innerHTML = '0/0';
+    } else {
+      this.plans[this.activePlanIndex].setActiveCombination();
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Clears the state and loads a new one
+ *
+ * @param {baseState} BaseState State or json data to load
+ */
+State.prototype.reload = function(baseState) {
+  this.clear();
+  this.load(baseState);
 }
 
 /**
@@ -67,155 +168,138 @@ function State(jsonObj) {
  * @param {Number} [planIndex]
  */
 State.prototype.addLecture = function(lecture, planIndex) {
-  if (!planIndex) {
+  if (planIndex == null) {
     planIndex = this.activePlanIndex;
   }
   this.plans[planIndex].addLecture(lecture);
 };
 
+/**
+ * Selects the next combination in the active plan.
+ */
 State.prototype.nextCombination = function() {
   this.plans[this.activePlanIndex].nextCombination();
 }
 
+/**
+ * Selects the previous combination in the active plan.
+ */
 State.prototype.previousCombination = function() {
   this.plans[this.activePlanIndex].previousCombination();
 }
 
 /**
- * Full State example
- * 
- * @return {@link State}
- *
- * @example
- *  var stateExemple = {
- *    version: 5,
- *    campus: "TODOS",
- *    semester: "20162",
- *    planIndex: 0,
- *    plans: [
- *      {
- *        combination: 1,
- *        active: 1,
- *        lectures: [
- *          {
- *            code: "SCC0502",
- *            name: "Algoritmos e Estruturas de Dados I",
- *            color: "lightblue",
- *            campus: "TODOS",
- *            selected: 1,
- *            classrooms: [
- *              {
- *                classroomCode: "43",
- *                selected: 1,
- *                horas_aula: 0,
- *                vagas_ofertadas: 0,
- *                vagas_ocupadas: 0,
- *                alunos_especiais: 0,
- *                saldo_vagas: 0,
- *                pedidos_sem_vaga: 0,
- *                teachers: [
- *                  "First Guy",
- *                  "Second Son",
- *                  "third Weird"
- *                ],
- *                schedules: [
- *                  {
- *                    day: "qua",
- *                    timeBegin: "19:00",
- *                    timeEnd: "20:40",
- *                    htmlElement: div.schedule-box
- *                  }
- *                ],
- *                htmlElement: div.classroom-info
- *              }
- *            ],
- *            htmlElement: div.lecture-info
- *          }
- *        ], 
- *        htmlElement: document.createElement('div'), // só existirá com o design finalizado
- *        htmlElementCombinations: [
- *          document.createElement('div'), // só existirá com o design finalizado
- *        ]     
- *      }
- *    ]
- *  }
+ * Downloads the state as serialized JSON file.
  */
-State.prototype.fullExample = function() {
-  var stateExample = {
-    version: 5,
-    campus: "TODOS",
-    semester: "20162",
-    planIndex: 0,
-    plans: [ // Array of Plano()s
-      {
-        combinations: 1,
-        active: 1,
-        lectures: [ // Array of Lecture()s
-          {
-            code: "SCC0502",
-            name: "Algoritmos e Estruturas de Dados I",
-            color: "lightblue",
-            campus: "TODOS",
-            selected: 1,
-            classrooms: [ // Array of Classroom()s
-              {
-                classroomCode: "43",
-                horas_aula: 0,
-                vagas_ofertadas: 0,
-                vagas_ocupadas: 0,
-                alunos_especiais: 0,
-                saldo_vagas: 0,
-                pedidos_sem_vaga: 0,
-                selected: 1,
-                teachers: [
-                  "First Guy",
-                  "Second Son",
-                  "third Weird"
-                ],
-                schedules: [ // Array of Schedule()s
-                  {
-                    day: "seg",
-                    timeBegin: "21:00",
-                    timeEnd: "22:40",
-                    htmlElement: document.createElement('div') // div.classroom-schedule-box
-                  },
-                  {
-                    day: "qua",
-                    timeBegin: "19:00",
-                    timeEnd: "20:40",
-                    htmlElement: document.createElement('div') // div.classroom-schedule-box
-                  },
-
-                ],
-                htmlElement: document.createElement('div') // input + label.classroom OU (um novo container) div.classroom-info
-              }
-            ],
-            htmlElement: document.createElement('div') // div.lecture-info
-          }
-        ],
-        htmlElement: document.createElement('div'), // só existirá com o design finalizado
-        htmlElementCombinations: [
-          document.createElement('div'), // só existirá com o design finalizado
-        ]
-      }
-    ]
+State.prototype.downloadFile = function() {
+  var dataString = "data:text/json;charset=utf-8," + encodeURIComponent(this.toJSON());
+  var element = document.createElement('a');
+  element.setAttribute("href", dataString);
+  element.style.display = 'none';
+  if (document.getElementById('user-identifier').value) {
+    element.setAttribute('download', document.getElementById('user-identifier').value + '.json');
+  } else {
+    element.setAttribute('download', 'matrusp_' + (new Date).getFullYear() + '.json');
   }
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
 
-  console.log(stateExample);
-  return stateExample;
+State.prototype.addEventListeners = function() {
+  this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
+  this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
+  this.html.download.addEventListener('click', this.downloadFile.bind(this));
+  this.html.save.addEventListener('click', () => this.saveOnServer(this.html.identifier.value));
+  this.html.load.addEventListener('click', () => this.loadFromServer(this.html.identifier.value));
 };
 
+/**
+ * Saves the state on the server as a serialized JSON file.
+ *
+ * @param {identifier} Identifier The identifier that will point to this state on the server
+ */
+State.prototype.saveOnServer = function(identifier) {
+  if (!identifier || identifier == '') {
+    ui.showBanner('É necessário preencher o nome do identificador', 2000);
+    return;
+  }
 
+  fetch(`./php/save.php?identifier=${encodeURIComponent(identifier)}`, {
+    method: 'POST',
+    body: `data=${encodeURIComponent(this.toJSON())}`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    }
+  }).then(response => {
+    if (response.ok)
+      ui.showBanner(`Identificador "${identifier}" salvo com sucesso`, 2000);
+    else
+      ui.showBanner('Algum erro ocorreu, salve o identificador novamente', 2000);
+  }).catch(error => {
+    ui.showBanner('Algum erro ocorreu, salve o identificador novamente', 2000);
+    throw error;
+  });
+}
 
+/**
+ * Serialize state as a JSON string
+ */
+State.prototype.toJSON = function() {
+  var stateData = {};
+  stateData.version = this.version;
+  stateData.lastColor = this.lastColor;
+  stateData.plans = [];
+  stateData.activePlanIndex = this.activePlanIndex;
+  this.plans.forEach(plan => {
+    var planData = {};
+    planData.activeCombinationIndex = plan.activeCombinationIndex;
+    planData.lectures = [];
+    plan.lectures.forEach(lecture => {
+      var lectureData = {};
+      lectureData.code = lecture.code;
+      lectureData.color = lecture.color;
+      lectureData.selected = lecture.selected;
+      lectureData.classrooms = [];
 
+      lecture.classrooms.forEach(classroom => {
+        if (classroom.selected)
+          lectureData.classrooms.push(classroom.code);
+      });
 
+      planData.lectures.push(lectureData);
+    });
+    stateData.plans.push(planData);
+  });
+  return JSON.stringify(stateData);
+}
 
-
-
-
-
-
-</code></pre>
+/**
+ * Loads the state from the server.
+ *
+ * @param {identifier} Identifier The identifier to fetch on the server
+ */
+State.prototype.loadFromServer = function(identifier) {
+  if (!identifier || identifier == '') {
+    ui.showBanner('É necessário preencher o nome do identificador', 2000);
+    return;
+  }
+  fetch(`data/${identifier.replace(/[^\w]/g, '')}.json`).then(response => {
+    if (response.ok)
+      response.json().then(json => {
+        this.reload(json);
+        ui.showBanner(`Identificador "${identifier}" carregado com sucesso`, 2000);
+      });
+    else
+    if (response.status === 404)
+      ui.showBanner('Identificador não encontrado no servidor', 2000);
+    else
+      ui.showBanner('Não foi possível carregar o identificador. Tente novamente', 2000);
+  }).catch(error => {
+    ui.showBanner('Não foi possível carregar o identificador. Tente novamente', 2000);
+    throw error
+  });
+}</code></pre>
         </article>
     </section>
 
@@ -225,13 +309,13 @@ State.prototype.fullExample = function() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="SearchBox.html">SearchBox</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#saveStateOnLocalStorage">saveStateOnLocalStorage</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 31 2016 18:06:15 GMT-0300 (BRT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 19 2018 19:31:25 GMT-0300 (E. South America Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

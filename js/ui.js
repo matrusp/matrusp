@@ -18,7 +18,7 @@ function UI() {
   for (var i = 1; i < this.lectureScheduleColumns.length; i++) {
     this.weekdays.push(this.lectureScheduleColumns[i]);
   }
-  
+
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 
   // Functions
@@ -70,20 +70,21 @@ UI.prototype.createScheduleBox = function(schedule) {
     tag: 'div',
     class: ['schedule-box', 'color-' + lecture.color],
     children: [{
-      tag: 'span',
-      class: ['timespan', 'timespan-begin'],
-      innerHTML: schedule.timeBegin
-    },
-    {
-      tag: 'span',
-      class: ['timespan', 'timespan-end'],
-      innerHTML: schedule.timeEnd
-    },
-    {
-      tag: 'span',
-      class: 'lecture-code',
-      innerHTML: lecture.code
-    }]
+        tag: 'span',
+        class: ['timespan', 'timespan-begin'],
+        innerHTML: schedule.timeBegin
+      },
+      {
+        tag: 'span',
+        class: ['timespan', 'timespan-end'],
+        innerHTML: schedule.timeEnd
+      },
+      {
+        tag: 'span',
+        class: 'lecture-code',
+        innerHTML: lecture.code
+      }
+    ]
   };
 
 
@@ -133,21 +134,22 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
     tag: 'div',
     class: 'classroom-info',
     children: [{
-      tag: 'input',
-      type: 'checkbox',
-      class: 'classroom-info-checkbox',
-      checked: classroom.selected
-    },
-    {
-      tag: 'div',
-      class: 'classroom-code',
-      innerHTML: classroom.shortCode
-    },
-    {
-      tag: 'div',
-      class: 'classroom-teacher',
-      innerHTML: removeDuplicates(classroom.teachers).join('<br>')
-    }]
+        tag: 'input',
+        type: 'checkbox',
+        class: 'classroom-info-checkbox',
+        checked: classroom.selected
+      },
+      {
+        tag: 'div',
+        class: 'classroom-code',
+        innerHTML: classroom.shortCode
+      },
+      {
+        tag: 'div',
+        class: 'classroom-teacher',
+        innerHTML: removeDuplicates(classroom.teachers).join('<br>')
+      }
+    ]
   };
 
   var classroomInfo = createHtmlElementTree(classroomInfoTreeObj);
@@ -165,76 +167,80 @@ UI.prototype.createLectureInfo = function(lecture) {
     tag: 'div',
     class: ['lecture-info', 'color-' + lecture.color],
     children: [{
-      tag: 'div',
-      class: 'lecture-info-header',
-      children: [{
-        tag: 'input',
-        type: 'checkbox',
-        class: 'lecture-info-checkbox',
-        checked: lecture.selected
+        tag: 'div',
+        class: 'lecture-info-header',
+        children: [{
+            tag: 'input',
+            type: 'checkbox',
+            class: 'lecture-info-checkbox',
+            checked: lecture.selected
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-header-title',
+            children: [{
+                tag: 'div',
+                class: 'lecture-info-code',
+                innerHTML: lecture.code
+              },
+              {
+                tag: 'div',
+                class: 'lecture-info-name',
+                innerHTML: lecture.name
+              }
+            ]
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-up',
+            children: [{
+              tag: 'img',
+              src: 'images/ic_arrow_up.png'
+            }]
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-down',
+            children: [{
+              tag: 'img',
+              src: 'images/ic_arrow_down.png'
+            }]
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-delete',
+            children: [{
+              tag: 'img',
+              src: 'images/ic_close.png'
+            }]
+          }
+        ]
       },
       {
         tag: 'div',
-        class: 'lecture-info-header-title',
+        class: 'lecture-classrooms',
         children: [{
           tag: 'div',
-          class: 'lecture-info-code',
-          innerHTML: lecture.code
-        },
-        {
-          tag: 'div',
-          class: 'lecture-info-name',
-          innerHTML: lecture.name
+          class: 'classrooms-header',
+          children: [{
+              tag: 'input',
+              type: 'checkbox',
+              class: 'classrooms-header-checkbox'
+            },
+            {
+              tag: 'div',
+              class: 'classroom-code',
+              innerHTML: 'Turma'
+            },
+            {
+              tag: 'div',
+              class: 'classroom-teacher',
+              innerHTML: 'Professor'
+            }
+          ]
         }]
-      },
-      {
-        tag: 'div',
-        class: 'lecture-info-up',
-        children: [{
-          tag: 'img',
-          src: 'images/ic_arrow_up.png'
-        }]
-      },
-      {
-        tag: 'div',
-        class: 'lecture-info-down',
-        children: [{
-          tag: 'img',
-          src: 'images/ic_arrow_down.png'
-        }]
-      },
-      {
-        tag: 'div',
-        class: 'lecture-info-delete',
-        children: [{
-          tag: 'img',
-          src: 'images/ic_close.png'
-        }]
-      }]
-    },
-    {
-      tag: 'div',
-      class: 'lecture-classrooms',
-      children: [{
-        tag: 'div',
-        class: 'classrooms-header',
-        children: [{
-          tag: 'input',
-          type: 'checkbox',
-          class: 'classrooms-header-checkbox'
-        },
-        {
-          tag: 'div',
-          class: 'classroom-code',
-          innerHTML: 'Turma'
-        },
-        {
-          tag: 'div',
-          class: 'classroom-teacher',
-          innerHTML: 'Professor'
-        }]
-      }]
-    }]
+      }
+    ]
   }
 
   var lectureInfo = createHtmlElementTree(lectureInfoTreeObj);
@@ -304,7 +310,7 @@ UI.prototype.addLecture = function(lecture) {
     for (var j = 0; j < classroom.schedules.length; j++) {
       var schedule = classroom.schedules[j];
       var day = indexOfDay(schedule.day);
-      if(day < this.weekdays.length)
+      if (day < this.weekdays.length)
         this.weekdays[day].appendChild(schedule.htmlElement);
     }
   }
