@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>Classroom</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Classroom<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -40,7 +40,9 @@
 
     
 
+    
     <h4 class="name" id="Classroom"><span class="type-signature"></span>new Classroom<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -91,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line28">line 28</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -123,25 +125,11 @@
 
 
 
+
+
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var classroomExample = {
-   classroomCode: "43",
-   selected: 1,
-   horas_aula: 0,
-   vagas_ofertadas: 0,
-   vagas_ocupadas: 0,
-   alunos_especiais: 0,
-   saldo_vagas: 0,
-   pedidos_sem_vaga: 0,
-   teachers: [
-     "First Guy",
-     "Second Son",
-     "third Weird"
-   ],
-   schedules: [<a href="Schedule.html">Schedule</a>],
-   htmlElement: div.classroom-info
- }</code></pre>
+    <pre class="prettyprint"><code>var classroomExample = {   code: "2018132",   shortCode: "32",   selected: true,	  dateBegin: "31/07/2016",	  data_fim: "10/12/2016",   obs: "Extra info goes here"   teachers: [     "First Teacher",     "Second Teacher"   ],   schedules: [<a href="Schedule.html">Schedule</a>],   htmlElement: div.classroom-info }</code></pre>
 
 
 
@@ -154,7 +142,9 @@
 
     
 
-     
+    
+
+    
 
     
 
@@ -168,7 +158,190 @@
 
     
 
+    
+    <h4 class="name" id=".fromLinked"><span class="type-signature">(static) </span>fromLinked<span class="signature">(TheoreticalClassroom, PracticalClassroom, ParentLecture)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates a new classroom based on theoretical and practical linked classrooms
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>TheoreticalClassroom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jsonT</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The theoretical classroom data</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>PracticalClassroom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jsonP</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The practical classroom data</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ParentLecture</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">parentLecture</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Lecture which contains these classrooms</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="addClassInSchedules"><span class="type-signature"></span>addClassInSchedules<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -215,7 +388,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line78">line 78</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -241,12 +414,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="addEventListeners"><span class="type-signature"></span>addEventListeners<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -297,7 +474,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line203">line 203</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line262">line 262</a>
     </li></ul></dd>
     
 
@@ -307,9 +484,9 @@
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Classroom.html#setHighlight">Classroom#setHighlight</a></li>
+            <li><a href="Classroom.html#showOnHover">Classroom#showOnHover</a></li>
         
-            <li><a href="Classroom.html#unsetHighlight">Classroom#unsetHighlight</a></li>
+            <li><a href="Classroom.html#hideOnHoverOut">Classroom#hideOnHoverOut</a></li>
         
             <li><a href="Classroom.html#toggleClassroomSelection">Classroom#toggleClassroomSelection</a></li>
         </ul>
@@ -334,12 +511,98 @@
 
 
 
+
+
         
             
 
     
 
+    
+    <h4 class="name" id="addTeachers"><span class="type-signature"></span>addTeachers<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="delete"><span class="type-signature"></span>delete<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -386,7 +649,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line69">line 69</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line122">line 122</a>
     </li></ul></dd>
     
 
@@ -412,12 +675,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="hideBox"><span class="type-signature"></span>hideBox<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -464,7 +731,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line103">line 103</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -490,12 +757,98 @@
 
 
 
+
+
         
             
 
     
 
+    
+    <h4 class="name" id="hideOnHoverOut"><span class="type-signature"></span>hideOnHoverOut<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line222">line 222</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="removeClassInSchedules"><span class="type-signature"></span>removeClassInSchedules<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -542,7 +895,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line87">line 87</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -568,12 +921,16 @@
 
 
 
+
+
         
             
 
     
 
-    <h4 class="name" id="setHighlight"><span class="type-signature"></span>setHighlight<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    <h4 class="name" id="removeDuplicates"><span class="type-signature"></span>removeDuplicates<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -620,7 +977,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line111">line 111</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line108">line 108</a>
     </li></ul></dd>
     
 
@@ -646,12 +1003,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="showBox"><span class="type-signature"></span>showBox<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -698,7 +1059,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line96">line 96</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line149">line 149</a>
     </li></ul></dd>
     
 
@@ -708,6 +1069,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -729,7 +1092,9 @@
 
     
 
-    <h4 class="name" id="toggleClassroomSelection"><span class="type-signature"></span>toggleClassroomSelection<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    <h4 class="name" id="showOnHover"><span class="type-signature"></span>showOnHover<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -776,7 +1141,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line172">line 172</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line204">line 204</a>
     </li></ul></dd>
     
 
@@ -786,6 +1151,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -807,7 +1174,9 @@
 
     
 
-    <h4 class="name" id="unsetHighlight"><span class="type-signature"></span>unsetHighlight<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    <h4 class="name" id="toggleClassroomSelection"><span class="type-signature"></span>toggleClassroomSelection<span class="signature">(shouldUpdate<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -819,6 +1188,75 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>shouldUpdate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last">enables parent lecture and current plan's update</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -854,7 +1292,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line158">line 158</a>
+        <a href="classroom.js.html">classroom.js</a>, <a href="classroom.js.html#line239">line 239</a>
     </li></ul></dd>
     
 
@@ -864,6 +1302,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -896,13 +1336,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="SearchBox.html">SearchBox</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#saveStateOnLocalStorage">saveStateOnLocalStorage</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 31 2016 18:06:15 GMT-0300 (BRT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 19 2018 19:31:25 GMT-0300 (E. South America Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

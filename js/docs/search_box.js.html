@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: search_box.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: search_box.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * A class representing the Search Box
  *
  * @constructor
@@ -46,7 +74,7 @@ function SearchBox() {
 SearchBox.prototype.addLectures = function(lectures) {
   var suggestionLectures = this.searchResultBox.childNodes;
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < lectures.length; i++) {
+  for (var i = 0; i &lt; lectures.length; i++) {
 
     var searchResultLectureInfo = createAndAppendChild(fragment, 'div', {
       'class': ['search-result', 'lecture-info']
@@ -79,11 +107,11 @@ SearchBox.prototype.addLectures = function(lectures) {
     var selectLectureCallback = function(iterator, serachResultLectureInfo) {
       return function() {
         addClass(serachResultLectureInfo, 'search-result-selected');
-        if (this.selectedLectureIndex != -1 && serachResultLectureInfo != suggestionLectures[this.selectedLectureIndex]) {
+        if (this.selectedLectureIndex != -1 &amp;&amp; serachResultLectureInfo != suggestionLectures[this.selectedLectureIndex]) {
           removeClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
         }
         this.heightSoFar = 0;
-        for (var i = 0; i <= iterator; i++) {
+        for (var i = 0; i &lt;= iterator; i++) {
           this.heightSoFar += suggestionLectures[i].offsetHeight;
         }
         this.selectedLectureIndex = iterator;
@@ -138,7 +166,7 @@ SearchBox.prototype.eventKey = function(e) {
       return;
     case 40:
     case "ArrowDown":
-      if (this.selectedLectureIndex < this.lecturesSuggestionList.length - 1) {
+      if (this.selectedLectureIndex &lt; this.lecturesSuggestionList.length - 1) {
         this.selectedLectureIndex++;
       } else {
         return;
@@ -148,8 +176,8 @@ SearchBox.prototype.eventKey = function(e) {
       }
       addClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
 
-      if (this.heightSoFar < sizeOfSearchResultBox) {
-        if (this.heightSoFar + suggestionLectures[this.selectedLectureIndex].offsetHeight < sizeOfSearchResultBox) {
+      if (this.heightSoFar &lt; sizeOfSearchResultBox) {
+        if (this.heightSoFar + suggestionLectures[this.selectedLectureIndex].offsetHeight &lt; sizeOfSearchResultBox) {
           this.heightSoFar += suggestionLectures[this.selectedLectureIndex].offsetHeight;
         } else {
           this.heightSoFar += suggestionLectures[this.selectedLectureIndex].offsetHeight;
@@ -167,7 +195,7 @@ SearchBox.prototype.eventKey = function(e) {
       } else {
         return;
       }
-      if (this.selectedLectureIndex < this.lecturesSuggestionList.length) {
+      if (this.selectedLectureIndex &lt; this.lecturesSuggestionList.length) {
         removeClass(suggestionLectures[this.selectedLectureIndex + 1], 'search-result-selected');
       }
       addClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
@@ -214,7 +242,7 @@ SearchBox.prototype.compareID = function(lectureA, lectureB) {
   if (lectureA.classroomCode > lectureB.classroomCode) {
     return 1;
   }
-  if (lectureA.classroomCode < lectureB.classroomCode) {
+  if (lectureA.classroomCode &lt; lectureB.classroomCode) {
     return -1;
   }
   return 0;
@@ -224,7 +252,7 @@ SearchBox.prototype.testFunctionCompareID = function(lectureA, lectureB) {
   var actual = this.compareID(lectureA, lectureB);
   var expected;
   if (lectureA.classroomCode > lectureB.classroomCode) expected = 1;
-  if (lectureA.classroomCode < lectureB.classroomCode) expected = -1;
+  if (lectureA.classroomCode &lt; lectureB.classroomCode) expected = -1;
   else expected = 0;
 
   if (actual != expected) return false;
@@ -232,15 +260,15 @@ SearchBox.prototype.testFunctionCompareID = function(lectureA, lectureB) {
 }
 
 SearchBox.prototype.aggregateBySchedule = function(classrooms) {
-  for (var i = 0; i < classrooms.length; i++) {
+  for (var i = 0; i &lt; classrooms.length; i++) {
     var schedule1 = classrooms[i].schedules;
-    for (var k = i + 1; k < classrooms.length; k++) {
+    for (var k = i + 1; k &lt; classrooms.length; k++) {
       var schedule2 = classrooms[k].schedules;
 
       if (schedule1.length != schedule2.length) continue;
 
       var equal = 1;
-      for (var j = 0; j < schedule1.length; j++) {
+      for (var j = 0; j &lt; schedule1.length; j++) {
         if (schedule1[j].day != schedule2[j].day ||
           schedule1[j].timeBegin != schedule2[j].timeBegin ||
           schedule1[j].timeEnd != schedule2[j].timeEnd) {
@@ -251,7 +279,7 @@ SearchBox.prototype.aggregateBySchedule = function(classrooms) {
 
       if (equal) {
         classrooms[i].classroomCode.push(classrooms[k].classroomCode[0]);
-        for (var j = 0; j < classrooms[k].teachers.length; j++) {
+        for (var j = 0; j &lt; classrooms[k].teachers.length; j++) {
           classrooms[i].teachers.push(classrooms[k].teachers[j]);
         }
         var teste = classrooms.splice(k, 1);
@@ -263,7 +291,7 @@ SearchBox.prototype.aggregateBySchedule = function(classrooms) {
 
 SearchBox.prototype.aggregateAndSortLectures = function(lecture) {
   lecture.classrooms.sort(this.compareID);
-  for (var i = 0; i < lecture.classrooms.length; i++) {
+  for (var i = 0; i &lt; lecture.classrooms.length; i++) {
     lecture.classrooms[i].teachers.sort();
   }
   this.aggregateBySchedule(lecture.classrooms);
@@ -275,7 +303,7 @@ SearchBox.prototype.aggregateAndSortLectures = function(lecture) {
 SearchBox.prototype.addToPlan = function(lecture, activePlan) {
   var numberOfLectures = activePlan.lectures.length;
 
-  for (var i = 0; i < activePlan.lectures.length; i++) {
+  for (var i = 0; i &lt; activePlan.lectures.length; i++) {
     if (lecture.code == activePlan.lectures[i].code) {
       this.searchBox.value = '';
       return;
@@ -322,10 +350,10 @@ SearchBox.prototype.optionsChanged = function() {
 SearchBox.prototype.buildSummaryText = function() {
   var summaryText = 'Buscando';
 
-  if (!this.options.campus && !this.options.unit)
+  if (!this.options.campus &amp;&amp; !this.options.unit)
     summaryText += ' em **todos os campi**';
   else if (this.options.unit) {
-    if (this.options.department && this.options.department != this.options.unit) {
+    if (this.options.department &amp;&amp; this.options.department != this.options.unit) {
       var unitPrep = 'de';
       if (this.options.unit.search(/Escola|Faculdade|Licenciatura|Pró-Reitoria/) == 0) unitPrep = 'da';
       if (this.options.unit.search(/Instituto|Centro|Museu|Hospital/) == 0) unitPrep = 'do';
@@ -372,12 +400,12 @@ SearchBox.prototype.buildSummaryText = function() {
 
 
   var timeframes = this.timeCheckboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
-  if (timeframes.length && timeframes.length != this.timeCheckboxes.length) {
+  if (timeframes.length &amp;&amp; timeframes.length != this.timeCheckboxes.length) {
     this.options.timeframes = timeframes;
     summaryText += ` em período **${this.options.timeframes.join('** ou **')}**`
   }
 
-  return summaryText.replace(/\*\*([^\*]+)\*\*/g, '<span class="selected-option">$1</span>');
+  return summaryText.replace(/\*\*([^\*]+)\*\*/g, '&lt;span class="selected-option">$1&lt;/span>');
 }
 
 SearchBox.prototype.campusSelectChanged = async function() {
@@ -500,4 +528,26 @@ SearchBox.prototype.addEventListeners = function() {
   this.searchOptionsSummary.addEventListener('click', this.optionsSummaryClick.bind(this));
   this.timeCheckboxes.forEach(checkbox => checkbox.addEventListener('change', this.optionsChanged.bind(this)));
   this.clearButton.addEventListener('click', this.clearOptions.bind(this));
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="SearchBox.html">SearchBox</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#saveStateOnLocalStorage">saveStateOnLocalStorage</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 19 2018 19:31:25 GMT-0300 (E. South America Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

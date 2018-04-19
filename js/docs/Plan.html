@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>Plan</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Plan<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -40,7 +40,9 @@
 
     
 
+    
     <h4 class="name" id="Plan"><span class="type-signature"></span>new Plan<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -91,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line17">line 17</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -116,16 +118,11 @@
 
 
 
+
+
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var planExample = {
-   combination: 1,
-   lectures: [<a href="Lecture.html">Lecture</a>], 
-   htmlElement: document.createElement('div'), // só existirá com o design finalizado
-   htmlElementCombinations: [
-     document.createElement('div'), // só existirá com o design finalizado
-   ]     
- }</code></pre>
+    <pre class="prettyprint"><code>var planExample = {   planId: 0,   activeCombinationIndex: 0,   combinations: [<a href="Combination.html">Combination</a>],   lectures: [<a href="Lecture.html">Lecture</a>],    htmlElement: document.createElement('div'), // só existirá com o design finalizado   htmlElementCombinations: [     document.createElement('div'), // só existirá com o design finalizado   ]      }</code></pre>
 
 
 
@@ -138,7 +135,9 @@
 
     
 
-     
+    
+
+    
 
     
 
@@ -152,7 +151,91 @@
 
     
 
+    
+    <h4 class="name" id="addEventListeners"><span class="type-signature"></span>addEventListeners<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line575">line 575</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="addLecture"><span class="type-signature"></span>addLecture<span class="signature">(lecture)</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -252,7 +335,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line127">line 127</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -278,12 +361,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="closestCombination"><span class="type-signature"></span>closestCombination<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -330,7 +417,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line78">line 78</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -356,12 +443,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="computeCombinations"><span class="type-signature"></span>computeCombinations<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -408,7 +499,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line172">line 172</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line261">line 261</a>
     </li></ul></dd>
     
 
@@ -434,12 +525,262 @@
 
 
 
+
+
         
             
 
     
 
+    
+    <h4 class="name" id="computeCombinationsFromBase"><span class="type-signature"></span>computeCombinationsFromBase<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line328">line 328</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="copyToPlan"><span class="type-signature"></span>copyToPlan<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line511">line 511</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="load"><span class="type-signature"></span>load<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="nextCombination"><span class="type-signature"></span>nextCombination<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -486,7 +827,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line107">line 107</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line159">line 159</a>
     </li></ul></dd>
     
 
@@ -512,12 +853,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="previousCombination"><span class="type-signature"></span>previousCombination<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -564,7 +909,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line116">line 116</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
@@ -590,12 +935,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="setActiveCombination"><span class="type-signature"></span>setActiveCombination<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -642,7 +991,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line238">line 238</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line395">line 395</a>
     </li></ul></dd>
     
 
@@ -668,12 +1017,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="testCombination"><span class="type-signature"></span>testCombination<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -720,7 +1073,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line136">line 136</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line293">line 293</a>
     </li></ul></dd>
     
 
@@ -746,12 +1099,16 @@
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="unsetActiveCombination"><span class="type-signature"></span>unsetActiveCombination<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -798,7 +1155,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line256">line 256</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line426">line 426</a>
     </li></ul></dd>
     
 
@@ -808,6 +1165,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -829,7 +1188,9 @@
 
     
 
+    
     <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -876,7 +1237,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line39">line 39</a>
+        <a href="plan.js.html">plan.js</a>, <a href="plan.js.html#line96">line 96</a>
     </li></ul></dd>
     
 
@@ -886,6 +1247,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -918,13 +1281,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="SearchBox.html">SearchBox</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#saveStateOnLocalStorage">saveStateOnLocalStorage</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 31 2016 18:06:15 GMT-0300 (BRT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 19 2018 19:31:25 GMT-0300 (E. South America Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

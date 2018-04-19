@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>UI</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>UI<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -40,7 +40,9 @@
 
     
 
+    
     <h4 class="name" id="UI"><span class="type-signature"></span>new UI<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -117,6 +119,8 @@
 
 
 
+
+
     
     </div>
 
@@ -126,7 +130,9 @@
 
     
 
-     
+    
+
+    
 
     
 
@@ -140,7 +146,9 @@
 
     
 
+    
     <h4 class="name" id="addLecture"><span class="type-signature"></span>addLecture<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -187,7 +195,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line217">line 217</a>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
@@ -213,189 +221,6 @@
 
 
 
-        
-            
-
-    
-
-    <h4 class="name" id="createClassroomInfo"><span class="type-signature"></span>createClassroomInfo<span class="signature">(schedule, lectureCode)</span><span class="type-signature"> &rarr; {div}</span></h4>
-
-    
-
-
-
-<div class="description">
-    Creates boxes that represent lecture schedules in the schedule table.
-<br>
-Generates HTML elements with this form:
-
-<pre><code>&ltdiv class="lecture-classrooms"&gt
-    &ltdiv class="classroom-info"&gt
-      &ltinput type="checkbox" id="classroom-01" name="MAC0110"&gt
-      &ltlabel class="classroom" for="classroom-01"&gt
-        &ltdiv class="classroom-number"&gtN1&lt/div&gt
-        &ltdiv class="classroom-teacher"&gtNome do Professor&lt/div&gt
-        &ltdiv class="classroom-toggle"&gt+&lt/div&gt
-      &lt/label&gt
-    &lt/div&gt
-&lt/div&gt</pre></code>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>schedule</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Schedule.html">Schedule</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lectureCode</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line110">line 110</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">div</span>
-
-
-    </dd>
-</dl>
-
-    
-
 
 
         
@@ -403,339 +228,9 @@ Generates HTML elements with this form:
 
     
 
-    <h4 class="name" id="createLectureInfo"><span class="type-signature"></span>createLectureInfo<span class="signature">(lecture)</span><span class="type-signature"> &rarr; {HTML_Element}</span></h4>
-
     
-
-
-
-<div class="description">
-    Creates the Info section of a lecture, inside lecture explorer.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    <h4 class="name" id="calcPositionForTime"><span class="type-signature"></span>calcPositionForTime<span class="signature">(schedule)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>lecture</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Lecture.html">Lecture</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line143">line 143</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    div.lecture-info
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">HTML_Element</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="createScheduleBox"><span class="type-signature"></span>createScheduleBox<span class="signature">(schedule, lectureCode)</span><span class="type-signature"> &rarr; {div}</span></h4>
-
-    
-
-
-
-<div class="description">
-    Creates boxes that represent lecture schedules in the schedule table.
-<br>
-Generates HTML elements with this form:
-
-<pre><code>&ltdiv class="lecture"&gt
-  &ltspan class="timespan"&gt10:00 11:40&lt/span&gt
-  &ltspan class="lecture-code"&gtMAC0110&lt/span&gt
-&lt/div&gt</code></pre>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>schedule</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Schedule.html">Schedule</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lectureCode</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line59">line 59</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">div</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~calcPositionForTime"><span class="type-signature">(inner) </span>calcPositionForTime<span class="signature">(schedule)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
@@ -835,7 +330,7 @@ Generates HTML elements with this form:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line30">line 30</a>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -862,10 +357,7 @@ Generates HTML elements with this form:
 
         
 <div class="param-desc">
-    <pre><code>{ 
- positionBegin : <i>string</i>, 
- positionEnd : <i>string</i> 
-}</code></pre>
+    <pre><code>{  positionBegin : <i>string</i>,  positionEnd : <i>string</i> }</code></pre>
 </div>
 
 
@@ -886,6 +378,599 @@ Generates HTML elements with this form:
 
 
 
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="createClassroomInfo"><span class="type-signature"></span>createClassroomInfo<span class="signature">(schedule, lectureCode)</span><span class="type-signature"> &rarr; {div}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates boxes that represent lecture schedules in the schedule table.<br>Generates HTML elements with this form:<pre><code>&ltdiv class="lecture-classrooms"&gt    &ltdiv class="classroom-info"&gt      &ltinput type="checkbox" id="classroom-01" name="MAC0110"&gt      &ltlabel class="classroom" for="classroom-01"&gt        &ltdiv class="classroom-number"&gtN1&lt/div&gt        &ltdiv class="classroom-teacher"&gtNome do Professor&lt/div&gt        &ltdiv class="classroom-toggle"&gt+&lt/div&gt      &lt/label&gt    &lt/div&gt&lt/div&gt</pre></code>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>schedule</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Schedule.html">Schedule</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lectureCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line132">line 132</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">div</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="createLectureInfo"><span class="type-signature"></span>createLectureInfo<span class="signature">(lecture)</span><span class="type-signature"> &rarr; {HTML_Element}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates the Info section of a lecture, inside lecture explorer.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>lecture</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Lecture.html">Lecture</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line165">line 165</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    div.lecture-info
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">HTML_Element</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="createScheduleBox"><span class="type-signature"></span>createScheduleBox<span class="signature">(schedule, lectureCode)</span><span class="type-signature"> &rarr; {div}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates boxes that represent lecture schedules in the schedule table.<br>Generates HTML elements with this form:<pre><code>&ltdiv class="lecture"&gt  &ltspan class="timespan"&gt10:00 11:40&lt/span&gt  &ltspan class="lecture-code"&gtMAC0110&lt/span&gt&lt/div&gt</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>schedule</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Schedule.html">Schedule</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lectureCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line66">line 66</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">div</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeLecture"><span class="type-signature"></span>removeLecture<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line322">line 322</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
     
 
@@ -902,13 +987,13 @@ Generates HTML elements with this form:
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classroom.html">Classroom</a></li><li><a href="Combination.html">Combination</a></li><li><a href="Lecture.html">Lecture</a></li><li><a href="Plan.html">Plan</a></li><li><a href="Schedule.html">Schedule</a></li><li><a href="SearchBox.html">SearchBox</a></li><li><a href="State.html">State</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addClass">addClass</a></li><li><a href="global.html#classroomsConflict">classroomsConflict</a></li><li><a href="global.html#createAndAppendChild">createAndAppendChild</a></li><li><a href="global.html#createElementWithAttributes">createElementWithAttributes</a></li><li><a href="global.html#createHtmlElementTree">createHtmlElementTree</a></li><li><a href="global.html#hasClass">hasClass</a></li><li><a href="global.html#indexOfDay">indexOfDay</a></li><li><a href="global.html#removeClass">removeClass</a></li><li><a href="global.html#removeDuplicates">removeDuplicates</a></li><li><a href="global.html#saveStateOnLocalStorage">saveStateOnLocalStorage</a></li><li><a href="global.html#schedulesConflict">schedulesConflict</a></li><li><a href="global.html#timeInMinutes">timeInMinutes</a></li><li><a href="global.html#toggleClass">toggleClass</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 31 2016 18:06:15 GMT-0300 (BRT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 19 2018 19:31:25 GMT-0300 (E. South America Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

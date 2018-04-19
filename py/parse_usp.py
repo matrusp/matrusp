@@ -21,54 +21,47 @@ import logging
 import gzip
 from multi_key_dict import multi_key_dict
 
-#Limpa o DB_DIR antes de inserir os dados novos
-remover_antigos = True
+# Criar um dicionário onde as chaves são as unidades, e o valor de cada chave é o campus correspondente.
+# Essa lista é atualizada manualmente dada a baixa frequência de criação de novas unidades.
+campus_por_unidade = multi_key_dict();
+campus_por_unidade[86,27,39,7,22,3,16,9,2,12,48,8,5,10,67,23,6,66,14,26,93,41,92,42,4,37,43,44,45,83,47,46,87,21,31,85,71,32,38,33] = "São Paulo";
+campus_por_unidade[98,94,60,89,81,59,96,91,17,58,95] = "Ribeirão Preto";
+campus_por_unidade[88] = "Lorena";
+campus_por_unidade[18,97,99,55,76,75,90] = "São Carlos";
+campus_por_unidade[11,64] = "Piracicaba";
+campus_por_unidade[25,61] = "Bauru";
+campus_por_unidade[74] = "Pirassununga";
+campus_por_unidade[30] = "São Sebastião";
 
-campus_unidades = multi_key_dict();
-campus_unidades[86,27,39,7,22,3,16,9,2,12,48,8,5,10,67,23,6,66,14,26,93,41,92,42,4,37,43,44,45,83,47,46,87,21,31,85,71,32,38,33] = "São Paulo";
-campus_unidades[98,94,60,89,81,59,96,91,17,58,95] = "Ribeirão Preto";
-campus_unidades[88] = "Lorena";
-campus_unidades[18,97,99,55,76,75,90] = "São Carlos";
-campus_unidades[11,64] = "Piracicaba";
-campus_unidades[25,61] = "Bauru";
-campus_unidades[74] = "Pirassununga";
-campus_unidades[30] = "São Sebastião";
-
+# Dicionario de unidades. A cada nome de unidade (chave) é atribuído o código correspondente.
 codigos_unidades = {};
 
 def main():
-	t = time.perf_counter()
+	t = time.perf_counter() # Contador de tempo de execução
 
 	logger.info(" - Obtendo a lista de todas as unidades de ensino - ")
 
 	response = urllib.request.urlopen('https://uspdigital.usp.br/jupiterweb/jupColegiadoLista?tipo=T')
 	soup = BeautifulSoup(response.read(), "html5lib")
 
-	#Lista de tags do BeautifulSoup da forma [<a
-	#href="jupColegiadoMenu.jsp?codcg=33&amp;tipo=D&amp;nomclg=Museu+Paulista">Museu
-	#Paulista</a>, ...]
+	# Lista de tags do BeautifulSoup da forma [<a
+	# href="jupColegiadoMenu.jsp?codcg=33&amp;tipo=D&amp;nomclg=Museu+Paulista">Museu
+	# Paulista</a>, ...]
 	links_unidades = soup.find_all('a', href=re.compile("jupColegiadoMenu"))
 
-
-	map_unidades = map(extrai_info_unidade, links_unidades)
-	#Lista de unidades de ensino
+	# Popular o dicionário de unidades a partir dos links encontrados
 	global codigos_unidades
-	codigos_unidades = {key:value for (key, value) in map_unidades}
+	codigos_unidades = {key:value for (key, value) in map(lambda x: (x.string, re.search("codcg=(\d+)", x.get('href')).group(1)), links_unidades)}
 	
 	logger.info(" - %d unidades de ensino encontradas - " % (len(codigos_unidades)))
 
+	# Iniciar a iteração das unidades de acordo com as unidades encontradas ou fornecidas por argumento opcional, de forma assíncrona.
 	if not args.unidades:
-		tasks_materias = loop.run_until_complete(iterar_unidades(codigos_unidades.values()))
+		materias = loop.run_until_complete(iterar_unidades(codigos_unidades.values()))
 	else:
-		tasks_materias = loop.run_until_complete(iterar_unidades(args.unidades))
-	
-	materias = []
+		materias = loop.run_until_complete(iterar_unidades(args.unidades))
 
-	for task in tasks_materias[0]:
-		res = task.result()
-		if res:
-			materias.append(res)
-
+	# Salvar em arquivo json
 	materias_json = json.dumps(materias)
 	
 	arq = open(os.path.join(args.db_dir, args.out) ,"w")
@@ -87,32 +80,31 @@ def main():
 	return 0
 
 async def iterar_unidades(codigos_unidades):
-
+	# Sessão HTTP global utilizada por todas as iterações
 	global session
 	session = aiohttp.ClientSession()
 
+	#Chamar todas as unidades simultaneamente, de forma assíncrona
 	logger.info(" - Iniciando processamento de unidades")
-	coros = []
-	for codigo in codigos_unidades:
-		coros.append(iterar_unidade(codigo))
-	future = asyncio.wait(tuple(coros))
+	unidade_tasks = (await asyncio.wait([iterar_unidade(i) for i in codigos_unidades]))[0]
 
-	unidade_tasks = await future
-	logger.info(f" -   {len(unidade_tasks[0])} unidades processadas")
+	logger.info(f" -   {len(unidade_tasks)} unidades processadas")
 	logger.info(" - Iniciando processamento de materias")
 
+	# Criar uma corotina para cada matéria encontrada, de todas as unidades
 	coros = []
-	for materias_unidade in unidade_tasks[0]:
+	for materias_unidade in unidade_tasks:
 		for materia in materias_unidade.result():
 			coros.append(parsear_materia(materia))
 
+	# Chamar todas as matérias simultaneamente, de forma assíncrona
 	logger.info(f" -   {len(coros)} materias encontradas")
-	future = asyncio.wait(tuple(coros))
-	materias_tasks = await future
+	materias_tasks = (await asyncio.wait(tuple(coros)))[0]
 
+	#Fechar a sessão e retornar os resultados.
 	await session.close()
-	logger.info(f" -   {len(materias_tasks[0])} materias processadas")
-	return materias_tasks
+	logger.info(f" -   {len(materias_tasks)} materias processadas")
+	return [i.result() for i in materias_tasks if i.result()]
 
 async def iterar_unidade(codigo):
 	logger.debug(" -    Obtendo as materias da unidade %s - " % (codigo))
@@ -123,10 +115,7 @@ async def iterar_unidade(codigo):
 	materias = list(map(extrai_materia, links_materias))
 	logger.debug(f" -   {len(materias)} materias encontradas na unidade {codigo} - ")
 
-	return materias
-
-def extrai_info_unidade(x):
-	return (x.string, re.search("codcg=(\d+)", x.get('href')).group(1))
+	return materias # Retorna uma lista de matérias para serem buscadas
 
 #Tabelas sem tabelas dentro
 def eh_tabela_folha(tag):
@@ -135,14 +124,15 @@ def eh_tabela_folha(tag):
 async def parsear_materia(materia):
 	if not materia:
 		return
-	async with sem:
+
+	async with semaforo: # Semaforo controla o número de chamadas simultâneas
 		logger.debug(f" -      Obtendo turmas de {materia[0]} - {materia[1]}")
 		codigo = materia[0]
 		try:
 			response = await session.get('https://uspdigital.usp.br/jupiterweb/obterTurma?print=true&sgldis=' + codigo, timeout=args.timeout, verify_ssl=False)
 			assert response.status == 200
 			response = await response.text()
-		except asyncio.TimeoutError:
+		except asyncio.TimeoutError: # Tentar acessar o jupiterWeb novamente, caso o pedido falhe.
 			try:
 				logger.warn(f" -      O pedido de turmas de {codigo} excedeu o tempo limite do pedido. Tentando novamente...")
 				response = await session.get('https://uspdigital.usp.br/jupiterweb/obterTurma?print=true&sgldis=' + codigo, timeout=args.timeout*2, verify_ssl=False)
@@ -158,7 +148,7 @@ async def parsear_materia(materia):
 		logger.debug(f" -      Analisando turmas de {materia[0]} - {materia[1]}")
 		soup = BeautifulSoup(response, "html5lib")
 		tabelas_folha = soup.find_all(eh_tabela_folha)
-		turmas = parsear_turmas(tabelas_folha)
+		turmas = parsear_turmas(tabelas_folha) #Obter informações das turmas
 
 		if not turmas:
 			logger.warning(f" -      Disciplina {codigo} não possui turmas válidas cadastradas no Jupiter. Ignorando...")
@@ -184,14 +174,16 @@ async def parsear_materia(materia):
 	
 		soup = BeautifulSoup(response2, "html5lib")
 		tabelas_folha = soup.find_all(eh_tabela_folha)
-
-		materia = parsear_info_materia(tabelas_folha)
+		materia = parsear_info_materia(tabelas_folha) # Obter informações da matéria
 
 		if not materia:
 			logger.warning(f" -      Disciplina {codigo} não possui informações cadastradas no Jupiter. Ignorando...")
 			return;
 
+		# Acrescentar turmas às informações da matéria
 		materia['turmas'] = turmas
+
+		# Salvar em .json e retornar
 
 		logger.debug(f" -      Salvando {codigo}")
 
@@ -208,6 +200,12 @@ async def parsear_materia(materia):
 
 		return materia
 
+
+# Seção: Parsear ---------------
+# As funções nessa seção obtém informações das páginas do jupiterWeb
+
+# Obtém as informações da matéria e retorna um dicionario da forma 
+# {unidade: "", departamento: "", campus "", objetivos: "", programa_resumido: "", creditos_aula: "", creditos trabalho: ""}
 def parsear_info_materia(tabelas_folha):
 	info = {}
 
@@ -216,24 +214,25 @@ def parsear_info_materia(tabelas_folha):
 
 	for folha in tabelas_folha:
 		trs = folha.find_all("tr")
-		if folha.find(text=re_nome):
+		if folha.find(text=re_nome): # Cabeçalho
 			strings = list(folha.stripped_strings)
 			info['unidade'] = strings[0]
 			info['departamento'] = strings[1]
-			info['campus'] = campus_unidades.get(int(codigos_unidades[info['unidade']]), "Outro")
+			info['campus'] = campus_por_unidade.get(int(codigos_unidades[info['unidade']]), "Outro") # Obter o campus a partir da unidade
 			search = re.search("Disciplina:\s+([A-Z0-9\s]{7})\s-\s(.+)", strings[2])
 			assert search != None, f"{strings[2]} não é um nome de disciplina válido ({folha})"
 			info['codigo'] = search.group(1)
 			info['nome'] = search.group(2)
-		elif ''.join(trs[0].stripped_strings) == "Objetivos":
+		elif ''.join(trs[0].stripped_strings) == "Objetivos": #Objetivos
 			info['objetivos'] = ''.join(trs[1].stripped_strings)
-		elif ''.join(trs[0].stripped_strings) == "Programa Resumido":
+		elif ''.join(trs[0].stripped_strings) == "Programa Resumido": # Programa Reduzido
 			info['programa_resumido'] = ''.join(trs[1].stripped_strings)
 		elif folha.find(text=re_creditos):
-			info = { **info, **parsear_creditos(folha) }
-
+			info.update(parsear_creditos(folha)) # Adicionar os créditos às informações obtidas
 	return info
 
+# Retorna as turmas a partir das tabelas como uma lista [] de dicionarios na forma
+# {horario: [], vagas: {}}
 def parsear_turmas(tabelas_folha):
 	turmas = []
 	info = horario = vagas = None
@@ -262,6 +261,7 @@ def parsear_turmas(tabelas_folha):
 		turmas.append(info)
 	return turmas
 
+# Obter créditos a partir da tabela de créditos
 def parsear_creditos(tabela):
 	creditos = {'creditos_aula': 0, 'creditos_trabalho': 0}
 	for tr in tabela.find_all("tr"):
@@ -272,13 +272,8 @@ def parsear_creditos(tabela):
 			creditos['creditos_trabalho'] = to_int(tds[1])
 	return creditos
 
-#Retorna uma tupla da forma:
-#(codigo, inicio, fim, tipo, codigo_teorica)
-#Exemplo:
-#("2013102", "25/02/2013", "29/06/2013", "Teórica", None)
-#("2013102", "25/02/2013", "29/06/2013", "Prática", None)
-#("2013102", "25/02/2013", "29/06/2013", "Teórica Vinculada", None)
-#("2013112", "25/02/2013", "29/06/2013", "Prática Vinculada", "2013102")
+#Retorna um dicionario na forma:
+#{codigo: "", inicio:"", fim:"", codigo_teorica:"", observacoes:""}
 def parsear_info_turma(tabela):
 	info = {}
 	try:
@@ -303,6 +298,9 @@ def parsear_info_turma(tabela):
 
 	return info
 
+# Obtém as vagas, relacionando os tipos de vaga à quantidade, na forma
+# {'Obrigatória': {vagas: 0, inscritos: 0, pendentes: 0, matriculados: 0, grupos: {}}, 'Optativa', ...}
+# onde cada grupo é da forma {vagas: 0, ..., matriculados: 0}
 def parsear_vagas(tabela):
 	vagas = {}
 	accum = None
@@ -333,10 +331,7 @@ def to_int(string):
 		return 0
 
 #Retorna uma lista de dias de aula da forma:
-#[(dia_semana1, hora_inicio1, hora_fim1, [prof1, prof2, ...]), ...]
-#Exemplo
-#[("seg", "10:00", "11:40", ["Marcelo Gomes de Queiroz"]),
-# ("qua", "08:00", "09:40", ["Marcelo Gomes de Queiroz"])]
+#[{dia: '', inicio: '', fim: '', professores: []}]
 def parsear_horario(tabela):
 	horario = []
 	accum = None
@@ -381,17 +376,13 @@ def extrai_materia(x):
 	search = re.search("sgldis=([A-Z0-9\s]{7})", x.get('href'))
 	return (search.group(1), x.string) if search else None
 
-def limpar_diretorio(diretorio):
-	for the_file in os.listdir(diretorio):
-		file_path = os.path.join(diretorio, the_file)
-		try:
-		    if os.path.isfile(file_path):
-		        os.unlink(file_path)
-		except Exception as e:
-		    pass
+# ----------------------
 
 		
+#Execução do programa
 if __name__ == "__main__":
+
+	#Definição dos parâmetros de entrada
 	parser = argparse.ArgumentParser(description="Crawler MatrUSP")
 	parser.add_argument('diretorio_destino', help="diretório que irá conter os arquivos resultantes")
 	parser.add_argument('-v','--verbosidade',action = 'count', default = 0)
@@ -414,17 +405,19 @@ if __name__ == "__main__":
 	logger = logging.getLogger('log')
 	logger.setLevel(logging.DEBUG)
 
+	# Enviar log para o console
 	ch = logging.StreamHandler()
 	ch.setLevel(60-10*(args.verbosidade or 4))
 	ch.setFormatter(logging.Formatter('%(message)s'))
 	logger.addHandler(ch)
 
+	# Enviar log para arquivo
 	fh = logging.FileHandler(time.strftime('%Y-%m-%d_%H-%M-%S_'+__file__+'.log'))
 	fh.setLevel(logging.DEBUG)
 	fh.setFormatter(logging.Formatter('[%(asctime)s] %(module)s %(levelname)s: %(message)s'))
 	logger.addHandler(fh)
 
 	loop = asyncio.get_event_loop()
-	sem = asyncio.Semaphore(args.simultaneidade, loop = loop)
+	semaforo = asyncio.Semaphore(args.simultaneidade, loop = loop)
 
 	exit(main())

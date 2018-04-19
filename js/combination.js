@@ -6,7 +6,9 @@
  * @example
  *  var combinationExemple = {
  *    parent: {@link Plan},
- *    classrooms: [{@link Classroom}], // classrooms.length === parent.lectures.length
+ *    lecturesClassrooms: [{@link Classroom}], // classrooms.length === parent.lectures.length
+ *    lectureCredits: 0,
+ *    workCredits:0,
  *    htmlElement: div
  *  }
  *
@@ -36,6 +38,9 @@ function Combination(combinationIndices, plan) {
   this.addEventListeners();
 }
 
+/**
+ *
+ */
 Combination.prototype.delete = function() {
   this.htmlElement.parentNode.removeChild(this.htmlElement);
 
@@ -60,14 +65,23 @@ Combination.prototype.getSimilarityScore = function(otherCombination) {
   return sameClassroomsCounter;
 };
 
+/**
+ *
+ */
 Combination.prototype.setHighlight = function() {
   addClass(this.htmlElement, 'combination-highlight');
 };
 
+/**
+ *
+ */
 Combination.prototype.unsetHighlight = function() {
   removeClass(this.htmlElement, 'combination-highlight');
 };
 
+/**
+ *
+ */
 Combination.prototype.setCombination = function() {
   this.parent.setCombination(this);
 };
