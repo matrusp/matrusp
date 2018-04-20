@@ -204,8 +204,10 @@ State.prototype.saveOnServer = function(identifier) {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     }
   }).then(response => {
-    if (response.ok)
+    if (response.ok) {
       ui.showBanner(`Identificador "${identifier}" salvo com sucesso`, 2000);
+      fetch(`./data/${identifier}.json`); //Fetch from server to save on cache
+    }
     else
       ui.showBanner('Algum erro ocorreu, salve o identificador novamente', 2000);
   }).catch(error => {
