@@ -1,5 +1,4 @@
 self.importScripts("dexie.min.js");
-self.importScripts("quickselect.js");
 self.importScripts("dbhelpers.js");
 
 self.onmessage = e => {
