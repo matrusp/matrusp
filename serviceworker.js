@@ -2,7 +2,7 @@ var CACHE_NAME = "Matrusp";
 
 //Lista de diretórios para serem mantidos no cache.
 //Endereços não presentes nessa lista serão buscados da rede
-self.cacheDirs = [
+self.alwaysDirs = [
   "./",
   "matrusp.webmanifest",
   "js/redirect.js",
@@ -51,24 +51,31 @@ self.cacheDirs = [
   "images/ic_print.png",
   "images/ic_upload.png",
   "images/stripes.gif"
-  ].map(dir => new URL(dir,self.location.href));
+  ].map(dir => new URL(dir,self.location.href).href);
+
+self.onDemandDirs = [
+  "data/" //Identificadores baixados serão salvos em cache
+].map(dir => new URL(dir, self.location.href).href);
 
 self.addEventListener('install', e => {
   // Verificar se todos os arquivos estão em cache quando o SW é instalado
-  e.waitUntil(Promise.all(self.cacheDirs.map(dir => fromCache(new Request(dir.href)))));
+  e.waitUntil(Promise.all(self.alwaysDirs.map(dir => fromCache(new Request(dir.href)))));
 });
 
 self.addEventListener('fetch', e => {
   // Responder a um fetch com uma resposta do cache(se o diretório estiver na lista)
-  if(self.cacheDirs.some(dir => dir == e.request.url)) {
-    e.respondWith(fromCache(e.request.clone()));
+  if(self.alwaysDirs.some(dir => e.request.url.indexOf(dir) > -1)) {
+    e.respondWith(fromCache(e.request.clone(), true)); //Enviar mensagem de atualização ao cliente
+  }
+  else if(self.onDemandDirs.some(dir => e.request.url.indexOf(dir) > -1)) {
+    e.respondWith(fromCache(e.request.clone(), false)); //Não enviar mensagem de atualização
   }
 
   // Senão, responder com um pedido para a rede
   else e.respondWith(fetch(e.request.clone()));
 });
 
-function fromCache(request) {
+function fromCache(request, sendMessage) {
   return self.caches.open(CACHE_NAME).then(cache => cache.match(request).then(response => {
     if(!response) {
       // Se o pedido não for encontrado em cache, retornar da network e colocar o resultado em cache
@@ -86,7 +93,7 @@ function fromCache(request) {
       if(newresponse.ok) {
         cache = await self.caches.open(CACHE_NAME);
         cache.add(request,newresponse);
-        sendRefreshMessage();
+        if(sendMessage) sendRefreshMessage();
       }
     }).catch(e => {});
     return response;
