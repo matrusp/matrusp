@@ -8,12 +8,12 @@ self.CURDirs = [
   "/js/.+",
   "/styles/css/application.css",
   "/images/.+"
-  ].map(dir => new RegExp(self.location.origin + dir));
+  ].map(dir => new RegExp(`^${self.location.origin}.+${dir}$`));
 
 //Lista de diretórios que seguem o modelo Network-Cache
 self.NCDirs = [
-  "data/.+" //Identificadores baixados não mostrarão mensagem de atualização
-].map(dir => new RegExp(self.location.origin + dir));
+  "/data/.+" //Identificadores baixados não mostrarão mensagem de atualização
+].map(dir => new RegExp(`^${self.location.origin}.+${dir}$`));
 
 self.addEventListener('fetch', e => {
   // Responder a um fetch com uma resposta do cache(se o diretório estiver na lista)
@@ -64,12 +64,12 @@ function sendRefreshMessage() {
 }
 
 async function networkCache(request) {
-  cacheResponse = await self.caches.open(CACHE_NAME).then(cache => cache.match(request));
+  var cacheResponse = await self.caches.open(CACHE_NAME).then(cache => cache.match(request));
 
   try {
-    netResponse = await fetch(request.url, {method: 'GET', headers: {'If-None-Match': cacheResponse ? cacheResponse.headers.get("ETag").replace('-gzip','') : ''}});
+    var netResponse = await fetch(request.url, {method: 'GET', headers: {'If-None-Match': cacheResponse ? cacheResponse.headers.get("ETag").replace('-gzip','') : ''}});
     if(netResponse.ok) {
-      self.caches.open(CACHE_NAME.then(cache => cache.put(request,netResponse)));
+      await self.caches.open(CACHE_NAME).then(cache => cache.put(request,netResponse.clone()));
       return netResponse;
     }
     else return cacheResponse;
