@@ -21,6 +21,7 @@ matruspDB.metadata.get('ETag').then((etag) => {
 
     // Update the indexedDB and put new etag when done
     self.postMessage(0.1);
+    await Promise.all([matruspDB.trigrams.clear(),matruspDB.lectures.clear()]);
     await loadDB (await response.json()); 
     await matruspDB.metadata.put(response.headers.get("ETag"),"ETag");
     self.postMessage(1);
