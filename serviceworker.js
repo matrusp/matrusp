@@ -35,7 +35,7 @@ function cacheUpdateRefresh(request) {
       var fetchPromise = fetch(request);
       fetchPromise.then(async newresponse => {
         cache = await self.caches.open(CACHE_NAME);
-        cache.add(request,newresponse);
+        cache.put(request,newresponse);
       });
       return fetchPromise;
     }
@@ -45,7 +45,7 @@ function cacheUpdateRefresh(request) {
     fetch(request.url, {method: 'GET', headers: {'If-None-Match': response.headers.get("ETag").replace('-gzip','')}}).then(async newresponse => {
       if(newresponse.ok) {
         cache = await self.caches.open(CACHE_NAME);
-        cache.add(request,newresponse);
+        cache.put(request,newresponse);
         sendRefreshMessage();
       }
     }).catch(e => {});
@@ -66,6 +66,7 @@ function sendRefreshMessage() {
 async function networkCache(request) {
   var cacheResponse = await self.caches.open(CACHE_NAME).then(cache => cache.match(request));
 
+  //Tentar obter a resposta da rede, se não conseguir, retornar a do cache
   try {
     var netResponse = await fetch(request.url, {method: 'GET', headers: {'If-None-Match': cacheResponse ? cacheResponse.headers.get("ETag").replace('-gzip','') : ''}});
     if(netResponse.ok) {
@@ -74,6 +75,8 @@ async function networkCache(request) {
     }
     else return cacheResponse;
   }
+
+  //Caso ocorra algum erro, retornar a resposta do cache. Se não houver, propagar o erro
   catch(e) {
     if(cacheResponse)
       return cacheResponse;
