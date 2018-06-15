@@ -1,10 +1,6 @@
 self.importScripts("dexie.min.js");
 self.importScripts("dbhelpers.js");
 
-if(!navigator.onLine) {
-  self.setProgress(1);
-  self.close();
-}
 
 self.progress = 0;
 self.addProgress = function(prog) {
@@ -16,34 +12,76 @@ self.setProgress = function(prog) {
   self.postMessage(self.progress);
 }
 
-matruspDB.metadata.get('ETag').then((etag) => {
+if(!navigator.onLine) {
+  self.setProgress(1);
+  self.close();
+}
+var dbPromise = matruspDB.metadata.get('ETag').then(async (etag) => {
   // Fetch DB from the server. Send ETag to avoid downloading exactly the same DB again.
-  fetch('../db/db.json', {method: 'GET', headers: {'If-None-Match': etag || ''}}).then(async response => {
-    if(!response.ok) {
-      // End worker if server returns 304 not modified
-      if(response.status == 304) {
-        self.setProgress(1);
-        self.close();
-        return;
-      }
-      else throw new Error(`Server returned code ${response.status} for DB request`); //Throw error for any unknown error
+  var response = await fetch('../db/db.json', {method: 'GET', headers: {'If-None-Match': etag || ''}});
+  if(!response.ok) {
+    // End worker if server returns 304 not modified
+    if(response.status == 304) {
+      self.setProgress(1);
+      return;
     }
+    else throw new Error(`Server returned code ${response.status} for DB request`); //Throw error for any unknown error
+  }
 
-    // Update the indexedDB and put new etag when done
-    self.addProgress(0.1);
-    await Promise.all([matruspDB.trigrams.clear(),matruspDB.lectures.clear()]);
-    await loadDB (await response.json()); 
-    await matruspDB.metadata.put(response.headers.get("ETag"),"ETag");
-    self.setProgress(1);
-    self.close();
-  }).catch(e => { 
-    console.error(e); 
-    self.setProgress(1); 
-    self.close(); 
-  });
+  // Update the indexedDB and put new etag when done
+  self.addProgress(0.1);
+  await Promise.all([matruspDB.trigrams.clear(),matruspDB.lectures.clear()]);
+  await loadLectures (await response.json()); 
+  await matruspDB.metadata.put(response.headers.get("ETag"),"ETag");
 });
 
-function loadDB (lectures) {
+var coursesPromise = matruspDB.metadata.get('ETag-courses').then(async (etag) => {
+  var response = await fetch('../db/cursos.json', {method: 'GET', headers: {'If-None-Match': etag || ''}});
+  if(!response.ok) {
+    // End worker if server returns 304 not modified
+    if(response.status == 304) {
+      self.postMessage(1);
+      return;
+    }
+    else throw new Error(`Server returned code ${response.status} for courses DB request`); //Throw error for any unknown error
+  }
+
+  // Update the indexedDB and put new etag when done
+  self.postMessage(0.1);
+  await matruspDB.courses.clear();
+  await matruspDB.courses.bulkPut(await response.json()); 
+  await matruspDB.metadata.put(response.headers.get("ETag"),"ETag-courses");
+});
+
+var campiPromise = matruspDB.metadata.get('ETag-campi').then(async (etag) => {
+  var response = await fetch('../db/campi.json', {method: 'GET', headers: {'If-None-Match': etag || ''}});
+  if(!response.ok) {
+    // End worker if server returns 304 not modified
+    if(response.status == 304) {
+      self.postMessage(1);
+      return;
+    }
+    else throw new Error(`Server returned code ${response.status} for campi DB request`); //Throw error for any unknown error
+  }
+
+  // Update the indexedDB and put new etag when done
+  self.addProgress(0.1);
+  await matruspDB.campi.clear();
+  var campi = await response.json();
+  await matruspDB.campi.bulkPut(Object.values(campi), Object.keys(campi)); 
+  await matruspDB.metadata.put(response.headers.get("ETag"),"ETag-courses");
+});
+
+Promise.all([dbPromise,coursesPromise,campiPromise]).then(() => {
+  self.postMessage(1);
+  self.close();
+}).catch(e => { 
+  console.error(e); 
+  self.postMessage(1); 
+  self.close(); 
+});
+
+function loadLectures (lectures) {
   self.addProgress(0.1);
   var trigrams = { length: 0 }; // Trigram list with property length used in weighting
 
@@ -92,10 +130,9 @@ function loadDB (lectures) {
 
   var lecturesPromise = matruspDB.lectures.bulkPut(lectures).then(() => self.addProgress(0.2)); // Put lectures in DB.
 
-  var campi = {};
   var units = {};
 
-  // Parse lectures to extract trigrams, units and campi lists
+  // Parse lectures to extract trigrams and units lists
   lectures.forEach(lecture => {
     trigramsFromString(changingSpecialCharacters(lecture.nome)).forEach(trigram => {
       addToTrigramList(trigram, lecture)
@@ -106,13 +143,9 @@ function loadDB (lectures) {
 
     if(!units[lecture.unidade]) units[lecture.unidade] = new Set();
     units[lecture.unidade].add(lecture.departamento);
-
-    if(!campi[lecture.campus]) campi[lecture.campus] = new Set();
-    campi[lecture.campus].add(lecture.unidade);
   });
 
-  var unitsPromise = matruspDB.units.bulkPut(Object.values(units).map(set => [...set]), Object.keys(units)).then(() => self.addProgress(0.1));
-  var campiPromise = matruspDB.campi.bulkPut(Object.values(campi).map(set => [...set]), Object.keys(campi)).then(() => self.addProgress(0.1));
+  var unitsPromise = matruspDB.units.bulkPut(Object.values(units).map(set => [...set]), Object.keys(units));
   
   //Weight trigrams
   for(var trigram in trigrams) {
@@ -127,5 +160,5 @@ function loadDB (lectures) {
   delete trigrams.length;
   var trigramsPromise = matruspDB.trigrams.bulkPut(Object.values(trigrams), Object.keys(trigrams)).then(() => self.addProgress(0.2));
 
-  return Promise.all([lecturesPromise,trigramsPromise,unitsPromise,campiPromise]); //Await all indexedDB promises
+  return Promise.all([lecturesPromise,trigramsPromise,unitsPromise]); //Await all indexedDB promises
 }

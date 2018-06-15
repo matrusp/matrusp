@@ -35,6 +35,23 @@
     <div id="drop-overlay"><img src="images/ic_download.png">
 		<span>Solte o arquivo para carregar</span>
     </div>
+	<div id="course-overlay">
+		<form id="course-window">
+    	<button type="button" id="course-window-close">×</button>
+		<label id="course-campus-select-label" class="select-label"><div>Campus</div>
+		<select name="campus" id="course-campus-select"></select></label>
+		<label id="course-unit-select-label" class="select-label"><div>Unidade</div>
+		<select name="unit" id="course-unit-select"></select></label>
+		<label id="course-select-label" class="select-label"><select name="course" id="course-select" disabled></select>
+		<div>Curso</div></label>
+		<label id="course-period-select-label" class="select-label"><select name="period" id="course-period-select" disabled></select>
+		<div>Período</div></label>
+		<div id="course-lecture-list"></div>
+		<div id="course-plan-erase-warning">Adicionar irá remover as disciplinas do plano atual.</div>
+		<label id="course-optative-check-label"><input id="course-optative-check" type="checkbox" name="optativas" checked>Incluir optativas</label>
+		<button type="button" id="course-accept-button">Aceitar</button>
+		</form>
+	</div>
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -214,6 +231,9 @@
 						<img src="images/ic_upload.png">
 						<input id="upload-input" type="file" accept="application/json">
 					</label>
+					<div id="course-button">
+						Carregar grade ideal
+					</div>
                 </div>
 			</div>
             <footer>
@@ -229,6 +249,7 @@
     <script type="text/javascript" src="js/custom_lib.js" defer></script>
     <script type="text/javascript" src="js/ui.js" defer></script>
     <script type="text/javascript" src="js/search_box.js" defer></script>
+    <script type="text/javascript" src="js/courses.js" defer></script>
     <script type="text/javascript" src="js/schedule.js" defer></script>
     <script type="text/javascript" src="js/classroom.js" defer></script>
     <script type="text/javascript" src="js/lecture.js" defer></script>
