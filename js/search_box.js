@@ -447,8 +447,7 @@ SearchBox.prototype.populateDeptSelect = async function(unit) {
     'innerHTML': 'Todos os departamentos'
   });
 
-  if (unit) {
-    var depts = await matruspDB.units.get(unit);
+  if (unit && (depts = await matruspDB.units.get(unit))) {
     depts.forEach(dept => createAndAppendChild(fragment, 'option', {
       'innerHTML': dept
     }));

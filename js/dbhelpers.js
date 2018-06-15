@@ -159,3 +159,12 @@ matruspDB.version(1).stores({
   units: "",
   campi: ""
 });
+
+matruspDB.version(2).stores({
+  lectures: "&codigo, campus, [unidade+departamento], *periodos",
+  trigrams: "",
+  metadata: "",
+  units: "",
+  campi: "",
+  courses: "&codigo, nome, unidade"
+});

@@ -10,6 +10,7 @@ var dbworker = new Worker("js/dbupdate.js");
 var ui = new UI();
 var state;
 var searchBox;
+var courseBox;
 var matrusp_current_state_version = 7;
 
 dbworker.onmessage = e => {
@@ -22,6 +23,7 @@ dbworker.onmessage = e => {
 
 state = new State();
 searchBox = new SearchBox();
+courseBox = new CourseBox();
 
 if (window.location.hash.substr(1)) {
   ui.loadStateFromServer(window.location.hash.substr(1));

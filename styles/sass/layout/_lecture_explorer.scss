@@ -40,7 +40,9 @@
 
 #explorer-footer {
 	flex: 0 0 auto;
-	display: flex;
+	display: grid;
+	grid-gap: 4px;
+	grid-template-columns: minmax(auto, 1fr) 2fr;
 	margin-top: 10px;
 }
 

@@ -52,6 +52,25 @@ def main():
 	# Popular o dicionário de unidades a partir dos links encontrados
 	global codigos_unidades
 	codigos_unidades = {key:value for (key, value) in map(lambda x: (x.string, re.search("codcg=(\d+)", x.get('href')).group(1)), links_unidades)}
+
+	campi = {}
+	for unidade, codigo in codigos_unidades.items():
+		if(int(codigo) in campus_por_unidade): campus = campus_por_unidade[int(codigo)]
+		else: campus = 'Outro'
+		if not campus in campi: campi[campus] = []
+		campi[campus].append(unidade)
+
+	campi_json = json.dumps(campi)
+
+	arq = open(os.path.join(args.db_dir, 'campi.json') ,"w")
+	arq.write(campi_json)
+	arq.close()
+
+	if not args.nogzip:
+		arq = open(os.path.join(args.db_dir, 'campi.json.gz') ,"wb")
+		arq.write(gzip.compress(bytes(campi_json,'utf-8')))
+		arq.close()
+
 	
 	logger.info(" - %d unidades de ensino encontradas - " % (len(codigos_unidades)))
 
