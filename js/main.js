@@ -14,7 +14,10 @@ var matrusp_current_state_version = 7;
 
 dbworker.onmessage = e => {
   ui.setLoadingBar(e.data);
-  if (e.data == 1) searchBox.populateOptions();
+  if (e.data == 1) {
+    searchBox.populateOptions();
+    searchBox.activate();
+  }
 }
 
 state = new State();
