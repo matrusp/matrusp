@@ -25,7 +25,9 @@ function SearchBox() {
 
   this.options = JSON.parse(localStorage.getItem("search-options")) || {};
   this.populateOptions();
+}
 
+SearchBox.prototype.activate = function() {
   this.searchWorker = new Worker("js/dbsearch.js");
   this.searchWorker.onmessage = e => {
     this.lecturesSuggestionList = e.data;
@@ -37,6 +39,9 @@ function SearchBox() {
       this.addEmptySearchResult();
     }
   }
+  this.removeLecturesSuggestionList();
+  this.addEmptySearchResult();
+  this.optionsChanged();
 }
 
 
@@ -201,7 +206,8 @@ SearchBox.prototype.eventKey = function(e) {
       var searchArgs = { "q": fetchValue, "options": this.options };
     else
       var searchArgs = { "q": fetchValue };
-    this.searchWorker.postMessage(searchArgs);
+    if(this.searchWorker)
+      this.searchWorker.postMessage(searchArgs);
     this.searchOptionsBox.classList.remove('show');
     this.clearButton.classList.add('show-search');
   } else {
@@ -305,7 +311,8 @@ SearchBox.prototype.optionsChanged = function() {
   };
 
   var searchArgs = { "q": this.searchBox.value, "options": this.options };
-  this.searchWorker.postMessage(searchArgs);
+  if(this.searchWorker)
+    this.searchWorker.postMessage(searchArgs);
 
   if (Object.values(this.options).some(v => v))
     this.clearButton.classList.add('show-options');

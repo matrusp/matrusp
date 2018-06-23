@@ -89,11 +89,16 @@
     visibility: visible;
 }
 
-.search-result.empty-result {
+.search-result.empty-result, .search-result.loading-result {
     color: gray;
     font-size: larger;
     margin: 20px 8px;
     text-align: center;
+}
+
+.search-result.loading-result .search-result-subtitle{
+    font-size: small;
+    margin: 2px;
 }
 
 .search-result.lecture-info {
