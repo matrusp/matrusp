@@ -2,8 +2,18 @@ self.importScripts("dexie.min.js");
 self.importScripts("dbhelpers.js");
 
 if(!navigator.onLine) {
-  self.postMessage(1);
+  self.setProgress(1);
   self.close();
+}
+
+self.progress = 0;
+self.addProgress = function(prog) {
+  self.progress += prog;
+  self.postMessage(self.progress);
+}
+self.setProgress = function(prog) {
+  self.progress = prog;
+  self.postMessage(self.progress);
 }
 
 matruspDB.metadata.get('ETag').then((etag) => {
@@ -12,7 +22,7 @@ matruspDB.metadata.get('ETag').then((etag) => {
     if(!response.ok) {
       // End worker if server returns 304 not modified
       if(response.status == 304) {
-        self.postMessage(1);
+        self.setProgress(1);
         self.close();
         return;
       }
@@ -20,21 +30,21 @@ matruspDB.metadata.get('ETag').then((etag) => {
     }
 
     // Update the indexedDB and put new etag when done
-    self.postMessage(0.1);
+    self.addProgress(0.1);
     await Promise.all([matruspDB.trigrams.clear(),matruspDB.lectures.clear()]);
     await loadDB (await response.json()); 
     await matruspDB.metadata.put(response.headers.get("ETag"),"ETag");
-    self.postMessage(1);
+    self.setProgress(1);
     self.close();
   }).catch(e => { 
     console.error(e); 
-    self.postMessage(1); 
+    self.setProgress(1); 
     self.close(); 
   });
 });
 
 function loadDB (lectures) {
-  self.postMessage(0.2);
+  self.addProgress(0.1);
   var trigrams = { length: 0 }; // Trigram list with property length used in weighting
 
   // Adds a trigram from a lecture to the list
@@ -80,7 +90,7 @@ function loadDB (lectures) {
     lecture.periodos = [...timeframes];
   });
 
-  var lecturesPromise = matruspDB.lectures.bulkPut(lectures); // Put lectures in DB.
+  var lecturesPromise = matruspDB.lectures.bulkPut(lectures).then(() => self.addProgress(0.2)); // Put lectures in DB.
 
   var campi = {};
   var units = {};
@@ -101,8 +111,8 @@ function loadDB (lectures) {
     campi[lecture.campus].add(lecture.unidade);
   });
 
-  var unitsPromise = matruspDB.units.bulkPut(Object.values(units).map(set => [...set]), Object.keys(units));
-  var campiPromise = matruspDB.campi.bulkPut(Object.values(campi).map(set => [...set]), Object.keys(campi));
+  var unitsPromise = matruspDB.units.bulkPut(Object.values(units).map(set => [...set]), Object.keys(units)).then(() => self.addProgress(0.1));
+  var campiPromise = matruspDB.campi.bulkPut(Object.values(campi).map(set => [...set]), Object.keys(campi)).then(() => self.addProgress(0.1));
   
   //Weight trigrams
   for(var trigram in trigrams) {
@@ -113,9 +123,9 @@ function loadDB (lectures) {
       trigrams[trigram][code] = weight * Math.log(1 + trigrams[trigram][code]);
     }
   }
-  self.postMessage(0.3);
+  self.addProgress(0.2);
   delete trigrams.length;
-  var trigramsPromise = matruspDB.trigrams.bulkPut(Object.values(trigrams), Object.keys(trigrams));
+  var trigramsPromise = matruspDB.trigrams.bulkPut(Object.values(trigrams), Object.keys(trigrams)).then(() => self.addProgress(0.2));
 
   return Promise.all([lecturesPromise,trigramsPromise,unitsPromise,campiPromise]); //Await all indexedDB promises
 }
