@@ -34,6 +34,7 @@ function cacheUpdateRefresh(request) {
       // Se o pedido não for encontrado em cache, retornar da network e colocar o resultado em cache
       var fetchPromise = fetch(request);
       fetchPromise.then(async newresponse => {
+        newresponse = newresponse.clone();
         cache = await self.caches.open(CACHE_NAME);
         cache.put(request,newresponse);
       });
