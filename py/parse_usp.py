@@ -82,7 +82,7 @@ def main():
 async def iterar_unidades(codigos_unidades):
 	# Sessão HTTP global utilizada por todas as iterações
 	global session
-	session = aiohttp.ClientSession()
+	session = aiohttp.ClientSession(headers={'User-Agent': 'MatrUSPbot/2.0 (+http://www.github.com/matrusp/matrusp)'})
 
 	#Chamar todas as unidades simultaneamente, de forma assíncrona
 	logger.info(" - Iniciando processamento de unidades")
@@ -148,11 +148,15 @@ async def parsear_materia(materia):
 		logger.debug(f" -      Analisando turmas de {materia[0]} - {materia[1]}")
 		soup = BeautifulSoup(response, "html5lib")
 		tabelas_folha = soup.find_all(eh_tabela_folha)
-		turmas = parsear_turmas(tabelas_folha) #Obter informações das turmas
+		try:
+			turmas = parsear_turmas(tabelas_folha) #Obter informações das turmas
+		except:
+			logger.exception(f" -     Não foi possível parsear turmas de {materia[0]} - {materia[1]}")
+			return
 
 		if not turmas:
 			logger.warning(f" -      Disciplina {codigo} não possui turmas válidas cadastradas no Jupiter. Ignorando...")
-			return;
+			return
 
 		logger.debug(f" -      Obtendo informações de {materia[0]} - {materia[1]}")
 		try:
@@ -174,11 +178,15 @@ async def parsear_materia(materia):
 	
 		soup = BeautifulSoup(response2, "html5lib")
 		tabelas_folha = soup.find_all(eh_tabela_folha)
-		materia = parsear_info_materia(tabelas_folha) # Obter informações da matéria
+		try:
+			materia = parsear_info_materia(tabelas_folha) # Obter informações da matéria
+		except:
+			logger.exception(f" -     Não foi possível parsear informações de {materia[0]} - {materia[1]}")
+			return
 
 		if not materia:
 			logger.warning(f" -      Disciplina {codigo} não possui informações cadastradas no Jupiter. Ignorando...")
-			return;
+			return
 
 		# Acrescentar turmas às informações da matéria
 		materia['turmas'] = turmas
@@ -266,6 +274,7 @@ def parsear_creditos(tabela):
 	creditos = {'creditos_aula': 0, 'creditos_trabalho': 0}
 	for tr in tabela.find_all("tr"):
 		tds = list(map(lambda x: next(x.stripped_strings),tr.find_all("td")))
+		if not tds: continue
 		if re.search("Créditos\s+Aula:", tds[0], flags=re.U):
 			creditos['creditos_aula'] = to_int(tds[1])
 		elif re.search("Créditos\s+Trabalho:", tds[0], flags=re.U):
