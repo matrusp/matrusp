@@ -54,11 +54,11 @@ Plan.prototype.load = function(basePlan, isActivePlan) {
           if (baseLecture.classrooms.indexOf(classroom.code) == -1)
             classroom.toggleClassroomSelection(true);
         });
-        ui.addLecture(lecture);
         return lecture;
       }));
     Promise.all(lecturePromises).then(lectures => {
       this.lectures = lectures;
+      lectures.forEach(lecture => ui.addLecture(lecture));
       this.activeCombinationIndex = basePlan.activeCombinationIndex;
       this.computeCombinations();
       this.activeCombination = this.combinations[this.activeCombinationIndex];
