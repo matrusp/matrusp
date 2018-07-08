@@ -80,7 +80,8 @@ function createElementWithAttributes(tag, attributes) {
     // test for IE8
     if (attributes.hasOwnProperty(attr)) {
       if (attr == 'class') {
-        addClass(element, attributes[attr]);
+      	if(attributes[attr] instanceof Array) attributes[attr] = attributes[attr].join(' ');
+        element.className = attributes[attr];
       } else {
         element[attr] = attributes[attr];
       }

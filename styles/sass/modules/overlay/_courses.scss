@@ -1,0 +1,120 @@
+#course-overlay {
+    position: fixed;
+    background-color: rgba(#000000,0.2);
+    border: $border-default;
+    z-index: 32;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+#course-overlay.show {
+    visibility: visible;
+}
+
+#course-window {
+    background: white;
+    padding: 16px;
+    padding-top: 24px;
+    position: absolute;
+    border: $border-default;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    grid-gap: 12px;
+
+    user-select: none;
+    width: 100%;
+    max-width: 400px;
+
+        & label {
+            display: block;
+            color: #333;
+            text-align: center;
+        }
+
+        & select {
+            width: 100%;
+        }
+
+        & .optative.optDisabled {
+            color: gray;
+            text-decoration: line-through;
+        }
+}
+
+#course-campus-select-label {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+#course-unit-select-label {
+    grid-row: 1;
+    grid-column: 2/5;
+}
+
+#course-select-label {
+    grid-row: 2;
+    grid-column: 1/4;
+}
+
+#course-period-select-label {
+    grid-row: 2;
+    grid-column: 4;
+}
+
+#course-lecture-list {
+    grid-row: 3;
+    grid-column: 1/5;
+}
+
+#course-plan-erase-warning {
+    grid-column: 2/4;
+    grid-row: 4;
+    color: #444;
+    text-align: right;
+}
+
+#course-accept-button {
+    grid-column: 4;
+    grid-row: 4;
+    background-color: white;
+    border: $border-default;
+
+    &:hover {
+        background-color: #ddd;
+    }
+    
+    &:active {
+        background-color: #aaa;
+    }
+}
+
+#course-optative-check-label {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+#course-window-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: white;
+    border: none;
+    font-size: 16pt;
+    color: #333;
+
+    &:hover {
+        color: $header-color-tertiary;
+    }
+
+    &:active {
+        color: darken($header-color-tertiary, 10);
+    }
+}
