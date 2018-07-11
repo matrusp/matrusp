@@ -47,6 +47,10 @@
   display: none;
   user-select: none;
   cursor: default;
+
+  &.slip-reordering {
+    box-shadow: $shadow-default;
+  }
 }
 
 .lecture-info-plan-active {

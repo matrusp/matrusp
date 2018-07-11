@@ -1,7 +1,9 @@
 .schedule-box {
-	position: absolute;
-	width: calc(100% - #{$schedule-box-border-left-width});
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
   visibility: hidden;
+  box-shadow: $shadow-default;
 }
 
 .schedule-box-show,

@@ -29,6 +29,8 @@ header {
     align-items: center;
     background: linear-gradient(to top, darken($header-color-primary, 10%) 10px, $header-color-primary 10px, $header-color-primary 100%);
 	padding-bottom: $header-bottom-line;
+	padding-top: 4px;
+	box-shadow: $shadow-default;
 
 	>* {
 	    margin: 0 $header-spacing;
@@ -41,6 +43,7 @@ header {
 }
 
 #logo {
+	font-family: $logo-font-family;
     font-size: $font-size-logo;
     font-weight: bold;
     // line-height equal to its height, centralizes the text
@@ -53,6 +56,7 @@ header {
 
 .beta-tag {
     color: $header-color-symbols;
+    font-weight: lighter;
 }
 
 #icons {

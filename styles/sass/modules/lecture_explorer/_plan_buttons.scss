@@ -1,11 +1,11 @@
 #plans {
-  // to align position: mimic plans' children positioning of accordion window children
-  border: 1px solid transparent;
   height: $lecture-explorer-plan-buttons-height;
+  white-space: nowrap;
 }
 
 .plan {
-  width: calc(100%/3 - 1.4px);
+  width: 80px;
+  //width: auto;
   height: $lecture-explorer-plan-buttons-height;
   line-height: $lecture-explorer-plan-buttons-height;
   display: inline-block;
@@ -16,15 +16,26 @@
   border-left: $border-default;
   border-top: 1px solid white;
   float: left;
-  top: -2px;
-  border-radius: 0 0 2px 2px;
+  border-radius: 0 0 8px 8px;
   overflow: hidden;
-  opacity: 0.5;
+  opacity: 1;
+  background: white;
+  padding: 0 18px;
+  position: relative;
 
   &:not(:first-child) {
-    // size of border
-    margin-left: -1px;
+
+  //margin-left: -18px;
   }
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &:active {
+    background-color: #aaa;
+  }
+
 }
 
 .plan-active {
@@ -41,29 +52,23 @@
 }
 
 .plan-tab-name {
-  width: calc(70% - 5px);
-  float: left;
-  padding-left: 5px;
+  display: inline-block;
+}
 
-  &:hover {
-    background-color: #ddd;
-  }
-
-  &:active {
-    background-color: #aaa;
-  }
+.plan-active .plan-tab-options-arrow {
+  display: inline-block;
 }
 
 .plan-tab-options-arrow {
-  width: 30%;
-  float: right;
+  width: 12px;
+  display: none;
 
   &:hover {
-    background-color: #ddd;
+    color: $header-color-tertiary;
   }
 
   &:active {
-    background-color: #aaa;
+    color: darken($header-color-tertiary, 10);
   }
 
   >img {

@@ -16,61 +16,104 @@
 //
 
 #lecture-schedule {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   vertical-align: top;
-  // subtracting 3px to deal with standard spacing between 
-  // inline-block elements
-  height: $lecture-schedule-height - $lecture-schedule-padding-top;
-  padding-top: $lecture-schedule-padding-top;
-  padding-bottom: $lecture-schedule-padding-bottom;
-  flex: 2 0 $lecture-schedule-basis;
+  min-height: $lecture-schedule-height;
+  flex: 2 1 $lecture-schedule-basis;
+  min-width: 0;
 }
 
 #time-table {
   width: 100%;
-  height: calc(100% - #{$lecture-schedule-combination-controller-height});
+  flex: 1 1 auto;
   display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
 }
 
 .column {
-  display: inline-block;
-  height: 100%;
   vertical-align: top;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .column.time {
-  flex: 0 0 $column-time-width;
+  flex: 0 0 auto;
+  background: white;
+  z-index: 1;
+  position: sticky;
+  left: 0;
+
+  & .column-content {
+  padding: 0px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  }
 }
 
 .hour {
-  height: calc(100% / 18);
-  // 19 elements and 18 "slots" inside this column. 
-  // Aligning vertically each text with upper div border
-  // (setting line-height to zero,  miraculously!), we get
-  // 06:00 aligned with top border and 00:00 aligned with 
-  // bottom border (that's actually its upper border).
-  font-size: $font-size-hour;
+  flex: 0 0 0;
+  font-size: $lecture-schedule-font-size-hour;
+  color: $lecture-schedule-hour-color;
+  text-align: right;
   line-height: 0;
 }
 
 .column:not(.time) {
-  background-image: url('../../images/stripes.gif');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center;
   position: relative;
-  flex: 1 0 auto;
-  margin: 0 $column-margin-horizontal;
+  flex: 1 0 $column-basis;
+
+  & .column-content {
+    margin: 0 $column-margin-horizontal;
+  }
 }
 
-.week-day {
-  position: absolute;
-  top: - $lecture-schedule-padding-top;
-  width: 100%;
-  padding-bottom: $week-day-underline-height;
+.column.hidden {
+  display: none;
+}
+
+.column-header {
+  box-sizing: border-box;
   text-align: center;
-  border-bottom-color: $week-day-underline-color;
-  border-bottom-style: solid;
-  border-bottom-width: $column-background-line-height;
-  box-shadow: $week-day-underline-shadow;
+  flex: 0 0 24px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  color: $lecture-schedule-header-color;
+  font-size: $lecture-schedule-font-size-header;
+}
+
+
+
+.column-content {
+  flex: 1 0 0;
+  position: relative;
+}
+
+svg.column-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+
+  & line {
+    stroke: $lecture-schedule-line-stroke;
+    stroke-width: 1px;
+    shape-rendering: crispedges;
+    animation: grow ease 1s both;
+    transform-origin: center;
+
+    &.even {
+      stroke-width: 2px;
+    }
+
+    &.odd {
+      animation-delay: 0.6s;
+    }
+  }
 }

@@ -11,42 +11,62 @@ function UI() {
   this.loadingBar = document.getElementById('loading-bar');
   this.banner = document.getElementById('msg-banner');
   this.bannerMsg = document.getElementById('msg-banner-message');
+  this.timeTable = document.getElementById('time-table');
 
-  this.weekdays = new Array();
+  this.weekdays = [];    
+  var lectureScheduleColumns = this.timeTable.getElementsByClassName('column-content');
   // Ignores i == 0 because it's the time column
-  this.lectureScheduleColumns = document.getElementsByClassName('column');
-  for (var i = 1; i < this.lectureScheduleColumns.length; i++) {
-    this.weekdays.push(this.lectureScheduleColumns[i]);
+  for (var i = 1; i < lectureScheduleColumns.length; i++) {
+    this.weekdays.push(lectureScheduleColumns[i]);
   }
+  this.timeColumn = lectureScheduleColumns[0];  
+  this.makeTimeTable(6,23,5);
+
+  window.navigator.vibrate(0); //Require vibration authorization
+
+  new Slip(this.accordion);
+
+
+  this.accordion.addEventListener('slip:beforewait',function(e) {
+    if(!e.detail.isTouch)
+      e.preventDefault();
+  });
+  this.accordion.addEventListener('slip:beforereorder',function(e){
+    window.navigator.vibrate(10);
+  });
+  this.accordion.addEventListener('slip:reorder',function(e) {
+    e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
+  });
 
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 
-  // Functions
-  // =========
+}
 
-  /**
-   * Creates a string containing CSS calc() function to correctly position vertically the classroom schedule box
-   *
-   * @param {Schedule} schedule
-   * @return {Object} <pre><code>{ 
-   *  positionBegin : <i>string</i>, 
-   *  positionEnd : <i>string</i> 
-   * }</code></pre>
-   */
-  UI.prototype.calcPositionForTime = function(schedule) {
-    var hourBegin = schedule.timeBegin.substr(0, 2);
-    var minBegin = schedule.timeBegin.substr(3, 2);
-    var hourEnd = schedule.timeEnd.substr(0, 2);
-    var minEnd = schedule.timeEnd.substr(3, 2);
+// Functions
+// =========
 
-    positionBegin = 'calc((100% / 18) * (' + hourBegin + ' + (' + minBegin + ' / 60) - 6) + 1px)';
-    positionEnd = 'calc((100% / 18) * (' + hourEnd + ' - ' + hourBegin + ' - 1 + (60 - ' + minBegin + ') / 60 + ' + minEnd + ' / 60) + 1px)';
+/**
+ * Creates a string containing CSS calc() function to correctly position vertically the classroom schedule box
+ *
+ * @param {Schedule} schedule
+ * @return {Object} <pre><code>{ 
+ *  positionBegin : <i>string</i>, 
+ *  positionEnd : <i>string</i> 
+ * }</code></pre>
+ */
+UI.prototype.calcPositionForTime = function(schedule) {
+  var hourBegin = parseInt(schedule.timeBegin.substr(0, 2));
+  var minBegin = parseInt(schedule.timeBegin.substr(3, 2));
+  var hourEnd = parseInt(schedule.timeEnd.substr(0, 2));
+  var minEnd = parseInt(schedule.timeEnd.substr(3, 2));
 
-    return {
-      'positionBegin': positionBegin,
-      'positionEnd': positionEnd
-    };
-  }
+  positionBegin = (100 / (this.timeEnd - this.timeBegin)) * (hourBegin  + ( minBegin / 60) - this.timeBegin) + '%';
+  positionEnd = 100 - (100 / (this.timeEnd - this.timeBegin)) * (hourEnd  + ( minEnd / 60) - this.timeBegin) + '%';
+
+  return {
+    'positionBegin': positionBegin,
+    'positionEnd': positionEnd
+  };
 }
 
 /**
@@ -102,7 +122,7 @@ UI.prototype.createScheduleBox = function(schedule) {
 
   var timePosition = this.calcPositionForTime(schedule);
   scheduleBox.style.top = timePosition.positionBegin;
-  scheduleBox.style.height = timePosition.positionEnd;
+  scheduleBox.style.bottom = timePosition.positionEnd;
 
   return scheduleBox;
 }
@@ -251,8 +271,8 @@ UI.prototype.createCombinationBoard = function(combination) {
   var combinationBoardTreeObj = {
     tag: 'canvas',
     class: 'combination',
-    width: 90,
-    height: 90
+    width: 100,
+    height: 100
   };
 
   var combinationBoard = createHtmlElementTree(combinationBoardTreeObj);
@@ -269,12 +289,12 @@ UI.prototype.createCombinationBoard = function(combination) {
       addClass(schedule.htmlElement, 'schedule-box-highlight');
       var css = window.getComputedStyle(schedule.htmlElement);
 
-      var boxTop = Math.round(parseInt(css.getPropertyValue("top"), 10) / columnHeight * 90);
-      var boxHeight = Math.round(parseInt(css.getPropertyValue("height"), 10) / columnHeight * 90);
-      var boxLeft = day * 15 + 1;
+      var boxTop = Math.round(parseInt(css.getPropertyValue("top"), 10) / columnHeight * 100);
+      var boxHeight = Math.round(parseInt(css.getPropertyValue("height"), 10) / columnHeight * 100);
+      var boxLeft = day * (100/this.dayEnd) + 1;
 
       ctx.fillStyle = css.getPropertyValue("background-color");
-      ctx.fillRect(boxLeft, boxTop, 13, boxHeight);
+      ctx.fillRect(boxLeft, boxTop, (100/this.dayEnd) - 2, boxHeight);
       ctx.fillStyle = css.getPropertyValue("border-left-color");
       ctx.fillRect(boxLeft, boxTop, 2, boxHeight);
 
@@ -398,4 +418,41 @@ UI.prototype.showBanner = function(message, time) {
 
 UI.prototype.closeBanner = function() {
   this.banner.classList.remove('banner-open');
+}
+
+UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
+  this.timeColumn.innerHTML = '';
+
+  var bgs = this.timeTable.getElementsByClassName('column-bg');
+  while(bgs.length) bgs[0].remove();
+
+  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.classList.add('column-bg');
+
+  for(var i = timeBegin; i <= timeEnd; i++){
+    var tick = (timeEnd - timeBegin < 8 || !(i%2))? i%24 : '';
+    createAndAppendChild(this.timeColumn,'div',{'class':'hour', 'innerHTML': tick});
+    j = i-timeBegin;
+    pos = j / (timeEnd - timeBegin) * 100 + '%';
+  
+    var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+    line.setAttribute('x1',0);
+    line.setAttribute('y1',pos);
+    line.setAttribute('x2','100%');
+    line.setAttribute('y2',pos);
+    line.setAttribute('class',i % 2 ? 'odd' : 'even');
+    svg.appendChild(line);
+  }
+
+  for(var i = 0; i < this.weekdays.length; i++) {
+    if(i < dayEnd) {
+      this.weekdays[i].appendChild(i? svg.cloneNode(true) : svg);
+      this.weekdays[i].parentElement.classList.remove('hidden');
+    }
+    else this.weekdays[i].parentElement.classList.add('hidden');
+  }
+
+  this.timeBegin = timeBegin;
+  this.timeEnd = timeEnd;
+  this.dayEnd = dayEnd;
 }
