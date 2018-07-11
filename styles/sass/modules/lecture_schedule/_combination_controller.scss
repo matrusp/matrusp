@@ -1,19 +1,15 @@
 #combination-controller {
   //@include center-block-horizontally();
   position: relative;
-  width: calc(100% - 10px);
-  height: calc(#{$lecture-schedule-combination-controller-height} - #{$combination-controller-margin-top});
+  flex: 0 0 $lecture-schedule-combination-controller-height;
   margin-top: $combination-controller-margin-top;
+  display: flex;
 }
 
 .combination-button {
-  position: absolute;
-  float: left;
-  height: 100%;
-  width: $combination-button-width;
-  top: -1px;
+  position: relative;
+  flex: 0 0 $combination-button-width;
   background-color: white;
-  border: $border-default;
   z-index: 1;
 
   &>img {
@@ -35,22 +31,22 @@
 }
 
 .combination-button-left {
-  left: 0;
+  left: 0; 
+  border-right: $border-default;
 }
 
 .combination-button-right {
   right: 0;
+  border-left: $border-default;
 }
 
 #combination-track-window {
-  @include center-block-horizontally();
-  height: calc(100% + 15px);
-  position: absolute;
-  float: left;
-  width: calc(100% - 2 * #{$combination-button-width} - 6px);
+  position: relative;
+  
 }
 
 #combination-track {
+  flex: 1 1 0;
   height: 100%;
   width: auto;
   white-space: nowrap;
@@ -61,14 +57,34 @@
 .combination {
   position: relative;
   display: none;
-  margin: 1px 5px;
-  width: 90px;
-  height: calc(100% - 4px);
+  padding: 0 4px;
+  width: 100px;
+  height: 100%;
   overflow: hidden;
-  border: $border-default;
+  border-right: $border-default;
+  box-sizing: border-box;
+  opacity: 0.7;
 
   &:hover {
     background-color: #ddd;
+  }
+
+  &:active {
+    background-color: #ccc;
+  }
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.combination.combination-highlight {
+  background-color: #ddd;
+  box-shadow: 0 0 3px #eee;
+  opacity: 1;
+
+  &:hover {
+    background-color: #ccc;
   }
 
   &:active {
@@ -76,19 +92,6 @@
   }
 }
 
-.combination.combination-highlight {
-  background-color: #eee;
-  box-shadow: 0 0 3px #eee;
-}
-
 .combination.combination-plan-active {
   display: inline-block;
-}
-
-.combination > .column:not(.time) {
-  width: calc(100% / 6);
-  background-image: none;
-  span {
-    visibility: hidden;
-  }
 }

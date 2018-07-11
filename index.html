@@ -28,6 +28,7 @@
     <link rel="icon" type="image/png" sizes="128x128" href="images/matrusp128.png">
     <link rel="icon" type="image/png" sizes="192x192" href="images/matrusp192.png">
     <link rel="manifest" href="matrusp.webmanifest">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
     <link rel="stylesheet" href="styles/css/application.css">
 </head>
 
@@ -104,67 +105,47 @@
             <div id="lecture-schedule">
                 <div id="time-table">
                     <div class="column time">
-                        <div class="hour">06:00</div>
-                        <div class="hour">07:00</div>
-                        <div class="hour">08:00</div>
-                        <div class="hour">09:00</div>
-                        <div class="hour">10:00</div>
-                        <div class="hour">11:00</div>
-                        <div class="hour">12:00</div>
-                        <div class="hour">13:00</div>
-                        <div class="hour">14:00</div>
-                        <div class="hour">15:00</div>
-                        <div class="hour">16:00</div>
-                        <div class="hour">17:00</div>
-                        <div class="hour">18:00</div>
-                        <div class="hour">19:00</div>
-                        <div class="hour">20:00</div>
-                        <div class="hour">21:00</div>
-                        <div class="hour">22:00</div>
-                        <div class="hour">23:00</div>
-                        <div class="hour">00:00</div>
+                        <div class="column-header"></div>
+                        <div class="column-content"></div>
                     </div>
-                    <div class="column">
-                        <div class="week-day">Segunda</div>
+                    <div class="column hidden">
+                        <div class="column-header">Segunda</div>
+                        <div class="column-content"></div>
                     </div>
-                    <div class="column">
-                        <div class="week-day">Terça</div>
+                    <div class="column hidden">
+                        <div class="column-header">Terça</div>
+                        <div class="column-content"></div>
                     </div>
-                    <div class="column">
-                        <div class="week-day">Quarta</div>
+                    <div class="column hidden">
+                        <div class="column-header">Quarta</div>
+                        <div class="column-content"></div>
                     </div>
-                    <div class="column">
-                        <div class="week-day">Quinta</div>
+                    <div class="column hidden">
+                        <div class="column-header">Quinta</div>
+                        <div class="column-content"></div>
                     </div>
-                    <div class="column">
-                        <div class="week-day">Sexta</div>
+                    <div class="column hidden">
+                        <div class="column-header">Sexta</div>
+                        <div class="column-content"></div>
                     </div>
-                    <div class="column">
-                        <div class="week-day">Sábado</div>
+                    <div class="column hidden">
+                        <div class="column-header">Sábado</div>
+                        <div class="column-content"></div>
+                    </div>
+                    <div class="column hidden">
+                        <div class="column-header">Domingo</div>
+                        <div class="column-content"></div>
                     </div>
                 </div>
                 <div id='combination-controller'>
                     <div class="combination-button combination-button-left"><img src="images/ic_arrow_down.png"/></div>
-                    <div id="combination-track-window">
-                        <div id="combination-track">
-                            <!--div class="combination"></div>
-                            <div class="combination"></div>
-                            <div class="combination"></div-->
-                        </div>
-                    </div>
+					<div id="combination-track">
+						<!--div class="combination"></div>
+						<div class="combination"></div>
+						<div class="combination"></div-->
+					</div>
                     <div class="combination-button combination-button-right"><img src="images/ic_arrow_up.png"/></div>
-
-                    <!--button onclick='state.previousCombination();'>&lt</button>
-                    <span id='combination-value'>0/0</span>
-                    <button onclick='state.nextCombination();'>&gt</button-->
                 </div>
-                <!--<div id="facebook-share" style="margin-top: 18px">
-                    <div class="fb-share-button"
-                         data-href="http://bcc.ime.usp.br/matrusp"
-                         data-layout="button">
-                    </div>
-                    Compartilhe sua grade no facebook.
-                </div>-->
             </div>
             <div class='flex-spacer'></div>
             <div id="lecture-explorer">
@@ -239,7 +220,7 @@
             <footer>
                 <span>Tendo problemas? Utilize a <a href="http://bcc.ime.usp.br/matrusp_v1">versão antiga</a>, ou entre em contato conosco: apoiobcc@linux.ime.usp.br</span>
                 <span>Colabore com o código no <a href="https://github.com/matrusp/matrusp">GitHub</a>!</span>
-                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="485" data-show-faces="true" data-font="lucida grande"></div>
+                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="280" data-show-faces="true" data-font="lucida grande"></div>
             </footer>
         </div>
     </div>
@@ -247,6 +228,7 @@
     <script type="text/javascript" src="js/polyfill.js" defer></script>
     <script type="text/javascript" src="js/dbhelpers.js" defer></script>
     <script type="text/javascript" src="js/custom_lib.js" defer></script>
+    <script type="text/javascript" src="js/slip.js" defer></script>
     <script type="text/javascript" src="js/ui.js" defer></script>
     <script type="text/javascript" src="js/search_box.js" defer></script>
     <script type="text/javascript" src="js/courses.js" defer></script>

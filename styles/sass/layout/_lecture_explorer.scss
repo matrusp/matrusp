@@ -21,8 +21,8 @@
     flex-direction: column;
     position: relative;
     vertical-align: top;
-    height: $lecture-explorer-height;
-	flex: 1 0 $lecture-explorer-basis;
+    min-height: $lecture-explorer-height;
+	flex: 1 1 $lecture-explorer-basis;
 	min-width: 0;
 }
 

@@ -1,0 +1,9 @@
+@keyframes grow {
+  from {transform: scaleX(0); opacity: 0;}
+  to {transform: scaleX(1); opacity: 1;}
+}
+
+@keyframes appear {
+  from {transform: translateY(-10px); opacity: 0;}
+  to {transform: translateY(0); opacity: 1;}
+}
