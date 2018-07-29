@@ -1,95 +1,196 @@
+#plans-wrapper {
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    content: "";
+    border-top: $border-default;
+  }
+}
+
 #plans {
-  height: $lecture-explorer-plan-buttons-height;
   white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  margin-bottom: -40px;
+  padding-bottom: 40px;
+  position: relative;
+}
+
+#new-plan {
+  height: $lecture-explorer-plan-buttons-height;
+  line-height: $lecture-explorer-plan-buttons-height;
+  padding: 0 8px;
+  display: inline-block;
+  overflow: hidden;
+  font-size: 16px;
+  user-select: none;
+  transition: background ease 0.1s;
+
+  &:hover {
+    background: #eee;
+  }
+
+  &:active {
+    background: #ddd;
+  }
 }
 
 .plan {
-  width: 80px;
-  //width: auto;
+  min-width: $lecture-schedule-plan-buttons-min-width;
+  max-width: $lecture-schedule-plan-buttons-max-width;
   height: $lecture-explorer-plan-buttons-height;
   line-height: $lecture-explorer-plan-buttons-height;
   display: inline-block;
   position: relative;
-  text-align: center;
   border-right: $border-default;
   border-bottom: $border-default;
-  border-left: $border-default;
-  border-top: 1px solid white;
-  float: left;
-  border-radius: 0 0 8px 8px;
   overflow: hidden;
-  opacity: 1;
-  background: white;
-  padding: 0 18px;
-  position: relative;
+  background: #e3e3e3;
+  user-select: none;
+  transition: background ease 0.1s;
+  vertical-align: top;
 
-  &:not(:first-child) {
+  &:first-child {
+    border-left: $border-default;
+  }
 
-  //margin-left: -18px;
+  & .plan-tab-name {
+    padding: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    overflow: hidden;
+    border: none;
+    background: transparent;
+    width: 100%;
+
+    &:disabled {
+      pointer-events: none;
+      color: #333;
+    }
+
+    &:focus {
+      padding-right: 32px;
+      text-overflow: clip;
+    }
+  }
+
+  & .plan-tab-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0 4px;
+    padding: 0 2px;
+    z-index: 1;
+    text-align: center;
+    pointer-events: none;
+
+    opacity: 0;
+
+    font-size: 20px;
+    color: gray;
+
+    transition: opacity ease .1s, color ease .1s, background ease .1s;
+
+    &:before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 32px;
+      content: '';
+      z-index: -1;
+      background: linear-gradient(to left, #f3f3f3, #f3f3f3 60%, transparent);
+      pointer-events: none;
+    }
+
+    &:hover {
+      color: $color-accent;
+      pointer-events: initial;
+    }
   }
 
   &:hover {
-    background-color: #ddd;
+    background-color: #f3f3f3;
+
+    & .plan-tab-close {
+      opacity: 1;
+      pointer-events: initial;
+    }
   }
 
   &:active {
-    background-color: #aaa;
+    background-color: white;
+
+    & .plan-tab-close:before {
+      background: linear-gradient(to left, white, white 60%, transparent);
+    }
   }
 
-}
+  &.plan-active {
+    z-index: 2;
+    background: white;
 
-.plan-active {
-  z-index: 2;
-  opacity: 1;
-}
+    &:hover {
+      background: white;
+    }
 
-.plan-options-open {
-  height: auto;
+    &:active {
+      background: white;
+    }
 
-  >.plan-tab-options-arrow > img {
-    transform: rotate(180deg);
+    & .plan-tab-close {
+      opacity: 1;
+      pointer-events: initial;
+
+      &:before {
+        background: linear-gradient(to left, white, white 60%, transparent);
+      }
+    }
   }
 }
 
-.plan-tab-name {
-  display: inline-block;
-}
+.plan-paddle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 0 8px;
+  text-align: center;
 
-.plan-active .plan-tab-options-arrow {
-  display: inline-block;
-}
+  visibility: hidden;
 
-.plan-tab-options-arrow {
-  width: 12px;
-  display: none;
+  border: $border-default;
+  border-top: none;
+  user-select: none;
+
+  background: #e3e3e3;
+
+  height: $lecture-explorer-plan-buttons-height;
+  line-height: $lecture-explorer-plan-buttons-height;
+
+  overflow:hidden;
 
   &:hover {
-    color: $header-color-tertiary;
+    background-color: #f3f3f3;
   }
 
-  &:active {
-    color: darken($header-color-tertiary, 10);
+  &.show {
+    visibility: visible;
   }
 
-  >img {
-    @include center-block-horizontally();
-    @include center-block-vertically();
-    width: 12px;
-  }
-}
-
-.plan-tab-option {
-  width: 100%;
-  float: left;
-  border-top: 1px solid rgba(200, 200, 200, 0.8);
-  background-color: white;
-
-  &:hover {
-    background-color: #ddd;
+  &#plan-paddle-left {
+    left:0;
   }
 
-  &:active {
-    background-color: #aaa;
+  &#plan-paddle-right {
+    right:0;
   }
 }
-

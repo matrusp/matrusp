@@ -136,7 +136,8 @@ async def parsear_curso(link):
 		
 
 		curso = {}
-		curso['codigo'] = re.search("codcur=(.+?)(&|$)",link).group(1)
+		re_codigo = re.search("codcur=(.+?)&codhab=(.+?)(&|$)",link)
+		curso['codigo'] = f"{re_codigo.group(1)}-{re_codigo.group(2)}"
 		curso['nome'] = ' - '.join(x.group(1) for x in re.finditer("Curso:\s*(.+)\s*", soup.get_text()))
 		curso['unidade'] = codigos_unidades[re.search("codcg=([1-9]+)",link).group(1)]
 		

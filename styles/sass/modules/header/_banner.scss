@@ -2,48 +2,48 @@
   position: absolute;
   margin: 0;
   top: 100%;
-  height: 0px;
   width: 100%;
   background: fade-out($header-color-tertiary,0.2);
-  z-index: 99;
-  transition: height ease-in 0.2s;
+  z-index: 0;
   backdrop-filter: blur(4px);
   color: white;
   overflow: hidden;
   text-align: center;
-  display: flex;
-  align-items: center;
   user-select: none;
-}
+  transform: translateY(-100%);
+  transition: transform ease-in 0.2s;
+  
+  &.banner-open {
+    transform: translateY(0);
+    transition: transform ease-out 0.2s;
+  }
 
-#msg-banner.banner-open {
-  height: 24px;
-  transition: height ease-out 0.2s;
-}
+  & a {
+    color: white;
+  }
 
-#msg-banner a {
-  color: white;
-}
+  & #msg-banner-message {
+    padding: 8px 28px;
+  }
 
+  & #msg-banner-close {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    border: none;
+    color: white;
+    background: transparent;
+    font-size: 12pt;
+    align-self: stretch;
 
-#msg-banner #msg-banner-message {
-  flex: 1 0 0;
-}
+    &:hover {
+      background: fade-out(#000000,0.85);
+    }
 
-
-#msg-banner #msg-banner-close {
-  flex: 0 0 24px;
-  border: none;
-  color: white;
-  background: transparent;
-  font-size: 12pt;
-  align-self: stretch;
-}
-
-#msg-banner #msg-banner-close:hover {
-  background: fade-out(#000000,0.85);
-}
-
-#msg-banner #msg-banner-close:active {
-  background: fade-out(#000000,0.7);
+    &:active {
+      background: fade-out(#000000,0.7);
+    }
+  }
 }

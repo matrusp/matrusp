@@ -12,6 +12,27 @@ function UI() {
   this.banner = document.getElementById('msg-banner');
   this.bannerMsg = document.getElementById('msg-banner-message');
   this.timeTable = document.getElementById('time-table');
+  this.lectureCredits = document.getElementById('lecture-credits');
+  this.workCredits = document.getElementById('work-credits');
+  this.plans = document.getElementById('plans');
+  this.newPlan = document.getElementById('new-plan');
+  this.menuOverlay = document.getElementById('menu-overlay');
+
+  // This comes from the SASS theme file
+  //TODO: find better way to sync this
+  this.colors =  [[125, 70, 61], 
+                  [200, 94, 61],
+                  [24, 100, 60], 
+                  [298, 56, 65], 
+                  [46, 80, 57], 
+                  [76, 80, 60],
+                  [176, 76, 58], 
+                  [50, 48, 66], 
+                  [225, 55, 64],
+                  [330, 85, 59], 
+                  [140 ,42, 58],
+                  [263, 78, 65],
+                  [33, 27, 58]];
 
   this.weekdays = [];    
   var lectureScheduleColumns = this.timeTable.getElementsByClassName('column-content');
@@ -22,24 +43,32 @@ function UI() {
   this.timeColumn = lectureScheduleColumns[0];  
   this.makeTimeTable(6,23,5);
 
-  window.navigator.vibrate(0); //Require vibration authorization
-
-  new Slip(this.accordion);
+  new Slip(this.accordion,{minimumDistance: 10});
 
 
-  this.accordion.addEventListener('slip:beforewait',function(e) {
-    if(!e.detail.isTouch)
+  this.accordion.addEventListener('slip:beforewait',e => {
+    if(e.detail.pointerType == 'mouse')
       e.preventDefault();
   });
-  this.accordion.addEventListener('slip:beforereorder',function(e){
-    window.navigator.vibrate(10);
+  this.accordion.addEventListener('slip:beforereorder',e => {
+    window.navigator.vibrate(25);
   });
-  this.accordion.addEventListener('slip:reorder',function(e) {
+  this.accordion.addEventListener('slip:reorder',e => {
     e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
+
+    var lecture = state.activePlan.lectures[e.detail.originalIndex];
+    state.activePlan.lectures.splice(e.detail.originalIndex, 1);
+    state.activePlan.lectures.splice(e.detail.spliceIndex, 0, lecture);
+    state.activePlan.update();
   });
+
+  this.newPlan.addEventListener('click',e => {var plan = state.addPlan(); state.activePlan = plan; });
 
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 
+  this.menuOverlay.addEventListener('pointerdown', e => this.hideContextMenu());
+  window.addEventListener('resize', e => this.hideContextMenu());
+  window.addEventListener('scroll',e => this.hideContextMenu());
 }
 
 // Functions
@@ -55,13 +84,8 @@ function UI() {
  * }</code></pre>
  */
 UI.prototype.calcPositionForTime = function(schedule) {
-  var hourBegin = parseInt(schedule.timeBegin.substr(0, 2));
-  var minBegin = parseInt(schedule.timeBegin.substr(3, 2));
-  var hourEnd = parseInt(schedule.timeEnd.substr(0, 2));
-  var minEnd = parseInt(schedule.timeEnd.substr(3, 2));
-
-  positionBegin = (100 / (this.timeEnd - this.timeBegin)) * (hourBegin  + ( minBegin / 60) - this.timeBegin) + '%';
-  positionEnd = 100 - (100 / (this.timeEnd - this.timeBegin)) * (hourEnd  + ( minEnd / 60) - this.timeBegin) + '%';
+  positionBegin = (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeBegin - Date.today()) / 3600000 - this.timeBegin);
+  positionEnd = 1 - (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeEnd - Date.today()) / 3600000 - this.timeBegin);
 
   return {
     'positionBegin': positionBegin,
@@ -92,12 +116,12 @@ UI.prototype.createScheduleBox = function(schedule) {
     children: [{
         tag: 'span',
         class: ['timespan', 'timespan-begin'],
-        innerHTML: schedule.timeBegin
+        innerHTML: schedule.timeBegin.toString('HH:mm')
       },
       {
         tag: 'span',
         class: ['timespan', 'timespan-end'],
-        innerHTML: schedule.timeEnd
+        innerHTML: schedule.timeEnd.toString('HH:mm')
       },
       {
         tag: 'span',
@@ -108,12 +132,8 @@ UI.prototype.createScheduleBox = function(schedule) {
   };
 
 
-  var hourBegin = parseInt(schedule.timeBegin.substr(0, 2), 10);
-  var minBegin = parseInt(schedule.timeBegin.substr(3, 2), 10);
-  var hourEnd = parseInt(schedule.timeEnd.substr(0, 2), 10);
-  var minEnd = parseInt(schedule.timeEnd.substr(3, 2), 10);
   // if the box is too small and can only fit the lecture code inside
-  if (((hourEnd - hourBegin) * 60 + minEnd - minBegin) <= 60) {
+  if (schedule.timeEnd - schedule.timeBegin <= 3600000) {
     scheduleBoxTreeObj.children[0].class.push('timespan-mini');
     scheduleBoxTreeObj.children[1].class.push('timespan-mini');
   }
@@ -121,8 +141,8 @@ UI.prototype.createScheduleBox = function(schedule) {
   var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
 
   var timePosition = this.calcPositionForTime(schedule);
-  scheduleBox.style.top = timePosition.positionBegin;
-  scheduleBox.style.bottom = timePosition.positionEnd;
+  scheduleBox.style.cssText = `top: ${timePosition.positionBegin * 100 + '%'}; 
+                              bottom: ${timePosition.positionEnd * 100 + '%'};`; //This is more efficient than setting top and bottom separately
 
   return scheduleBox;
 }
@@ -197,34 +217,13 @@ UI.prototype.createLectureInfo = function(lecture) {
           },
           {
             tag: 'div',
-            class: 'lecture-info-header-title',
-            children: [{
-                tag: 'div',
-                class: 'lecture-info-code',
-                innerHTML: lecture.code
-              },
-              {
-                tag: 'div',
-                class: 'lecture-info-name',
-                innerHTML: lecture.name
-              }
-            ]
+            class: 'lecture-info-code',
+            innerHTML: lecture.code
           },
           {
             tag: 'div',
-            class: 'lecture-info-up',
-            children: [{
-              tag: 'img',
-              src: 'images/ic_arrow_up.png'
-            }]
-          },
-          {
-            tag: 'div',
-            class: 'lecture-info-down',
-            children: [{
-              tag: 'img',
-              src: 'images/ic_arrow_down.png'
-            }]
+            class: 'lecture-info-name',
+            innerHTML: lecture.name
           },
           {
             tag: 'div',
@@ -277,130 +276,82 @@ UI.prototype.createCombinationBoard = function(combination) {
 
   var combinationBoard = createHtmlElementTree(combinationBoardTreeObj);
   var ctx = combinationBoard.getContext('2d');
-  var columnHeight = parseInt(window.getComputedStyle(document.getElementById('time-table').getElementsByClassName('column')[0]).getPropertyValue("height"), 10);
+  var columnHeight = (this.timeEnd - this.timeBegin);
 
-  var classrooms = combination.lecturesClassroom;
-  for (var i = 0; i < classrooms.length; i++) {
-    var classroom = classrooms[i];
-    for (var j = 0; j < classroom.schedules.length; j++) {
-      var schedule = classroom.schedules[j];
+  var classrooms = combination.classroomGroups.map(group => group[0]);
+  classrooms.forEach(classroom => {
+    classroom.schedules.forEach(schedule => {
       var day = indexOfDay(schedule.day);
 
-      addClass(schedule.htmlElement, 'schedule-box-highlight');
-      var css = window.getComputedStyle(schedule.htmlElement);
-
-      var boxTop = Math.round(parseInt(css.getPropertyValue("top"), 10) / columnHeight * 100);
-      var boxHeight = Math.round(parseInt(css.getPropertyValue("height"), 10) / columnHeight * 100);
+      var position = this.calcPositionForTime(schedule);
+      var boxTop = position.positionBegin * 100;
+      var boxHeight = 100 - position.positionEnd * 100 - boxTop;
       var boxLeft = day * (100/this.dayEnd) + 1;
 
-      ctx.fillStyle = css.getPropertyValue("background-color");
+      var color = this.colors[classroom.parent.color];
+      ctx.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2]}%)`;
       ctx.fillRect(boxLeft, boxTop, (100/this.dayEnd) - 2, boxHeight);
-      ctx.fillStyle = css.getPropertyValue("border-left-color");
+      ctx.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2] - 25}%)`;
       ctx.fillRect(boxLeft, boxTop, 2, boxHeight);
-
-      removeClass(schedule.htmlElement, 'schedule-box-highlight');
-    }
-  }
-
-  this.combinationTrack.appendChild(combinationBoard);
+    });
+  });
 
   return combinationBoard;
 }
 
+UI.prototype.addCombinations = function(combinations) {
+  var fragment = document.createDocumentFragment();
+  combinations.forEach(combination => fragment.appendChild(combination.htmlElement));
+  this.combinationTrack.appendChild(fragment);
+}
+
+UI.prototype.removeCombinations = function(combinations) {
+  combinations.forEach(combination => combination.htmlElement.parentNode.removeChild(combination.htmlElement));
+}
+
 UI.prototype.scrollActiveCombinationToView = function() {
-  if (this.combinationTrack.children.length === 0 || state.activePlanIndex == undefined || state.activePlanIndex == null) return 0;
-  var activePlan = state.plans[state.activePlanIndex];
-  if (activePlan.activeCombinationIndex == undefined || activePlan.activeCombinationIndex == null) return 1;
-  var cc = this.combinationTrack.children[activePlan.activeCombinationIndex];
-  var ctw = this.combinationTrack;
-  if (cc.offsetLeft < ctw.scrollLeft) {
-    ctw.scrollLeft = cc.offsetLeft;
-  } else if (cc.offsetLeft + cc.offsetWidth > ctw.scrollLeft + ctw.offsetWidth) {
-    ctw.scrollLeft = cc.offsetLeft + cc.offsetWidth - ctw.offsetWidth;
-  }
+  if (this.combinationTrack.children.length === 0 || !state.activePlan) return;
+  if (!state.activePlan.activeCombination) return;
+  state.activePlan.activeCombination.htmlElement.scrollIntoView();
 }
 
 /**
  *
  */
-UI.prototype.addLecture = function(lecture) {
-  this.accordion.appendChild(lecture.htmlElement);
-  for (var i = 0; i < lecture.classrooms.length; i++) {
-    var classroom = lecture.classrooms[i];
-    for (var j = 0; j < classroom.schedules.length; j++) {
-      var schedule = classroom.schedules[j];
-      var day = indexOfDay(schedule.day);
-      if (day < this.weekdays.length)
-        this.weekdays[day].appendChild(schedule.htmlElement);
-    }
-  }
+UI.prototype.addLectures = function(lectures) {
+  var accordionFragment = document.createDocumentFragment();
+
+  var weekdayFragments = Array(7).fill(0).map(x => document.createDocumentFragment());
+  
+  lectures.forEach(lecture => {
+    accordionFragment.appendChild(lecture.htmlElement);
+
+    lecture.classrooms.forEach(classroom => {
+      classroom.schedules.forEach(schedule => {
+        var day = indexOfDay(schedule.day);
+        if (day < this.weekdays.length)
+          weekdayFragments[day].appendChild(schedule.htmlElement);
+      });
+    });
+  });
+
+  this.accordion.appendChild(accordionFragment);
+  this.weekdays.forEach((weekday,i) => {weekday.appendChild(weekdayFragments[i]);});
 }
 
 /**
  *
  */
-UI.prototype.removeLecture = function(lecture) {
-  this.accordion.removeChild(lecture.htmlElement);
-  for (var i = 0; i < lecture.classrooms.length; i++) {
-    var classroom = lecture.classrooms[i];
-    for (var j = 0; j < classroom.schedules.length; j++) {
-      var schedule = classroom.schedules[j];
-      var day = indexOfDay(schedule.day);
-      this.weekdays[day].removeChild(schedule.htmlElement);
-    }
-  }
-}
+UI.prototype.removeLectures = function(lectures) {
+  lectures.forEach(lecture => {
+    lecture.htmlElement.parentNode.removeChild(lecture.htmlElement);
 
-function tester(obj, objOnDB) {
-  if (typeof(obj) == 'object') {
-    var keys = Object.keys(obj);
-    for (var i = 0; i < keys.length; i++) {
-      if (typeof(obj[keys[i]]) == 'object' || keys[i] == 'color') {
-        continue;
-      }
-      if (obj[keys[i]] != objOnDB[keys[i]]) {
-        //console.log('obj :', obj[keys[i]], ' key: ', keys[i]); 
-        //console.log('objOnDB :', objOnDB[keys[i]], ' key: ', keys[i]); 
-        //console.log('legal ele percebe que mudou!');
-        obj[keys[i]] = objOnDB[keys[i]];
-      }
-    }
-  } else {
-    if (obj != objOnDB) {
-      //console.log('obj :', obj);
-      //console.log('objOnDB :', objOnDB);
-      //console.log('percebeu que tava errado!');
-      obj = objOnDB;
-    }
-  }
-}
-
-function seeksChanges(state) {
-  var plans = state.plans;
-  for (var i = 0; i < plans.length; i++) {
-    if (plans[i]) {
-      var lectures = plans[i].lectures;
-      for (var j = 0; j < lectures.length; j++) {
-        var lecture = lectures[j];
-        database.fetchLectureByCode(lecture.code, {
-          success: function(result) {
-            Object.assign(lectures[j], result[0]);
-          }
-        });
-      }
-    }
-  }
-}
-
-function shallowCopy(obj) {
-  var objC = new Object();
-  var keys = Object.keys(obj);
-  for (var i = 0; i < keys.length; i++) {
-    if (typeof(obj[keys[i]]) == 'array' || typeof(obj[keys[i]]) == 'object') {} else {
-      objC[keys[i]] = obj[keys[i]];
-    }
-  }
-  return objC;
+    lecture.classrooms.forEach(classroom => {
+      classroom.schedules.forEach(schedule => {
+          schedule.htmlElement.parentNode.removeChild(schedule.htmlElement)
+      });
+    });
+  });
 }
 
 UI.prototype.setLoadingBar = function(load) {
@@ -455,4 +406,92 @@ UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   this.timeBegin = timeBegin;
   this.timeEnd = timeEnd;
   this.dayEnd = dayEnd;
+}
+
+UI.prototype.setCredits = function(lectureCredits,workCredits) {
+    this.lectureCredits.innerHTML =lectureCredits;
+    this.workCredits.innerHTML = workCredits;
+}
+
+UI.prototype.createPlanTab = function(plan) {
+  var el = createHtmlElementTree({
+    tag: 'div',
+    class:'plan', 
+    title: plan.name,
+    children: [
+      {
+        tag: 'input',
+        type: 'text',
+        disabled: true,
+        class: 'plan-tab-name',
+        value: plan.name
+      },
+      {
+        tag: 'div',
+        class: 'plan-tab-close',
+        innerHTML: '&times;'
+      }
+    ]
+  });
+  return this.plans.insertBefore(el,this.newPlan);
+}
+
+UI.prototype.addContextMenu = function(menu, position) {
+  if(this.menu) {
+    this.menuOverlay.removeChild(this.menu);
+  }
+
+  menu.addEventListener('pointerdown', e => e.stopPropagation());
+  this.menuOverlay.classList.add('show');
+  this.menuOverlay.appendChild(menu);
+  var menuHeight = menu.offsetHeight;
+  if(position.y < window.innerHeight - menuHeight)
+    menu.style.cssText = `top: ${position.y + window.scrollY}px; left: ${position.x + window.scrollX}px;`;
+  else
+    menu.style.cssText = `top: ${position.y + window.scrollY - menuHeight}px; left: ${position.x + window.scrollX}px;`;
+  this.menu = menu;
+}
+
+UI.prototype.hideContextMenu = function() {
+  if(this.menu) {
+    this.menuOverlay.classList.remove('show');
+    this.menuOverlay.removeChild(this.menu);
+    this.menu = null;
+  }
+}
+
+UI.prototype.onPlanContextMenu = function(e, plan) {
+  var menu = createHtmlElementTree({
+    tag: 'div',
+    class: 'context-menu',
+    children: [
+      {
+        tag: 'div',
+        innerHTML: 'Novo plano',
+        class: 'context-menu-item',
+      },
+      {
+        tag: 'div',
+        innerHTML: 'Duplicar plano',
+        class: 'context-menu-item context-divider',
+      },
+      {
+        tag: 'div',
+        innerHTML: 'Remover plano',
+        class: 'context-menu-item',
+      },
+      {
+        tag: 'div',
+        innerHTML: 'Remover planos à direita',
+        class: 'context-menu-item',
+      },
+      {
+        tag: 'div',
+        innerHTML: 'Remover outros planos',
+        class: 'context-menu-item',
+      }
+    ]
+  });
+  this.addContextMenu(menu,{x: e.clientX, y: e.clientY});
+  e.preventDefault();
 }

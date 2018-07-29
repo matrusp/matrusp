@@ -23,11 +23,12 @@
   grid-column: 2;
 
   &:hover {
-    background-color: #ddd;
+    background-color: $hover-background-default;
+    color: darken($color-accent,10);
   }
 
   &:active {
-    background-color: #aaa;
+    background-color: $active-background-default;
   }
 
   > input {
@@ -52,22 +53,9 @@
 }
 
 #course-button {
-  border: $border-default;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   grid-row: 2;
   grid-column: 2;
 
   cursor: default;
   user-select: none;
-
-  &:hover {
-    background-color: #ddd;
-  }
-
-  &:active {
-    background-color: #aaa;
-  }
 }

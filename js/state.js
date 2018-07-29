@@ -13,10 +13,8 @@
  *
  * @see Plan
  */
-function State(jsonObj) {
+function State() {
   this.plans = new Array();
-  this.numColors = 10; // represents the number of colors on system
-  this.lastColor = 0;
 
   this.html = {
     previousCombination: document.getElementsByClassName('combination-button-left')[0],
@@ -31,17 +29,33 @@ function State(jsonObj) {
 
   // variable set on main.js
   this.version = matrusp_current_state_version;
-  this.activePlanIndex = 0;
+}
 
-  var isActivePlan = false;
-  for (var i = 0; i < 3; i++) {
-    if (i == 0) {
-      var isActivePlan = true;
-    }
-    this.plans.push(new Plan(null, i, isActivePlan));
+State.prototype = {
+  get activePlan () {
+    return this._activePlan;
+  },
+  set activePlan(plan){
+    if(plan == this._activePlan) return;
+    
+    if(this._activePlan)
+      this._activePlan.hidePlan();
+    this._activePlan = plan;
+
+    if(plan)
+      this._activePlan.showPlan();
+
+    this.saveOnLocalStorage();
+  },
+
+  get activePlanIndex() {
+    return this.plans.indexOf(this._activePlan);
+  },
+  set activePlanIndex(index) {
+    if(index >= 0)
+      this.activePlan = this.plans[index];
   }
 
-  this.load(jsonObj);
 }
 
 State.prototype.delete = function() {
@@ -54,9 +68,11 @@ State.prototype.delete = function() {
  * Clears the current state
  */
 State.prototype.clear = function() {
-  for (var i = 0; i < this.plans.length; i++) {
-    this.plans[i].clear();
+  while(this.plans.length) {
+    this.plans[0].delete();
   }
+  this.plans.push(new Plan());
+  state.activePlanIndex = 0;
 }
 
 /**
@@ -99,25 +115,15 @@ State.prototype.load = function(baseState) {
       ui.showBanner('Este identificador não é mais válido.');
       return false;
     }
-    this.lastColor = baseState.lastColor || 0;
     this.version = baseState.version;
-    this.activePlanIndex = baseState.activePlanIndex;
 
-    for (var i = 0; i < 3; i++) {
-      if (i == this.activePlanIndex) {
-        var isActivePlan = true;
-        this.plans[i].load(baseState.plans[i], isActivePlan);
-      } else {
-        this.plans[i].load(baseState.plans[i]);
-      }
+    this.plans = baseState.plans.map(basePlan => new Plan(basePlan));
+    if(!this.plans.length){
+      this.plans.push(new Plan());
     }
-    // TODO this is a hack to update the combination index and total combination number
-    // ui below div#lecture-schedule
-    if (this.plans[this.activePlanIndex].lectures.length == 0) {
-      //document.getElementById('combination-value').innerHTML = '0/0';
-    } else {
-      this.plans[this.activePlanIndex].setActiveCombination();
-    }
+    
+    this.activePlanIndex = baseState.activePlanIndex || 0;
+
     return true;
   }
   return false;
@@ -228,6 +234,8 @@ State.prototype.toJSON = function() {
   this.plans.forEach(plan => {
     var planData = {};
     planData.activeCombinationIndex = plan.activeCombinationIndex;
+    planData.name = plan.name;
+    planData.colors = plan.colors;
     planData.lectures = [];
     plan.lectures.forEach(lecture => {
       var lectureData = {};
@@ -273,4 +281,39 @@ State.prototype.loadFromServer = function(identifier) {
     ui.showBanner('Não foi possível carregar o identificador. Tente novamente', 2000);
     throw error
   });
+}
+
+State.prototype.saveOnLocalStorage = function() {
+  localStorage.setItem('state', this.toJSON());
+}
+
+State.prototype.addPlan = function(planData) {
+  var plan = new Plan(planData);
+  this.plans.push(plan);
+  this.saveOnLocalStorage();
+  return plan;
+}
+
+State.prototype.removePlan = function(plan) {
+  var index = this.plans.indexOf(plan);
+  if(index < 0) return;
+
+  if(this.activePlan == plan) {
+    this.activePlan = null;
+    plan.delete();
+
+    if(index < this.plans.length - 1) {
+      this.activePlanIndex = index;
+    }
+    else if(index > 0) {
+      this.activePlanIndex = index - 1 
+    }
+    else {
+      this.activePlan = this.addPlan();
+    }
+  }
+  else {
+    plan.delete();
+    this.saveOnLocalStorage();
+  }
 }

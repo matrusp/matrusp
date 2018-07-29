@@ -14,27 +14,18 @@
  *
  * @see Plan#computeCombinations
  */
-function Combination(combinationIndices, plan) {
+function Combination(classroomGroups, plan) {
   this.parent = plan;
-  this.lecturesClassroom = new Array();
   this.lectureCredits = 0;
   this.workCredits = 0;
 
-  for (var i = 0; i < combinationIndices.length; i++) {
-    var classroomIndex = combinationIndices[i];
-    if (classroomIndex == -1) {
-      // Lecture not selected
-      continue;
-    }
-    classroom = plan.lectures[i].classrooms[classroomIndex];
-    this.lecturesClassroom.push(classroom);
-    this.lectureCredits += classroom.parent.lectureCredits;
-    this.workCredits += classroom.parent.workCredits;
-  }
+  this.classroomGroups = classroomGroups;
+  this.classroomGroups.forEach(classroomGroup => {
+    this.lectureCredits += classroomGroup[0].parent.lectureCredits;
+    this.workCredits += classroomGroup[0].parent.workCredits;
+  });
 
-  Object.defineProperty(this, "htmlElement", {get: function () {
-    return this.mHtmlElement || (this.mHtmlElement = ui.createCombinationBoard(this));
-  }});
+  this.htmlElement = ui.createCombinationBoard(this);
   this.addEventListeners();
 }
 
@@ -55,9 +46,9 @@ Combination.prototype.delete = function() {
  */
 Combination.prototype.getSimilarityScore = function(otherCombination) {
   var sameClassroomsCounter = 0;
-  for (var i = 0; i < this.lecturesClassroom.length; i++) {
-    for (var j = 0; j < otherCombination.lecturesClassroom.length; j++) {
-      if (this.lecturesClassroom[i] == otherCombination.lecturesClassroom[j]) {
+  for (var i = 0; i < this.classroomGroups.length; i++) {
+    for (var j = 0; j < otherCombination.classroomGroups.length; j++) {
+      if (this.classroomGroups[i][0] == otherCombination.classroomGroups[j][0]) {
         sameClassroomsCounter++;
       }
     }
@@ -83,7 +74,7 @@ Combination.prototype.unsetHighlight = function() {
  *
  */
 Combination.prototype.setCombination = function() {
-  this.parent.setCombination(this);
+  this.parent.activeCombination = this;
 };
 
 Combination.prototype.addEventListeners = function() {

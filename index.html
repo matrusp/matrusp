@@ -28,7 +28,7 @@
     <link rel="icon" type="image/png" sizes="128x128" href="images/matrusp128.png">
     <link rel="icon" type="image/png" sizes="192x192" href="images/matrusp192.png">
     <link rel="manifest" href="matrusp.webmanifest">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:light,regular,medium,bold" rel="stylesheet">
     <link rel="stylesheet" href="styles/css/application.css">
 </head>
 
@@ -36,9 +36,10 @@
     <div id="drop-overlay"><img src="images/ic_download.png">
 		<span>Solte o arquivo para carregar</span>
     </div>
-	<div id="course-overlay">
-		<form id="course-window">
-    	<button type="button" id="course-window-close">×</button>
+    <div id="menu-overlay"></div>
+	<div id="dialog-overlay">
+		<form id="course-dialog" class="dialog">
+    	<button type="button" class="close-button" id="course-window-close">×</button>
 		<label id="course-campus-select-label" class="select-label"><div>Campus</div>
 		<select name="campus" id="course-campus-select"></select></label>
 		<label id="course-unit-select-label" class="select-label"><div>Unidade</div>
@@ -48,7 +49,6 @@
 		<label id="course-period-select-label" class="select-label"><select name="period" id="course-period-select" disabled></select>
 		<div>Período</div></label>
 		<div id="course-lecture-list"></div>
-		<div id="course-plan-erase-warning">Adicionar irá remover as disciplinas do plano atual.</div>
 		<label id="course-optative-check-label"><input id="course-optative-check" type="checkbox" name="optativas" checked>Incluir optativas</label>
 		<button type="button" id="course-accept-button">Aceitar</button>
 		</form>
@@ -62,6 +62,7 @@
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 <header>
+<div id="header-content">
     <div><span id="logo">MatrUSP</span><span class="beta-tag">Beta</span></div>
     <div id='save-controller'>
 	<input id='user-identifier' placeholder='Salve seu plano aqui'> 
@@ -94,10 +95,11 @@
 	    <img src="images/ic_download.png" alt="">
 	</li>
     </ul>
+    </div>
     <div id="loading-bar"></div>
     <div id="msg-banner" class="">
     	<div id="msg-banner-message"></div>
-    	<button id="msg-banner-close">×</button>
+    	<button id="msg-banner-close" class="close-button">×</button>
 	</div>
 </header>
     <div id="page-container">
@@ -138,16 +140,15 @@
                     </div>
                 </div>
                 <div id='combination-controller'>
-                    <div class="combination-button combination-button-left"><img src="images/ic_arrow_down.png"/></div>
+                    <button class="small-button combination-button combination-button-left"><img src="images/ic_arrow_down.png"/></button>
 					<div id="combination-track">
 						<!--div class="combination"></div>
 						<div class="combination"></div>
 						<div class="combination"></div-->
 					</div>
-                    <div class="combination-button combination-button-right"><img src="images/ic_arrow_up.png"/></div>
+                    <button class="small-button combination-button combination-button-right"><img src="images/ic_arrow_up.png"/></button>
                 </div>
             </div>
-            <div class='flex-spacer'></div>
             <div id="lecture-explorer">
                 <div id="search-and-add">
                     <input required type="text" id="search" placeholder="Digite o código ou nome da matéria">
@@ -179,28 +180,12 @@
                         <!-- Dynamically populated -->
                     </div>
                 </div>
-				<div id="plans">
-                    <div id="plan-0" class="plan plan-active">
-                        <div class="plan-tab plan-tab-name">Plano 1</div>
-                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"></div>
-                        <div class="plan-tab-option"> Limpar </div>
-                        <div class="plan-tab-option"> Copiar p/ 2 </div>
-                        <div class="plan-tab-option"> Copiar p/ 3 </div>
-                    </div>
-                    <div id="plan-1" class="plan">
-                        <div class="plan-tab plan-tab-name">Plano 2</div>
-                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"></div>
-                        <div class="plan-tab-option"> Limpar </div>
-                        <div class="plan-tab-option"> Copiar p/ 1 </div>
-                        <div class="plan-tab-option"> Copiar p/ 3 </div>
-                    </div>
-                    <div id="plan-2" class="plan">
-                        <div class="plan-tab plan-tab-name">Plano 3</div>
-                        <div class="plan-tab plan-tab-options-arrow"><img src="images/ic_arrow_down.png"></div>
-                        <div class="plan-tab-option"> Limpar </div>
-                        <div class="plan-tab-option"> Copiar p/ 1 </div>
-                        <div class="plan-tab-option"> Copiar p/ 2 </div>
-                    </div>
+                <div id="plans-wrapper">
+					<div id="plan-paddle-left" class="plan-paddle"><</div>
+					<div id="plans">
+						<div id="new-plan">&#65291;</div>
+					</div>
+					<div id="plan-paddle-right" class="plan-paddle">></div>
 				</div>
 				<div id="explorer-footer">
 				    <div id="credits">
@@ -212,9 +197,9 @@
 						<img src="images/ic_upload.png">
 						<input id="upload-input" type="file" accept="application/json">
 					</label>
-					<div id="course-button">
+					<button id="course-button">
 						Carregar grade ideal
-					</div>
+					</button>
                 </div>
 			</div>
             <footer>
@@ -229,6 +214,7 @@
     <script type="text/javascript" src="js/dbhelpers.js" defer></script>
     <script type="text/javascript" src="js/custom_lib.js" defer></script>
     <script type="text/javascript" src="js/slip.js" defer></script>
+    <script type="text/javascript" src="js/date-pt-BR.js" defer></script>
     <script type="text/javascript" src="js/ui.js" defer></script>
     <script type="text/javascript" src="js/search_box.js" defer></script>
     <script type="text/javascript" src="js/courses.js" defer></script>

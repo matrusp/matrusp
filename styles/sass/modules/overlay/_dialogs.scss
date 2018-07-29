@@ -1,0 +1,71 @@
+#dialog-overlay {
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+
+    transition: background-color ease 0.2s;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+        background-color: rgba(#000000,0.6);
+    }
+}
+
+.dialog {
+    background: white;
+    box-shadow: $shadow-default;
+
+    border-radius: 8px;
+    overflow: hidden;
+
+    position: relative;
+
+    max-width: 80%;
+
+    padding: 16px;
+    padding-top: 24px;
+
+    & button.close-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-color: transparent;
+        border: none;
+        font-size: 16pt;
+        color: #888;
+        font-weight: lighter;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+    }
+
+    & button {
+        color: $color-accent;
+        text-transform: uppercase;
+        border: none;
+        background: transparent;
+        font-weight: bold;
+        padding: 8px 4px;
+
+        &:hover {
+            color: $color-accent;
+            background: $hover-background-default;
+        }
+
+        &:active {
+            color: darken($color-accent, 10);
+            background: $active-background-default;
+        }
+    }
+}

@@ -18,9 +18,9 @@
  */
 function Lecture(jsonObj, parentPlan) {
   this.parent = parentPlan;
-  this.classrooms = new Array();
-  // activeClassroom is set after combinations are computed (last thing of creating a plan)
-  this.activeClassroom = null;
+  this.classrooms = [];
+  this.activeClassrooms = [];
+  this._available = true;
   if (jsonObj) {
     this.code = jsonObj.codigo;
     this.name = jsonObj.nome;
@@ -57,9 +57,39 @@ function Lecture(jsonObj, parentPlan) {
       this.classrooms.push(Classroom.fromLinked(linkedT.find(t => t.codigo == p.codigo_teorica),p,this));
     });
 
+    this.groupedClassrooms = [];
+    this.classrooms.forEach(classroom => {
+      var group = this.groupedClassrooms.find(classroomGroup =>
+          classroomGroup[0].schedules.every(groupSchedule => 
+            classroom.schedules.some(schedule => 
+              groupSchedule.day == schedule.day && groupSchedule.timeBegin.equals(schedule.timeBegin) && groupSchedule.timeEnd.equals(schedule.timeEnd)
+            )
+          )
+        );
+        if(group) group.push(classroom);
+        else this.groupedClassrooms.push([classroom]);
+    });
+
     this.appendHTMLChildren();
     this.updateClassroomsCheckbox();
     this.addEventListeners();
+  }
+}
+
+Lecture.prototype = {
+  get available() {
+    return this._available;
+  },
+
+  set available(val) {
+    if(val) {
+      this.htmlLectureCheckbox.disabled = false;
+      this.htmlElement.classList.remove('lecture-unavailable');
+    } 
+    else {
+      this.htmlLectureCheckbox.disabled = true;
+      this.htmlElement.classList.add('lecture-unavailable');
+    }
   }
 }
 
@@ -178,6 +208,8 @@ Lecture.prototype.delete = function() {
   var indexOnParent = this.parent.lectures.indexOf(this);
   this.parent.lectures.splice(indexOnParent, 1);
 
+  this.parent.colors[this.color]--;
+
   this.parent.update();
 }
 
@@ -204,7 +236,7 @@ Lecture.prototype.updateAllClassroomsSelections = function(shouldUpdate) {
  */
 Lecture.prototype.update = function(classroomUpdated) {
   if (this.noClassroomsSelected()) {
-    this.activeClassroom = null;
+    this.activeClassrooms = [];
     this.lectureUnselect();
   } else if (this.allClassroomsSelected() || (classroomUpdated && classroomUpdated.selected)) {
     // When no classrooms were selected and right now at least one is, the lecture too
@@ -340,8 +372,8 @@ Lecture.prototype.addEventListeners = function() {
   this.htmlElement.addEventListener('mouseenter', this.setHighlight.bind(this));
   this.htmlElement.addEventListener('mouseleave', this.unsetHighlight.bind(this));
 
-  var lectureHeaderTitle = this.htmlElement.getElementsByClassName('lecture-info-header-title')[0];
-  lectureHeaderTitle.addEventListener('click', this.toggleLectureOpen.bind(this));
+  var lectureHeader = this.htmlElement.getElementsByClassName('lecture-info-header')[0];
+  lectureHeader.addEventListener('click', this.toggleLectureOpen.bind(this));
   
   var lectureHeaderDelete = this.htmlElement.getElementsByClassName('lecture-info-delete')[0];
   lectureHeaderDelete.addEventListener('click', this.delete.bind(this));
@@ -349,9 +381,6 @@ Lecture.prototype.addEventListeners = function() {
   this.htmlLectureCheckbox.addEventListener('click', this.toggleLectureSelection.bind(this));
 
   this.htmlClassroomsCheckbox.addEventListener('click', this.updateAllClassroomsSelections.bind(this));
-
-  this.htmlLectureArrowUp.addEventListener('click', this.moveUp.bind(this));
-  this.htmlLectureArrowDown.addEventListener('click', this.moveDown.bind(this));
 };
 
 Lecture.prototype.safeCopy = function () {

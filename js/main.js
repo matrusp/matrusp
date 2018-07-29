@@ -7,11 +7,15 @@ if ('serviceWorker' in navigator) {
 
 var dbworker = new Worker("js/dbupdate.js");
 
-var ui = new UI();
 var state;
 var searchBox;
 var courseBox;
 var matrusp_current_state_version = 7;
+
+state = new State();
+ui = new UI();
+searchBox = new SearchBox();
+courseBox = new CourseBox();
 
 dbworker.onmessage = e => {
   ui.setLoadingBar(e.data);
@@ -21,16 +25,12 @@ dbworker.onmessage = e => {
   }
 }
 
-state = new State();
-searchBox = new SearchBox();
-courseBox = new CourseBox();
-
 if (window.location.hash.substr(1)) {
   ui.loadStateFromServer(window.location.hash.substr(1));
   history.pushState('', document.title, window.location.pathname);
 } else if (localStorage.getItem('state')) {
-  state.clear();
   state.load(JSON.parse(localStorage.getItem('state')));
-  saveStateOnLocalStorage();
+  state.saveOnLocalStorage();
 }
+else state.clear();
 setTimeout(function() { ui.scrollActiveCombinationToView() }, 100);

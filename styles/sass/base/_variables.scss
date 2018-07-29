@@ -5,23 +5,23 @@ $font-size: 12px;
 
 // Misc Basic
 $border-default: 1px solid lightgray;
-$shadow-default: 2px 1px 8px 0px #a0a0a0;
+$shadow-default: 2px 1px 8px 0px rgba(0,0,0,0.4);
 
 // Base
 $page-max-width: 1080px;
 $page-min-width: 0;
-$main-padding: 16px 4px;
+$main-padding: 16px 0;
 $header-height: 50px;
 $footer-height: 30px;
 $header-bottom-line: $header-height / 5;
-$lecture-schedule-combination-controller-height: 80px;
+$lecture-schedule-combination-controller-height: 100px;
 $lecture-schedule-height: 560px;
-$lecture-schedule-basis: 420px;
-$lecture-schedule-padding-top: 40px;
-$lecture-schedule-padding-bottom: 40px;
+$lecture-schedule-basis: 360px;
 $lecture-explorer-height: $lecture-schedule-height;
 $lecture-explorer-basis: 300px;
-$lecture-explorer-plan-buttons-height: 25px;
+$lecture-schedule-plan-buttons-min-width: 100px;
+$lecture-schedule-plan-buttons-max-width: 30%;
+$lecture-explorer-plan-buttons-height: 36px;
 $lecture-explorer-plans-height: $lecture-schedule-combination-controller-height;
 $flex-spacer-basis: 16px;
 
@@ -49,6 +49,7 @@ $schedule-box-border-left-width: 2.3px;
 $combination-controller-margin-top: 20px;
 $combination-button-width: 34px;
 $column-margin-horizontal: 4px;
+$time-table-padding: 0px 4px;
 $lecture-schedule-line-stroke: #bbb;
 $lecture-schedule-hour-color: gray;
 $lecture-schedule-header-color: gray;
