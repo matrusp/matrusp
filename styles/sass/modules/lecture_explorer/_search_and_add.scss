@@ -21,35 +21,22 @@
 //
 //
 
-#search,
-#add-extra-activity,
-#search-result-box {
-    position: relative;
-    display: inline-block;
-    height: calc(100% - 2 * #{$search-and-add-border-width});
-    border-color: $search-and-add-border-color;
-    border-style: solid;
-    border-width: $search-and-add-border-width;
-    border-radius: 2px;
-    box-sizing: border-box;
+#search-and-add {
+    z-index: 1;
 }
-        
+   
 #search {
+    position: relative;
     width: 100%;
     padding: 0 $search-padding-horizontal;
     font-family: $font-family;
-    font-size: $font-size;
+    font-size: 14px;
     height: $search-box-height;
+    border: $border-default;
+    z-index: 1;
 
     &:focus {
-        z-index: 11;
-				//TODO can I remove this without consequences?
-        //border-bottom-style: none;
-        border-radius: 2px 2px 0 0;
-        // removes default outline from input:focus and replaces it
-        // with a shadow.
-        outline: none;
-        box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.4);
+        box-shadow: $shadow-default;
 
         // becomes translucent, "hiding" from user's view
         ~ #add-extra-activity {
@@ -67,14 +54,13 @@
     position: absolute;
     // TODO change top to variable; it is 1px more than the 
     //      search box height.
-    top: ($search-box-height - 1);
-    z-index: 10;
+    top: $search-box-height - 1px;
     display: block;
     width: 100%;
     height: auto;
     // TODO change [max/min]-height to variable.
     // TODO check if with more lectures than max-height it breaks.
-    max-height: 300px;
+    max-height: 360px;
     min-height: 10px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -82,7 +68,8 @@
     background-color: $white;
     border-radius: 0 2px 2px 2px;
     visibility: hidden;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: $shadow-default;
+    border: $border-default;
 }
 
 #search:focus:valid ~ #search-result-box:not(:empty), #search-result-box:not(:empty):active {
@@ -180,6 +167,10 @@
 #search-options.show {
     visibility: visible;
     height: auto;
+}
+
+#search-options-clear {
+    padding: 0;
 }
 
 #search-options label {

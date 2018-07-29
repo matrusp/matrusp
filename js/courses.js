@@ -6,8 +6,8 @@
 function CourseBox() {
   document.getElementById('course-button').addEventListener('click', e => this.showCoursesWindow());
 
-  this.overlay = document.getElementById('course-overlay');
-  this.window = document.getElementById('course-window');
+  this.overlay = document.getElementById('dialog-overlay');
+  this.dialog = document.getElementById('course-dialog');
   this.closeButton = document.getElementById('course-window-close');
   this.campusSelect = document.getElementById('course-campus-select');
   this.unitSelect = document.getElementById('course-unit-select');
@@ -19,12 +19,12 @@ function CourseBox() {
 
   this.overlay.addEventListener('click', e => { this.hideCoursesWindow(); });
   this.closeButton.addEventListener('click', e => { this.hideCoursesWindow(); });
-  this.window.addEventListener('click', e => {e.stopPropagation();});
+  this.dialog.addEventListener('click', e => {e.stopPropagation();});
 
   this.populateCampusSelect().then(() => this.campusChanged());
 
   this.optativeCheck.addEventListener('change', e => {
-    [...this.window.getElementsByClassName('optative')].forEach(opt => {
+    [...this.dialog.getElementsByClassName('optative')].forEach(opt => {
       if(this.optativeCheck.checked)
         opt.classList.remove('optDisabled');
       else
@@ -38,20 +38,14 @@ function CourseBox() {
   this.periodSelect.addEventListener('change', e => this.periodChanged(e));
 
   this.acceptButton.addEventListener('click', e => {
-    state.plans[0].clear();
-    this.selectedCourse.periodos[this.periodSelect.value].forEach(async lectureInfo => {
-      if(lectureInfo.tipo != 'obrigatoria' && !this.optativeCheck.checked) return;
-
-      var lecture = await matruspDB.lectures.get(lectureInfo.codigo);
-      if(lecture) {
-        state.lastColor = state.lastColor % state.numColors || 0;
-
-        lecture.color = 1 + state.lastColor++; //colors are 1-based
-        lecture.selected = 1;
-        state.plans[state.activePlanIndex].addLecture(lecture);
-
-        state.plans[state.activePlanIndex].lectures[state.plans[state.activePlanIndex].lectures.length-1].htmlElement.classList.add('lecture-info-plan-active');
-      }
+    var lecturePromises = this.selectedCourse.periodos[this.periodSelect.value].map(async lectureInfo => {
+      return {code: lectureInfo.codigo, selected: (lectureInfo.tipo == 'obrigatoria' || this.optativeCheck.checked)};
+    });
+    Promise.all(lecturePromises).then(lectures => {
+      lectures.filter(el => el);
+      var planData = {"name": `${this.courseSelect.options[this.courseSelect.selectedIndex].innerHTML} - ${this.periodSelect.value}º período`,"lectures": lectures};
+      var plan = state.addPlan(planData);
+      state.activePlan = plan;
     });
     this.overlay.classList.remove('show');
   });

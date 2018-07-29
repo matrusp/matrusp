@@ -35,16 +35,16 @@
 
 #accordion {
   height: 100%;
+  overflow-x: hidden;
   overflow-y: scroll;
+  position: relative;
 }
 
 // TODO compare these properties with those inside "_base_lecture_info.scss"
 .lecture-info {
   position: relative;
-  // 100% - 2 * padding
-  width: calc(100% - 2px);
+  width: 100%;
   padding: 1px;
-  display: none;
   user-select: none;
   cursor: default;
 
@@ -53,35 +53,15 @@
   }
 }
 
-.lecture-info-plan-active {
-	display: block;
-}
-
 .lecture-info-header {
   position: relative;
-}
-
-.lecture-info-header-title {
-  position: relative;
-  left: $width-lecture-checkbox;
-  display: block;
-  width: calc(100% - 3 * #{$width-lecture-delete} - 2 * 6px - #{$width-lecture-checkbox});
-  // TODO these height declarations doesn't make any sense, or do they?
-  height: 30px;
-  max-height: 100%;
-  padding: 7px 0 7px 8px;
-  overflow: hidden;
-  line-height: 30px;
-  // TODO transitions doesn't work well with 'auto' values
-  //      so take this off or come up with some solution.
-  //transition: all .4s;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .lecture-info-checkbox {
-  @include center-block-vertically();
-  display: inline-block;
-  position: absolute;
-  width: $width-lecture-checkbox;
+  flex: 0 0 $width-lecture-checkbox;
 }
 
 .classrooms-header-checkbox,
@@ -95,13 +75,9 @@
   visibility: hidden;
 }
 
-.lecture-info-up,
-.lecture-info-down,
 .lecture-info-delete {
-  position: absolute;
-  top: 0;
-  width: $width-lecture-delete;
-  height: 100%;
+  position: relative;
+  flex: 0 0 $width-lecture-delete;
 
   >img {
     @include center-block-horizontally();
@@ -110,18 +86,6 @@
     width: $width-icon-delete;
     opacity: 0.3;
   }
-}
-
-.lecture-info-up {
-  right: calc(2 * #{$width-lecture-delete});
-}
-
-.lecture-info-down {
-  right: $width-lecture-delete;
-}
-
-.lecture-info-delete {
-  right: 0;
 }
 
 .lecture-classrooms {
@@ -177,10 +141,17 @@
 }
 
 .lecture-info-name {
-  width: calc(100% - #{$width-lecture-code} - 4px);
+  flex: 1 1 auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding: 4px 8px;
+}
+
+.lecture-info-code {
+  flex: 0 0 auto;
+  padding: 4px;
+  text-align: center;
 }
 
 .lecture-open {
@@ -188,17 +159,10 @@
     height: auto;
   }
 
-  .lecture-info-header-title {
-    height: auto;
-    line-height: normal;
-  }
-
-  .lecture-info-code {
-    vertical-align: middle;
-  }
-
   .lecture-info-name {
     white-space: normal;
+    height: auto;
+    line-height: normal;
   }
 }
 
@@ -228,7 +192,7 @@
 
 // Same order as in lecture_schedule/_lecture_box.scss
 @each $color in $lecture-colors {
-  $i: index($lecture-colors, $color);
+  $i: index($lecture-colors, $color) - 1;
 
   .lecture-info.color-#{$i} {
     background-color: lighten($color, 20%);
@@ -243,8 +207,6 @@
     }
 
     >.lecture-info-header {
-      >.lecture-info-up,
-      >.lecture-info-down,
       >.lecture-info-delete {
         &:hover {
           background-color: lighten($color, 5%);
@@ -259,10 +221,10 @@
     .classroom-active {
       background-color: lighten($color, 20%);
     }
-    .classroom-active.classroom-highlight {
+    .classroom-highlight {
       background-color: $color;
     }
-    .classroom-active.classroom-highlight.classroom-conflict {
+    .classroom-highlight.classroom-conflict {
       background-color: #f00;
       color: black;
       opacity: 0.8;

@@ -1,0 +1,33 @@
+#menu-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  visibility: hidden;
+
+  &.show {
+    visibility: visible;
+  }
+}
+
+.context-menu {
+  position: absolute;
+  display: inline-block;
+  background: white;
+  border: $border-default;
+  box-shadow: $shadow-default;
+
+  & .context-menu-item {
+    padding: 6px 8px;
+
+    &.context-divider {
+      border-bottom: $border-default;
+    }
+
+    &:hover {
+      background: $hover-background-default;
+    }
+  }
+}

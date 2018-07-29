@@ -22,7 +22,6 @@ var dbPromise = matruspDB.metadata.get('ETag').then(async (etag) => {
   if(!response.ok) {
     // End worker if server returns 304 not modified
     if(response.status == 304) {
-      self.setProgress(1);
       return;
     }
     else throw new Error(`Server returned code ${response.status} for DB request`); //Throw error for any unknown error
@@ -40,7 +39,6 @@ var coursesPromise = matruspDB.metadata.get('ETag-courses').then(async (etag) =>
   if(!response.ok) {
     // End worker if server returns 304 not modified
     if(response.status == 304) {
-      self.postMessage(1);
       return;
     }
     else throw new Error(`Server returned code ${response.status} for courses DB request`); //Throw error for any unknown error
@@ -58,7 +56,6 @@ var campiPromise = matruspDB.metadata.get('ETag-campi').then(async (etag) => {
   if(!response.ok) {
     // End worker if server returns 304 not modified
     if(response.status == 304) {
-      self.postMessage(1);
       return;
     }
     else throw new Error(`Server returned code ${response.status} for campi DB request`); //Throw error for any unknown error
@@ -69,7 +66,7 @@ var campiPromise = matruspDB.metadata.get('ETag-campi').then(async (etag) => {
   await matruspDB.campi.clear();
   var campi = await response.json();
   await matruspDB.campi.bulkPut(Object.values(campi), Object.keys(campi)); 
-  await matruspDB.metadata.put(response.headers.get("ETag"),"ETag-courses");
+  await matruspDB.metadata.put(response.headers.get("ETag"),"ETag-campi");
 });
 
 Promise.all([dbPromise,coursesPromise,campiPromise]).then(() => {

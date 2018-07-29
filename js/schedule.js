@@ -17,14 +17,17 @@ function Schedule(jsonObj, parentClassroom) {
   this.parent = parentClassroom;
   if (jsonObj) {
     this.day = jsonObj.dia;
-    this.timeBegin = jsonObj.inicio;
-    this.timeEnd = jsonObj.fim;
+    this.timeBegin = Date.parse(jsonObj.inicio);
+    this.timeEnd = Date.parse(jsonObj.fim);
     // parentClassroom.parent is this schedule's Lecture ancestor
     var lectureCode = parentClassroom.parent.code;
     this.htmlElement = ui.createScheduleBox(this, lectureCode);
   }
 }
 
+Schedule.prototype.conflictsWith = function(schedule) {
+  return this.day == schedule.day && this.timeBegin < schedule.timeEnd && this.timeEnd > schedule.timeBegin;
+}
 
 /**
  *

@@ -9,7 +9,7 @@
  *    shortCode: "32",
  *    selected: true,
  *	  dateBegin: "31/07/2016",
- *	  data_fim: "10/12/2016",
+ *	  dateEnd: "10/12/2016",
  *    obs: "Extra info goes here"
  *    teachers: [
  *      "First Teacher",
@@ -27,8 +27,8 @@ function Classroom(jsonObj, parentLecture) {
   this.schedules = new Array();
   this.selected = true;
   if (jsonObj) {
-    this.dateBegin = jsonObj.inicio;
-    this.dateEnd = jsonObj.fim;
+    this.dateBegin = Date.parse(jsonObj.inicio);
+    this.dateEnd = Date.parse(jsonObj.fim);
     this.code = jsonObj.codigo;
     this.shortCode = this.code.slice(-2);
     this.obs = jsonObj.observacoes;
@@ -55,8 +55,8 @@ function Classroom(jsonObj, parentLecture) {
  */
 Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
   var classroom = new Classroom(null, parentLecture);
-  classroom.dateBegin = jsonT.inicio;
-  classroom.dateEnd = jsonT.fim;
+  classroom.dateBegin = Date.parse(jsonT.inicio);
+  classroom.dateEnd = Date.parse(jsonT.fim);
   classroom.code = `${jsonT.codigo}+${jsonP.codigo.slice(-2)}`;
   classroom.shortCode = `${jsonT.codigo.slice(-2)}+${jsonP.codigo.slice(-2)}`;
   classroom.obs = jsonT.observacoes + '\n' + jsonP.observacoes;
@@ -146,9 +146,23 @@ Classroom.prototype.removeClassInSchedules = function(className) {
 /**
  *
  */
+Classroom.prototype.setActive = function() {
+  addClass(this.htmlElement, 'classroom-active');
+}
+
+/**
+ *
+ */
+Classroom.prototype.unsetActive = function() {
+  removeClass(this.htmlElement, 'classroom-active');
+}
+
+
+/**
+ *
+ */
 Classroom.prototype.showBox = function() {
   this.addClassInSchedules('schedule-box-show');
-  addClass(this.htmlElement, 'classroom-active');
 };
 
 /**
@@ -156,7 +170,6 @@ Classroom.prototype.showBox = function() {
  */
 Classroom.prototype.hideBox = function() {
   this.removeClassInSchedules('schedule-box-show');
-  removeClass(this.htmlElement, 'classroom-active');
 };
 
 Classroom.prototype.checkAndSetConflict = function() {
@@ -166,7 +179,7 @@ Classroom.prototype.checkAndSetConflict = function() {
   // conflicts because it is active (obviously). Also there are conflicts only
   // if there is a combination being displayed.
   if (this != lecture.activeClassroom && lecture.parent.activeCombination) {
-    var lecturesClassroom = lecture.parent.activeCombination.lecturesClassroom;
+    var lecturesClassroom = lecture.parent.activeCombination.classroomGroups.map(group => group[0]);
     for (var i = 0; i < lecturesClassroom.length; i++) {
       if (this.parent == lecturesClassroom[i].parent) {
         // Same lecture, skip.
@@ -176,7 +189,7 @@ Classroom.prototype.checkAndSetConflict = function() {
       // on the current active combination.
       for (var j = 0; j < this.schedules.length; j++) {
         for (var k = 0; k < lecturesClassroom[i].schedules.length; k++) {
-          if (schedulesConflict(this.schedules[j], lecturesClassroom[i].schedules[k])) {
+          if (this.schedules[j].conflictsWith(lecturesClassroom[i].schedules[k])) {
             // This schedule (one of many for this classroom) conflicts with some other
             // schedule from an active classroom. Set conflict highlight.
             addClass(this.schedules[j].htmlElement, 'schedule-box-highlight-conflict');
@@ -208,8 +221,8 @@ Classroom.prototype.showOnHover = function() {
     lecture.stopAnimationLoop();
   }
 
-  if (lecture.activeClassroom) {
-    lecture.activeClassroom.hideBox();
+  if (lecture.activeClassrooms.length) {
+    lecture.activeClassrooms[0].hideBox();
   }
   this.checkAndSetConflict();
   this.showBox();
@@ -224,8 +237,8 @@ Classroom.prototype.hideOnHoverOut = function() {
   removeClass(this.htmlElement, 'classroom-highlight');
   this.hideBox();
   this.removeClassInSchedules('schedule-box-highlight-conflict');
-  if (lecture.activeClassroom) {
-    lecture.activeClassroom.showBox();
+  if (lecture.activeClassrooms.length) {
+    lecture.activeClassrooms[0].showBox();
   }
 
   if (!lecture.selected) {
@@ -250,6 +263,13 @@ Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
   if (shouldUpdate) {
     this.parent.update(this);
   }
+}
+
+Classroom.prototype.conflictsWith = function(classroom) {
+  return this.dateBegin < classroom.dateEnd && this.dateEnd > classroom.dateBegin &&
+          classroom.schedules.some(classroomSchedule => 
+                                    this.schedules.some(schedule => 
+                                      classroomSchedule.conflictsWith(schedule)));
 }
 
 /**

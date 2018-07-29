@@ -22,6 +22,10 @@
 //
 //
 
+* {
+  box-sizing: border-box;
+}
+
 html, body {
     width: 100%;
     min-width: $page-min-width;
@@ -29,8 +33,6 @@ html, body {
 
 body {
     overflow: auto;
-    font-family: $font-family;
-    font-size: $font-size;
     background: $header-color-background;
     
 }
@@ -48,7 +50,6 @@ body {
 
 #main {
     position: relative;
-    padding: $main-padding;
 	display: flex;
 	flex-wrap: wrap;
 }

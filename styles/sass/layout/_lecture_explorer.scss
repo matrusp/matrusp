@@ -24,6 +24,7 @@
     min-height: $lecture-explorer-height;
 	flex: 1 1 $lecture-explorer-basis;
 	min-width: 0;
+	margin: 16px 4px;
 }
 
 #search-and-add,
@@ -35,7 +36,7 @@
 #search-and-add {
     position: relative;
     flex: 0 0 auto;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 }
 
 #explorer-footer {
@@ -48,8 +49,7 @@
 
 #accordion-window {
     flex: 1 0 0;
-    overflow: hidden;
     border: $border-default;
-    border-radius: 2px;
-    z-index: 1;
+    border-bottom: none;
+    min-height: 0;
 }

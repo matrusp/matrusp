@@ -22,6 +22,7 @@
   min-height: $lecture-schedule-height;
   flex: 2 1 $lecture-schedule-basis;
   min-width: 0;
+  margin: 16px 0;
 }
 
 #time-table {
@@ -30,7 +31,9 @@
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
+  padding: $time-table-padding;
   padding-bottom: 8px;
+  box-sizing: border-box;
 }
 
 .column {
@@ -43,7 +46,7 @@
 .column.time {
   flex: 0 0 auto;
   background: white;
-  z-index: 1;
+  z-index: -2;
   position: sticky;
   left: 0;
 
@@ -100,6 +103,7 @@ svg.column-bg {
   height: 100%;
   width: 100%;
   overflow: visible;
+  z-index: -3;
 
   & line {
     stroke: $lecture-schedule-line-stroke;

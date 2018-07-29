@@ -1,10 +1,12 @@
-
 $white: #FEFEFE;
+$color-primary: #FFA000;
+$color-accent: #0097A7;
 
 /* Header */
-$header-color-primary: #FBA71C;
+$header-color-primary: $color-primary;
 $header-color-secondary: #64C6D3;
-$header-color-tertiary: #1495AB;
+$header-color-tertiary: $color-accent;
+
 $header-color-background: $white;
 
 $header-color-symbols: #FEFEFE;
@@ -22,4 +24,79 @@ $highlight-background: #cacaca;
 $highlight-text: black;
 
 /* Lecture colors */
-$lecture-colors: #7adf56, #3db9f9, #ffa526, #c277d5, #55e8de, #ff4c6e, #ffd326, #ff3099, #b09676, #b2d174;
+// Remember to update this in the UI javascript class as well.
+$lecture-colors:
+                 hsl(125, 70%, 61%), 
+                 hsl(200, 94%, 61%),
+                 hsl(24, 100%, 60%), 
+                 hsl(298, 56%, 65%), 
+                 hsl(46, 80%, 57%), 
+                 hsl(76, 80%, 60%),
+                 hsl(176, 76%, 58%), 
+                 hsl(50, 48%, 66%), 
+                 hsl(225, 55%, 64%),
+                 hsl(330, 85%, 59%), 
+                 hsl(140 ,42%, 58%),
+                 hsl(263, 78%, 65%),
+                 hsl(33, 27%, 58%);
+
+/* Other */
+$hover-background-default: #e6e6e6;
+$active-background-default: #bbb;
+
+html {
+    font-family: $font-family;
+    font-size: $font-size;
+}
+
+button {
+    border: none;
+    background: transparent;
+    color: $color-accent;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    font-family: $font-family;
+    font-size: $font-size;
+    padding: 8px 8px;
+    box-sizing: border-box;
+    line-height: 100%;
+    min-width: 64px;
+
+    transition: background 0.1s ease;
+
+    &:hover {
+        background: $hover-background-default;
+        color: darken($color-accent, 10);
+    }
+
+    &:active {
+        background: $active-background-default;
+        color: darken($color-accent, 10);
+    }
+
+    &.emphasis {
+        border-radius: 4px;
+        border: none;
+        color: white;
+        background: $color-accent;
+        box-shadow: $shadow-default;
+
+        &:hover {
+            background: lighten($color-accent, 5);
+        }
+
+        &:active{
+            background: desaturate(lighten($color-accent, 15), 20);
+        }
+    }
+
+    &.small-button, &.close-button {
+        min-width: 0;
+        padding: 2px;
+    }
+
+    &.close-button {
+        font-weight: lighter;
+    }
+}

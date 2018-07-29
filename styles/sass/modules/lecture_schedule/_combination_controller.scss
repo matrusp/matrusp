@@ -1,7 +1,7 @@
 #combination-controller {
   //@include center-block-horizontally();
   position: relative;
-  flex: 0 0 $lecture-schedule-combination-controller-height;
+  flex: 0 0 auto;
   margin-top: $combination-controller-margin-top;
   display: flex;
 }
@@ -10,6 +10,7 @@
   position: relative;
   flex: 0 0 $combination-button-width;
   background-color: white;
+  border: none;
   z-index: 1;
 
   &>img {
@@ -47,7 +48,7 @@
 
 #combination-track {
   flex: 1 1 0;
-  height: 100%;
+  height: $lecture-schedule-combination-controller-height;
   width: auto;
   white-space: nowrap;
   overflow-x: scroll;
@@ -56,7 +57,7 @@
 
 .combination {
   position: relative;
-  display: none;
+  display: inline-block;
   padding: 0 4px;
   width: 100px;
   height: 100%;
@@ -65,12 +66,15 @@
   box-sizing: border-box;
   opacity: 0.7;
 
+  transition: background .1s ease, opacity .1s ease;
+
   &:hover {
-    background-color: #ddd;
+    background-color: $hover-background-default;
+    opacity: 1;
   }
 
   &:active {
-    background-color: #ccc;
+    background-color: $active-background-default;
   }
 
   &:last-child {
@@ -84,14 +88,10 @@
   opacity: 1;
 
   &:hover {
-    background-color: #ccc;
+    background-color: #ddd;
   }
 
   &:active {
     background-color: #aaa;
   }
-}
-
-.combination.combination-plan-active {
-  display: inline-block;
 }

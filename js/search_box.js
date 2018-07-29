@@ -76,8 +76,7 @@ SearchBox.prototype.addLectures = function(lectures) {
 
     var addLectureCallback = function(iterator) {
       return function() {
-        var activePlan = state.plans[state.activePlanIndex];
-        this.addToPlan (lectures[iterator], activePlan);
+        this.addToPlan (lectures[iterator]);
       }
     }
 
@@ -193,8 +192,7 @@ SearchBox.prototype.eventKey = function(e) {
     case "Enter":
       if (this.lecturesSuggestionList[this.selectedLectureIndex]) { // if no lecture was selected skip
         var lecture = this.lecturesSuggestionList[this.selectedLectureIndex];
-        var activePlan = state.plans[state.activePlanIndex];
-        this.addToPlan (lecture, activePlan);
+        this.addToPlan (lecture);
       }
       return;
   }
@@ -278,22 +276,17 @@ SearchBox.prototype.aggregateAndSortLectures = function(lecture) {
 /**
  * Add lecture to the active plan
  */
-SearchBox.prototype.addToPlan = function(lecture, activePlan) {
-  var numberOfLectures = activePlan.lectures.length;
+SearchBox.prototype.addToPlan = function(lecture) {
+  var numberOfLectures = state.activePlan.lectures.length;
 
-  for (var i = 0; i < activePlan.lectures.length; i++) {
-    if (lecture.code == activePlan.lectures[i].code) {
+  for (var i = 0; i < state.activePlan.lectures.length; i++) {
+    if (lecture.code == state.activePlan.lectures[i].code) {
       this.searchBox.value = '';
       return;
     }
   }
 
-  state.lastColor = state.lastColor % state.numColors || 0;
-
-  lecture.color = 1 + state.lastColor++; //colors are 1-based
-  lecture.selected = 1;
-  state.addLecture(lecture);
-  addClass(activePlan.lectures[numberOfLectures].htmlElement, 'lecture-info-plan-active');
+  state.activePlan.addLecture(lecture);
   this.searchBox.value = '';
 }
 
