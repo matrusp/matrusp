@@ -335,6 +335,16 @@ UI.prototype.addLectures = function(lectures) {
     });
   });
 
+  if(weekdayFragments[6].childElementCount) {
+    this.makeTimeTable(6,23,7);
+  }
+  else if(weekdayFragments[5].childElementCount) {
+    this.makeTimeTable(6,23,6);
+  }
+  else {
+    this.makeTimeTable(6,23,5);
+  }
+
   this.accordion.appendChild(accordionFragment);
   this.weekdays.forEach((weekday,i) => {weekday.appendChild(weekdayFragments[i]);});
 }
@@ -372,6 +382,8 @@ UI.prototype.closeBanner = function() {
 }
 
 UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
+  if(timeBegin == this.timeBegin && timeEnd == this.timeEnd && dayEnd == this.dayEnd) return;
+  
   this.timeColumn.innerHTML = '';
 
   var bgs = this.timeTable.getElementsByClassName('column-bg');
@@ -469,26 +481,39 @@ UI.prototype.onPlanContextMenu = function(e, plan) {
         tag: 'div',
         innerHTML: 'Novo plano',
         class: 'context-menu-item',
+        onclick: e => {state.addPlan(); 
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
       },
       {
         tag: 'div',
         innerHTML: 'Duplicar plano',
         class: 'context-menu-item context-divider',
+        onclick: e => {state.copyPlan(plan);}
       },
       {
         tag: 'div',
         innerHTML: 'Remover plano',
         class: 'context-menu-item',
+        onclick: e => {state.removePlan(plan);
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
       },
       {
         tag: 'div',
         innerHTML: 'Remover planos à direita',
         class: 'context-menu-item',
+        onclick: e => {state.plans.slice(state.plans.indexOf(plan) + 1).forEach(statePlan => state.removePlan(statePlan));
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
       },
       {
         tag: 'div',
         innerHTML: 'Remover outros planos',
         class: 'context-menu-item',
+        onclick: e => {state.plans.slice().forEach(statePlan => {if(statePlan != plan) state.removePlan(statePlan);});
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
       }
     ]
   });
