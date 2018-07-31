@@ -229,30 +229,8 @@ State.prototype.toJSON = function() {
   var stateData = {};
   stateData.version = this.version;
   stateData.lastColor = this.lastColor;
-  stateData.plans = [];
+  stateData.plans = this.plans.map(plan => plan.serialize());
   stateData.activePlanIndex = this.activePlanIndex;
-  this.plans.forEach(plan => {
-    var planData = {};
-    planData.activeCombinationIndex = plan.activeCombinationIndex;
-    planData.name = plan.name;
-    planData.colors = plan.colors;
-    planData.lectures = [];
-    plan.lectures.forEach(lecture => {
-      var lectureData = {};
-      lectureData.code = lecture.code;
-      lectureData.color = lecture.color;
-      lectureData.selected = lecture.selected;
-      lectureData.classrooms = [];
-
-      lecture.classrooms.forEach(classroom => {
-        if (classroom.selected)
-          lectureData.classrooms.push(classroom.code);
-      });
-
-      planData.lectures.push(lectureData);
-    });
-    stateData.plans.push(planData);
-  });
   return JSON.stringify(stateData);
 }
 
@@ -302,7 +280,7 @@ State.prototype.removePlan = function(plan) {
     this.activePlan = null;
     plan.delete();
 
-    if(index < this.plans.length - 1) {
+    if(index <= this.plans.length - 1) {
       this.activePlanIndex = index;
     }
     else if(index > 0) {
@@ -316,4 +294,8 @@ State.prototype.removePlan = function(plan) {
     plan.delete();
     this.saveOnLocalStorage();
   }
+}
+
+State.prototype.copyPlan = function(plan) {
+  this.addPlan(plan.serialize());
 }

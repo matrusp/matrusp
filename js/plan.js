@@ -192,6 +192,9 @@ Plan.prototype.addLecture = function(lecture) {
   this.colors[lecture.color]++;
   var lecture = lecture instanceof Lecture ? lecture : new Lecture(lecture, this);
   this.lectures.push(lecture);
+  
+  if(this == state.activePlan)
+      ui.addLectures([lecture]);
 
   var combinations = this.combinations.map(combination => combination.classroomGroups);
   var activeCombination;
@@ -227,8 +230,6 @@ Plan.prototype.addLecture = function(lecture) {
   else {
     lecture.available = false;
   }
-  if(this == state.activePlan)
-      ui.addLectures([lecture]);
 }
 
 Plan.prototype.computeCombinations = function() {
@@ -284,6 +285,28 @@ Plan.prototype.tabNameChanged = function(e) {
   this.name = this.html.tabName.value.trim();
   this.html.tabName.disabled = true;
   state.saveOnLocalStorage();
+}
+
+Plan.prototype.serialize = function() {
+  var planData = {};
+  planData.activeCombinationIndex = this.activeCombinationIndex;
+  planData.name = this.name;
+  planData.colors = this.colors;
+  planData.lectures = this.lectures.map(lecture => {
+    var lectureData = {};
+    lectureData.code = lecture.code;
+    lectureData.color = lecture.color;
+    lectureData.selected = lecture.selected;
+    lectureData.classrooms = [];
+
+    lecture.classrooms.forEach(classroom => {
+      if (classroom.selected)
+        lectureData.classrooms.push(classroom.code);
+    });
+
+    return lectureData;
+  });
+  return planData;
 }
 
 /**

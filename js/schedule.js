@@ -15,6 +15,7 @@
  */
 function Schedule(jsonObj, parentClassroom) {
   this.parent = parentClassroom;
+  
   if (jsonObj) {
     this.day = jsonObj.dia;
     this.timeBegin = Date.parse(jsonObj.inicio);

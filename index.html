@@ -102,112 +102,111 @@
     	<button id="msg-banner-close" class="close-button">×</button>
 	</div>
 </header>
-    <div id="page-container">
-        <div id="main">
-            <div id="lecture-schedule">
-                <div id="time-table">
-                    <div class="column time">
-                        <div class="column-header"></div>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="column hidden">
-                        <div class="column-header">Segunda</div>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="column hidden">
-                        <div class="column-header">Terça</div>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="column hidden">
-                        <div class="column-header">Quarta</div>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="column hidden">
-                        <div class="column-header">Quinta</div>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="column hidden">
-                        <div class="column-header">Sexta</div>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="column hidden">
-                        <div class="column-header">Sábado</div>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="column hidden">
-                        <div class="column-header">Domingo</div>
-                        <div class="column-content"></div>
-                    </div>
-                </div>
-                <div id='combination-controller'>
-                    <button class="small-button combination-button combination-button-left"><img src="images/ic_arrow_down.png"/></button>
-					<div id="combination-track">
-						<!--div class="combination"></div>
-						<div class="combination"></div>
-						<div class="combination"></div-->
-					</div>
-                    <button class="small-button combination-button combination-button-right"><img src="images/ic_arrow_up.png"/></button>
-                </div>
-            </div>
-            <div id="lecture-explorer">
-                <div id="search-and-add">
-                    <input required type="text" id="search" placeholder="Digite o código ou nome da matéria">
-                    <div id="search-summary-wrapper">
-						<div id="search-options-summary">Buscando em <span class="selected-option">todos os campi</span></div>
-						<button id="search-options-clear" type="button">&#x2715; Limpar</button>
-                    </div>
-                    <form id="search-options">
-                    	<label id="campus-select-label" class="select-label"><div>Campus</div>
-                    	<select name="campus" id="search-campus"><option value="">Todos os campi</option></select></label>
-                    	<label id="unit-select-label" class="select-label"><div>Unidade</div>
-                    	<select name="unit" id="search-unit"><option value="">Todas as unidades</option></select></label>
-                    	<label id="department-select-label" class="select-label"><select name="department" id="search-department" disabled><option value="">Todos os departamentos</option></select>
-                    	<div>Departamento</div></label>
-                    	<div id="search-options-timeframes">
-                    		<div>Período</div>
-							<label><input type="checkbox" name="timeframes[]" value="matutino" checked>Matutino</input></label>
-							<label><input type="checkbox" name="timeframes[]" value="vespertino" checked>Vespertino</input></label>
-							<label><input type="checkbox" name="timeframes[]" value="noturno" checked>Noturno</input></label>
-                    	</div>
-                    	<div id="search-options-browser-error" style="display: none;">Algumas opções de busca foram desabilitadas por não terem suporte em seu navegador. <a href="http://outdatedbrowser.com/en">Atualize já.</a></div>
-                    </form>
-				<div id="search-result-box">
-					<div class="search-result loading-result">Carregando...<div class="search-result-subtitle">Isso deve demorar alguns segundos</div></div>
+	<div id="main">
+		<div id="lecture-schedule">
+			<div id="time-table">
+				<div class="column time">
+					<div class="column-header"></div>
+					<div class="column-content"></div>
 				</div>
-                </div>
-                <div id="accordion-window">
-                    <div id="accordion">
-                        <!-- Dynamically populated -->
-                    </div>
-                </div>
-                <div id="plans-wrapper">
-					<div id="plan-paddle-left" class="plan-paddle"><</div>
-					<div id="plans">
-						<div id="new-plan">&#65291;</div>
-					</div>
-					<div id="plan-paddle-right" class="plan-paddle">></div>
+				<div class="column hidden">
+					<div class="column-header">Segunda</div>
+					<div class="column-content"></div>
 				</div>
-				<div id="explorer-footer">
-				    <div id="credits">
-				        <div class="credit-wrapper"><span id="lecture-credits">0</span>Créditos<br />Aula</div>
-				        <div class="credit-wrapper"><span id="work-credits">0</span>Créditos<br />Trabalho</div>
-					</div>
-					<label id="upload-button">
-						<div id="upload-name"> Upload de Grade </div>
-						<img src="images/ic_upload.png">
-						<input id="upload-input" type="file" accept="application/json">
-					</label>
-					<button id="course-button">
-						Carregar grade ideal
-					</button>
-                </div>
+				<div class="column hidden">
+					<div class="column-header">Terça</div>
+					<div class="column-content"></div>
+				</div>
+				<div class="column hidden">
+					<div class="column-header">Quarta</div>
+					<div class="column-content"></div>
+				</div>
+				<div class="column hidden">
+					<div class="column-header">Quinta</div>
+					<div class="column-content"></div>
+				</div>
+				<div class="column hidden">
+					<div class="column-header">Sexta</div>
+					<div class="column-content"></div>
+				</div>
+				<div class="column hidden">
+					<div class="column-header">Sábado</div>
+					<div class="column-content"></div>
+				</div>
+				<div class="column hidden">
+					<div class="column-header">Domingo</div>
+					<div class="column-content"></div>
+				</div>
 			</div>
-            <footer>
-                <span>Tendo problemas? Utilize a <a href="http://bcc.ime.usp.br/matrusp_v1">versão antiga</a>, ou entre em contato conosco: apoiobcc@linux.ime.usp.br</span>
-                <span>Colabore com o código no <a href="https://github.com/matrusp/matrusp">GitHub</a>!</span>
-                <div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="280" data-show-faces="true" data-font="lucida grande"></div>
-            </footer>
-        </div>
+			<div id='combination-controller'>
+				<button class="small-button combination-button combination-button-left"><img src="images/ic_arrow_down.png"/></button>
+				<div id="combination-track">
+					<!--div class="combination"></div>
+					<div class="combination"></div>
+					<div class="combination"></div-->
+				</div>
+				<button class="small-button combination-button combination-button-right"><img src="images/ic_arrow_up.png"/></button>
+			</div>
+		</div>
+		<div id="lecture-explorer">
+			<div id="search-and-add">
+				<input required type="text" id="search" placeholder="Digite o código ou nome da matéria">
+				<div id="search-summary-wrapper">
+					<div id="search-options-summary">Buscando em <span class="selected-option">todos os campi</span></div>
+					<button id="search-options-clear" type="button">&#x2715; Limpar</button>
+				</div>
+				<form id="search-options">
+					<label id="campus-select-label" class="select-label"><div>Campus</div>
+					<select name="campus" id="search-campus"><option value="">Todos os campi</option></select></label>
+					<label id="unit-select-label" class="select-label"><div>Unidade</div>
+					<select name="unit" id="search-unit"><option value="">Todas as unidades</option></select></label>
+					<label id="department-select-label" class="select-label"><select name="department" id="search-department" disabled><option value="">Todos os departamentos</option></select>
+					<div>Departamento</div></label>
+					<div id="search-options-timeframes">
+						<div>Período</div>
+						<label><input type="checkbox" name="timeframes[]" value="matutino" checked>Matutino</input></label>
+						<label><input type="checkbox" name="timeframes[]" value="vespertino" checked>Vespertino</input></label>
+						<label><input type="checkbox" name="timeframes[]" value="noturno" checked>Noturno</input></label>
+					</div>
+					<div id="search-options-browser-error" style="display: none;">Algumas opções de busca foram desabilitadas por não terem suporte em seu navegador. <a href="http://outdatedbrowser.com/en">Atualize já.</a></div>
+				</form>
+			<div id="search-result-box">
+				<div class="search-result loading-result">Carregando...<div class="search-result-subtitle">Isso deve demorar alguns segundos</div></div>
+			</div>
+			</div>
+			<div id="accordion-window">
+				<div id="accordion">
+					<!-- Dynamically populated -->
+				</div>
+			</div>
+			<div id="plans-wrapper">
+				<div id="plan-paddle-left" class="plan-paddle"><</div>
+				<div id="plans">
+					<div id="new-plan">&#65291;</div>
+				</div>
+				<div id="plan-paddle-right" class="plan-paddle">></div>
+			</div>
+			<div id="explorer-footer">
+				<div id="credits">
+					<div class="credit-wrapper"><span id="lecture-credits">0</span>Créditos<br />Aula</div>
+					<div class="credit-wrapper"><span id="work-credits">0</span>Créditos<br />Trabalho</div>
+				</div>
+				<label id="upload-button">
+					<div id="upload-name"> Upload de Grade </div>
+					<img src="images/ic_upload.png">
+					<input id="upload-input" type="file" accept="application/json">
+				</label>
+				<button id="course-button">
+					Carregar grade ideal
+				</button>
+			</div>
+		</div>
+        
+		<footer>
+			<span>Tendo problemas? Utilize a <a href="http://bcc.ime.usp.br/matrusp_v1">versão antiga</a>, ou entre em contato conosco: <a href="mailto:apoiobcc@linux.ime.usp.br">apoiobcc@linux.ime.usp.br</a></span>
+			<span>Colabore com o código no <a href="https://github.com/matrusp/matrusp">GitHub</a>!</span>
+			<div class="fb-like" data-href="https://www.facebook.com/MatrUSP/" data-send="false" data-width="280" data-show-faces="true" data-font="lucida grande"></div>
+		</footer>
     </div>
     <script type="text/javascript" src="js/redirect.js"></script>
     <script type="text/javascript" src="js/polyfill.js" defer></script>
