@@ -65,17 +65,6 @@ State.prototype.delete = function() {
 }
 
 /**
- * Clears the current state
- */
-State.prototype.clear = function() {
-  while(this.plans.length) {
-    this.plans[0].delete();
-  }
-  this.plans.push(new Plan());
-  state.activePlanIndex = 0;
-}
-
-/**
  * Load state data
  *
  * @param {baseState} BaseState State or json data to load
@@ -117,26 +106,14 @@ State.prototype.load = function(baseState) {
     }
     this.version = baseState.version;
 
-    this.plans = baseState.plans.map(basePlan => new Plan(basePlan));
-    if(!this.plans.length){
-      this.plans.push(new Plan());
-    }
+    if(baseState.plans.length) this.plans = baseState.plans.map(basePlan => new Plan(basePlan));
+    else this.plans.push(new Plan());
     
     this.activePlanIndex = baseState.activePlanIndex || 0;
 
     return true;
   }
   return false;
-}
-
-/**
- * Clears the state and loads a new one
- *
- * @param {baseState} BaseState State or json data to load
- */
-State.prototype.reload = function(baseState) {
-  this.clear();
-  this.load(baseState);
 }
 
 /**
@@ -247,7 +224,7 @@ State.prototype.loadFromServer = function(identifier) {
   fetch(`data/${identifier.replace(/[^\w]/g, '')}.json`).then(response => {
     if (response.ok)
       response.json().then(json => {
-        this.reload(json);
+        this.load(json);
         ui.showBanner(`Identificador "${identifier}" carregado com sucesso`, 2000);
       });
     else

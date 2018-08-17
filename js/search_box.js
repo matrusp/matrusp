@@ -25,21 +25,16 @@ function SearchBox() {
 
   this.options = JSON.parse(localStorage.getItem("search-options")) || {};
   this.populateOptions();
+
+  this.activate();
 }
 
 SearchBox.prototype.activate = function() {
   this.searchWorker = new Worker("js/dbsearch.js");
   this.searchWorker.onmessage = e => {
-    this.lecturesSuggestionList = e.data;
-    if (this.lecturesSuggestionList.length > 0) {
-      this.removeLecturesSuggestionList();
-      this.addLectures(this.lecturesSuggestionList);
-    } else {
-      this.removeLecturesSuggestionList();
-      this.addEmptySearchResult();
-    }
+    this.addLectures(e.data);
   }
-  this.removeLecturesSuggestionList();
+  this.searchResultBox.innerHTML = ""; 
   this.addEmptySearchResult();
   this.optionsChanged();
 }
@@ -49,6 +44,14 @@ SearchBox.prototype.activate = function() {
  * Add lectures to the search box results
  */
 SearchBox.prototype.addLectures = function(lectures) {
+  this.lecturesSuggestionList = lectures;
+  if(this.loadingTimeout) clearTimeout(this.loadingTimeout);
+
+  this.searchResultBox.innerHTML = "";
+
+  if(!lectures.length)
+    return this.addEmptySearchResult();
+  
   var suggestionLectures = this.searchResultBox.childNodes;
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < lectures.length; i++) {
@@ -204,8 +207,7 @@ SearchBox.prototype.eventKey = function(e) {
       var searchArgs = { "q": fetchValue, "options": this.options };
     else
       var searchArgs = { "q": fetchValue };
-    if(this.searchWorker)
-      this.searchWorker.postMessage(searchArgs);
+    this.search(searchArgs);
     this.searchOptionsBox.classList.remove('show');
     this.clearButton.classList.add('show-search');
   } else {
@@ -290,12 +292,6 @@ SearchBox.prototype.addToPlan = function(lecture) {
   this.searchBox.value = '';
 }
 
-SearchBox.prototype.removeLecturesSuggestionList = function() {
-  while (this.searchResultBox.firstChild) {
-    this.searchResultBox.removeChild(this.searchResultBox.firstChild);
-  }
-}
-
 SearchBox.prototype.optionsChanged = function() {
   this.options = {
     "campus": this.campusSelect.value,
@@ -303,9 +299,7 @@ SearchBox.prototype.optionsChanged = function() {
     "department": this.deptSelect.value,
   };
 
-  var searchArgs = { "q": this.searchBox.value, "options": this.options };
-  if(this.searchWorker)
-    this.searchWorker.postMessage(searchArgs);
+  this.search({ "q": this.searchBox.value, "options": this.options });
 
   if (Object.values(this.options).some(v => v))
     this.clearButton.classList.add('show-options');
@@ -487,6 +481,19 @@ SearchBox.prototype.clearOptions = function() {
 
   this.options = {};
   this.populateOptions();
+}
+
+SearchBox.prototype.search = function(searchArgs) {
+  if(this.searchWorker)
+    this.searchWorker.postMessage(searchArgs);
+
+  this.setLoadingMessage();
+}
+
+SearchBox.prototype.setLoadingMessage = function() {
+  this.loadingTimeout = setTimeout(() => {
+    this.searchResultBox.innerHTML = '<div class="search-result loading-result">Carregando...<div class="search-result-subtitle">Isso deve demorar alguns segundos</div></div>';
+  }, 200);
 }
 
 SearchBox.prototype.addEventListeners = function() {

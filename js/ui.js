@@ -62,7 +62,11 @@ function UI() {
     state.activePlan.update();
   });
 
-  this.newPlan.addEventListener('click',e => {var plan = state.addPlan(); state.activePlan = plan; });
+  this.accordion.addEventListener('slip:swipe', e => {
+    state.activePlan.lectures[e.detail.originalIndex].delete();
+  });
+
+  this.newPlan.addEventListener('click',e => {var plan = state.addPlan(); state.activePlan = plan; this.plans.scrollLeft = this.plans.scrollWidth; });
 
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 
@@ -84,8 +88,8 @@ function UI() {
  * }</code></pre>
  */
 UI.prototype.calcPositionForTime = function(schedule) {
-  positionBegin = (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeBegin - Date.today()) / 3600000 - this.timeBegin);
-  positionEnd = 1 - (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeEnd - Date.today()) / 3600000 - this.timeBegin);
+  positionBegin = (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeBegin.getHours()*60 + schedule.timeBegin.getMinutes()) / 60 - this.timeBegin);
+  positionEnd = 1 - (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeEnd.getHours()*60 + schedule.timeEnd.getMinutes()) / 60 - this.timeBegin);
 
   return {
     'positionBegin': positionBegin,
@@ -112,6 +116,7 @@ UI.prototype.createScheduleBox = function(schedule) {
   var lecture = schedule.parent.parent;
   var scheduleBoxTreeObj = {
     tag: 'div',
+    title: `${lecture.code} - ${lecture.name}`,
     class: ['schedule-box', 'color-' + lecture.color],
     children: [{
         tag: 'span',
@@ -120,25 +125,22 @@ UI.prototype.createScheduleBox = function(schedule) {
       },
       {
         tag: 'span',
-        class: ['timespan', 'timespan-end'],
-        innerHTML: schedule.timeEnd.toString('HH:mm')
+        class: 'lecture-code',
+        innerHTML: lecture.code
       },
       {
         tag: 'span',
-        class: 'lecture-code',
-        innerHTML: lecture.code
+        class: ['timespan', 'timespan-end'],
+        innerHTML: schedule.timeEnd.toString('HH:mm')
       }
     ]
   };
 
+  var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
 
   // if the box is too small and can only fit the lecture code inside
-  if (schedule.timeEnd - schedule.timeBegin <= 3600000) {
-    scheduleBoxTreeObj.children[0].class.push('timespan-mini');
-    scheduleBoxTreeObj.children[1].class.push('timespan-mini');
-  }
-
-  var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
+  if (schedule.timeEnd - schedule.timeBegin <= 3600000)
+    Array.from(scheduleBox.getElementsByClassName('timespan')).forEach(timespan => timespan.classList.add('timespan-mini'));
 
   var timePosition = this.calcPositionForTime(schedule);
   scheduleBox.style.cssText = `top: ${timePosition.positionBegin * 100 + '%'}; 
@@ -312,7 +314,7 @@ UI.prototype.removeCombinations = function(combinations) {
 UI.prototype.scrollActiveCombinationToView = function() {
   if (this.combinationTrack.children.length === 0 || !state.activePlan) return;
   if (!state.activePlan.activeCombination) return;
-  state.activePlan.activeCombination.htmlElement.scrollIntoView();
+  this.combinationTrack.scrollLeft = state.activePlan.activeCombination.htmlElement.offsetLeft;
 }
 
 /**
@@ -472,7 +474,7 @@ UI.prototype.hideContextMenu = function() {
   }
 }
 
-UI.prototype.onPlanContextMenu = function(e, plan) {
+UI.prototype.createPlanContextMenu = function(plan, pos) {
   var menu = createHtmlElementTree({
     tag: 'div',
     class: 'context-menu',
@@ -517,6 +519,33 @@ UI.prototype.onPlanContextMenu = function(e, plan) {
       }
     ]
   });
-  this.addContextMenu(menu,{x: e.clientX, y: e.clientY});
-  e.preventDefault();
+  this.addContextMenu(menu, pos);
+}
+
+
+UI.prototype.createLectureContextMenu = function(lecture, pos) {
+  var menu = createHtmlElementTree({
+    tag: 'div',
+    class: 'context-menu',
+    children: [
+      {
+        tag: 'div',
+        innerHTML: 'Abrir no Jupiterweb',
+        class: 'context-menu-item context-divider',
+        onclick: e => {
+                      window.open(`https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=${lecture.code}`,'_blank');
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      },
+      {
+        tag: 'div',
+        innerHTML: 'Remover',
+        class: 'context-menu-item',
+        onclick: e => {lecture.delete(); 
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      }
+    ]
+  });
+  this.addContextMenu(menu, pos);
 }

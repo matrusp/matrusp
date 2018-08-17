@@ -18,6 +18,7 @@
   background: white;
   border: $border-default;
   box-shadow: $shadow-default;
+  min-width: 160px;
 
   & .context-menu-item {
     padding: 6px 8px;

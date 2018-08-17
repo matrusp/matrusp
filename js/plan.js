@@ -325,5 +325,5 @@ Plan.prototype.addEventListeners = function() {
     this.html.tabName.blur(); 
     e.preventDefault();
   });
-  this.html.tab.addEventListener('contextmenu',e => ui.onPlanContextMenu(e,this));
+  this.html.tab.addEventListener('contextmenu',e => {ui.createPlanContextMenu(this,{x: e.clientX, y: e.clientY}); e.preventDefault();});
 };
