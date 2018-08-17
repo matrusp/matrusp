@@ -21,7 +21,6 @@ dbworker.onmessage = e => {
   ui.setLoadingBar(e.data);
   if (e.data == 1) {
     searchBox.populateOptions();
-    searchBox.activate();
   }
 }
 

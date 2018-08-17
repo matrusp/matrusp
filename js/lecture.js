@@ -364,6 +364,15 @@ Lecture.prototype.unsetHighlight = function() {
   }
 };
 
+Lecture.prototype.open = function() {
+  this.htmlElement.classList.add('lecture-open');
+  this.htmlElement.scrollIntoView();
+}
+
+Lecture.prototype.close = function() {
+  this.htmlElement.classList.remove('lecture-open');
+}
+
 
 /**
  *
@@ -371,6 +380,7 @@ Lecture.prototype.unsetHighlight = function() {
 Lecture.prototype.addEventListeners = function() {
   this.htmlElement.addEventListener('mouseenter', this.setHighlight.bind(this));
   this.htmlElement.addEventListener('mouseleave', this.unsetHighlight.bind(this));
+  this.htmlElement.addEventListener('contextmenu', e => {ui.createLectureContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault();});
 
   var lectureHeader = this.htmlElement.getElementsByClassName('lecture-info-header')[0];
   lectureHeader.addEventListener('click', this.toggleLectureOpen.bind(this));

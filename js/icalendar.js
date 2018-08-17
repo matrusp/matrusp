@@ -87,25 +87,23 @@ function get_title(classroom) {
 }
 
 function build_event() {
-  var active_classes = state.plans[state.activePlanIndex].activeCombination.lecturesClassroom;
   var events_statement = "";
-  for (var i = 0; i < active_classes.length; i++) {
-    var current_schedule = active_classes[i].schedules;
-    for (var j = 0; j < current_schedule.length; j++) {
+  state.activePlan.activeCombination.classroomGroups.map(group => group[0]).forEach(classroom => {
+    classroom.schedules.forEach(schedule => {
       events_statement += "BEGIN:VEVENT\n";
-      events_statement += "DTSTART;TZID=America/Sao_Paulo:" + get_class_begin_date(active_classes[i], current_schedule[j]) + "T" + get_schedule_start_time(current_schedule[j]) + "\n";
-      events_statement += "DTEND;TZID=America/Sao_Paulo:" + get_class_begin_date(active_classes[i], current_schedule[j]) + "T" + get_schedule_end_time(current_schedule[j]) + "\n";
-      events_statement += "RRULE:FREQ=WEEKLY;UNTIL=" + get_class_end_date(active_classes[i]) + "T235959;BYDAY=" + get_week_day_string(current_schedule[j]) + "\n";
-      events_statement += "DTSTAMP:" + get_utc_current_date_and_time() + "\n";
-      events_statement += "UID:" + generate_uid(current_schedule[j]) + "\n";
+      events_statement += `DTSTART:${classroom.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString()}\n`;
+      events_statement += `DTEND:${classroom.dateBegin.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()}\n`;
+      events_statement += `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()};BYDAY=\n`;
+      events_statement += `DTSTAMP:${Date.now()}\n`;
+      events_statement += `UID:${generate_uid(schedule)}\n`;
       events_statement += "SEQUENCE:0\n";
       events_statement += "STATUS:CONFIRMED\n";
-      events_statement += "SUMMARY: Aula de " + get_title(active_classes[i]) + "\n";
-      events_statement += "DESCRIPTION: " + active_classes[i].obs + "\n";
+      events_statement += `SUMMARY: Aula de ${get_title(classroom)}\n`;
+      events_statement += `DESCRIPTION:${classroom.obs.replace(/\n/,' ')}\n`;
       events_statement += "TRANSP:OPAQUE\n";
       events_statement += "END:VEVENT\n";
-    }
-  }
+    });
+  });
   return events_statement;
 }
 

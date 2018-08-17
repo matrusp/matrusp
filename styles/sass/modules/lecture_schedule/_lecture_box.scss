@@ -3,6 +3,10 @@
   width: 100%;
   box-sizing: border-box;
   visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 
   &.schedule-box-show {
     visibility: visible;
@@ -52,10 +56,6 @@
 }
 
 .lecture-code {
-  @include center-block-vertically();
-  position: absolute;
-  width: 100%;
-  height: 14px;
   line-height: 100%;
   text-align: center;
   font-size: 14px;
@@ -68,10 +68,11 @@
 
 .timespan-begin {
   left: 2px;
+  top: 0px;
 }
 
 .timespan-end {
-  bottom: 2px;
+  bottom: 0px;
   right: 3px;
 }
 

@@ -6,7 +6,7 @@
   "description": "Gerenciador de grades USP",
   "background_color": "white",
   "lang": "pt_BR",
-  "theme_color": "#FBA71C",
+  "theme_color": "#FFA000",
   "icons": [{
     "src": "images/matrusp16.png",
     "sizes": "16x16",
