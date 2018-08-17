@@ -58,10 +58,9 @@ State.prototype = {
 
 }
 
-State.prototype.delete = function() {
-  while (this.plans.length) {
-    this.plans[0].delete();
-  }
+State.prototype.clear = function() {
+  this.plans.forEach(plan => plan.delete());
+  this.plans = [];
 }
 
 /**
@@ -99,12 +98,14 @@ State.prototype.load = function(baseState) {
       });
       return this.load(newState);
     }
-    if (!baseState.version || baseState.version < matrusp_current_state_version) {
+    if (isNaN(baseState.version) || baseState.version < matrusp_current_state_version) {
       // if the state being loaded is not updated, don't load.
       ui.showBanner('Este identificador não é mais válido.');
       return false;
     }
-    this.version = baseState.version;
+
+    this.version = matrusp_current_state_version;
+    this.clear();
 
     if(baseState.plans.length) this.plans = baseState.plans.map(basePlan => new Plan(basePlan));
     else this.plans.push(new Plan());
@@ -252,6 +253,8 @@ State.prototype.addPlan = function(planData) {
 State.prototype.removePlan = function(plan) {
   var index = this.plans.indexOf(plan);
   if(index < 0) return;
+
+  this.plans.splice(index,1);
 
   if(this.activePlan == plan) {
     this.activePlan = null;

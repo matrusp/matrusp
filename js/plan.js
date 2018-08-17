@@ -114,8 +114,6 @@ Plan.prototype.load = function(basePlan) {
 Plan.prototype.delete = function() {
   this.hidePlan();
 
-  state.plans.splice(state.plans.indexOf(this),1);
-
   this.html.tab.parentNode.removeChild(this.html.tab);
 }
 
@@ -230,6 +228,14 @@ Plan.prototype.addLecture = function(lecture) {
   else {
     lecture.available = false;
   }
+}
+
+Plan.prototype.removeLecture = function(lecture) {
+  lecture.delete();
+  this.lectures.splice(this.lectures.indexOf(lecture),1);
+  this.colors[lecture.color]--;
+
+  this.update();
 }
 
 Plan.prototype.computeCombinations = function() {
