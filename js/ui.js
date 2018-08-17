@@ -308,7 +308,7 @@ UI.prototype.addCombinations = function(combinations) {
 }
 
 UI.prototype.removeCombinations = function(combinations) {
-  combinations.forEach(combination => combination.htmlElement.parentNode.removeChild(combination.htmlElement));
+  combinations.forEach(combination => combination.htmlElement.remove());
 }
 
 UI.prototype.scrollActiveCombinationToView = function() {
@@ -356,11 +356,11 @@ UI.prototype.addLectures = function(lectures) {
  */
 UI.prototype.removeLectures = function(lectures) {
   lectures.forEach(lecture => {
-    lecture.htmlElement.parentNode.removeChild(lecture.htmlElement);
+    lecture.htmlElement.remove();
 
     lecture.classrooms.forEach(classroom => {
       classroom.schedules.forEach(schedule => {
-          schedule.htmlElement.parentNode.removeChild(schedule.htmlElement)
+          schedule.htmlElement.remove();
       });
     });
   });

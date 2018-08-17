@@ -196,21 +196,11 @@ Lecture.prototype.disableCheckbox = function() {
 /**
  *
  */
-// TODO colocar um parametro shouldUpdate. Nao updatar quando clearing o plano.
 Lecture.prototype.delete = function() {
   for (var i = 0; i < this.classrooms.length; i++) {
     this.classrooms[i].delete();
   }
-  this.htmlElement.parentNode.removeChild(this.htmlElement);
-
-  // All htmlElements removed, now remove itself from the plan and
-  // update it.
-  var indexOnParent = this.parent.lectures.indexOf(this);
-  this.parent.lectures.splice(indexOnParent, 1);
-
-  this.parent.colors[this.color]--;
-
-  this.parent.update();
+  this.htmlElement.remove();
 }
 
 /**
@@ -386,7 +376,7 @@ Lecture.prototype.addEventListeners = function() {
   lectureHeader.addEventListener('click', this.toggleLectureOpen.bind(this));
   
   var lectureHeaderDelete = this.htmlElement.getElementsByClassName('lecture-info-delete')[0];
-  lectureHeaderDelete.addEventListener('click', this.delete.bind(this));
+  lectureHeaderDelete.addEventListener('click', e => {this.parent.removeLecture(this)});
 
   this.htmlLectureCheckbox.addEventListener('click', this.toggleLectureSelection.bind(this));
 
