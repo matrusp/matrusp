@@ -269,11 +269,13 @@ UI.prototype.createLectureInfo = function(lecture) {
 }
 
 UI.prototype.createCombinationBoard = function(combination) {
+  var scale = window.devicePixelRatio;
+
   var combinationBoardTreeObj = {
     tag: 'canvas',
     class: 'combination',
-    width: 100,
-    height: 100
+    width: 100 * scale,
+    height: 100 * scale
   };
 
   var combinationBoard = createHtmlElementTree(combinationBoardTreeObj);
@@ -292,9 +294,9 @@ UI.prototype.createCombinationBoard = function(combination) {
 
       var color = this.colors[classroom.parent.color];
       ctx.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2]}%)`;
-      ctx.fillRect(boxLeft, boxTop, (100/this.dayEnd) - 2, boxHeight);
+      ctx.fillRect(boxLeft * scale, boxTop * scale, ((100/this.dayEnd) - 2) * scale, boxHeight * scale);
       ctx.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2] - 25}%)`;
-      ctx.fillRect(boxLeft, boxTop, 2, boxHeight);
+      ctx.fillRect(boxLeft * scale, boxTop * scale, 2 * scale, boxHeight * scale);
     });
   });
 
