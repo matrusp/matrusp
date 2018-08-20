@@ -98,12 +98,22 @@ Plan.prototype.load = function(basePlan) {
           classroom.toggleClassroomSelection(true);
       });
       return lecture;
-
     });
     Promise.all(lecturePromises).then(lectures => {
       lectures = lectures.filter(el => el);
       this.lectures = lectures;
-      this.update();
+
+      if(basePlan.combinations)
+        this.combinations = basePlan.combinations.map(baseCombination => new Combination(
+          baseCombination.map(baseGroup => 
+            this.lectures.find(lecture => lecture.code == baseGroup.lecture).classrooms.filter(classroom => 
+              baseGroup.classrooms.find(baseClassroom => classroom.code == baseClassroom)
+            )
+          ), this)
+        );
+      else this.update();
+      if(state.activePlan == this) this.showPlan();
+      this.activeCombinationIndex = basePlan.activeCombinationIndex;
     });
   }
   else {
@@ -312,6 +322,11 @@ Plan.prototype.serialize = function() {
 
     return lectureData;
   });
+
+  planData.combinations = this.combinations.map(combination => 
+    combination.classroomGroups.map(group => ({'lecture': group[0].parent.code, 'classrooms': group.map(classroom => classroom.code)}))
+  );
+
   return planData;
 }
 
