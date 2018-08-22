@@ -1,5 +1,3 @@
-document.getElementById('ics').addEventListener('click', download_icalendar);
-
 var header_statement = 'BEGIN:VCALENDAR\n' +
   'PRODID:-\n' +
   'VERSION:2.0\n';
@@ -109,7 +107,7 @@ function build_event() {
 
 function download_icalendar() {
   if (state.plans[state.activePlanIndex].activeCombination == null) {
-    alert("Insira uma ou mais matérias antes exportar para um arquivo ics");
+    ui.showBanner("Insira uma ou mais matérias antes exportar para um arquivo ics");
     return;
   }
   var element = document.createElement('a');

@@ -6,7 +6,7 @@ self.CURDirs = [
   "/",
   "/matrusp.webmanifest",
   "/js/.+",
-  "/styles/css/application.css",
+  "/styles/.+",
   "/images/.+"
   ].map(dir => new RegExp(`^${self.location.origin}.+${dir}$`));
 

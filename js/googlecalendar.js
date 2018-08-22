@@ -1,5 +1,3 @@
-document.getElementById('google').addEventListener('click', handleAuthClick);
-
 var CLIENT_ID = '430560648406-l8kpb80sv6ujde9snivv6rp4o9r8v48a.apps.googleusercontent.com';
 var SCOPES = ["https://www.googleapis.com/auth/calendar"];
 var immediate = false;

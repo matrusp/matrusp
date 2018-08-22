@@ -12,9 +12,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta property="og:title" content="MatrUSP" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://bcc.ime.usp.br/matrusp" />
-    <meta property="og:image" content="http://bcc.ime.usp.br/matrusp/matrusp.jpg" />
+    <meta property="og:url" content="https://bcc.ime.usp.br/matrusp" />
+    <meta property="og:image" content="https://bcc.ime.usp.br/matrusp/matrusp.jpg" />
     <meta property="og:site_name" content="MatrUSP" />
+    <meta property="og:description" content="Crie e organize sua grade curricular de disciplinas da Universidade de São Paulo" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#FFA000" />
     <title>MatrUSP</title>
@@ -28,7 +29,8 @@
     <link rel="icon" type="image/png" sizes="128x128" href="images/matrusp128.png">
     <link rel="icon" type="image/png" sizes="192x192" href="images/matrusp192.png">
     <link rel="manifest" href="matrusp.webmanifest">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:light,regular,medium,bold" rel="stylesheet">
+    <link rel="stylesheet" href="styles/css/roboto.css">
+    <link rel="stylesheet" href="styles/css/icons.css">
     <link rel="stylesheet" href="styles/css/application.css">
 </head>
 
@@ -37,21 +39,33 @@
 		<span>Solte o arquivo para carregar</span>
     </div>
     <div id="menu-overlay"></div>
-	<div id="dialog-overlay">
-		<form id="course-dialog" class="dialog">
-    	<button type="button" class="close-button" id="course-window-close">×</button>
-		<label id="course-campus-select-label" class="select-label"><div>Campus</div>
-		<select name="campus" id="course-campus-select"></select></label>
-		<label id="course-unit-select-label" class="select-label"><div>Unidade</div>
-		<select name="unit" id="course-unit-select"></select></label>
-		<label id="course-select-label" class="select-label"><select name="course" id="course-select" disabled></select>
-		<div>Curso</div></label>
-		<label id="course-period-select-label" class="select-label"><select name="period" id="course-period-select" disabled></select>
-		<div>Período</div></label>
-		<div id="course-lecture-list"></div>
-		<label id="course-optative-check-label"><input id="course-optative-check" type="checkbox" name="optativas" checked>Incluir optativas</label>
-		<button type="button" id="course-accept-button">Aceitar</button>
+	<div id="dialog-overlay" onclick="ui.closeDialog()">
+		<form id="course-dialog" class="dialog" onclick="event.stopPropagation()">
+			<button type="button" class="close-button" id="course-window-close" onclick="ui.closeDialog()">×</button>
+			<label id="course-campus-select-label" class="select-label"><div>Campus</div>
+			<select name="campus" id="course-campus-select"></select></label>
+			<label id="course-unit-select-label" class="select-label"><div>Unidade</div>
+			<select name="unit" id="course-unit-select"></select></label>
+			<label id="course-select-label" class="select-label"><select name="course" id="course-select" disabled></select>
+			<div>Curso</div></label>
+			<label id="course-period-select-label" class="select-label"><select name="period" id="course-period-select" disabled></select>
+			<div>Período</div></label>
+			<div id="course-lecture-list"></div>
+			<label id="course-optative-check-label"><input id="course-optative-check" type="checkbox" name="optativas" checked>Incluir optativas</label>
+			<button type="button" id="course-accept-button">Aceitar</button>
 		</form>
+		<div id="share-dialog" class="dialog" onclick="event.stopPropagation()">
+			<button type="button" class="close-button" id="share-dialog-close" onclick="ui.closeDialog()">×</button>
+			<label><div>Seu link para compartilhar</div>
+			<div id="share-link-wrapper">
+			<input id="share-link" type="text" onfocus="this.select()" readonly value="https://bcc.ime.usp.br/matrusp/#identifier"/></label><button id="share-clipboard" class="far fa-clone"></button></div>
+			<div><button id="share-mail" class="fas fa-envelope"></button><button id="share-facebook" class="fab fa-facebook"></button><button id="share-whatsapp" class="fab fa-whatsapp"></button></div>
+			<div id="share-calendar">
+			<button id="share-gcal"><span class="fas fa-calendar-alt"></span> Enviar para Google Calendar</button><br/>
+			<button id="share-ics"><span class="fas fa-calendar-alt"></span> Baixar calendário .ics</button><br />
+			<button id="share-download"><span class="fas fa-download"></span> Baixar grade</button>
+			</div>
+		</div>
 	</div>
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
@@ -69,32 +83,20 @@
 	<button id='save-button'>Salvar</button>
 	<button id='load-button'>Carregar</button>
     </div>
-    <ul id="icons">
-	<li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
+    <div id="icons">
+	<!--<li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
 	    <div class="hover-mask"></div>
 	    <img src="images/ic_calendar.png" alt="">
 	    <ul class="onclick-menu-content">
 		<li><button id="google">Exportar para o calendário do Google</button></li>
 		<li><button id="ics">Exportar para arquivo .ics</button></li>
 	    </ul>
-	</li>
-	<li class="icon" id="pdf" data-description="Imprimir">
-	    <div class="hover-mask"></div>
-	    <img src="images/ic_print.png" alt="">
-	</li>
-	<li class="icon" id="email" data-description="Enviar por E-mail" onclick='ui.createIdentifierOnServer();'>
-	    <div class="hover-mask"></div>
-	    <img src="images/ic_email.png" alt="">
-	</li>
-	<li class="icon" id="fbshare" data-description="Compartilhar pelo Facebook">
-	    <div class="hover-mask"></div>
-	    <img src="images/ic_facebook.png" alt="">
-	</li>
-	<li class="icon" id="download" data-description="Fazer download">
-	    <div class="hover-mask"></div>
-	    <img src="images/ic_download.png" alt="">
-	</li>
-    </ul>
+	</li>-->
+	<button class="fas fa-share" id="share" title="Compartilhar" onclick='ui.openShareDialog();'>
+	</button>
+	<button class="fas fa-print" id="pdf" title="Imprimir" onclick='ui.openPrintDialog();'>
+	</button>
+    </div>
     </div>
     <div id="loading-bar"></div>
     <div id="msg-banner" class="">
@@ -214,6 +216,7 @@
     <script type="text/javascript" src="js/date-pt-BR.js" defer></script>
     <script type="text/javascript" src="js/ui.js" defer></script>
     <script type="text/javascript" src="js/search_box.js" defer></script>
+    <script type="text/javascript" src="js/share.js" defer></script>
     <script type="text/javascript" src="js/courses.js" defer></script>
     <script type="text/javascript" src="js/schedule.js" defer></script>
     <script type="text/javascript" src="js/classroom.js" defer></script>
