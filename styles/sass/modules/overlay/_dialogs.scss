@@ -23,6 +23,9 @@
 }
 
 .dialog {
+    display: none;
+    flex: 0 0 420px;
+
     background: white;
     box-shadow: $shadow-default;
 
@@ -36,6 +39,10 @@
     padding: 16px;
     padding-top: 24px;
 
+    &.show {
+        display: block;
+    }
+
     & button.close-button {
         position: absolute;
         right: 0;
@@ -48,9 +55,19 @@
         width: 24px;
         height: 24px;
         padding: 0;
+
+        &:hover {
+            color: $color-accent;
+            background: $hover-background-default;
+        }
+
+        &:active {
+            color: darken($color-accent, 10);
+            background: $active-background-default;
+        }
     }
 
-    & button {
+    & button.dialog-button {
         color: $color-accent;
         text-transform: uppercase;
         border: none;

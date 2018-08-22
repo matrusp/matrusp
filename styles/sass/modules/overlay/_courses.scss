@@ -1,5 +1,8 @@
 #course-dialog {
-    display: grid;
+    &.show {
+        display: grid;
+    }
+
     grid-template-columns: 1.5fr 1fr 1fr 1fr;
     grid-gap: 12px;
 

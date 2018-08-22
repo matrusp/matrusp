@@ -17,6 +17,10 @@ function UI() {
   this.plans = document.getElementById('plans');
   this.newPlan = document.getElementById('new-plan');
   this.menuOverlay = document.getElementById('menu-overlay');
+  this.dialogOverlay = document.getElementById('dialog-overlay');
+  this.courseDialog = document.getElementById('course-dialog');
+  this.shareDialog = document.getElementById('share-dialog');
+  this.printDialog = document.getElementById('print-dialog');
 
   // This comes from the SASS theme file
   //TODO: find better way to sync this
@@ -532,7 +536,7 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
     children: [
       {
         tag: 'div',
-        innerHTML: 'Abrir no Jupiterweb',
+        innerHTML: 'Abrir no Jupiterweb <span class="fas fa-external-link-alt"></span>',
         class: 'context-menu-item context-divider',
         onclick: e => {
                       window.open(`https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=${lecture.code}`,'_blank');
@@ -550,4 +554,24 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
     ]
   });
   this.addContextMenu(menu, pos);
+}
+
+UI.prototype.openCourseDialog = function() {
+  this.dialogOverlay.classList.add('show');
+  this.courseDialog.classList.add('show');
+  this.openDialog = this.courseDialog;
+}
+
+UI.prototype.openShareDialog = function() {
+  this.dialogOverlay.classList.add('show');
+  this.shareDialog.classList.add('show');
+  this.openDialog = this.shareDialog;
+}
+
+UI.prototype.closeDialog = function() {
+  if(!this.openDialog) return;
+
+  this.dialogOverlay.classList.remove('show');
+  this.openDialog.classList.remove('show');
+  this.openDialog = null;
 }

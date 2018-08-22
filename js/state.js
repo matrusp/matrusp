@@ -165,7 +165,6 @@ State.prototype.downloadFile = function() {
 State.prototype.addEventListeners = function() {
   this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
   this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
-  this.html.download.addEventListener('click', this.downloadFile.bind(this));
   this.html.save.addEventListener('click', () => this.saveOnServer(this.html.identifier.value));
   this.html.load.addEventListener('click', () => this.loadFromServer(this.html.identifier.value));
 };

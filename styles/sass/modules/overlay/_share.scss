@@ -1,0 +1,56 @@
+#share-dialog {
+  #share-link-wrapper {
+    width: 320px;
+    max-width: 100%;
+    display: flex;
+
+    #share-link {
+      height: 22px;
+      flex: 1 0 0;
+    }
+  }
+
+  #share-clipboard {
+    padding: 0 8px;
+    vertical-align: middle;
+  }
+
+  #share-calendar {
+    margin-top: 12px;
+  }
+
+  button {
+    &.fas, &.fab, &.far {
+      color: gray;
+      transition: color .1s ease;
+
+      &:hover {
+        color: $color-accent;
+      }
+
+      &:active {
+        color: darken($color-accent,10);
+      }
+
+      &.fa-facebook {
+        &:hover {
+          color: #3B5998;
+        }
+
+        &:active {
+          color: darken(#3B5998, 10);
+        }
+      }
+
+      &.fa-whatsapp {
+        &:hover {
+          color: #25d366;
+        }
+
+        &:active {
+          color: darken(#25d366, 10);
+        }
+      }
+    }
+  }
+}

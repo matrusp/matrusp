@@ -10,12 +10,14 @@ var dbworker = new Worker("js/dbupdate.js");
 var state;
 var searchBox;
 var courseBox;
+var shareBox;
 var matrusp_current_state_version = 7;
 
 state = new State();
 ui = new UI();
 searchBox = new SearchBox();
 courseBox = new CourseBox();
+shareBox = new ShareBox();
 
 dbworker.onmessage = e => {
   ui.setLoadingBar(e.data);

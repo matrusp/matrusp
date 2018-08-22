@@ -91,6 +91,19 @@ button {
         }
     }
 
+    &.fas, &.fab, &.far {
+        font-size: 18px;
+        color: white;
+        transition: color .1s ease;
+        padding: 8px 12px;
+        min-width: 0;
+
+        &:hover {
+            color: $color-accent;
+            background: transparent;
+        }
+    }
+
     &.small-button, &.close-button {
         min-width: 0;
         padding: 2px;

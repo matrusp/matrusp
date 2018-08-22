@@ -4,9 +4,8 @@
  * @constructor
  */
 function CourseBox() {
-  document.getElementById('course-button').addEventListener('click', e => this.showCoursesWindow());
+  document.getElementById('course-button').addEventListener('click', e => ui.openCourseDialog());
 
-  this.overlay = document.getElementById('dialog-overlay');
   this.dialog = document.getElementById('course-dialog');
   this.closeButton = document.getElementById('course-window-close');
   this.campusSelect = document.getElementById('course-campus-select');
@@ -16,10 +15,6 @@ function CourseBox() {
   this.lectureList = document.getElementById('course-lecture-list');
   this.acceptButton = document.getElementById('course-accept-button');
   this.optativeCheck = document.getElementById('course-optative-check');
-
-  this.overlay.addEventListener('click', e => { this.hideCoursesWindow(); });
-  this.closeButton.addEventListener('click', e => { this.hideCoursesWindow(); });
-  this.dialog.addEventListener('click', e => {e.stopPropagation();});
 
   this.populateCampusSelect().then(() => this.campusChanged());
 
@@ -47,7 +42,7 @@ function CourseBox() {
       var plan = state.addPlan(planData);
       state.activePlan = plan;
     });
-    this.overlay.classList.remove('show');
+    ui.closeDialog();
   });
 }
 
@@ -169,12 +164,4 @@ CourseBox.prototype.periodChanged = function(e) {
           this.lectureList.innerHTML = "Nenhuma disciplina com oferecimento foi encontrada";
         }
     });
-}
-
-CourseBox.prototype.showCoursesWindow = function() {
-  this.overlay.classList.add('show');
-}
-
-CourseBox.prototype.hideCoursesWindow = function() {
-  this.overlay.classList.remove('show');
 }
