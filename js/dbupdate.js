@@ -1,4 +1,4 @@
-self.importScripts("dexie.min.js");
+self.importScripts("libs/dexie.min.js");
 self.importScripts("dbhelpers.js");
 
 
