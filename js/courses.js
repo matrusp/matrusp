@@ -142,26 +142,45 @@ CourseBox.prototype.courseChanged = async function(e) {
   return this.periodChanged(e);
 }
 
-CourseBox.prototype.periodChanged = function(e) {
+CourseBox.prototype.periodChanged = async function(e) {
     var fragment = document.createDocumentFragment();
-    Promise.all(this.selectedCourse.periodos[this.periodSelect.value].map(async lectureInfo => {
-      var lecture = await matruspDB.lectures.get(lectureInfo.codigo);
-      if(lecture)
-          return createAndAppendChild(fragment, 'div', {
-            'innerHTML': `${lecture.codigo} - ${lecture.nome}` + 
-              ((lecture.turmas.length) ? '' : ' (sem oferecimento)') +
-              ((lectureInfo.tipo == 'optativa_livre')? ' (optativa livre)': '') + 
-              ((lectureInfo.tipo == 'optativa_eletiva')? ' (optativa eletiva)': ''),
-            'class': ((lectureInfo.tipo != "obrigatoria")? 'optative' + 
-             ((this.optativeCheck.checked)? '' : ' optDisabled') : '')
-          });
-    })).then(all => {
-        if(all.some(el => el)) {
-          this.lectureList.innerHTML = "";
-          this.lectureList.appendChild(fragment);
-        }
-        else {
-          this.lectureList.innerHTML = "Nenhuma disciplina com oferecimento foi encontrada";
-        }
+    createAndAppendChild(fragment, 'div', {
+      'innerHTML': 'Obrigatórias',
+      'class': 'course-lecture-type'
     });
+    await this.appendLectures(fragment, this.selectedCourse.periodos[this.periodSelect.value].filter(lectureInfo => lectureInfo.tipo == 'obrigatoria'));
+
+    createAndAppendChild(fragment, 'div', {
+      'innerHTML': 'Optativas',
+      'class': 'course-lecture-type'
+    });
+    await this.appendLectures(fragment, this.selectedCourse.periodos[this.periodSelect.value].filter(lectureInfo => lectureInfo.tipo != 'obrigatoria'));
+    this.lectureList.innerHTML = '';
+    this.lectureList.append(fragment);
+}
+
+CourseBox.prototype.appendLectures = async function(parent, lectures) {
+  var fragment = document.createDocumentFragment();
+  return await Promise.all(lectures.map(async lectureInfo => {
+    var lecture = await matruspDB.lectures.get(lectureInfo.codigo);
+    if(lecture)
+        return createAndAppendChild(fragment, 'div', {
+          'innerHTML': `${lecture.codigo} - ${lecture.nome}` + 
+            ((lecture.turmas.length) ? '' : ' (sem oferecimento)') +
+            ((lectureInfo.tipo == 'optativa_livre')? ' (optativa livre)': '') + 
+            ((lectureInfo.tipo == 'optativa_eletiva')? ' (optativa eletiva)': ''),
+          'class': ((lectureInfo.tipo != "obrigatoria")? 'optative' + 
+           ((this.optativeCheck.checked)? '' : ' optDisabled') : '')
+        });
+  })).then(all => {
+      if(all.some(el => el)) {
+        parent.appendChild(fragment);
+      }
+      else {
+        createAndAppendChild(fragment, 'div', {
+          'innerHTML': 'Nenhuma disciplina deste tipo'
+        });
+        parent.appendChild(fragment);
+      }
+  });
 }
