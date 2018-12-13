@@ -179,7 +179,7 @@ CourseBox.prototype.appendLectures = async function(parent, lectures) {
             ((lecture.turmas.length) ? '' : ' (sem oferecimento)') +
             ((lectureInfo.tipo == 'optativa_livre')? ' (optativa livre)': '') + 
             ((lectureInfo.tipo == 'optativa_eletiva')? ' (optativa eletiva)': ''),
-          'class': 'course-lecture' + ((lectureInfo.tipo != "obrigatoria")? 'course-lecture-optative' + 
+          'class': 'course-lecture' + ((lectureInfo.tipo != "obrigatoria")? ' course-lecture-optative' + 
            ((this.optativeCheck.checked)? '' : ' course-lecture-disabled') : '')
         });
   })).then(all => {
