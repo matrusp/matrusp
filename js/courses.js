@@ -19,11 +19,11 @@ function CourseBox() {
   this.populateCampusSelect().then(() => this.campusChanged());
 
   this.optativeCheck.addEventListener('change', e => {
-    [...this.dialog.getElementsByClassName('optative')].forEach(opt => {
+    [...this.dialog.getElementsByClassName('course-lecture-optative')].forEach(opt => {
       if(this.optativeCheck.checked)
-        opt.classList.remove('optDisabled');
+        opt.classList.remove('course-lecture-disabled');
       else
-        opt.classList.add('optDisabled');
+        opt.classList.add('course-lecture-disabled');
     })
   });
 
@@ -96,7 +96,12 @@ CourseBox.prototype.populateCourseSelect = async function(unit) {
       'value': course.codigo,
       'innerHTML': course.nome
     }));
-    this.courseSelect.disabled = false;
+    if(courses.length)
+      this.courseSelect.disabled = false;
+    else {
+      createAndAppendChild(fragment, 'option', {'value': null, 'innerHTML': 'Nenhum curso disponível'});
+      this.courseSelect.disabled = true;
+    }
   } else {
     this.courseSelect.disabled = true;
   }
@@ -108,7 +113,7 @@ CourseBox.prototype.populateCourseSelect = async function(unit) {
 /**
  * Populates the course period dropbox with periods from the selected course
  */
-CourseBox.prototype.populatePeriodSelect = async function(course) {
+CourseBox.prototype.populatePeriodSelect = async function(course) { 
   var fragment = document.createDocumentFragment()
   if(course) {
     var periods = Object.keys(course.periodos);
@@ -143,6 +148,11 @@ CourseBox.prototype.courseChanged = async function(e) {
 }
 
 CourseBox.prototype.periodChanged = async function(e) {
+    if(!this.selectedCourse || !this.periodSelect.value) {
+        this.lectureList.innerHTML = '';
+        return;
+    }
+
     var fragment = document.createDocumentFragment();
     createAndAppendChild(fragment, 'div', {
       'innerHTML': 'Obrigatórias',
@@ -169,8 +179,8 @@ CourseBox.prototype.appendLectures = async function(parent, lectures) {
             ((lecture.turmas.length) ? '' : ' (sem oferecimento)') +
             ((lectureInfo.tipo == 'optativa_livre')? ' (optativa livre)': '') + 
             ((lectureInfo.tipo == 'optativa_eletiva')? ' (optativa eletiva)': ''),
-          'class': ((lectureInfo.tipo != "obrigatoria")? 'optative' + 
-           ((this.optativeCheck.checked)? '' : ' optDisabled') : '')
+          'class': 'course-lecture' + ((lectureInfo.tipo != "obrigatoria")? 'course-lecture-optative' + 
+           ((this.optativeCheck.checked)? '' : ' course-lecture-disabled') : '')
         });
   })).then(all => {
       if(all.some(el => el)) {
@@ -178,6 +188,7 @@ CourseBox.prototype.appendLectures = async function(parent, lectures) {
       }
       else {
         createAndAppendChild(fragment, 'div', {
+          'class': 'course-no-lectures',
           'innerHTML': 'Nenhuma disciplina deste tipo'
         });
         parent.appendChild(fragment);

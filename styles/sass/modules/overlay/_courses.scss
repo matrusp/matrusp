@@ -9,19 +9,14 @@
     user-select: none;
     width: 400px;
 
-        & label {
+        label {
             display: block;
             color: #333;
             text-align: center;
         }
 
-        & select {
+        select {
             width: 100%;
-        }
-
-        & .optative.optDisabled {
-            color: gray;
-            text-decoration: line-through;
         }
 }
 
@@ -48,6 +43,29 @@
 #course-lecture-list {
     grid-row: 3;
     grid-column: 1/5;
+
+
+    .course-lecture-type {
+        color: darkgray;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: Roboto,tahoma,helvetica;
+        font-size: 12px;
+        margin-top: 8px;
+        margin-bottom: 2px;
+    }
+
+    .course-no-lectures {
+        color: gray;
+    }
+
+    .course-lecture {
+        
+        &.course-lecture-disabled {
+            color: gray;
+            text-decoration: line-through;
+        }
+    }
 }
 
 #course-plan-erase-warning {
