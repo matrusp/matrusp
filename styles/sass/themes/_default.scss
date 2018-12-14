@@ -113,3 +113,11 @@ button {
         font-weight: lighter;
     }
 }
+
+a {
+    color: darkgray;
+
+    &:hover {
+        color: $color-accent;
+    }
+}

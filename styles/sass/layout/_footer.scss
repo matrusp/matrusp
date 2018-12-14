@@ -17,17 +17,22 @@
 
 footer {
   width: 100%;
-  height: $footer-height;
-  bottom: 0;
-  position: relative;
+  padding: 4px 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 12px;
 
-  >span {
-    margin: 10px 15px;
-    &:nth-child(1) {
-      float: left;
-    }
-    &:nth-child(2) {
-      float: right;
-    }
+
+  #footer-links {
+    flex: 1 0 auto;
+  }
+
+  #github-buttons {
+    flex: 0 0 auto;
+  }
+
+  .fb-like {
+    flex: 0 0 100%;
   }
 }
