@@ -45,6 +45,8 @@ State.prototype = {
     if(plan)
       this._activePlan.showPlan();
 
+    ui.scrollActivePlanTabToView();
+
     this.saveOnLocalStorage();
   },
 
@@ -276,5 +278,5 @@ State.prototype.removePlan = function(plan) {
 }
 
 State.prototype.copyPlan = function(plan) {
-  this.addPlan(plan.serialize());
+  return this.addPlan(plan.serialize());
 }

@@ -456,6 +456,13 @@ UI.prototype.createPlanTab = function(plan) {
   return this.plans.insertBefore(el,this.newPlan);
 }
 
+
+
+UI.prototype.scrollActivePlanTabToView = function() {
+  if (!state.activePlan) return;
+  this.plans.scrollLeft = state.activePlan.html.tab.offsetLeft;
+}
+
 UI.prototype.addContextMenu = function(menu, position) {
   if(this.menu) {
     this.menuOverlay.removeChild(this.menu);
@@ -497,7 +504,9 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
         tag: 'div',
         innerHTML: 'Duplicar plano',
         class: 'context-menu-item context-divider',
-        onclick: e => {state.copyPlan(plan);}
+        onclick: e => {state.activePlan = state.copyPlan(plan);
+                       this.hideContextMenu();
+                       e.preventDefault;}
       },
       {
         tag: 'div',
