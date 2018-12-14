@@ -29,12 +29,14 @@
 html, body {
     width: 100%;
     min-width: $page-min-width;
+    height: 100%;
 }
 
 body {
     overflow: auto;
     background: $header-color-background;
-    
+    display: flex;
+    flex-direction: column;
 }
 
 #main {
@@ -42,10 +44,16 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 
+	flex: 1 0 auto;
+
 	margin: auto;
 	max-width: $page-max-width;
     min-width: $page-min-width;
     z-index: 0;
+}
+
+footer {
+	flex: 0 0 auto;
 }
 
 .flex-spacer {
