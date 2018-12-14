@@ -17,22 +17,27 @@
 
 footer {
   width: 100%;
-  padding: 4px 5%;
+  padding: 4px 10%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: 12px;
-
+  margin-top: 24px;
+  align-items: flex-end;
+  justify-content: space-around;
 
   #footer-links {
     flex: 1 0 auto;
+    margin: 12px 0;
   }
 
   #github-buttons {
     flex: 0 0 auto;
+    text-align: right;
+    margin: 8px;
   }
 
-  .fb-like {
-    flex: 0 0 100%;
+  .fb-page {
+    flex: 0 0 auto;
+    margin: 8px;
   }
 }
