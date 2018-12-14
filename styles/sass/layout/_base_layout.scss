@@ -37,6 +37,7 @@ body {
     background: $header-color-background;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 #main {
@@ -46,9 +47,9 @@ body {
 
 	flex: 1 0 auto;
 
-	margin: auto;
 	max-width: $page-max-width;
     min-width: $page-min-width;
+    width: 100%;
     z-index: 0;
 }
 
