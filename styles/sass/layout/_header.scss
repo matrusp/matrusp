@@ -66,9 +66,16 @@ header {
     flex: 0 0 auto;
 }
 
-.beta-tag {
-    color: $header-color-symbols;
-    font-weight: lighter;
+.beta-tag-wrapper {
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;
+	.beta-tag {
+		color: $header-color-symbols;
+		font-weight: lighter;
+		animation: slidefromleft 1s ease 2s backwards;
+		display: inline-block;
+	}
 }
 
 #icons {
