@@ -38,154 +38,188 @@
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
-}
 
-// TODO compare these properties with those inside "_base_lecture_info.scss"
-.lecture-info {
-  position: relative;
-  width: 100%;
-  padding: 1px;
-  user-select: none;
-  cursor: default;
+  .lecture-info {
+    padding: 4px 0;
+    position: relative;
+    user-select: none;
+    cursor: default;
 
-  &.slip-reordering {
-    box-shadow: $shadow-default;
-  }
-}
-
-.lecture-info-header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-}
-
-.lecture-info-checkbox {
-  flex: 0 0 $width-lecture-checkbox;
-}
-
-.classrooms-header-checkbox,
-.classroom-info-checkbox {
-  width: $width-lecture-checkbox;
-}
-
-// This is here as a decision to abandon this functionality
-// but it can be of use later on.
-.classrooms-header-checkbox {
-  visibility: hidden;
-}
-
-.lecture-info-delete {
-  position: relative;
-  flex: 0 0 $width-lecture-delete;
-
-  >img {
-    @include center-block-horizontally();
-    @include center-block-vertically();
-    position: absolute;
-    width: $width-icon-delete;
-    opacity: 0.3;
-  }
-}
-
-.lecture-classrooms {
-  position: relative;
-  height: 0px;
-  overflow: hidden;
-  background-color: $white;
-  cursor: default;
-  //transition: height .4s;
-  
-  >.classrooms-header {
-    padding-top: 6px;
-    padding-bottom: 6px;
-  }
-  
-  >.classroom-info {
-    display: block;
-    padding-top: 4px;
-    padding-bottom: 7px;
-  }
-  
-  >.classrooms-header,
-  >.classroom-info {
-    &:not(:last-child) {
-      border-bottom: 1px solid;
+    &.slip-reordering {
+      box-shadow: $shadow-default;
     }
+     
+    .lecture-info-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      grid-row-gap: 1px;
+      padding: 4px 0;
 
-    .classroom-code,
-    .classroom-teacher,
-    .classroom-toggle {
-      display: inline-block;
-      vertical-align: middle;
-    }
+        * {
+          grid-column: 2;
+        }
 
-    .classroom-code {
-      // TODO change to variable
-      width: 40px;
-      text-align: center;
-      // TODO change to variable
-      margin: 0 10px;
-    }
+        .lecture-info-checkbox {
+          grid-row: 1/3;
+          grid-column: 1;
 
-    .classroom-teacher {
-      width: calc(100% - #{$width-lecture-code} - #{$width-lecture-delete})
-    }
+          width: $width-lecture-checkbox;
+          margin: 0;
+        }
 
-    .classroom-toggle {
-      position: relative;
-      // TODO change to variable
-      left: 2px;
-    }
-  }
-}
+        .lecture-info-delete {
+          grid-row: 1/3;
+          grid-column: 3;
 
-.lecture-info-name {
-  flex: 1 1 auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 4px 8px;
-}
+          width: $width-lecture-delete;
+          position: relative;
 
-.lecture-info-code {
-  flex: 0 0 auto;
-  padding: 4px;
-  text-align: center;
-}
+          >img {
+            @include center-block-horizontally();
+            @include center-block-vertically();
+            position: absolute;
+            width: $width-icon-delete;
+            opacity: 0.3;
+          }
+        }
 
-.lecture-open {
-  >.lecture-classrooms {
-    height: auto;
-  }
+        .lecture-info-code {
+          font-size: 14px;
+          text-align: left;
+        }
 
-  .lecture-info-name {
-    white-space: normal;
-    height: auto;
-    line-height: normal;
-  }
-}
+        .lecture-info-name {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 13px;
+        }
+      }
+    
+    .lecture-info-description {
+      padding: 4px $width-lecture-checkbox;
+      display: none;
 
-.lecture-classrooms {
-  >.classroom-info {
-    >.classroom-code,
-    >.classroom-teacher {
-      opacity: 0.4;
-    }
+      .lecture-info-credits {
+        margin-top: 8px;
+        .lecture-info-credits-header {
+          display: inline;
+          vertical-align: top;
+          font-weight: 500;
+        }
 
-    &:hover {
-      >.classroom-code,
-      >.classroom-teacher {
-        opacity: 0.6;
+        .lecture-info-credits-content {
+          display: inline-block;
+        }
       }
     }
-  }
 
-  >.classroom-selected,
-  >.classroom-selected:hover {
-    >.classroom-code,
-    >.classroom-teacher {
-      opacity: 1;
+    .lecture-classrooms {
+      position: relative;
+      display: none;
+      overflow: hidden;
+      cursor: default;
+      padding: 4px $width-lecture-checkbox;
+
+      .classrooms-header {
+        padding-bottom: 2px;
+        border-bottom: 1px solid;
+        font-weight: 500;
+      }
+
+      .classroom-info {
+         padding: 4px 0;
+
+        .classroom-info-header {
+          display: flex;
+          align-items: center;
+
+          .classroom-info-checkbox {
+            flex: 0 0 auto;
+            width: $width-lecture-checkbox;
+            margin: 0;
+          }
+
+          .classroom-code {
+            flex: 0 0 auto;
+          }
+
+          .classroom-teacher {
+            flex: 1 0 auto;
+            padding: 0 8px;
+          }
+
+          .classroom-vacancies-summary {
+            flex: 0 0 auto;
+          }
+        }
+
+        .classroom-info-schedules {
+          margin-left: $width-lecture-checkbox;
+          font-weight: lighter;
+        }
+        
+        .classroom-info-vacancies {
+          display: none;
+          margin-top: 8px;
+          width: 100%;
+          padding-left: $width-lecture-checkbox;
+          border-bottom: 1px solid;
+
+          th {
+            font-weight: 500;
+          }
+          
+          td, th {
+            text-align: center;
+
+            &:first-child{
+              width: 100%;
+              text-align: left;
+            }
+          }
+          
+          .classroom-vacancy:not(.classroom-vacancy-group) {
+            td { 
+              padding-top: 4px;
+            }
+          }
+
+          .classroom-vacancy-group {
+            font-weight: lighter;
+            border-top: none;
+
+            td:first-child{
+              padding-left: 12px;
+            }
+          }
+        }
+
+        &.classroom-open {
+          .classroom-info-vacancies{
+            display: table;
+          }
+        }
+      }
+    }
+
+    &.lecture-open {
+      .lecture-info-header {
+        .lecture-info-name {
+          white-space: normal;
+          height: auto;
+          line-height: normal;
+        }
+      }
+
+      .lecture-info-description {
+        display: block;
+      }
+
+      .lecture-classrooms {
+        display: block;
+      }
     }
   }
 }
@@ -206,8 +240,8 @@
       background-color: lighten($color, 10%);
     }
 
-    >.lecture-info-header {
-      >.lecture-info-delete {
+    .lecture-info-header {
+      .lecture-info-delete {
         &:hover {
           background-color: lighten($color, 5%);
         }
@@ -219,7 +253,10 @@
     }
 
     .classroom-active {
-      background-color: lighten($color, 20%);
+      .classroom-info-header {
+        font-weight: 500;
+      }
+      //background-color: darken($color, 0%);
     }
     .classroom-highlight {
       background-color: $color;

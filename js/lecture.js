@@ -135,7 +135,7 @@ Lecture.prototype.noClassroomsSelected = function() {
  *
  */
 Lecture.prototype.updateClassroomsCheckbox = function() {
-  this.htmlClassroomsCheckbox.checked = this.allClassroomsSelected();
+  //this.htmlClassroomsCheckbox.checked = this.allClassroomsSelected();
 }
 
 /**
@@ -373,14 +373,14 @@ Lecture.prototype.addEventListeners = function() {
   this.htmlElement.addEventListener('contextmenu', e => {ui.createLectureContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault();});
 
   var lectureHeader = this.htmlElement.getElementsByClassName('lecture-info-header')[0];
-  lectureHeader.addEventListener('click', this.toggleLectureOpen.bind(this));
+  this.htmlElement.addEventListener('click', e => { this.toggleLectureOpen(); });
   
   var lectureHeaderDelete = this.htmlElement.getElementsByClassName('lecture-info-delete')[0];
-  lectureHeaderDelete.addEventListener('click', e => {this.parent.removeLecture(this)});
+  lectureHeaderDelete.addEventListener('click', e => { this.parent.removeLecture(this); e.stopPropagation(); });
 
-  this.htmlLectureCheckbox.addEventListener('click', this.toggleLectureSelection.bind(this));
+  this.htmlLectureCheckbox.addEventListener('click', e => { this.toggleLectureSelection(); e.stopPropagation(); });
 
-  this.htmlClassroomsCheckbox.addEventListener('click', this.updateAllClassroomsSelections.bind(this));
+  //this.htmlClassroomsCheckbox.addEventListener('click', this.updateAllClassroomsSelections.bind(this));
 };
 
 Lecture.prototype.safeCopy = function () {
