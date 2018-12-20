@@ -23,23 +23,55 @@
  */
 function Classroom(jsonObj, parentLecture) {
   this.parent = parentLecture;
-  this.teachers = new Array();
-  this.schedules = new Array();
+  this.teachers = [];
+  this.schedules = [];
+  this.vacancies = {total: {total: 0, subscribed: 0, pending: 0, enrolled: 0}};
   this.selected = true;
   if (jsonObj) {
     this.dateBegin = Date.parse(jsonObj.inicio);
     this.dateEnd = Date.parse(jsonObj.fim);
     this.code = jsonObj.codigo;
     this.shortCode = this.code.slice(-2);
-    this.obs = jsonObj.observacoes;
+    this.obs = jsonObj.observacoes || '';
     if (jsonObj.horario) {
       this.addTeachers([].concat.apply([], jsonObj.horario.map(x => x.professores)))
       this.schedules = jsonObj.horario.filter(horario => horario.inicio && horario.fim && horario.dia).map(horario => new Schedule(horario, this));
     }
+    for(vacancyType in jsonObj.vagas) {
+      vacancy = {
+        total: jsonObj.vagas[vacancyType].vagas,
+        subscribed: jsonObj.vagas[vacancyType].inscritos,
+        pending: jsonObj.vagas[vacancyType].pendentes,
+        enrolled: jsonObj.vagas[vacancyType].matriculados,
+        groups: {}
+      };
+
+      for(vacancyGroup in jsonObj.vagas[vacancyType].grupos) {
+        group = jsonObj.vagas[vacancyType].grupos[vacancyGroup];
+        vacancy.groups[vacancyGroup] = {
+          total: group.vagas,
+          subscribed: group.inscritos,
+          pending: group.pendentes,
+          enrolled: group.matriculados,
+          groups: {}
+        }
+      }
+
+      this.vacancies[vacancyType] = vacancy;
+
+      this.vacancies.total.total += vacancy.total;
+      this.vacancies.total.subscribed += vacancy.subscribed;
+      this.vacancies.total.pending += vacancy.pending;
+      this.vacancies.total.enrolled += vacancy.enrolled;
+    }
+
+
+
     this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
     if (this.selected) {
       addClass(this.htmlElement, 'classroom-selected');
     }
+    
     this.addEventListeners();
   }
 }
@@ -263,6 +295,13 @@ Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
   }
 }
 
+/**
+ *
+ */
+Classroom.prototype.toggleClassroomOpen = function() {
+  toggleClass(this.htmlElement, 'classroom-open');
+}
+
 Classroom.prototype.conflictsWith = function(classroom) {
   return this.dateBegin < classroom.dateEnd && this.dateEnd > classroom.dateBegin &&
           classroom.schedules.some(classroomSchedule => 
@@ -280,6 +319,9 @@ Classroom.prototype.conflictsWith = function(classroom) {
 Classroom.prototype.addEventListeners = function() {
   this.htmlElement.addEventListener('mouseenter', this.showOnHover.bind(this));
   this.htmlElement.addEventListener('mouseleave', this.hideOnHoverOut.bind(this));
+
+  this.htmlElement.addEventListener('click', e => { this.toggleClassroomOpen(); e.stopPropagation(); });
+
   var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
-  checkbox.addEventListener('click', this.toggleClassroomSelection.bind(this));
+  checkbox.addEventListener('click', e => {this.toggleClassroomSelection(true); e.stopPropagation();} );
 };

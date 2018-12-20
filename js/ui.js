@@ -179,24 +179,59 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
   var classroomInfoTreeObj = {
     tag: 'div',
     class: 'classroom-info',
-    children: [{
-        tag: 'input',
-        type: 'checkbox',
-        class: 'classroom-info-checkbox',
-        checked: classroom.selected
-      },
+    children: [
       {
         tag: 'div',
-        class: 'classroom-code',
-        innerHTML: classroom.shortCode
-      },
+        class: 'classroom-info-header',
+        children: [{
+          tag: 'input',
+          type: 'checkbox',
+          class: 'classroom-info-checkbox',
+          checked: classroom.selected
+        },
+        {
+          tag: 'div',
+          class: 'classroom-code',
+          innerHTML: classroom.shortCode
+        },
+        {
+          tag: 'div',
+          class: 'classroom-teacher',
+          innerHTML: removeDuplicates(classroom.teachers.map(teacher => teacher? 'Prof. ' + teacher : 'Sem professor designado')).join('<br>')
+        },
+        {
+          tag:'div',
+          class: 'classroom-vacancies-summary',
+          innerHTML: `${classroom.vacancies.total.subscribed}/${classroom.vacancies.total.total}`
+        }
+      ]},
       {
         tag: 'div',
-        class: 'classroom-teacher',
-        innerHTML: removeDuplicates(classroom.teachers).join('<br>')
+        class: 'classroom-info-schedules',
+        children: classroom.schedules.map(schedule => ({
+          tag: 'div',
+          class: 'classroom-info-schedule',
+          innerHTML: `${schedule.day} ${schedule.timeBegin.toString('HH:mm')} - ${schedule.timeEnd.toString('HH:mm')}`
+        }))
+      },
+      {
+        tag: 'table',
+        class: 'classroom-info-vacancies',
+        children: [].concat({tag:'tr', innerHTML:'<th>Vagas</th><th>V</th><th>I</th><th>P</th><th>M</th>'},
+          ...Object.keys(classroom.vacancies).filter(x => x != "total").map(vacancyType => ([{
+            tag: 'tr',
+            class: 'classroom-vacancy',
+            innerHTML: `<td>${vacancyType}</td><td>${classroom.vacancies[vacancyType].total}</td><td>${classroom.vacancies[vacancyType].subscribed}</td><td>${classroom.vacancies[vacancyType].pending}</td><td>${classroom.vacancies[vacancyType].enrolled}</td>`
+          },
+          ...Object.keys(classroom.vacancies[vacancyType].groups).map(vacancyGroup => ({
+              tag: 'tr',
+              class: 'classroom-vacancy classroom-vacancy-group',
+              innerHTML: `<td>${vacancyGroup}</td><td>${classroom.vacancies[vacancyType].groups[vacancyGroup].total}</td><td>${classroom.vacancies[vacancyType].groups[vacancyGroup].subscribed}</td><td>${classroom.vacancies[vacancyType].groups[vacancyGroup].pending}</td><td>${classroom.vacancies[vacancyType].groups[vacancyGroup].enrolled}</td>`
+            }))]
+          )))
       }
-    ]
-  };
+
+    ]};
 
   var classroomInfo = createHtmlElementTree(classroomInfoTreeObj);
   return classroomInfo;
@@ -241,26 +276,37 @@ UI.prototype.createLectureInfo = function(lecture) {
           }
         ]
       },
+      {tag: 'div',
+       class: 'lecture-info-description',
+       children: [
+
+          {
+            tag: 'div',
+            class: 'lecture-info-unit',
+            innerHTML: lecture.unit
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-department',
+            innerHTML: lecture.department
+          },
+          {
+            tag: 'div',
+            class: 'lecture-info-credits',
+            innerHTML: `<div class="lecture-info-credits-header">Créditos:</div> <div class="lecture-info-credits-content">${lecture.lectureCredits} Aula <br/> ${lecture.workCredits} Trabalho</div>`
+          }]
+      },
       {
         tag: 'div',
         class: 'lecture-classrooms',
         children: [{
           tag: 'div',
           class: 'classrooms-header',
-          children: [{
-              tag: 'input',
-              type: 'checkbox',
-              class: 'classrooms-header-checkbox'
-            },
+          children: [
             {
               tag: 'div',
               class: 'classroom-code',
-              innerHTML: 'Turma'
-            },
-            {
-              tag: 'div',
-              class: 'classroom-teacher',
-              innerHTML: 'Professor'
+              innerHTML: 'Turmas'
             }
           ]
         }]
