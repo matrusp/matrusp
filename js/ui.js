@@ -389,18 +389,18 @@ UI.prototype.addLectures = function(lectures) {
     });
   });
 
-  if(weekdayFragments[6].childElementCount) {
+  this.accordion.appendChild(accordionFragment);
+  this.weekdays.forEach((weekday,i) => {weekday.appendChild(weekdayFragments[i]);});
+
+  if(this.weekdays[6].childElementCount) {
     this.makeTimeTable(6,23,7);
   }
-  else if(weekdayFragments[5].childElementCount) {
+  else if(this.weekdays[5].childElementCount) {
     this.makeTimeTable(6,23,6);
   }
   else {
     this.makeTimeTable(6,23,5);
   }
-
-  this.accordion.appendChild(accordionFragment);
-  this.weekdays.forEach((weekday,i) => {weekday.appendChild(weekdayFragments[i]);});
 }
 
 /**
