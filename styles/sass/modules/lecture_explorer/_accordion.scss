@@ -146,8 +146,11 @@
           }
 
           .classroom-teacher {
-            flex: 1 0 auto;
+            flex: 1 0 0;
             padding: 0 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
           .classroom-vacancies-summary {
@@ -197,6 +200,9 @@
         }
 
         &.classroom-open {
+          .classroom-teacher {
+            white-space: normal;
+          }
           .classroom-info-vacancies{
             display: table;
           }
