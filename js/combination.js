@@ -33,7 +33,8 @@ function Combination(classroomGroups, plan) {
  *
  */
 Combination.prototype.delete = function() {
-  this.htmlElement.parentNode.removeChild(this.htmlElement);
+  if(this.htmlElement && this.htmlElement.parentNode)
+    this.htmlElement.parentNode.removeChild(this.htmlElement);
 
   // All htmlElements removed, now remove itself from the plan and
   // update it.
