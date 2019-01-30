@@ -24,19 +24,19 @@ function UI() {
 
   // This comes from the SASS theme file
   //TODO: find better way to sync this
-  this.colors =  [[125, 70, 61], 
-                  [200, 94, 61],
-                  [24, 100, 60], 
-                  [298, 56, 65], 
-                  [46, 80, 57], 
-                  [76, 80, 60],
-                  [176, 76, 58], 
-                  [50, 48, 66], 
-                  [225, 55, 64],
-                  [330, 85, 59], 
-                  [140 ,42, 58],
-                  [263, 78, 65],
-                  [33, 27, 58]];
+  this.colors =  [tinycolor("hsl(125, 70%, 61%)"), 
+                  tinycolor("hsl(200, 94%, 61%)"),
+                  tinycolor("hsl(24, 100%, 60%)"), 
+                  tinycolor("hsl(298, 56%, 65%)"), 
+                  tinycolor("hsl(46, 80%, 57%)"),
+                  tinycolor("hsl(76, 80%, 60%)"),
+                  tinycolor("hsl(176, 76%, 58%)"), 
+                  tinycolor("hsl(50, 48%, 66%)"), 
+                  tinycolor("hsl(225, 55%, 64%)"),
+                  tinycolor("hsl(330, 85%, 59%)"), 
+                  tinycolor("hsl(140 ,42%, 58%)"),
+                  tinycolor("hsl(263, 78%, 65%)"),
+                  tinycolor("hsl(33, 27%, 58%)")];
 
   this.weekdays = [];    
   var lectureScheduleColumns = this.timeTable.getElementsByClassName('column-content');
@@ -148,6 +148,8 @@ UI.prototype.createScheduleBox = function(schedule) {
   var timePosition = this.calcPositionForTime(schedule);
   scheduleBox.style.cssText = `top: ${timePosition.positionBegin * 100 + '%'}; 
                               bottom: ${timePosition.positionEnd * 100 + '%'};`; //This is more efficient than setting top and bottom separately
+
+  //scheduleBox.style.animationDelay = (schedule.timeBegin - schedule.timeBegin.clone().previous().sunday().at("0:00"))/432000000 + 0.3 + 's';
 
   return scheduleBox;
 }
@@ -342,9 +344,9 @@ UI.prototype.createCombinationBoard = function(combination) {
       var boxLeft = day * (100/this.dayEnd) + 1;
 
       var color = this.colors[classroom.parent.color];
-      ctx.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2]}%)`;
+      ctx.fillStyle = color.clone().lighten(10).toHslString();
       ctx.fillRect(boxLeft * scale, boxTop * scale, ((100/this.dayEnd) - 2) * scale, boxHeight * scale);
-      ctx.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2] - 25}%)`;
+      ctx.fillStyle = color.clone().darken(25).toHslString();
       ctx.fillRect(boxLeft * scale, boxTop * scale, 2 * scale, boxHeight * scale);
     });
   });
@@ -631,6 +633,12 @@ UI.prototype.openShareDialog = function() {
   this.dialogOverlay.classList.add('show');
   this.shareDialog.classList.add('show');
   this.openDialog = this.shareDialog;
+}
+
+UI.prototype.openPrintDialog = function() {
+  this.dialogOverlay.classList.add('show');
+  this.printDialog.classList.add('show');
+  this.openDialog = this.printDialog;
 }
 
 UI.prototype.closeDialog = function() {
