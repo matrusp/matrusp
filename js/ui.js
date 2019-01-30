@@ -478,8 +478,8 @@ UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
     combination.addEventListeners();
     if(oldEl) {
       combination.htmlElement.classList = oldEl.classList;
-      if(oldEl.parent)
-        oldEl.parent.replaceChild(combination.htmlElement, oldEl);
+      if(oldEl.parentNode)
+        oldEl.parentNode.replaceChild(combination.htmlElement, oldEl);
     }
   })
 }
