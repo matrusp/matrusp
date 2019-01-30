@@ -1,4 +1,4 @@
-document.getElementById('pdf').addEventListener('click',  openpdf);
+document.getElementById('print-button').addEventListener('click',  openpdf);
 
 function canvasShiftImage(oldCanvas, shiftAmt, realPdfPageHeight){
   shiftAmt = parseInt(shiftAmt) || 0;
@@ -16,100 +16,120 @@ function canvasShiftImage(oldCanvas, shiftAmt, realPdfPageHeight){
   return newCanvas;
 }
 
-var html2canvasSuccess = function(canvas, callback){
-  var pdf = new jsPDF('p','px'),
+function generateTable(doc) {
+  doc.autoTable({
+    body: [].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup.map((classroom, i) => ({
+      lectureCode: !i? classroom.parent.code : '',
+      lectureName: !i? classroom.parent.name : '',
+      classroomCode: classroom.shortCode,
+      teachers: classroom.teachers.reduce((acc, str) => `${acc}\n${str}`) || 'Sem professor designado',
+      color: ui.colors[classroom.parent.color],
+      span: !i? classroomGroup.length : undefined
+    })))),
+    columns: [
+      {header:'Código', dataKey: 'lectureCode'},
+      {header:'Nome', dataKey: 'lectureName'},
+      {header:'Turma', dataKey: 'classroomCode'},
+      {header:'Professor', dataKey: 'teachers'},
+    ],
+
+
+    styles: {
+      overflow: 'linebreak',
+      fillStyle: 'DF',
+      halign: 'center',
+      valign: 'middle',
+      minCellWidth: 0,
+    },
+    headStyles: {
+      fillColor: 255,
+      fontStyle: 'normal',
+      fontSize: 11,
+      textColor: tinycolor('gray').toRgb().r
+    },
+    bodyStyles: {
+      fillColor: [52, 73, 94],
+      textColor: 0,
+      minCellHeight: 0.5,
+    },
+    columnStyles: {
+      lectureCode: {
+        cellWidth: 0.8
+      },
+      classroomCode: {
+        cellWidth: 0.4
+      },
+      lectureName: {
+        cellWidth: 2
+      },
+      teachers:{
+        cellWidth: 2
+      }
+    },
+    startY: 6,
+
+    didParseCell: function(data) {
+      if(data.row.section == "body") {
+        if(data.column.index < 2 && data.row.raw.span) {
+          data.cell.rowSpan = data.row.raw.span;
+        }
+      }
+    },
+
+    willDrawCell: function (data) {
+      if(data.row.section == "body") {
+        var color = data.row.raw.color;
+        var bgColor = color.clone().lighten(20).toRgb();
+        var textColor = color.clone().darken(30).toRgb();
+        data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+        data.doc.setTextColor(textColor.r, textColor.g, textColor.b);
+      }
+    },
+
+    didDrawCell: function(data) {
+      if(data.row.section == "body") {
+        if(!data.column.index) {
+          var color = data.row.raw.color;
+          var bgColor = color.clone().darken(20).toRgb();
+          data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+          data.doc.rect(data.cell.x, data.cell.y, 0.03, data.cell.height, 'F');
+        }
+      }
+    }
+  });
+  return doc;
+}
+
+async function openpdf() {
+  if (state.plans[state.activePlanIndex].activeCombination == null) {
+    ui.showBanner("Insira uma ou mais matérias antes de gerar o arquivo pdf",2000);
+    return;
+  }
+  var pdf = new jsPDF('p','in','a4');
+  var timeTable = document.getElementById("time-table");
+  var pageWidth = pdf.internal.pageSize.getWidth();
+  var scale = ((pageWidth - 1) * 300)/timeTable.getBoundingClientRect().width;
+  var canvas = await html2canvas(timeTable, {allowTaint: true, scale: scale});
+  /*
     pdfInternals = pdf.internal,
     pdfPageSize = pdfInternals.pageSize,
     pdfScaleFactor = pdfInternals.scaleFactor,
-    pdfPageWidth = pdfPageSize.width,
-    pdfPageHeight = pdfPageSize.height,
+    pdfPageWidth = pdfPageSize.getWidth(),
+    pdfPageHeight = pdfPageSize.getHeight(),
     totalPdfHeight = 0,
     htmlPageHeight = canvas.height,
-    htmlScaleFactor = canvas.width / (pdfPageWidth * pdfScaleFactor);
+    htmlScaleFactor = canvas.width / (pdfPageWidth * pdfScaleFactor);*/
 
-  while(totalPdfHeight < htmlPageHeight){
+  
+  pdf.addImage(canvas, 'png', 0.5, 0.5, pageWidth - 1, (pageWidth - 1) / canvas.width * canvas.height, null, 'NONE');
+
+  /*while(totalPdfHeight < htmlPageHeight){
     var newCanvas = canvasShiftImage(canvas, totalPdfHeight, pdfPageHeight * pdfScaleFactor);
-    pdf.addImage(newCanvas, 'png', 50, 15, pdfPageWidth-100, pdfPageWidth-100, null, 'NONE'); //note the format doesn't seem to do anything... I had it at 'pdf' and it didn't care
 
     totalPdfHeight += (pdfPageHeight * pdfScaleFactor * htmlScaleFactor);
 
     if(totalPdfHeight < htmlPageHeight){ pdf.addPage(); }
-  }
-  callback(pdf);
-};
-
-function generateTable(doc) {
-  doc.autoTable(getColumns(), getData(), {
-    styles: {
-      overflow: 'linebreak',
-      font: 'courier',
-      fillStyle: 'DF',
-      lineColor: [44, 62, 80],
-      lineWidth: 2,
-      halign: 'center', // left, center, right
-      valign: 'middle' // top, middle, bottom
-    },
-    headerStyles: {
-      fillColor: [44, 62, 80],
-      fontSize: 15,
-      rowHeight: 30
-    },
-    bodyStyles: {
-      fillColor: [52, 73, 94],
-      textColor: 0
-    },
-    columnStyles: {
-      email: {
-        fontStyle: 'bold'
-      }
-    },
-    startY: 330,
-    drawCell: function (cell, data) {
-      var color = (data.row.raw.color).split(", ");
-      data.doc.setFillColor(parseInt(color[0]), parseInt(color[1]), parseInt(color[2]));
-    }
-  });
-  doc.save("table.pdf");
-}
-
-var getColumns = function () {
-  return [
-    {title: "Código", dataKey: "cod"},
-    {title: "Turma", dataKey: "tur"},
-    {title: "Nome", dataKey: "name"},
-    {title: "Professor", dataKey: "prof"}
-  ];
-};
-
-function getData() {
-  var data = [];
-  var active_classes = state.plans[state.activePlanIndex].activeCombination.lecturesClassroom;
-  for (var i = 0; i < active_classes.length; i++) {
-    var color = window.getComputedStyle(state.plans[state.activePlanIndex].combinations[state.plans[state.activePlanIndex].activeCombinationIndex].lecturesClassroom[i].parent.htmlElement, null).backgroundColor.replace(/\(|\)|rgb/g, "");
-    var professors = "";
-    for (var k = 0; k < active_classes[i].teachers.length; k++) {
-      professors = professors + active_classes[i].teachers[k] + "\n";
-    }
-    data.push({
-      cod: active_classes[i].parent.code,
-      tur: active_classes[i].shortCode,
-      name: active_classes[i].parent.name,
-      prof: professors,
-      color: color
-    });
-  }
-  return data;
-}
-
-function openpdf() {
-  if (state.plans[state.activePlanIndex].activeCombination == null) {
-    alert("Insira uma ou mais matérias antes de gerar o arquivo pdf");
-    return;
-  }
-  var combinations = document.getElementById("combination-controller");
-  combinations.style.visibility = "hidden";
-  html2canvas(document.getElementById("lecture-schedule")).then(function(canvas) {
-      combinations.style.removeProperty("visibility");
-      html2canvasSuccess(canvas, generateTable);
-    });
+  }*/
+  pdf = generateTable(pdf);
+  pdf.save("matrusp.pdf");
 }

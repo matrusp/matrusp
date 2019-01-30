@@ -40,6 +40,14 @@
     </div>
     <div id="menu-overlay"></div>
 	<div id="dialog-overlay" onclick="ui.closeDialog()">
+		<div id="print-dialog" class="dialog" onclick="event.stopPropagation()">
+			<button type="button" class="close-button" id="course-window-close" onclick="ui.closeDialog()">×</button>
+			<label id="print-format-label"><div>Formato</div>
+			<select id="print-format"><option>A4</option></select></label>
+			<label id="print-color-label"><div>Cor</div>
+			<select id="print-color"><option>Colorido</option><option>Escala de cinza</option><option>Preto e Branco</option></select></label>
+			<button class="emphasis" id="print-button"><span class="fas fa-print"></span> Imprimir</button>
+		</div>
 		<form id="course-dialog" class="dialog" onclick="event.stopPropagation()">
 			<button type="button" class="close-button" id="course-window-close" onclick="ui.closeDialog()">×</button>
 			<label id="course-campus-select-label" class="select-label"><div>Campus</div>
@@ -222,6 +230,7 @@
     <script type="text/javascript" src="js/custom_lib.js" defer></script>
     <script type="text/javascript" src="js/libs/slip.js" defer></script>
     <script type="text/javascript" src="js/libs/date-pt-BR.js" defer></script>
+    <script type="text/javascript" src="js/libs/tinycolor-min.js" defer></script>
     <script type="text/javascript" src="js/ui.js" defer></script>
     <script type="text/javascript" src="js/search_box.js" defer></script>
     <script type="text/javascript" src="js/share.js" defer></script>
@@ -240,7 +249,7 @@
     <script type="text/javascript" src="js/libs/vfs_fonts.js" defer></script>
     <script type="text/javascript" src="js/pdf.js" defer></script>
     <script type="text/javascript" src="js/libs/jspdf.min.js"></script>
-    <script type="text/javascript" src="js/libs/jspdf.plugin.autotable.js"></script>
+    <script type="text/javascript" src="js/libs/jspdf.plugin.autotable.min.js"></script>
     <script type="text/javascript" src="js/googlecalendar.js" defer></script>
     <script type="text/javascript" src="js/file.js" defer></script>
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
