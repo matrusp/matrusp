@@ -45,7 +45,6 @@ function UI() {
     this.weekdays.push(lectureScheduleColumns[i]);
   }
   this.timeColumn = lectureScheduleColumns[0];  
-  this.makeTimeTable(6,23,5);
 
   new Slip(this.accordion,{minimumDistance: 10});
 
@@ -392,10 +391,10 @@ UI.prototype.addLectures = function(lectures) {
   this.accordion.appendChild(accordionFragment);
   this.weekdays.forEach((weekday,i) => {weekday.appendChild(weekdayFragments[i]);});
 
-  if(this.weekdays[6].childElementCount) {
+  if(this.weekdays[6].childElementCount > 1) {
     this.makeTimeTable(6,23,7);
   }
-  else if(this.weekdays[5].childElementCount) {
+  else if(this.weekdays[5].childElementCount > 1) {
     this.makeTimeTable(6,23,6);
   }
   else {
@@ -437,6 +436,10 @@ UI.prototype.closeBanner = function() {
 
 UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   if(timeBegin == this.timeBegin && timeEnd == this.timeEnd && dayEnd == this.dayEnd) return;
+
+  this.timeBegin = timeBegin;
+  this.timeEnd = timeEnd;
+  this.dayEnd = dayEnd;
   
   this.timeColumn.innerHTML = '';
 
@@ -462,16 +465,23 @@ UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   }
 
   for(var i = 0; i < this.weekdays.length; i++) {
+    this.weekdays[i].appendChild(i? svg.cloneNode(true) : svg);
     if(i < dayEnd) {
-      this.weekdays[i].appendChild(i? svg.cloneNode(true) : svg);
       this.weekdays[i].parentElement.classList.remove('hidden');
     }
     else this.weekdays[i].parentElement.classList.add('hidden');
   }
 
-  this.timeBegin = timeBegin;
-  this.timeEnd = timeEnd;
-  this.dayEnd = dayEnd;
+  state.activePlan.combinations.forEach(combination => {
+    var oldEl = combination.htmlElement;
+    combination.htmlElement = ui.createCombinationBoard(combination);
+    combination.addEventListeners();
+    if(oldEl) {
+      combination.htmlElement.classList = oldEl.classList;
+      if(oldEl.parent)
+        oldEl.parent.replaceChild(combination.htmlElement, oldEl);
+    }
+  })
 }
 
 UI.prototype.setCredits = function(lectureCredits,workCredits) {
