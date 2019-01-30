@@ -200,9 +200,6 @@ Plan.prototype.addLecture = function(lecture) {
   this.colors[lecture.color]++;
   var lecture = lecture instanceof Lecture ? lecture : new Lecture(lecture, this);
   this.lectures.push(lecture);
-  
-  if(this == state.activePlan)
-      ui.addLectures([lecture]);
 
   var combinations = this.combinations.map(combination => combination.classroomGroups);
   var activeCombination;
@@ -238,6 +235,10 @@ Plan.prototype.addLecture = function(lecture) {
   else {
     lecture.available = false;
   }
+
+  
+  if(this == state.activePlan)
+      ui.addLectures([lecture]);
 }
 
 Plan.prototype.removeLecture = function(lecture) {
