@@ -10,6 +10,10 @@
   transition: background-color .1s ease;
   animation: appear .3s ease-out .1s backwards;
 
+  &.schedule-box-highlight {
+    z-index: 1;
+  }
+
   &.schedule-box-show {
     visibility: visible;
 
