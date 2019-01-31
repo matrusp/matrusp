@@ -4,7 +4,6 @@
  * @constructor
  */
 function CourseBox() {
-  document.getElementById('course-button').addEventListener('click', e => ui.openCourseDialog());
 
   this.dialog = document.getElementById('course-dialog');
   this.closeButton = document.getElementById('course-window-close');
@@ -40,6 +39,7 @@ function CourseBox() {
       lectures.filter(el => el);
       var planData = {"name": `${this.courseSelect.options[this.courseSelect.selectedIndex].innerHTML} - ${this.periodSelect.value}º período`,"lectures": lectures};
       var plan = state.addPlan(planData);
+      if(!state.activePlan.lectures.length) state.removePlan(state.activePlan);
       state.activePlan = plan;
     });
     ui.closeDialog();
