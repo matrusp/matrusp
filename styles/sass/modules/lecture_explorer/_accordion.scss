@@ -162,6 +162,14 @@
           margin-left: $width-lecture-checkbox;
           font-weight: lighter;
         }
+
+        .classroom-info-obs {
+          margin-left: $width-lecture-checkbox;
+          font-weight: lighter;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
         
         .classroom-info-vacancies {
           display: none;
@@ -203,8 +211,25 @@
           .classroom-teacher {
             white-space: normal;
           }
+          .classroom-info-obs {
+            white-space: pre-wrap;
+          }
           .classroom-info-vacancies{
             display: table;
+          }
+        }
+
+        &.classroom-active {
+          .classroom-info-header {
+            font-weight: 500;
+          }
+
+          .classroom-info-obs {
+            font-weight: normal;
+          }
+
+          .classroom-info-schedules {
+             font-weight: normal;
           }
         }
       }
@@ -256,13 +281,6 @@
           background-color: $color;
         }
       }
-    }
-
-    .classroom-active {
-      .classroom-info-header {
-        font-weight: 500;
-      }
-      //background-color: darken($color, 0%);
     }
     .classroom-highlight {
       background-color: $color;
