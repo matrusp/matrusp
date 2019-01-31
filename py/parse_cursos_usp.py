@@ -165,10 +165,7 @@ def parsear_periodos(folha):
 	tipo = ''
 	periodo = ''
 	for tr in trs:
-		try:
-			str = re.sub("\s+"," ",next(tr.stripped_strings))
-		except StopIteration as e:
-			pass
+		str = re.sub("\s+"," ",next(tr.stripped_strings,''))
 
 		if str and switch_tipos.get(str):
 			tipo = switch_tipos[str]
@@ -178,10 +175,20 @@ def parsear_periodos(folha):
 			if not periodo in periodos: periodos[periodo] = []
 			continue
 		else:
-			try: str = tr.find('td').string.strip()
+			try: tds = [next(td.stripped_strings, '') for td in tr.find_all('td')]
 			except AttributeError as e: continue
-			if len(str) == 7:
-				periodos[periodo].append({'codigo': str, 'tipo': tipo})
+			if len(tds[0]) == 7:
+				periodos[periodo].append({'codigo': tds[0], 'tipo': tipo, 'req_fraco': [], 'req_forte': [], 'ind_conjunto': []})
+				continue
+			else:
+				if len(tds) < 2:
+					continue
+				if tds[1] == "Requisito fraco":
+					periodos[periodo][-1]['req_fraco'].append(tds[0][0:7])
+				elif tds[1] == "Requisito":
+					periodos[periodo][-1]['req_forte'].append(tds[0][0:7])
+				elif tds[1] == "Indicação de Conjunto":
+					periodos[periodo][-1]['ind_conjunto'].append(tds[0][0:7])
 				continue
 
 	return periodos
@@ -194,7 +201,7 @@ if __name__ == "__main__":
 	parser.add_argument('diretorio_destino', help="diretório que irá conter os arquivos resultantes")
 	parser.add_argument('-v','--verbosidade',action = 'count', default = 0)
 	parser.add_argument('-u','--unidades', help=  "iterar apenas estes códigos de unidade", nargs = '+')
-	parser.add_argument('-s','--simultaneidade',help = "número de pedidos HTTP simultâneos", type=int, default=100)
+	parser.add_argument('-s','--simultaneidade',help = "número de pedidos HTTP simultâneos", type=int, default=10)
 	parser.add_argument('-t','--timeout',help = "tempo máximo (segundos) do pedido HTTP", type=int, default=120)
 	parser.add_argument('-o','--out',help="arquivo de saída do banco de dados completo", type=str, default="cursos.json")
 	parser.add_argument('--nogzip',help = "não compactar os arquivos de saída", action='store_true')
