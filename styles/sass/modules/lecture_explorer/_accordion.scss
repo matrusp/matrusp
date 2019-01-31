@@ -274,3 +274,36 @@
     }
   }
 }
+
+.plan-placeholder {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .placeholder-icon {
+      color: darkgray;
+      text-align: center;
+      font-size: 56px;
+    }
+
+    .placeholder-title {
+      font-size: 16px;
+      color: gray;
+      text-align: center;
+    }
+
+    .placeholder-body {
+      text-align: center;
+      color: gray;
+      margin-top: 32px;
+    }
+}
+
+#accordion:not(:empty) + .plan-placeholder {
+  display: none;
+}

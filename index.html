@@ -183,8 +183,11 @@
 			<div id="search-result-box"></div>
 			</div>
 			<div id="accordion-window">
-				<div id="accordion">
-					<!-- Dynamically populated -->
+				<div id="accordion"></div>
+				<div class="plan-placeholder">
+					<div class="fas fa-crow placeholder-icon"></div>
+					<div class="placeholder-title">Parece vazio aqui...</div>
+					<div class="placeholder-body">Procure disciplinas na <button class='inline-button' onclick='searchBox.searchBox.focus()'>barra acima</button> ou<br /><button onclick='ui.openCourseDialog()'>carregue a grade do seu curso</button></div>
 				</div>
 			</div>
 			<div id="plans-wrapper">
@@ -204,9 +207,6 @@
 					<img src="images/ic_upload.png">
 					<input id="upload-input" type="file" accept="application/json">
 				</label>
-				<button id="course-button">
-					Carregar grade ideal
-				</button>
 			</div>
 		</div>
     </div>

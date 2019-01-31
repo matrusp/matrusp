@@ -112,6 +112,11 @@ button {
     &.close-button {
         font-weight: lighter;
     }
+
+    &.inline-button {
+        padding: 0;
+        text-transform: none;
+    }
 }
 
 a {
