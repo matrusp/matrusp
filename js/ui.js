@@ -206,6 +206,11 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
           innerHTML: `${classroom.vacancies.total.subscribed}/${classroom.vacancies.total.total}`
         }
       ]},
+      ... classroom.obs? [{
+        tag: 'div',
+        class: 'classroom-info-obs',
+        innerHTML: classroom.obs
+      }] : [],
       {
         tag: 'div',
         class: 'classroom-info-schedules',

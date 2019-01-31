@@ -1015,6 +1015,15 @@ svg.column-bg line.odd {
 }
 
 /* line 166, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+#accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-obs {
+  margin-left: 30px;
+  font-weight: lighter;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* line 174, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies {
   display: none;
   margin-top: 8px;
@@ -1023,625 +1032,580 @@ svg.column-bg line.odd {
   border-bottom: 1px solid;
 }
 
-/* line 173, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 181, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies th {
   font-weight: 500;
 }
 
-/* line 177, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 185, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies td, #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies th {
   text-align: center;
 }
 
-/* line 180, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 188, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies td:first-child, #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies th:first-child {
   width: 100%;
   text-align: left;
 }
 
-/* line 187, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 195, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies .classroom-vacancy:not(.classroom-vacancy-group) td {
   padding-top: 4px;
 }
 
-/* line 192, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 200, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies .classroom-vacancy-group {
   font-weight: lighter;
   border-top: none;
 }
 
-/* line 196, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 204, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info .classroom-info-vacancies .classroom-vacancy-group td:first-child {
   padding-left: 12px;
 }
 
-/* line 203, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 211, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info.classroom-open .classroom-teacher {
   white-space: normal;
 }
 
-/* line 206, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 214, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+#accordion .lecture-info .lecture-classrooms .classroom-info.classroom-open .classroom-info-obs {
+  white-space: pre-wrap;
+}
+
+/* line 217, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info .lecture-classrooms .classroom-info.classroom-open .classroom-info-vacancies {
   display: table;
 }
 
-/* line 215, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 223, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+#accordion .lecture-info .lecture-classrooms .classroom-info.classroom-active .classroom-info-header {
+  font-weight: 500;
+}
+
+/* line 227, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+#accordion .lecture-info .lecture-classrooms .classroom-info.classroom-active .classroom-info-obs {
+  font-weight: normal;
+}
+
+/* line 231, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+#accordion .lecture-info .lecture-classrooms .classroom-info.classroom-active .classroom-info-schedules {
+  font-weight: normal;
+}
+
+/* line 240, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info.lecture-open .lecture-info-header .lecture-info-name {
   white-space: normal;
   height: auto;
   line-height: normal;
 }
 
-/* line 222, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 247, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info.lecture-open .lecture-info-description {
   display: block;
 }
 
-/* line 226, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion .lecture-info.lecture-open .lecture-classrooms {
   display: block;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-0 {
   background-color: #adf0b2;
   color: #1c9c26;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-0:hover {
   background-color: #97ed9e;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-0:active {
   background-color: #81e98a;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-0 .lecture-info-header .lecture-info-delete:hover {
   background-color: #6ce576;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-0 .lecture-info-header .lecture-info-delete:active {
   background-color: #56e162;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-0 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-0 .classroom-highlight {
   background-color: #56e162;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-0 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-1 {
   background-color: #a1defc;
   color: #0679b2;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-1:hover {
   background-color: #88d5fb;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-1:active {
   background-color: #70ccfb;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-1 .lecture-info-header .lecture-info-delete:hover {
   background-color: #57c3fa;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-1 .lecture-info-header .lecture-info-delete:active {
   background-color: #3ebbf9;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-1 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-1 .classroom-highlight {
   background-color: #3ebbf9;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-1 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-2 {
   background-color: #ffc299;
   color: #b34700;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-2:hover {
   background-color: #ffb380;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-2:active {
   background-color: #ffa366;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-2 .lecture-info-header .lecture-info-delete:hover {
   background-color: #ff944d;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-2 .lecture-info-header .lecture-info-delete:active {
   background-color: #ff8533;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-2 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-2 .classroom-highlight {
   background-color: #ff8533;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-2 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-3 {
   background-color: #edc3ee;
   color: #9b2d9f;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-3:hover {
   background-color: #e7afe9;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-3:active {
   background-color: #e19ce3;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-3 .lecture-info-header .lecture-info-delete:hover {
   background-color: #da88dd;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-3 .lecture-info-header .lecture-info-delete:active {
   background-color: #d474d8;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-3 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-3 .classroom-highlight {
   background-color: #d474d8;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-3 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-4 {
   background-color: #f3dd95;
   color: #937410;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-4:hover {
   background-color: #f1d67e;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-4:active {
   background-color: #eecf68;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-4 .lecture-info-header .lecture-info-delete:hover {
   background-color: #ecc751;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-4 .lecture-info-header .lecture-info-delete:active {
   background-color: #e9c03a;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-4 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-4 .classroom-highlight {
   background-color: #e9c03a;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-4 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-5 {
   background-color: #dff5a3;
   color: #7ba112;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-5:hover {
   background-color: #d7f28c;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-5:active {
   background-color: #cff075;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-5 .lecture-info-header .lecture-info-delete:hover {
   background-color: #c7ed5e;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-5 .lecture-info-header .lecture-info-delete:active {
   background-color: #bfeb47;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-5 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-5 .classroom-highlight {
   background-color: #bfeb47;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-5 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-6 {
   background-color: #9cf2ec;
   color: #14948c;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-6:hover {
   background-color: #86eee7;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-6:active {
   background-color: #6febe3;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-6 .lecture-info-header .lecture-info-delete:hover {
   background-color: #59e8df;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-6 .lecture-info-header .lecture-info-delete:active {
   background-color: #43e5da;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-6 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-6 .classroom-highlight {
   background-color: #43e5da;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-6 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-7 {
   background-color: #ece7ca;
   color: #9b8a36;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-7:hover {
   background-color: #e6deb7;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-7:active {
   background-color: #dfd5a4;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-7 .lecture-info-header .lecture-info-delete:hover {
   background-color: #d9cd92;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-7 .lecture-info-header .lecture-info-delete:active {
   background-color: #d2c47f;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-7 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-7 .classroom-highlight {
   background-color: #d2c47f;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-7 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-8 {
   background-color: #c0cbed;
   color: #2d489a;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-8:hover {
   background-color: #acbbe7;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-8:active {
   background-color: #98aae1;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-8 .lecture-info-header .lecture-info-delete:hover {
   background-color: #849adb;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-8 .lecture-info-header .lecture-info-delete:active {
   background-color: #718ad6;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-8 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-8 .classroom-highlight {
   background-color: #718ad6;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-8 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-9 {
   background-color: #f79cc9;
   color: #a00d57;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-9:hover {
   background-color: #f584bd;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-9:active {
   background-color: #f36db0;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-9 .lecture-info-header .lecture-info-delete:hover {
   background-color: #f155a3;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-9 .lecture-info-header .lecture-info-delete:active {
   background-color: #ef3e96;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-9 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-9 .classroom-highlight {
   background-color: #ef3e96;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-9 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-10 {
   background-color: #afdebf;
   color: #317748;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-10:hover {
   background-color: #9dd7b1;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-10:active {
   background-color: #8bd0a2;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-10 .lecture-info-header .lecture-info-delete:hover {
   background-color: #79c893;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-10 .lecture-info-header .lecture-info-delete:active {
   background-color: #67c185;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-10 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-10 .classroom-highlight {
   background-color: #67c185;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-10 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-11 {
   background-color: #d2bbf7;
   color: #5316b6;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-11:hover {
   background-color: #c3a4f4;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-11:active {
   background-color: #b48ef1;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-11 .lecture-info-header .lecture-info-delete:hover {
   background-color: #a577ee;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-11 .lecture-info-header .lecture-info-delete:active {
   background-color: #9660eb;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-11 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-11 .classroom-highlight {
   background-color: #9660eb;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-11 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 237, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-12 {
   background-color: #d6c8b8;
   color: #6b563d;
 }
 
-/* line 241, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 266, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-12:hover {
   background-color: #cdbca8;
 }
 
-/* line 245, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-12:active {
   background-color: #c3b097;
 }
 
-/* line 251, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 276, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-12 .lecture-info-header .lecture-info-delete:hover {
   background-color: #baa387;
 }
 
-/* line 255, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 280, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-12 .lecture-info-header .lecture-info-delete:active {
   background-color: #b19777;
 }
 
-/* line 262, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
-.lecture-info.color-12 .classroom-active .classroom-info-header {
-  font-weight: 500;
-}
-
-/* line 267, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 285, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-12 .classroom-highlight {
   background-color: #b19777;
 }
 
-/* line 270, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .lecture-info.color-12 .classroom-highlight.classroom-conflict {
   background-color: #f00;
   color: black;
   opacity: 0.8;
 }
 
-/* line 278, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 296, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .plan-placeholder {
   position: absolute;
   top: 0;
@@ -1653,28 +1617,28 @@ svg.column-bg line.odd {
   justify-content: center;
 }
 
-/* line 288, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 306, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .plan-placeholder .placeholder-icon {
   color: darkgray;
   text-align: center;
   font-size: 56px;
 }
 
-/* line 294, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 312, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .plan-placeholder .placeholder-title {
   font-size: 16px;
   color: gray;
   text-align: center;
 }
 
-/* line 300, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 318, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 .plan-placeholder .placeholder-body {
   text-align: center;
   color: gray;
   margin-top: 32px;
 }
 
-/* line 307, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
+/* line 325, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_accordion.scss */
 #accordion:not(:empty) + .plan-placeholder {
   display: none;
 }
