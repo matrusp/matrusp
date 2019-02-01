@@ -680,6 +680,11 @@ UI.prototype.openShareDialog = function() {
 }
 
 UI.prototype.openPrintDialog = function() {
+  if (state.activePlan.activeCombination == null) {
+    ui.showBanner("Insira uma ou mais matérias antes de gerar o arquivo pdf",2000);
+    return;
+  }
+  
   this.dialogOverlay.classList.add('show');
   this.printDialog.classList.add('show');
   this.openDialog = this.printDialog;
