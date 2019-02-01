@@ -38,7 +38,7 @@ button {
   box-sizing: border-box;
   line-height: 100%;
   min-width: 64px;
-  transition: background 0.1s ease;
+  transition: background 0.1s ease, color 0.1s ease;
 }
 
 /* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
@@ -2361,58 +2361,43 @@ footer .fb-page {
 }
 
 /* line 9, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
-.combination-button {
+.combination-paddle {
   position: relative;
   flex: 0 0 34px;
   background-color: white;
   border: none;
   z-index: 1;
+  color: #bbb;
 }
 
-/* line 16, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
-.combination-button > img {
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  top: 0;
-  bottom: 0;
-  margin-top: auto;
-  margin-bottom: auto;
-  position: absolute;
-  width: 30px;
-  transform: rotate(90deg);
-  opacity: 0.6;
-}
-
-/* line 25, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
-.combination-button:hover {
+/* line 17, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+.combination-paddle:hover {
   background-color: #ddd;
 }
 
-/* line 29, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
-.combination-button:active {
+/* line 21, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+.combination-paddle:active {
   background-color: #aaa;
 }
 
-/* line 34, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
-.combination-button-left {
+/* line 26, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+#combination-paddle-left {
   left: 0;
   border-right: 1px solid lightgray;
 }
 
-/* line 39, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
-.combination-button-right {
+/* line 31, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+#combination-paddle-right {
   right: 0;
   border-left: 1px solid lightgray;
 }
 
-/* line 44, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 36, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 #combination-track-window {
   position: relative;
 }
 
-/* line 49, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 41, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 #combination-track {
   flex: 1 1 0;
   height: 100px;
@@ -2420,9 +2405,10 @@ footer .fb-page {
   white-space: nowrap;
   overflow-x: scroll;
   overflow-y: hidden;
+  position: relative;
 }
 
-/* line 58, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 51, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 .combination {
   position: relative;
   display: inline-block;
@@ -2436,35 +2422,35 @@ footer .fb-page {
   transition: background .1s ease, opacity .1s ease;
 }
 
-/* line 71, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 .combination:hover {
   background-color: #e6e6e6;
   opacity: 1;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 .combination:active {
   background-color: #bbb;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 73, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 .combination:last-child {
   border-right: none;
 }
 
-/* line 85, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 78, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 .combination.combination-highlight {
   background-color: #ddd;
   box-shadow: 0 0 3px #eee;
   opacity: 1;
 }
 
-/* line 90, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 .combination.combination-highlight:hover {
   background-color: #ddd;
 }
 
-/* line 94, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
+/* line 87, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_combination_controller.scss */
 .combination.combination-highlight:active {
   background-color: #aaa;
 }

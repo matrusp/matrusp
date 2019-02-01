@@ -8,6 +8,8 @@ function UI() {
   // ===============================
   this.accordion = document.getElementById('accordion');
   this.combinationTrack = document.getElementById('combination-track');
+  this.combinationPaddleLeft = document.getElementById('combination-paddle-left');
+  this.combinationPaddleRight = document.getElementById('combination-paddle-right');
   this.loadingBar = document.getElementById('loading-bar');
   this.banner = document.getElementById('msg-banner');
   this.bannerMsg = document.getElementById('msg-banner-message');
@@ -78,6 +80,10 @@ function UI() {
 
   this.planPaddleLeft.addEventListener('click', e => {this.plans.scrollLeft -= 90});
   this.planPaddleRight.addEventListener('click', e => {this.plans.scrollLeft += 90});
+
+  this.combinationPaddleLeft.addEventListener('click', e => {this.combinationTrack.scrollLeft -= 240});
+  this.combinationPaddleRight.addEventListener('click', e => {this.combinationTrack.scrollLeft += 240});
+
 
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 
@@ -378,9 +384,26 @@ UI.prototype.removeCombinations = function(combinations) {
 }
 
 UI.prototype.scrollActiveCombinationToView = function() {
-  if (this.combinationTrack.children.length === 0 || !state.activePlan) return;
-  if (!state.activePlan.activeCombination) return;
-  this.combinationTrack.scrollLeft = state.activePlan.activeCombination.htmlElement.offsetLeft;
+  if (!state.activePlan || !state.activePlan.activeCombination) return;
+  this.scrollCombinationToView(state.activePlan.activeCombination);
+}
+
+UI.prototype.scrollCombinationToView = function(combination) {
+  var offsetLeft = combination.htmlElement.offsetLeft;
+  
+  if(this.combinationTrack.scrollLeft > offsetLeft) {
+    this.combinationTrack.scrollLeft = offsetLeft;
+    return;
+  }
+
+  var boardWidth = combination.htmlElement.clientWidth;
+  var railWidth = this.combinationTrack.clientWidth;
+  if(this.combinationTrack.scrollLeft + railWidth < offsetLeft + boardWidth) {
+    this.combinationTrack.scrollLeft = offsetLeft + boardWidth - railWidth;
+    return;
+  }
+
+  this.refreshPlanPaddles();
 }
 
 /**
@@ -684,7 +707,7 @@ UI.prototype.openPrintDialog = function() {
     ui.showBanner("Insira uma ou mais matérias antes de gerar o arquivo pdf",2000);
     return;
   }
-  
+
   this.dialogOverlay.classList.add('show');
   this.printDialog.classList.add('show');
   this.openDialog = this.printDialog;

@@ -63,7 +63,7 @@ button {
     line-height: 100%;
     min-width: 64px;
 
-    transition: background 0.1s ease;
+    transition: background 0.1s ease, color 0.1s ease;
 
     &:hover {
         background: $hover-background-default;
