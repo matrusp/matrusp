@@ -16,6 +16,8 @@ function UI() {
   this.workCredits = document.getElementById('work-credits');
   this.plans = document.getElementById('plans');
   this.newPlan = document.getElementById('new-plan');
+  this.planPaddleLeft = document.getElementById('plan-paddle-left');
+  this.planPaddleRight = document.getElementById('plan-paddle-right');
   this.menuOverlay = document.getElementById('menu-overlay');
   this.dialogOverlay = document.getElementById('dialog-overlay');
   this.courseDialog = document.getElementById('course-dialog');
@@ -70,6 +72,12 @@ function UI() {
   });
 
   this.newPlan.addEventListener('click',e => {var plan = state.addPlan(); state.activePlan = plan; this.plans.scrollLeft = this.plans.scrollWidth; });
+
+  this.plans.addEventListener('scroll', e => this.refreshPaddles());
+  this.refreshPaddles();
+
+  this.planPaddleLeft.addEventListener('click', e => {this.plans.scrollLeft -= 90});
+  this.planPaddleRight.addEventListener('click', e => {this.plans.scrollLeft += 90});
 
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 
@@ -529,7 +537,27 @@ UI.prototype.createPlanTab = function(plan) {
 
 UI.prototype.scrollActivePlanTabToView = function() {
   if (!state.activePlan) return;
-  this.plans.scrollLeft = state.activePlan.html.tab.offsetLeft;
+  this.scrollPlanToView(state.activePlan);
+}
+
+UI.prototype.scrollPlanToView = function(plan) {
+  var offsetLeft = plan.html.tab.offsetLeft;
+  if(this.plans.scrollLeft > offsetLeft) {
+    this.plans.scrollLeft = offsetLeft;
+    return;
+  }
+
+  var tabWidth = plan.html.tab.clientWidth;
+  var railWidth = this.plans.clientWidth;
+  if(this.plans.scrollLeft + railWidth < offsetLeft + tabWidth)
+    this.plans.scrollLeft = offsetLeft + tabWidth - railWidth;
+    return;
+}
+
+UI.prototype.refreshPaddles = function() {
+  this.planPaddleLeft.style.visibility = this.plans.scrollLeft ? 'visible' : 'hidden';
+  var maxScroll = this.plans.scrollWidth - this.plans.clientWidth;
+  this.planPaddleRight.style.visibility = maxScroll > 0 && this.plans.scrollLeft < maxScroll ? 'visible' : 'hidden';
 }
 
 UI.prototype.addContextMenu = function(menu, position) {
