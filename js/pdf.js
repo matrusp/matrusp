@@ -2,7 +2,14 @@ function PrintBox() {
   this.printButton = document.getElementById('print-button');
   this.printButtonIcon = document.getElementById('print-button-icon');
 
-  this.printButton.addEventListener('click',  e => {if(this.savedPDF) window.open(this.savedPDF.output('bloburl'), '_blank');});
+  this.printButton.addEventListener('click',  e => {
+    if(this.savedPDF) {
+      if(window.navigator && window.navigator.msSaveOrOpenBlob) {
+        this.savedPDF.save('matrusp.pdf');
+      }
+      window.open(this.savedPDF.output('bloburl'), '_blank');
+    }
+  });
 }
 
 function generateTable(doc) {
