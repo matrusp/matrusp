@@ -1,19 +1,8 @@
-document.getElementById('print-button').addEventListener('click',  openpdf);
+function PrintBox() {
+  this.printButton = document.getElementById('print-button');
+  this.printButtonIcon = document.getElementById('print-button-icon');
 
-function canvasShiftImage(oldCanvas, shiftAmt, realPdfPageHeight){
-  shiftAmt = parseInt(shiftAmt) || 0;
-  if(shiftAmt <= 0){ return oldCanvas; }
-
-  var newCanvas = document.createElement('canvas');
-  newCanvas.height = Math.min(oldCanvas.height - shiftAmt, realPdfPageHeight);
-  newCanvas.width = oldCanvas.width;
-  var ctx = newCanvas.getContext('2d');
-
-  var img = new Image();
-  img.src = oldCanvas.toDataURL();
-  ctx.drawImage(imgPreload,0,shiftAmt,imgPreload.width,imgPreload.height-shiftAmt,0,0,imgPreload.width,imgPreload.height-shiftAmt);
-
-  return newCanvas;
+  this.printButton.addEventListener('click',  e => {if(this.savedPDF) window.open(this.savedPDF.output('bloburl'), '_blank');});
 }
 
 function generateTable(doc) {
@@ -100,7 +89,10 @@ function generateTable(doc) {
   return doc;
 }
 
-async function openpdf() {
+PrintBox.prototype.generatePDF = async function() {
+  this.printButton.disabled = true;
+  this.printButtonIcon.className = 'fas fa-spinner';
+
   if (state.plans[state.activePlanIndex].activeCombination == null) {
     ui.showBanner("Insira uma ou mais matérias antes de gerar o arquivo pdf",2000);
     return;
@@ -109,27 +101,32 @@ async function openpdf() {
   var timeTable = document.getElementById("time-table");
   var pageWidth = pdf.internal.pageSize.getWidth();
   var scale = ((pageWidth - 1) * 300)/timeTable.getBoundingClientRect().width;
-  var canvas = await html2canvas(timeTable, {allowTaint: true, scale: scale});
-  /*
-    pdfInternals = pdf.internal,
-    pdfPageSize = pdfInternals.pageSize,
-    pdfScaleFactor = pdfInternals.scaleFactor,
-    pdfPageWidth = pdfPageSize.getWidth(),
-    pdfPageHeight = pdfPageSize.getHeight(),
-    totalPdfHeight = 0,
-    htmlPageHeight = canvas.height,
-    htmlScaleFactor = canvas.width / (pdfPageWidth * pdfScaleFactor);*/
-
+ 
+  var svgBgs = Array.from(document.querySelectorAll(".column-bg svg"));
+  svgBgs.forEach(svg => {
+    var bounds = svg.getBoundingClientRect();
+    svg.setAttribute('width',bounds.width);
+    svg.setAttribute('height',bounds.height);
+    Array.from(svg.childNodes).forEach(line => {
+      var style = window.getComputedStyle(line);
+      line.setAttribute('stroke',style.stroke);
+      line.setAttribute('stroke-width',style.strokeWidth);
+    })
+  })
   
-  pdf.addImage(canvas, 'png', 0.5, 0.5, pageWidth - 1, (pageWidth - 1) / canvas.width * canvas.height, null, 'NONE');
+  var canvas = await html2canvas(timeTable, {allowTaint: true, useCORS: true, scale: scale});
 
-  /*while(totalPdfHeight < htmlPageHeight){
-    var newCanvas = canvasShiftImage(canvas, totalPdfHeight, pdfPageHeight * pdfScaleFactor);
+  pdf.setFontSize(20);
+  pdf.setFontStyle('bold');
+  pdf.setTextColor(142);
+  pdf.text("MatrUSP",pdf.internal.pageSize.getWidth() / 2, 0.5, {align: 'center', });
+ 
+  pdf.addImage(canvas, 'png', 0.5, 1, pageWidth - 1, (pageWidth - 1) / canvas.width * canvas.height, null, 'NONE');
 
-    totalPdfHeight += (pdfPageHeight * pdfScaleFactor * htmlScaleFactor);
-
-    if(totalPdfHeight < htmlPageHeight){ pdf.addPage(); }
-  }*/
   pdf = generateTable(pdf);
-  pdf.save("matrusp.pdf");
+  pdf.autoPrint();
+  this.savedPDF = pdf;
+
+  this.printButtonIcon.className = 'fas fa-print';
+  this.printButton.disabled = false;
 }
