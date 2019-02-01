@@ -454,7 +454,6 @@ UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   while(bgs.length) bgs[0].remove();
 
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.classList.add('column-bg');
 
   for(var i = timeBegin; i <= timeEnd; i++){
     var tick = (timeEnd - timeBegin < 8 || !(i%2))? i%24 : '';
@@ -471,8 +470,15 @@ UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
     svg.appendChild(line);
   }
 
+  var bgDiv = createHtmlElementTree({
+    tag: 'div',
+    class: 'column-bg',
+  });
+
+  bgDiv.appendChild(svg);
+
   for(var i = 0; i < this.weekdays.length; i++) {
-    this.weekdays[i].appendChild(i? svg.cloneNode(true) : svg);
+    this.weekdays[i].appendChild(i? bgDiv.cloneNode(true) : bgDiv);
     if(i < dayEnd) {
       this.weekdays[i].parentElement.classList.remove('hidden');
     }
@@ -644,6 +650,8 @@ UI.prototype.openPrintDialog = function() {
   this.dialogOverlay.classList.add('show');
   this.printDialog.classList.add('show');
   this.openDialog = this.printDialog;
+
+  window.printBox.generatePDF();
 }
 
 UI.prototype.closeDialog = function() {
