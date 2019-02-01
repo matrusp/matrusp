@@ -89,6 +89,11 @@ button {
         &:active{
             background: desaturate(lighten($color-accent, 15), 20);
         }
+
+        &:disabled {
+            background: gray;
+        }
+    }
     }
 
     &.fas, &.fab, &.far {
@@ -125,4 +130,9 @@ a {
     &:hover {
         color: $color-accent;
     }
+}
+
+.fas.fa-spinner {
+    will-change: transform;
+    animation: rotate 0.8s linear 0s infinite;
 }
