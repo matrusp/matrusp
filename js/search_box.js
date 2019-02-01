@@ -281,12 +281,19 @@ SearchBox.prototype.aggregateAndSortLectures = function(lecture) {
 SearchBox.prototype.addToPlan = function(lecture) {
   var numberOfLectures = state.activePlan.lectures.length;
 
-  for (var i = 0; i < state.activePlan.lectures.length; i++) {
+  /*for (var i = 0; i < state.activePlan.lectures.length; i++) {
     if (lecture.code == state.activePlan.lectures[i].code) {
       this.searchBox.value = '';
       return;
     }
-  }
+  }*/
+
+  if(this.options.timeframes.length)
+    lecture.turmas.forEach(turma => turma.selected = 
+      turma.horario.some(horario => parseInt(horario.inicio.substring(0,2)) < 12) && this.options.timeframes.indexOf('matutino') > -1 ||
+      turma.horario.some(horario => {var inicio = parseInt(horario.inicio.substring(0,2)); return 10 < inicio && inicio < 18}) && this.options.timeframes.indexOf('vespertino') > -1||
+      turma.horario.some(horario => parseInt(horario.inicio.substring(0,2)) > 17) && this.options.timeframes.indexOf('noturno') > -1
+    );
 
   state.activePlan.addLecture(lecture);
   this.searchBox.value = '';

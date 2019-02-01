@@ -33,6 +33,7 @@ function Classroom(jsonObj, parentLecture) {
     this.code = jsonObj.codigo;
     this.shortCode = this.code.slice(-2);
     this.obs = jsonObj.observacoes || '';
+    this.selected = jsonObj.selected === undefined? true : jsonObj.selected;
     if (jsonObj.horario) {
       this.addTeachers([].concat.apply([], jsonObj.horario.map(x => x.professores)))
       this.schedules = jsonObj.horario.filter(horario => horario.inicio && horario.fim && horario.dia).map(horario => new Schedule(horario, this));
