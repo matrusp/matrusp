@@ -1711,8 +1711,7 @@ footer .fb-page {
 
 /* line 43, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan {
-  min-width: 200px;
-  max-width: 30%;
+  max-width: 44%;
   height: 36px;
   line-height: 36px;
   display: inline-block;
@@ -1726,12 +1725,12 @@ footer .fb-page {
   vertical-align: top;
 }
 
-/* line 58, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan:first-child {
   border-left: 1px solid lightgray;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 61, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan .plan-tab-name {
   padding: 0 8px;
   overflow: hidden;
@@ -1744,26 +1743,25 @@ footer .fb-page {
   width: 100%;
 }
 
-/* line 73, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 72, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan .plan-tab-name:disabled {
   pointer-events: none;
   color: #333;
 }
 
-/* line 78, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 77, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan .plan-tab-name:focus {
   padding-right: 32px;
   text-overflow: clip;
 }
 
-/* line 84, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan .plan-tab-close {
   position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
-  margin: 0 4px;
-  padding: 0 2px;
+  padding: 0 6px;
   z-index: 1;
   text-align: center;
   pointer-events: none;
@@ -1773,7 +1771,7 @@ footer .fb-page {
   transition: opacity ease .1s, color ease .1s, background ease .1s;
 }
 
-/* line 102, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 100, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan .plan-tab-close:before {
   position: absolute;
   top: 0;
@@ -1786,61 +1784,61 @@ footer .fb-page {
   pointer-events: none;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 112, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan .plan-tab-close:hover {
   color: #0097A7;
   pointer-events: initial;
 }
 
-/* line 120, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan:hover {
   background-color: #f3f3f3;
 }
 
-/* line 123, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan:hover .plan-tab-close {
   opacity: 1;
   pointer-events: initial;
 }
 
-/* line 129, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 127, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan:active {
   background-color: white;
 }
 
-/* line 132, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 130, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan:active .plan-tab-close:before {
   background: linear-gradient(to left, white, white 60%, transparent);
 }
 
-/* line 137, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 135, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan.plan-active {
   z-index: 2;
   background: white;
 }
 
-/* line 141, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 139, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan.plan-active:hover {
   background: white;
 }
 
-/* line 145, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 143, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan.plan-active:active {
   background: white;
 }
 
-/* line 149, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 147, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan.plan-active .plan-tab-close {
   opacity: 1;
   pointer-events: initial;
 }
 
-/* line 153, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 151, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan.plan-active .plan-tab-close:before {
   background: linear-gradient(to left, white, white 60%, transparent);
 }
 
-/* line 160, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 158, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan-paddle {
   position: absolute;
   top: 0;
@@ -1858,22 +1856,22 @@ footer .fb-page {
   overflow: hidden;
 }
 
-/* line 181, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 179, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan-paddle:hover {
   background-color: #f3f3f3;
 }
 
-/* line 185, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 183, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan-paddle.show {
   visibility: visible;
 }
 
-/* line 189, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 187, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan-paddle#plan-paddle-left {
   left: 0;
 }
 
-/* line 193, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
+/* line 191, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_explorer/_plan_buttons.scss */
 .plan-paddle#plan-paddle-right {
   right: 0;
 }
