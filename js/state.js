@@ -242,8 +242,14 @@ State.prototype.loadFromServer = function(identifier) {
   });
 }
 
+
 State.prototype.saveOnLocalStorage = function() {
-  localStorage.setItem('state', this.toJSON());
+  try {
+    localStorage.setItem('state', this.toJSON());
+  }
+  catch (ex) {
+    ui.showBanner("Não foi possível salvar seu plano automaticamente pois ele excede o tamanho máximo permitido pelo navegador.\n Recomendamos que baixe o arquivo para mantê-lo");        
+  }
 }
 
 State.prototype.addPlan = function(planData) {
