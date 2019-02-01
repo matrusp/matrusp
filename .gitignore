@@ -8,3 +8,4 @@ styles/css/*
 data/*
 db/*
 *.log
+*.lock
