@@ -2710,17 +2710,34 @@ footer .fb-page {
 }
 
 /* line 23, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
-.context-menu .context-menu-item {
+.context-menu button.context-menu-item {
   padding: 8px 12px;
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: black;
+  font-style: normal;
+  font-weight: normal;
+  text-transform: none;
 }
 
-/* line 26, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
-.context-menu .context-menu-item.context-divider {
+/* line 34, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+.context-menu button.context-menu-item:disabled {
+  color: gray;
+}
+
+/* line 37, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+.context-menu button.context-menu-item:disabled:hover {
+  background: white;
+}
+
+/* line 42, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+.context-menu button.context-menu-item.context-divider {
   border-bottom: 1px solid lightgray;
 }
 
-/* line 30, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
-.context-menu .context-menu-item:hover {
+/* line 46, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+.context-menu button.context-menu-item:hover {
   background: #e6e6e6;
 }
 
