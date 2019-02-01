@@ -97,8 +97,8 @@
   text-align: right;
 }
 
-.schedule-box:hover .timespan-mini,
-.schedule-box-highlight .timespan-mini {
+.schedule-box:hover.schedule-box-show .timespan-mini,
+.schedule-box-highlight.schedule-box-show .timespan-mini {
   visibility: visible;
   z-index: 1;
 }

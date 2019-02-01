@@ -2344,8 +2344,8 @@ footer .fb-page {
 }
 
 /* line 100, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
-.schedule-box:hover .timespan-mini,
-.schedule-box-highlight .timespan-mini {
+.schedule-box:hover.schedule-box-show .timespan-mini,
+.schedule-box-highlight.schedule-box-show .timespan-mini {
   visibility: visible;
   z-index: 1;
 }
