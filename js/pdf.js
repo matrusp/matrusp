@@ -114,7 +114,9 @@ PrintBox.prototype.generatePDF = async function() {
     })
   })
   
-  var canvas = await html2canvas(timeTable, {allowTaint: true, useCORS: true, scale: scale});
+  //Generate the timetable canvas
+  //Window width and height are needed to get consistent timetable size in every device
+  var canvas = await html2canvas(timeTable, {allowTaint: true, useCORS: true, scale: scale, windowWidth: 1280, windowHeight: 800});
 
   pdf.setFontSize(20);
   pdf.setFontStyle('bold');
