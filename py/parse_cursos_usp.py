@@ -77,11 +77,11 @@ async def iterar_unidades(codigos_unidades):
 	logger.info(f" -   {len(unidade_tasks)} unidades processadas")
 	logger.info(" - Iniciando processamento de cursos")
 
-	# Criar uma corotina para cada matéria encontrada, de todas as unidades
+	# Criar uma corotina para cada curso encontrado, de todas as unidades
 	coros = []
 	for cursos_unidade in unidade_tasks:
-		for curso in cursos_unidade.result():
-			coros.append(parsear_curso(curso))
+		for (curso_link,curso_periodo) in cursos_unidade.result():
+			coros.append(parsear_curso(curso_link,curso_periodo))
 
 	# Chamar todas as matérias simultaneamente, de forma assíncrona
 	#logger.info(f" -   {len(coros)} materias encontradas")
@@ -98,15 +98,18 @@ async def iterar_unidade(codigo):
 	assert response.status == 200
 	soup = BeautifulSoup(await response.text(), "html5lib")
 	links_cursos = soup.find_all('a', href=re.compile("listarGradeCurricular"))
+
+	cursos = [(link['href'], next(link.find_parent('tr').contents[-2].stripped_strings,'')) for link in links_cursos]
 	#logger.debug(f" -   {len(materias)} materias encontradas na unidade {codigo} - ")
 	
-	return [i['href'] for i in links_cursos] # Retorna uma lista de matérias para serem buscadas
+	#return [i['href'] for i in links_cursos] # Retorna uma lista de matérias para serem buscadas
+	return cursos # Retorna uma lista de (link, periodo) para serem buscadas
 
 #Tabelas sem tabelas dentro
 def eh_tabela_folha(tag):
 	return tag.name == "table" and tag.table == None
 
-async def parsear_curso(link):
+async def parsear_curso(link,periodo):
 	if not link:
 		return
 
@@ -135,7 +138,7 @@ async def parsear_curso(link):
 		tabelas_folha = soup.find_all(eh_tabela_folha)
 		
 
-		curso = {}
+		curso = {'periodo': periodo}
 		re_codigo = re.search("codcur=(.+?)&codhab=(.+?)(&|$)",link)
 		curso['codigo'] = f"{re_codigo.group(1)}-{re_codigo.group(2)}"
 		curso['nome'] = ' - '.join(x.group(1) for x in re.finditer("Curso:\s*(.+)\s*", soup.get_text()))
@@ -226,10 +229,12 @@ if __name__ == "__main__":
 	logger.addHandler(ch)
 
 	# Enviar log para arquivo
-	fh = logging.FileHandler(time.strftime('%Y-%m-%d_%H-%M-%S_'+__file__+'.log'))
+	fh = logging.FileHandler(time.strftime('%Y-%m-%d_%H-%M-%S_'+os.path.basename(__file__)+'.log'))
 	fh.setLevel(logging.DEBUG)
 	fh.setFormatter(logging.Formatter('[%(asctime)s] %(module)s %(levelname)s: %(message)s'))
 	logger.addHandler(fh)
+
+	sys.excepthook = lambda e, v, tb : logger.exception("Uncaught exception", exc_info = (e, v, tb))
 
 	loop = asyncio.get_event_loop()
 	semaforo = asyncio.Semaphore(args.simultaneidade, loop = loop)
