@@ -20,8 +20,24 @@
   box-shadow: $shadow-default;
   min-width: 160px;
 
-  & .context-menu-item {
+  button.context-menu-item {
     padding: 8px 12px;
+    display: block;
+    width: 100%;
+    text-align: left;
+
+    color: black;
+    font-style: normal;
+    font-weight: normal;
+    text-transform: none;
+
+    &:disabled {
+      color: gray;
+
+      &:hover {
+        background: white;
+      }
+    }
 
     &.context-divider {
       border-bottom: $border-default;

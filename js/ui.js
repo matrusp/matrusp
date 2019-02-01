@@ -390,7 +390,7 @@ UI.prototype.scrollActiveCombinationToView = function() {
 
 UI.prototype.scrollCombinationToView = function(combination) {
   var offsetLeft = combination.htmlElement.offsetLeft;
-  
+
   if(this.combinationTrack.scrollLeft > offsetLeft) {
     this.combinationTrack.scrollLeft = offsetLeft;
     return;
@@ -618,7 +618,7 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
     class: 'context-menu',
     children: [
       {
-        tag: 'div',
+        tag: 'button',
         innerHTML: 'Novo plano',
         class: 'context-menu-item',
         onclick: e => {state.addPlan(); 
@@ -626,7 +626,7 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
                       e.preventDefault();}
       },
       {
-        tag: 'div',
+        tag: 'button',
         innerHTML: 'Duplicar plano',
         class: 'context-menu-item context-divider',
         onclick: e => {state.activePlan = state.copyPlan(plan);
@@ -634,7 +634,7 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
                        e.preventDefault;}
       },
       {
-        tag: 'div',
+        tag: 'button',
         innerHTML: 'Remover plano',
         class: 'context-menu-item',
         onclick: e => {state.removePlan(plan);
@@ -642,7 +642,7 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
                       e.preventDefault();}
       },
       {
-        tag: 'div',
+        tag: 'button',
         innerHTML: 'Remover planos à direita',
         class: 'context-menu-item',
         onclick: e => {state.plans.slice(state.plans.indexOf(plan) + 1).forEach(statePlan => state.removePlan(statePlan));
@@ -650,9 +650,9 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
                       e.preventDefault();}
       },
       {
-        tag: 'div',
+        tag: 'button',
         innerHTML: 'Remover outros planos',
-        class: 'context-menu-item',
+        class: 'context-menu-item context-divider',
         onclick: e => {state.plans.slice().forEach(statePlan => {if(statePlan != plan) state.removePlan(statePlan);});
                       this.hideContextMenu(); 
                       e.preventDefault();}
@@ -669,7 +669,7 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
     class: 'context-menu',
     children: [
       {
-        tag: 'div',
+        tag: 'button',
         innerHTML: 'Abrir no Jupiterweb <span class="fas fa-external-link-alt"></span>',
         class: 'context-menu-item context-divider',
         onclick: e => {
@@ -678,7 +678,7 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
                       e.preventDefault();}
       },
       {
-        tag: 'div',
+        tag: 'button',
         innerHTML: 'Remover',
         class: 'context-menu-item',
         onclick: e => {lecture.delete(); 
