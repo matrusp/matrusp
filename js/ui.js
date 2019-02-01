@@ -73,8 +73,8 @@ function UI() {
 
   this.newPlan.addEventListener('click',e => {var plan = state.addPlan(); state.activePlan = plan; this.plans.scrollLeft = this.plans.scrollWidth; });
 
-  this.plans.addEventListener('scroll', e => this.refreshPaddles());
-  this.refreshPaddles();
+  this.plans.addEventListener('scroll', e => this.refreshPlanPaddles());
+  this.refreshPlanPaddles();
 
   this.planPaddleLeft.addEventListener('click', e => {this.plans.scrollLeft -= 90});
   this.planPaddleRight.addEventListener('click', e => {this.plans.scrollLeft += 90});
@@ -521,6 +521,7 @@ UI.prototype.createPlanTab = function(plan) {
         type: 'text',
         disabled: true,
         class: 'plan-tab-name',
+        size: plan.name.length + 1,
         value: plan.name
       },
       {
@@ -530,6 +531,7 @@ UI.prototype.createPlanTab = function(plan) {
       }
     ]
   });
+  el.childNodes[0].addEventListener('input', e => {e.target.setAttribute('size', e.target.value.length + 1)});
   return this.plans.insertBefore(el,this.newPlan);
 }
 
@@ -549,12 +551,15 @@ UI.prototype.scrollPlanToView = function(plan) {
 
   var tabWidth = plan.html.tab.clientWidth;
   var railWidth = this.plans.clientWidth;
-  if(this.plans.scrollLeft + railWidth < offsetLeft + tabWidth)
+  if(this.plans.scrollLeft + railWidth < offsetLeft + tabWidth) {
     this.plans.scrollLeft = offsetLeft + tabWidth - railWidth;
     return;
+  }
+
+  this.refreshPlanPaddles();
 }
 
-UI.prototype.refreshPaddles = function() {
+UI.prototype.refreshPlanPaddles = function() {
   this.planPaddleLeft.style.visibility = this.plans.scrollLeft ? 'visible' : 'hidden';
   var maxScroll = this.plans.scrollWidth - this.plans.clientWidth;
   this.planPaddleRight.style.visibility = maxScroll > 0 && this.plans.scrollLeft < maxScroll ? 'visible' : 'hidden';
