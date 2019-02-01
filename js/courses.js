@@ -37,6 +37,8 @@ function CourseBox() {
       if(['noturno','diurno','matutino','vespertino'].indexOf(this.selectedCourse.periodo) == -1) return baseLecture;
 
       var lecture = await matruspDB.lectures.get(lectureInfo.codigo);
+      if(!lecture) return baseLecture;
+
       var classrooms = [];
 
       switch(this.selectedCourse.periodo){
