@@ -440,10 +440,12 @@ if __name__ == "__main__":
 	logger.addHandler(ch)
 
 	# Enviar log para arquivo
-	fh = logging.FileHandler(time.strftime('%Y-%m-%d_%H-%M-%S_'+__file__+'.log'))
+	fh = logging.FileHandler(time.strftime('%Y-%m-%d_%H-%M-%S_'+s.path.basename(__file__)+'.log'))
 	fh.setLevel(logging.DEBUG)
 	fh.setFormatter(logging.Formatter('[%(asctime)s] %(module)s %(levelname)s: %(message)s'))
 	logger.addHandler(fh)
+
+	sys.excepthook = lambda e, v, tb : logger.exception("Uncaught exception", exc_info = (e, v, tb))
 
 	loop = asyncio.get_event_loop()
 	semaforo = asyncio.Semaphore(args.simultaneidade, loop = loop)
