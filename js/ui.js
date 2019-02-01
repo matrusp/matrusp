@@ -74,6 +74,7 @@ function UI() {
   });
 
   this.newPlan.addEventListener('click',e => {var plan = state.addPlan(); state.activePlan = plan; this.plans.scrollLeft = this.plans.scrollWidth; });
+  this.newPlan.addEventListener('contextmenu',e => {ui.createNewPlanContextMenu({x: e.clientX, y: e.clientY}); e.preventDefault();});
 
   this.plans.addEventListener('scroll', e => this.refreshPlanPaddles());
   this.refreshPlanPaddles();
@@ -612,6 +613,49 @@ UI.prototype.hideContextMenu = function() {
   }
 }
 
+UI.prototype.createNewPlanContextMenu = function(pos) {
+  var menu = createHtmlElementTree({
+    tag: 'div',
+    class: 'context-menu',
+    children: [
+      {
+        tag: 'button',
+        innerHTML: 'Novo plano',
+        class: 'context-menu-item',
+        onclick: e => {state.addPlan(); 
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      },
+      {
+        tag: 'button',
+        innerHTML: 'Carregar grade ideal',
+        class: 'context-menu-item',
+        onclick: e => {this.openCourseDialog();
+                       this.hideContextMenu();
+                       e.preventDefault;}
+      },
+      {
+        tag: 'button',
+        innerHTML: 'Reabrir plano fechado',
+        class: 'context-menu-item context-divider',
+        disabled: !state.removedPlans.length,
+        onclick: e => {state.activePlan = state.addPlan(state.removedPlans.pop());
+                       this.hideContextMenu();
+                       e.preventDefault();}
+      },
+      {
+        tag: 'button',
+        innerHTML: 'Remover todos os planos',
+        class: 'context-menu-item',
+        onclick: e => {state.plans.slice().forEach(statePlan => state.removePlan(statePlan));
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      }
+    ]
+  });
+  this.addContextMenu(menu, pos);
+}
+
 UI.prototype.createPlanContextMenu = function(plan, pos) {
   var menu = createHtmlElementTree({
     tag: 'div',
@@ -645,6 +689,7 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
         tag: 'button',
         innerHTML: 'Remover planos à direita',
         class: 'context-menu-item',
+        disabled: state.plans.indexOf(plan) == state.plans.length - 1,
         onclick: e => {state.plans.slice(state.plans.indexOf(plan) + 1).forEach(statePlan => state.removePlan(statePlan));
                       this.hideContextMenu(); 
                       e.preventDefault();}
@@ -653,6 +698,7 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
         tag: 'button',
         innerHTML: 'Remover outros planos',
         class: 'context-menu-item context-divider',
+        disabled: state.plans.length < 2,
         onclick: e => {state.plans.slice().forEach(statePlan => {if(statePlan != plan) state.removePlan(statePlan);});
                       this.hideContextMenu(); 
                       e.preventDefault();}
