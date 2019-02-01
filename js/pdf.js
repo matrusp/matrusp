@@ -100,10 +100,6 @@ PrintBox.prototype.generatePDF = async function() {
   this.printButton.disabled = true;
   this.printButtonIcon.className = 'fas fa-spinner';
 
-  if (state.plans[state.activePlanIndex].activeCombination == null) {
-    ui.showBanner("Insira uma ou mais matérias antes de gerar o arquivo pdf",2000);
-    return;
-  }
   var pdf = new jsPDF('p','in','a4');
   var timeTable = document.getElementById("time-table");
   var pageWidth = pdf.internal.pageSize.getWidth();
