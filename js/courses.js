@@ -42,11 +42,11 @@ function CourseBox() {
       switch(this.selectedCourse.periodo){
           case 'diurno':
             classrooms = lecture.turmas.filter(turma => 
-              turma.horario.every(horario => parseInt(horario.inicio.substring(0,2)) < 19));
+              turma.horario.every(horario => parseInt(horario.inicio.substring(0,2)) < 18));
             break;
           case 'noturno':
             classrooms = lecture.turmas.filter(turma => 
-              turma.horario.every(horario => parseInt(horario.inicio.substring(0,2)) > 18));
+              turma.horario.every(horario => parseInt(horario.inicio.substring(0,2)) > 17));
             break;
           case 'matutino':
             classrooms = lecture.turmas.filter(turma => 
