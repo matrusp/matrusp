@@ -324,9 +324,12 @@ Plan.prototype.serialize = function() {
     return lectureData;
   });
 
-  planData.combinations = this.combinations.map(combination => 
-    combination.classroomGroups.map(group => ({'lecture': group[0].parent.code, 'classrooms': group.map(classroom => classroom.code)}))
-  );
+  //Sometimes combinations length will explode to insane amounts
+  //Keep this in check so we don't exceed the quota for localStorage
+  if(this.combinations.length < 50)
+    planData.combinations = this.combinations.map(combination => 
+      combination.classroomGroups.map(group => ({'lecture': group[0].parent.code, 'classrooms': group.map(classroom => classroom.code)}))
+    );
 
   return planData;
 }
