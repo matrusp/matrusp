@@ -15,6 +15,8 @@
  */
 function State() {
   this.plans = new Array();
+  this.plans = [];
+  this.removedPlans = [];
 
   this.html = {
     previousCombination: document.getElementsByClassName('combination-button-left')[0],
@@ -252,6 +254,9 @@ State.prototype.addPlan = function(planData) {
 }
 
 State.prototype.removePlan = function(plan) {
+  if(plan.lectures.length)
+    this.removedPlans.push(plan.serialize());
+  
   var index = this.plans.indexOf(plan);
   if(index < 0) return;
 

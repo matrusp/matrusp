@@ -656,6 +656,15 @@ UI.prototype.createPlanContextMenu = function(plan, pos) {
         onclick: e => {state.plans.slice().forEach(statePlan => {if(statePlan != plan) state.removePlan(statePlan);});
                       this.hideContextMenu(); 
                       e.preventDefault();}
+      },
+      {
+        tag: 'button',
+        innerHTML: 'Reabrir plano fechado',
+        class: 'context-menu-item',
+        disabled: !state.removedPlans.length,
+        onclick: e => {state.activePlan = state.addPlan(state.removedPlans.pop());
+                       this.hideContextMenu();
+                       e.preventDefault();}
       }
     ]
   });
