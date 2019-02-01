@@ -33,10 +33,37 @@ function CourseBox() {
 
   this.acceptButton.addEventListener('click', e => {
     var lecturePromises = this.selectedCourse.periodos[this.periodSelect.value].map(async lectureInfo => {
-      return {code: lectureInfo.codigo, selected: (lectureInfo.tipo == 'obrigatoria' || this.optativeCheck.checked)};
+      var baseLecture = {code: lectureInfo.codigo, selected: (lectureInfo.tipo == 'obrigatoria' || this.optativeCheck.checked)};
+      if(['noturno','diurno','matutino','vespertino'].indexOf(this.selectedCourse.periodo) == -1) return baseLecture;
+
+      var lecture = await matruspDB.lectures.get(lectureInfo.codigo);
+      var classrooms = [];
+
+      switch(this.selectedCourse.periodo){
+          case 'diurno':
+            classrooms = lecture.turmas.filter(turma => 
+              turma.horario.every(horario => parseInt(horario.inicio.substring(0,2)) < 19));
+            break;
+          case 'noturno':
+            classrooms = lecture.turmas.filter(turma => 
+              turma.horario.every(horario => parseInt(horario.inicio.substring(0,2)) > 18));
+            break;
+          case 'matutino':
+            classrooms = lecture.turmas.filter(turma => 
+              turma.horario.every(horario => parseInt(horario.inicio.substring(0,2)) < 12));
+            break;
+          case 'vespertino':
+            classrooms = lecture.turmas.filter(turma => 
+              turma.horario.every(horario => {var inicio = parseInt(horario.inicio.substring(0,2)); return 10 < inicio && inicio < 19}));
+            break;
+        }
+      
+      baseLecture.classrooms = classrooms.map(classroom => classroom.codigo);
+      return baseLecture;
     });
     Promise.all(lecturePromises).then(lectures => {
       lectures.filter(el => el);
+
       var planData = {"name": `${this.courseSelect.options[this.courseSelect.selectedIndex].innerHTML} - ${this.periodSelect.value}º período`,"lectures": lectures};
       var plan = state.addPlan(planData);
       if(!state.activePlan.lectures.length) state.removePlan(state.activePlan);
@@ -94,7 +121,7 @@ CourseBox.prototype.populateCourseSelect = async function(unit) {
     var courses = await matruspDB.courses.where('unidade').equals(unit).toArray();
     courses.forEach(course => createAndAppendChild(fragment, 'option', {
       'value': course.codigo,
-      'innerHTML': course.nome
+      'innerHTML': `${course.nome} (${course.periodo})`
     }));
     if(courses.length)
       this.courseSelect.disabled = false;
