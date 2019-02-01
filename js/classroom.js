@@ -89,7 +89,7 @@ Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
   classroom.dateEnd = Date.parse(jsonT.fim);
   classroom.code = `${jsonT.codigo}+${jsonP.codigo.slice(-2)}`;
   classroom.shortCode = `${jsonT.codigo.slice(-2)}+${jsonP.codigo.slice(-2)}`;
-  classroom.obs = jsonT.observacoes + '\n' + jsonP.observacoes;
+  classroom.obs = [jsonT.observacoes, jsonP.observacoes].filter(el => el).join('\n');
   if (jsonT.horario) {
     classroom.addTeachers([].concat.apply([], jsonT.horario.map(x => x.professores)))
     for (var i = 0; i < jsonT.horario.length; i++) {
