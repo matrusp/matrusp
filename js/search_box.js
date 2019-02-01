@@ -368,7 +368,8 @@ SearchBox.prototype.buildSummaryText = function() {
   var timeframes = this.timeCheckboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
   if (timeframes.length && timeframes.length != this.timeCheckboxes.length) {
     this.options.timeframes = timeframes;
-    summaryText += ` em período **${this.options.timeframes.join('** ou **')}**`
+    if(timeframes.toString() == ['matutino','vespertino'].toString()) timeframes = ['diurno'];
+    summaryText += ` em período **${timeframes.join('** ou **')}**`
   }
 
   return summaryText.replace(/\*\*([^\*]+)\*\*/g, '<span class="selected-option">$1</span>');
