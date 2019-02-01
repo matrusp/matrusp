@@ -18,7 +18,7 @@ function generateTable(doc) {
       lectureCode: !i? classroom.parent.code : '',
       lectureName: !i? classroom.parent.name : '',
       classroomCode: classroom.shortCode,
-      teachers: classroom.teachers.reduce((acc, str) => `${acc}\n${str}`) || 'Sem professor designado',
+      teachers: classroom.teachers.length? classroom.teachers.filter(el => el).reduce((acc, str) => `${acc}\n${str}`) : 'Sem professor designado',
       color: ui.colors[classroom.parent.color],
       span: !i? classroomGroup.length : undefined
     })))),

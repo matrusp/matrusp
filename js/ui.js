@@ -213,7 +213,9 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
         {
           tag: 'div',
           class: 'classroom-teacher',
-          innerHTML: removeDuplicates(classroom.teachers.map(teacher => teacher? 'Prof. ' + teacher : 'Sem professor designado')).join('<br>')
+          innerHTML: classroom.teachers.length? 
+            removeDuplicates(classroom.teachers.filter(el => el).map(teacher => 'Prof. ' + teacher)).join('<br>') :
+            'Sem professor designado'
         },
         {
           tag:'div',
@@ -229,11 +231,15 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
       {
         tag: 'div',
         class: 'classroom-info-schedules',
-        children: classroom.schedules.map(schedule => ({
+        children: classroom.schedules.length? classroom.schedules.map(schedule => ({
           tag: 'div',
           class: 'classroom-info-schedule',
           innerHTML: `${schedule.day} ${schedule.timeBegin.toString('HH:mm')} - ${schedule.timeEnd.toString('HH:mm')}`
-        }))
+        })) : [{
+          tag: 'div',
+          class: 'classroom-info-schedule',
+          innerHTML: 'Sem horário definido'
+          }]
       },
       {
         tag: 'table',
