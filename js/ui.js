@@ -213,8 +213,7 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
         {
           tag: 'div',
           class: 'classroom-teacher',
-          innerHTML: classroom.teachers.length? 
-            removeDuplicates(classroom.teachers.filter(el => el).map(teacher => 'Prof. ' + teacher)).join('<br>') :
+          innerHTML: removeDuplicates(classroom.teachers.filter(el => el).map(teacher => 'Prof. ' + teacher)).join('<br>') ||
             'Sem professor designado'
         },
         {
