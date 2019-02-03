@@ -5,7 +5,9 @@ function PrintBox() {
   this.downloadButtonIcon = document.getElementById('download-pdf-button-icon');
 
   this.printButton.addEventListener('click',  e => {
+    ui.closeDialog();
     if(this.savedPDF) {
+      this.savedPDF.autoPrint();
       if(window.navigator && window.navigator.msSaveOrOpenBlob) {
         this.savedPDF.save(document.title);
       }
@@ -14,6 +16,7 @@ function PrintBox() {
   });
 
   this.downloadButton.addEventListener('click', e => {
+    ui.closeDialog();
     if(this.savedPDF)
       this.savedPDF.save(document.title);
   });
@@ -139,7 +142,6 @@ PrintBox.prototype.generatePDF = async function() {
   pdf.addImage(canvas, 'png', 0.5, 1, pageWidth - 1, (pageWidth - 1) / canvas.width * canvas.height, null, 'NONE');
 
   pdf = generateTable(pdf);
-  pdf.autoPrint();
   this.savedPDF = pdf;
 
   this.printButtonIcon.className = prevPrintIcon;
