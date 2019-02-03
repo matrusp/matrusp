@@ -1,14 +1,21 @@
 function PrintBox() {
   this.printButton = document.getElementById('print-button');
   this.printButtonIcon = document.getElementById('print-button-icon');
+  this.downloadButton = document.getElementById('download-pdf-button');  
+  this.downloadButtonIcon = document.getElementById('download-pdf-button-icon');
 
   this.printButton.addEventListener('click',  e => {
     if(this.savedPDF) {
       if(window.navigator && window.navigator.msSaveOrOpenBlob) {
-        this.savedPDF.save('matrusp.pdf');
+        this.savedPDF.save(document.title);
       }
       window.open(this.savedPDF.output('bloburl'), '_blank');
     }
+  });
+
+  this.downloadButton.addEventListener('click', e => {
+    if(this.savedPDF)
+      this.savedPDF.save(document.title);
   });
 }
 
@@ -98,7 +105,10 @@ function generateTable(doc) {
 
 PrintBox.prototype.generatePDF = async function() {
   this.printButton.disabled = true;
-  this.printButtonIcon.className = 'fas fa-spinner';
+  this.downloadButton.disabled = true;
+  var prevPrintIcon = this.printButtonIcon.className;
+  var prevDownloadIcon = this.downloadButtonIcon.className;
+  this.printButtonIcon.className = this.downloadButtonIcon.className = 'fas fa-spinner';
 
   var pdf = new jsPDF('p','in','a4');
   var timeTable = document.getElementById("time-table");
@@ -132,6 +142,8 @@ PrintBox.prototype.generatePDF = async function() {
   pdf.autoPrint();
   this.savedPDF = pdf;
 
-  this.printButtonIcon.className = 'fas fa-print';
+  this.printButtonIcon.className = prevPrintIcon;
+  this.downloadButtonIcon.className = prevDownloadIcon;
   this.printButton.disabled = false;
+  this.downloadButton.disabled = false;
 }

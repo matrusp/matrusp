@@ -75,6 +75,10 @@ button {
         color: darken($color-accent, 10);
     }
 
+    &:disabled {
+        color: darkgray;
+    }
+
     &.emphasis {
         border-radius: 4px;
         border: none;
