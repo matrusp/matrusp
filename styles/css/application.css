@@ -54,6 +54,11 @@ button:active {
 }
 
 /* line 78, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+button:disabled {
+  color: darkgray;
+}
+
+/* line 82, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.emphasis {
   border-radius: 4px;
   border: none;
@@ -62,34 +67,34 @@ button.emphasis {
   box-shadow: 2px 1px 8px 0px rgba(0, 0, 0, 0.4);
 }
 
-/* line 85, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.emphasis:hover {
   background: #00aec1;
 }
 
-/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 93, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.emphasis:active {
   background: #18c8db;
 }
 
-/* line 93, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 97, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.emphasis:disabled {
   background: gray;
 }
 
-/* line 98, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 102, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.header-button {
   color: white;
   transition: color .1s ease;
 }
 
-/* line 102, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 106, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.header-button:hover {
   color: #0097A7;
   background: transparent;
 }
 
-/* line 108, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 112, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.fas, button.fab, button.far {
   font-size: 18px;
   color: white;
@@ -98,40 +103,40 @@ button.fas, button.fab, button.far {
   min-width: 0;
 }
 
-/* line 115, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 119, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.fas:hover, button.fab:hover, button.far:hover {
   color: #0097A7;
   background: transparent;
 }
 
-/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 125, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.small-button, button.close-button {
   min-width: 0;
   padding: 2px;
 }
 
-/* line 126, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 130, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.close-button {
   font-weight: lighter;
 }
 
-/* line 130, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 134, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 button.inline-button {
   padding: 0;
   text-transform: none;
 }
 
-/* line 136, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 140, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 a {
   color: darkgray;
 }
 
-/* line 139, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 143, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 a:hover {
   color: #0097A7;
 }
 
-/* line 144, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
+/* line 148, C:/XAMPP/htdocs/matrusp/styles/sass/themes/_default.scss */
 .fas.fa-spinner {
   will-change: transform;
   animation: rotate 0.8s linear 0s infinite;
@@ -593,6 +598,16 @@ footer .fb-page {
 #save-controller {
   display: inline-block;
   flex: 0 0 auto;
+}
+
+/* line 6, C:/XAMPP/htdocs/matrusp/styles/sass/modules/header/_save_and_load_identifier.scss */
+#save-controller #user-identifier:disabled {
+  display: inline-block;
+  color: white;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  text-align: right;
 }
 
 /* line 1, C:/XAMPP/htdocs/matrusp/styles/sass/modules/header/_banner.scss */
