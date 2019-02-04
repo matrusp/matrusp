@@ -14,18 +14,12 @@
  * @see Plan
  */
 function State() {
-  this.plans = new Array();
   this.plans = [];
   this.removedPlans = [];
 
   this.html = {
-    previousCombination: document.getElementsByClassName('combination-button-left')[0],
-    nextCombination: document.getElementsByClassName('combination-button-right')[0],
     upload: document.getElementById('upload-input'),
     download: document.getElementById('download'),
-    save: document.getElementById('save-button'),
-    load: document.getElementById('load-button'),
-    identifier: document.getElementById('user-identifier')
   }
   this.addEventListeners();
 
@@ -58,6 +52,17 @@ State.prototype = {
   set activePlanIndex(index) {
     if(index >= 0)
       this.activePlan = this.plans[index];
+  },
+
+  get identifier() {
+    return this._identifier;
+  },
+  set identifier(identifier) {
+    this._identifier = identifier;
+    if(identifier) {
+      document.title = `${identifier} - MatrUSP`;
+      if(saveBox) saveBox.html.identifier.value = identifier;
+    }
   }
 
 }
@@ -108,6 +113,7 @@ State.prototype.load = function(baseState) {
       return false;
     }
 
+    this.identifier = baseState.identifier;
     this.version = matrusp_current_state_version;
     this.clear();
 
@@ -135,20 +141,6 @@ State.prototype.addLecture = function(lecture, planIndex) {
 };
 
 /**
- * Selects the next combination in the active plan.
- */
-State.prototype.nextCombination = function() {
-  this.plans[this.activePlanIndex].nextCombination();
-}
-
-/**
- * Selects the previous combination in the active plan.
- */
-State.prototype.previousCombination = function() {
-  this.plans[this.activePlanIndex].previousCombination();
-}
-
-/**
  * Downloads the state as serialized JSON file.
  */
 State.prototype.downloadFile = function() {
@@ -167,10 +159,6 @@ State.prototype.downloadFile = function() {
 }
 
 State.prototype.addEventListeners = function() {
-  this.html.previousCombination.addEventListener('click', this.previousCombination.bind(this));
-  this.html.nextCombination.addEventListener('click', this.nextCombination.bind(this));
-  this.html.save.addEventListener('click', () => this.saveOnServer(this.html.identifier.value));
-  this.html.load.addEventListener('click', () => this.loadFromServer(this.html.identifier.value));
 };
 
 /**
@@ -179,14 +167,19 @@ State.prototype.addEventListeners = function() {
  * @param {identifier} Identifier The identifier that will point to this state on the server
  */
 State.prototype.saveOnServer = function(identifier) {
+  identifier = identifier || this.identifier;
+
   if (!identifier || identifier == '') {
     ui.showBanner('É necessário preencher o nome do identificador', 2000);
-    return;
+    return false;
   }
+
+  var stateData = this.toJSON();
+  this.saveOnLocalStorage(stateData);
 
   fetch(`./php/save.php?identifier=${encodeURIComponent(identifier)}`, {
     method: 'POST',
-    body: `data=${encodeURIComponent(this.toJSON())}`,
+    body: `data=${encodeURIComponent(stateData)}`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     }
@@ -194,6 +187,8 @@ State.prototype.saveOnServer = function(identifier) {
     if (response.ok) {
       ui.showBanner(`Identificador "${identifier}" salvo com sucesso`, 2000);
       fetch(`./data/${identifier}.json`); //Fetch from server to save on cache
+      this.identifier = identifier;
+      return true;
     }
     else
       ui.showBanner('Algum erro ocorreu, salve o identificador novamente', 2000);
@@ -210,6 +205,7 @@ State.prototype.toJSON = function() {
   var stateData = {};
   stateData.version = this.version;
   stateData.lastColor = this.lastColor;
+  stateData.identifier = this.identifier;
   stateData.plans = this.plans.map(plan => plan.serialize());
   stateData.activePlanIndex = this.activePlanIndex;
   return JSON.stringify(stateData);
@@ -220,16 +216,18 @@ State.prototype.toJSON = function() {
  *
  * @param {identifier} Identifier The identifier to fetch on the server
  */
-State.prototype.loadFromServer = function(identifier) {
-  if (!identifier || identifier == '') {
+State.prototype.loadFromServer = function(identifier) {  
+  if (!identifier) {
     ui.showBanner('É necessário preencher o nome do identificador', 2000);
     return;
   }
+
   fetch(`data/${identifier.replace(/[^\w]/g, '')}.json`).then(response => {
     if (response.ok)
       response.json().then(json => {
         this.load(json);
         ui.showBanner(`Identificador "${identifier}" carregado com sucesso`, 2000);
+        this.identifier = identifier;
       });
     else
     if (response.status === 404)
@@ -243,9 +241,11 @@ State.prototype.loadFromServer = function(identifier) {
 }
 
 
-State.prototype.saveOnLocalStorage = function() {
+State.prototype.saveOnLocalStorage = function(stateData) {
+  stateData = stateData || this.toJSON();
+
   try {
-    localStorage.setItem('state', this.toJSON());
+    localStorage.setItem('state', stateData);
   }
   catch (ex) {
     ui.showBanner("Não foi possível salvar seu plano automaticamente pois ele excede o tamanho máximo permitido pelo navegador.\n Recomendamos que baixe o arquivo para mantê-lo");        
