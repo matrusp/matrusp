@@ -604,10 +604,20 @@ UI.prototype.addContextMenu = function(menu, position) {
   this.menuOverlay.classList.add('show');
   this.menuOverlay.appendChild(menu);
   var menuHeight = menu.offsetHeight;
+  var menuWidth = menu.offsetWidth;
+
+  var cssText = '';
   if(position.y < window.innerHeight - menuHeight)
-    menu.style.cssText = `top: ${position.y + window.scrollY}px; left: ${position.x + window.scrollX}px;`;
+    cssText += `top: ${position.y + window.scrollY}px;`;
   else
-    menu.style.cssText = `top: ${position.y + window.scrollY - menuHeight}px; left: ${position.x + window.scrollX}px;`;
+    cssText = `top: ${position.y + window.scrollY - menuHeight}px; left: ${position.x + window.scrollX}px;`;
+
+  if(position.x < window.innerWidth - menuWidth)
+    cssText += `left: ${position.x + window.scrollX}px;`;
+  else
+    cssText += `left: ${position.x + window.scrollX - menuWidth}px;`;
+
+  menu.style.cssText = cssText;
   this.menu = menu;
 }
 
