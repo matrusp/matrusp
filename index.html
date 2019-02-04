@@ -71,7 +71,7 @@
 			<div><button id="share-mail" class="fas fa-envelope"></button><button id="share-facebook" class="fab fa-facebook"></button><button id="share-whatsapp" class="fab fa-whatsapp"></button></div>
 			<div id="share-calendar">
 			<button id="share-gcal"><span class="fas fa-calendar-alt"></span> Enviar para Google Calendar</button><br/>
-			<button id="share-ics"><span class="fas fa-calendar-alt"></span> Baixar calendário .ics</button><br />
+			<button id="share-ics"><span class="fas fa-calendar-alt"></span> Exportar para calendário .ics</button><br />
 			<button id="share-download"><span class="fas fa-download"></span> Baixar grade</button>
 			</div>
 		</div>
@@ -89,21 +89,13 @@
     <div><span id="logo">MatrUSP</span><span class="beta-tag-wrapper"><span class="beta-tag">Beta</span></span></div>
     <div id='save-controller'>
 	<input id='user-identifier' placeholder='Salve seu plano aqui'> 
-	<button id='save-button'>Salvar</button>
-	<button id='load-button'>Carregar</button>
+	<button id='save-button' class='header-button'>Salvar</button>
+	<button id='load-button' class='header-button'>Carregar</button>
     </div>
     <div id="icons">
-	<!--<li class="icon" id="icalendar" tabindex="0" data-description="Exportar para calendário">
-	    <div class="hover-mask"></div>
-	    <img src="images/ic_calendar.png" alt="">
-	    <ul class="onclick-menu-content">
-		<li><button id="google">Exportar para o calendário do Google</button></li>
-		<li><button id="ics">Exportar para arquivo .ics</button></li>
-	    </ul>
-	</li>-->
-	<button class="fas fa-share" id="share" title="Compartilhar" onclick='ui.openShareDialog();'>
+	<button class="fas fa-share header-button" id="share" title="Compartilhar" onclick='ui.openShareDialog();'>
 	</button>
-	<button class="fas fa-print" id="pdf" title="Imprimir" onclick='ui.openPrintDialog();'>
+	<button class="fas fa-print header-button" id="pdf" title="Imprimir" onclick='ui.openPrintDialog();'>
 	</button>
     </div>
     </div>
