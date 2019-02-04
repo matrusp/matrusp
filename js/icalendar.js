@@ -107,7 +107,7 @@ function build_event() {
 
 function download_icalendar() {
   if (state.plans[state.activePlanIndex].activeCombination == null) {
-    ui.showBanner("Insira uma ou mais matérias antes exportar para um arquivo ics");
+    ui.showBanner("Insira uma ou mais matérias antes exportar para um arquivo ics", 2000);
     return;
   }
   var element = document.createElement('a');
