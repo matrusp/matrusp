@@ -98,6 +98,15 @@ button {
             background: gray;
         }
     }
+
+    &.header-button {
+        color: white;
+        transition: color .1s ease;
+
+        &:hover {
+            color: $color-accent;
+            background: transparent;
+        }
     }
 
     &.fas, &.fab, &.far {
