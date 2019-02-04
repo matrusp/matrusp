@@ -288,7 +288,7 @@ SearchBox.prototype.addToPlan = function(lecture) {
     }
   }*/
 
-  if(this.options.timeframes.length)
+    if(this.options.timeframes.length)
     lecture.turmas.forEach(turma => turma.selected = 
       turma.horario.some(horario => parseInt(horario.inicio.substring(0,2)) < 12) && this.options.timeframes.indexOf('matutino') > -1 ||
       turma.horario.some(horario => {var inicio = parseInt(horario.inicio.substring(0,2)); return 10 < inicio && inicio < 18}) && this.options.timeframes.indexOf('vespertino') > -1||
@@ -312,6 +312,12 @@ SearchBox.prototype.optionsChanged = function() {
     this.clearButton.classList.add('show-options');
   else
     this.clearButton.classList.remove('show-options');
+
+  var timeframes = this.timeCheckboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+  if (timeframes.length && timeframes.length != this.timeCheckboxes.length)
+    this.options.timeframes = timeframes;
+  else
+    this.options.timeframes = [];
 
   this.searchOptionsSummary.innerHTML = this.buildSummaryText();
   localStorage.setItem("search-options", JSON.stringify(this.options));
@@ -371,10 +377,8 @@ SearchBox.prototype.buildSummaryText = function() {
       summaryText += ` no campus de **${this.options.campus}**`
   }
 
-
-  var timeframes = this.timeCheckboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
-  if (timeframes.length && timeframes.length != this.timeCheckboxes.length) {
-    this.options.timeframes = timeframes;
+  var timeframes = this.options.timeframes;
+  if(timeframes.length) {
     if(timeframes.toString() == ['matutino','vespertino'].toString()) timeframes = ['diurno'];
     summaryText += ` em período **${timeframes.join('** ou **')}**`
   }

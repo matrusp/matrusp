@@ -63,7 +63,7 @@ function fetchLectureOnDB() {
       else {
         dbquery = matruspDB.lectures.where('[unidade+departamento]').between([search.options.unit,Dexie.minKey],[search.options.unit,Dexie.maxKey]);
       }
-      if(search.options.timeframes) {
+      if(search.options.timeframes && search.options.timeframes.length) {
         dbquery = dbquery.and(lecture => lecture.periodos.some(timeframe => search.options.timeframes.indexOf(timeframe) > -1));
       }
       dbquery = dbquery.and(lecture => scores[lecture.codigo]);
@@ -71,7 +71,7 @@ function fetchLectureOnDB() {
       quickselect(lectures,50,(a,b) => scores[b.codigo] - scores[a.codigo]);
       lectures = lectures.splice(0,50);
     }
-    else if(search.options.timeframes) {
+    else if(search.options.timeframes && search.options.timeframes.length) {
      dbquery = matruspDB.lectures.where('periodos').anyOf(search.options.timeframes).distinct();
       if(search.options.campus)
         dbquery = dbquery.and(lecture => lecture.campus == search.options.campus);
