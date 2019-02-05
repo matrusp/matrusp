@@ -434,6 +434,7 @@ footer .fb-page {
   shape-rendering: crispedges;
   animation: grow ease 1s both;
   transform-origin: center;
+  will-change: transform, opacity;
 }
 
 /* line 120, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */

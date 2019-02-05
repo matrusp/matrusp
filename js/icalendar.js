@@ -89,15 +89,15 @@ function build_event() {
   state.activePlan.activeCombination.classroomGroups.map(group => group[0]).forEach(classroom => {
     classroom.schedules.forEach(schedule => {
       events_statement += "BEGIN:VEVENT\n";
-      events_statement += `DTSTART:${classroom.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString()}\n`;
-      events_statement += `DTEND:${classroom.dateBegin.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()}\n`;
+      events_statement += `DTSTART:${schedule.timeBegin.toISOString()}\n`;
+      events_statement += `DTEND:${schedule.timeEnd.toISOString()}\n`;
       events_statement += `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()};BYDAY=\n`;
       events_statement += `DTSTAMP:${Date.now()}\n`;
       events_statement += `UID:${generate_uid(schedule)}\n`;
       events_statement += "SEQUENCE:0\n";
       events_statement += "STATUS:CONFIRMED\n";
       events_statement += `SUMMARY: Aula de ${get_title(classroom)}\n`;
-      events_statement += `DESCRIPTION:${classroom.obs.replace(/\n/,' ')}\n`;
+      events_statement += `DESCRIPTION:${classroom.obs? classroom.obs.replace(/\n/,' ') : ''}\n`;
       events_statement += "TRANSP:OPAQUE\n";
       events_statement += "END:VEVENT\n";
     });
@@ -106,7 +106,7 @@ function build_event() {
 }
 
 function download_icalendar() {
-  if (state.plans[state.activePlanIndex].activeCombination == null) {
+  if (state.activePlan.activeCombination == null) {
     ui.showBanner("Insira uma ou mais matérias antes exportar para um arquivo ics", 2000);
     return;
   }
