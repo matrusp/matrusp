@@ -149,9 +149,9 @@ State.prototype.downloadFile = function() {
   element.setAttribute("href", dataString);
   element.style.display = 'none';
   if (document.getElementById('user-identifier').value) {
-    element.setAttribute('download', document.getElementById('user-identifier').value + '.json');
+    element.setAttribute('download', document.getElementById('user-identifier').value + '.matrusp');
   } else {
-    element.setAttribute('download', 'matrusp_' + (new Date).getFullYear() + '.json');
+    element.setAttribute('download', 'matrusp_' + (new Date).getFullYear() + '.matrusp');
   }
   document.body.appendChild(element);
   element.click();
