@@ -71,8 +71,6 @@ State.prototype.clear = function() {
   this.plans.forEach(plan => plan.delete());
   this.identifier = undefined;
   this.plans = [];
-  this.plans.push(new Plan());
-  this.activePlanIndex = 0;
 }
 
 /**
@@ -127,7 +125,11 @@ State.prototype.load = function(baseState) {
 
     return true;
   }
-  return false;
+  this.clear();
+  this.plans.push(new Plan());
+  this.activePlanIndex = 0;
+
+  return true;
 }
 
 /**

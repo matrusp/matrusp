@@ -27,9 +27,11 @@ dbworker.onmessage = e => {
 if (window.location.hash.substr(1)) {
   ui.loadStateFromServer(window.location.hash.substr(1));
   history.pushState('', document.title, window.location.pathname);
-} else if (localStorage.getItem('state')) {
+} 
+else if (localStorage.getItem('state'))
   state.load(JSON.parse(localStorage.getItem('state')));
-  state.saveOnLocalStorage();
-}
-else state.clear();
+else state.load();
+
+state.saveOnLocalStorage();
+
 setTimeout(function() { ui.scrollActiveCombinationToView() }, 100);
