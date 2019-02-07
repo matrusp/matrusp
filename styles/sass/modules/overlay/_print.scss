@@ -1,0 +1,14 @@
+#print-dialog {
+    &.show {
+        display: block;
+    }
+
+        label {
+            display: block;
+            color: #333;
+        }
+
+    #print-buttons {
+        text-align: right;
+    }
+}
