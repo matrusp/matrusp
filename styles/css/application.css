@@ -2817,6 +2817,22 @@ footer .fb-page {
   color: #1da851;
 }
 
+/* line 2, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_print.scss */
+#print-dialog.show {
+  display: block;
+}
+
+/* line 6, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_print.scss */
+#print-dialog label {
+  display: block;
+  color: #333;
+}
+
+/* line 11, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_print.scss */
+#print-dialog #print-buttons {
+  text-align: right;
+}
+
 @keyframes grow {
   from {
     transform: scaleX(0);
