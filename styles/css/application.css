@@ -149,21 +149,20 @@ a:hover {
 
 /* line 29, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
 html, body {
-  width: 100%;
   min-width: 0;
-  height: 100%;
 }
 
-/* line 35, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
+/* line 33, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
 body {
   overflow: auto;
   background: #FEFEFE;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
-/* line 43, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
+/* line 42, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
 #main {
   position: relative;
   display: flex;
@@ -175,12 +174,12 @@ body {
   z-index: 0;
 }
 
-/* line 56, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
+/* line 55, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
 footer {
   flex: 0 0 auto;
 }
 
-/* line 60, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
+/* line 59, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_base_layout.scss */
 .flex-spacer {
   flex: 0 0 16px;
 }
@@ -317,6 +316,7 @@ footer #github-buttons {
 footer .fb-page {
   flex: 0 1 380px;
   margin: 8px;
+  min-height: 121px;
 }
 
 /* line 18, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
@@ -434,7 +434,6 @@ footer .fb-page {
   shape-rendering: crispedges;
   animation: grow ease 1s both;
   transform-origin: center;
-  will-change: transform, opacity;
 }
 
 /* line 120, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
@@ -2723,9 +2722,10 @@ footer .fb-page {
   border: 1px solid lightgray;
   box-shadow: 2px 1px 8px 0px rgba(0, 0, 0, 0.4);
   min-width: 160px;
+  animation: appear .1s ease-out;
 }
 
-/* line 23, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 24, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu button.context-menu-item {
   padding: 8px 12px;
   display: block;
@@ -2737,22 +2737,22 @@ footer .fb-page {
   text-transform: none;
 }
 
-/* line 34, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 35, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu button.context-menu-item:disabled {
   color: gray;
 }
 
-/* line 37, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 38, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu button.context-menu-item:disabled:hover {
   background: white;
 }
 
-/* line 42, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 43, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu button.context-menu-item.context-divider {
   border-bottom: 1px solid lightgray;
 }
 
-/* line 46, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 47, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu button.context-menu-item:hover {
   background: #e6e6e6;
 }

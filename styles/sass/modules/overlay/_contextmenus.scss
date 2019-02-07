@@ -19,6 +19,7 @@
   border: $border-default;
   box-shadow: $shadow-default;
   min-width: 160px;
+  animation: appear .1s ease-out;
 
   button.context-menu-item {
     padding: 8px 12px;
