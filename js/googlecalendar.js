@@ -28,7 +28,7 @@ function handleAuthResult(authResult) {
   }
 }
 
-function handleAuthClick(event) {
+function handleGAuthClick(event) {
   if (state.plans[state.activePlanIndex].activeCombination == null) {
     alert("Insira uma ou mais matérias antes exportar para o Google Calendar");
     return;
@@ -40,7 +40,7 @@ function handleAuthClick(event) {
 }
 
 function loadCalendarApi() {
-  gapi.client.load('calendar', 'v3', addEvents);
+  gapi.client.load('calendar', 'v3', addGcalEvents);
 }
 
 function get_class_begin_date_google(classroom, schedule) {
@@ -66,33 +66,40 @@ function get_schedule_end_time_google(schedule) {
   return schedule.timeEnd + ":00";
 }
 
-function addEvents() {
-  var active_classes = state.plans[state.activePlanIndex].activeCombination.lecturesClassroom;
-  for (var i = 0; i < active_classes.length; i++) {
-    var current_schedule = active_classes[i].schedules;
-    for (var j = 0; j < current_schedule.length; j++) {
+function addGcalCalendar() {
+  var request = gapi.client.calendar.calendars.insert({
+   'summary': 'MatrUSP',
+   });
+
+   var cal = request.execute();
+   addGcalEvents(cal.id);
+}
+
+function addGcalEvents(calID) {
+  state.activePlan.activeCombination.classroomGroups.map(group => group[0]).forEach(classroom => {
+    classroom.schedules.forEach(schedule => {
       var event = {
-        'summary': 'Aula de ' + get_title(active_classes[i]),
+        'summary': 'Aula de ' + get_title(classroom),
         'start': {
-          'dateTime': get_class_begin_date_google(active_classes[i], current_schedule[j]) + 'T' + get_schedule_start_time_google(current_schedule[j]),
+          'dateTime': schedule.timeBegin.toISOString(),
           'timeZone': 'America/Sao_Paulo'
         },
         'end': {
-          'dateTime': get_class_begin_date_google(active_classes[i], current_schedule[j]) + 'T' + get_schedule_end_time_google(current_schedule[j]),
+          'dateTime': schedule.timeEnd.toISOString(),
           'timeZone': 'America/Sao_Paulo'
         },
         'recurrence': [
-          'RRULE:FREQ=WEEKLY;UNTIL=' + get_class_end_date(active_classes[i]) + 'T235959Z;BYDAY=' + get_week_day_string(current_schedule[j])
+          `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()};`
         ]
       };
       var request = gapi.client.calendar.events.insert({
-       'calendarId': 'primary',
+       'calendarId': calID || 'primary',
        'resource': event
        });
 
        request.execute(function (event) {
        });
-    }
-  }
+    });
+  });
   window.open('https://calendar.google.com/calendar', '_blank');
 }
