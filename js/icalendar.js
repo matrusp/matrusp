@@ -89,8 +89,8 @@ function build_event() {
   state.activePlan.activeCombination.classroomGroups.map(group => group[0]).forEach(classroom => {
     classroom.schedules.forEach(schedule => {
       events_statement += "BEGIN:VEVENT\n";
-      events_statement += `DTSTART:${schedule.timeBegin.toISOString()}\n`;
-      events_statement += `DTEND:${schedule.timeEnd.toISOString()}\n`;
+      events_statement += `DTSTART:${schedule.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString()}\n`;
+      events_statement += `DTEND:${schedule.dateBegin.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()}\n`;
       events_statement += `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()};BYDAY=\n`;
       events_statement += `DTSTAMP:${Date.now()}\n`;
       events_statement += `UID:${generate_uid(schedule)}\n`;
