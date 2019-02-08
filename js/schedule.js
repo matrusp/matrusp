@@ -18,9 +18,9 @@ function Schedule(jsonObj, parentClassroom) {
   
   if (jsonObj) {
     this.day = jsonObj.dia;
-    var dateBegin = parentClassroom.dateBegin.clone().moveToDayOfWeek(Date.getDayNumberFromName(this.day)).toString("dd/MM/yyyy");
-    this.timeBegin = Date.parse(`${dateBegin} ${jsonObj.inicio}`);
-    this.timeEnd = Date.parse(`${dateBegin} ${jsonObj.fim}`);
+    this.dateBegin = parentClassroom.dateBegin.clone().moveToDayOfWeek(Date.getDayNumberFromName(this.day));
+    this.timeBegin = Date.parse(jsonObj.inicio);
+    this.timeEnd = Date.parse(jsonObj.fim);
     // parentClassroom.parent is this schedule's Lecture ancestor
     var lectureCode = parentClassroom.parent.code;
     this.htmlElement = ui.createScheduleBox(this, lectureCode);

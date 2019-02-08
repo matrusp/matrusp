@@ -81,11 +81,11 @@ function addGcalEvents(calID) {
       var event = {
         'summary': 'Aula de ' + get_title(classroom),
         'start': {
-          'dateTime': schedule.timeBegin.toISOString(),
+          'dateTime': schedule.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString,
           'timeZone': 'America/Sao_Paulo'
         },
         'end': {
-          'dateTime': schedule.timeEnd.toISOString(),
+          'dateTime': schedule.dateBegin.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString(),
           'timeZone': 'America/Sao_Paulo'
         },
         'recurrence': [

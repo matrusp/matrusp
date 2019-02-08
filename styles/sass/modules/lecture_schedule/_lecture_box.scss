@@ -44,6 +44,51 @@
     }
   }
 
+  .ecoprint {
+    .schedule-box.color-#{$i} {
+      background-color: white;
+      border: 2*$schedule-box-border-left-width solid lighten($color, 20%);
+      border-left: 2*$schedule-box-border-left-width solid darken($color, 25%);
+      transition: none;
+    }
+  }
+
+  .grayscale {
+    .schedule-box.color-#{$i} {
+      $g: 255 * $i/5 % 255;
+      $graycolor: rgb($g, $g, $g);
+
+      border: $schedule-box-border-left-width solid $color;
+      @if $i < 5 {
+        background-color: $graycolor;
+        @if $g > 255/2 {
+          color: black;
+        }
+        @else {
+          color: white;
+        }
+      }
+      @else if $i < 9 {
+        background-color: $graycolor;
+        background-image: repeating-linear-gradient(-45deg, white 0%, white 5%, transparent 5%, transparent 20%);
+        span {
+          background: white;
+          color: black;
+        }
+      }
+      @else {
+        background: repeating-linear-gradient(45deg, white 0%, white 5%, $color 5%, $color 20%);
+        span {
+          background: white;
+          color: black;
+        }
+      }
+      //border: 2*$schedule-box-border-left-width solid lighten($color, 20%);
+      //border-left: 2*$schedule-box-border-left-width solid darken($color, 25%);
+      transition: none;
+    }
+  }
+
   .schedule-box-highlight.color-#{$i} {
     background-color: $color;
 
