@@ -4,6 +4,11 @@ function PrintBox() {
   this.downloadButton = document.getElementById('download-pdf-button');  
   this.downloadButtonIcon = document.getElementById('download-pdf-button-icon');
 
+  this.formatSelect = document.getElementById('print-format');
+  this.colorSelect = document.getElementById('print-color');
+
+  this.options = {};
+
   this.printButton.addEventListener('click',  e => {
     ui.closeDialog();
     if(this.savedPDF) {
@@ -15,6 +20,9 @@ function PrintBox() {
     }
   });
 
+  this.formatSelect.addEventListener('change', e => this.updateOptions());
+  this.colorSelect.addEventListener('change', e => this.updateOptions());
+
   this.downloadButton.addEventListener('click', e => {
     ui.closeDialog();
     if(this.savedPDF)
@@ -22,14 +30,31 @@ function PrintBox() {
   });
 }
 
-function generateTable(doc) {
+PrintBox.prototype.open = function() {
+  if (state.activePlan.activeCombination == null) {
+    ui.showBanner("Insira uma ou mais matérias antes de gerar o arquivo pdf",2000);
+    return;
+  }
+  
+  ui.openPrintDialog()
+  this.updateOptions();
+}
+
+PrintBox.prototype.updateOptions = function() {
+  this.options.format = this.formatSelect.value;
+  this.options.color = this.colorSelect.value;
+
+  this.generatePDF();
+}
+
+PrintBox.prototype.generateTable = function(doc) {
   doc.autoTable({
     body: [].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup.map((classroom, i) => ({
       lectureCode: !i? classroom.parent.code : '',
       lectureName: !i? classroom.parent.name : '',
       classroomCode: classroom.shortCode,
       teachers: classroom.teachers.filter(el => el).join('\n') || 'Sem professor designado',
-      color: ui.colors[classroom.parent.color],
+      color: classroom.parent.color,
       span: !i? classroomGroup.length : undefined
     })))),
     columns: [
@@ -74,7 +99,7 @@ function generateTable(doc) {
     },
     startY: 6,
 
-    didParseCell: function(data) {
+    didParseCell: data => {
       if(data.row.section == "body") {
         if(data.column.index < 2 && data.row.raw.span) {
           data.cell.rowSpan = data.row.raw.span;
@@ -82,23 +107,66 @@ function generateTable(doc) {
       }
     },
 
-    willDrawCell: function (data) {
+    willDrawCell: data => {
       if(data.row.section == "body") {
-        var color = data.row.raw.color;
+        var color = ui.colors[data.row.raw.color];
         var bgColor = color.clone().lighten(20).toRgb();
         var textColor = color.clone().darken(30).toRgb();
-        data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-        data.doc.setTextColor(textColor.r, textColor.g, textColor.b);
+        switch(this.options.color) {
+          case 'eco-color':
+            data.doc.setFillColor(255);
+            data.doc.setTextColor(textColor.r, textColor.g, textColor.b);
+            break;
+          case 'grayscale':
+            var gray = 255 * data.row.raw.color/5 % 255;
+            data.doc.setFillColor(gray);
+            if(gray > 255/2)
+              data.doc.setTextColor(0);
+            else
+              data.doc.setTextColor(255);
+            break;
+          default:
+            data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+            data.doc.setTextColor(textColor.r, textColor.g, textColor.b);
+            break;
+        }
       }
     },
 
-    didDrawCell: function(data) {
+    didDrawCell: data => {
       if(data.row.section == "body") {
-        if(!data.column.index) {
-          var color = data.row.raw.color;
-          var bgColor = color.clone().darken(20).toRgb();
-          data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-          data.doc.rect(data.cell.x, data.cell.y, 0.03, data.cell.height, 'F');
+        if(data.column.index == data.settings.columns.length - 1) {
+          switch(this.options.color) {
+            case 'eco-color':
+              var color = ui.colors[data.row.raw.color];
+              var bgColor = color.clone().darken(20).toRgb();              
+              var lightColor = color.clone().lighten(20).toRgb();
+              var borderWidth = 0.05;     
+              var rowWidth = Object.values(data.row.cells).reduce((acc, cell) => acc + cell.width, 0);
+
+              data.doc.setDrawColor(lightColor.r, lightColor.g, lightColor.b);
+              data.doc.setLineWidth(borderWidth);
+              
+              if(data.row.raw.span)
+                data.doc.rect(data.row.x - borderWidth/2, data.row.y - borderWidth/2, rowWidth + borderWidth, data.row.height*data.row.raw.span + borderWidth, 'S');
+
+              data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+              data.doc.rect(data.row.x - borderWidth, data.row.y - borderWidth, borderWidth, data.row.height + 2 * borderWidth, 'F');
+              break;
+            
+            case 'grayscale':
+              break;
+
+            default:
+              var color = ui.colors[data.row.raw.color];
+              var bgColor = color.clone().darken(20).toRgb(); 
+              var borderWidth = 0.03;
+
+              data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+              data.doc.rect(data.row.x, data.row.y, borderWidth, data.row.height, 'F');
+              break;
+          }
+
         }
       }
     }
@@ -132,7 +200,15 @@ PrintBox.prototype.generatePDF = async function() {
   
   //Generate the timetable canvas
   //Window width and height are needed to get consistent timetable size in every device
-  var canvas = await html2canvas(timeTable, {allowTaint: true, useCORS: true, scale: scale, windowWidth: 1280, windowHeight: 800});
+  var canvas = await html2canvas(timeTable, {allowTaint: true, useCORS: true, scale: scale, windowWidth: 1280, windowHeight: 800, 
+    onclone: clonedDoc => {
+     var timeTable = clonedDoc.getElementById('time-table');
+     if(this.options.color == 'eco-color')
+      timeTable.classList.add('ecoprint');
+     else if (this.options.color == 'grayscale')
+      timeTable.classList.add('grayscale');
+    }
+  });
 
   pdf.setFontSize(20);
   pdf.setFontStyle('bold');
@@ -141,7 +217,7 @@ PrintBox.prototype.generatePDF = async function() {
  
   pdf.addImage(canvas, 'png', 0.5, 1, pageWidth - 1, (pageWidth - 1) / canvas.width * canvas.height, null, 'NONE');
 
-  pdf = generateTable(pdf);
+  pdf = this.generateTable(pdf);
   this.savedPDF = pdf;
 
   this.printButtonIcon.className = prevPrintIcon;

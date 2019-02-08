@@ -45,7 +45,7 @@
 			<label id="print-format-label"><div>Formato</div>
 			<select id="print-format"><option>A4</option></select></label>
 			<label id="print-color-label"><div>Cor</div>
-			<select id="print-color"><option>Colorido</option><option>Escala de cinza</option><option>Preto e Branco</option></select></label>
+			<select id="print-color"><option value="color">Colorido</option><option value="eco-color">Colorido (econômico)</option><option value="grayscale">Escala de cinza</option></select></label>
 			<div id="print-buttons">
 			<button type="button" id="download-pdf-button"><div id="download-pdf-button-icon" class="fas fa-download"></div> Salvar PDF</button>
 			<button class="emphasis" id="print-button"><div id="print-button-icon" class="fas fa-print"></div> Imprimir</button>
@@ -97,7 +97,7 @@
     <div id="icons">
 	<button class="fas fa-share header-button" id="share" title="Compartilhar" onclick='ui.openShareDialog();'>
 	</button>
-	<button class="fas fa-print header-button" id="pdf" title="Imprimir" onclick='ui.openPrintDialog();'>
+	<button class="fas fa-print header-button" id="pdf" title="Imprimir" onclick='printBox.open();'>
 	</button>
     </div>
     </div>

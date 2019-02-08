@@ -47,3 +47,14 @@
     
     border-bottom: $line-height solid $black;
 }
+
+@mixin striped-bg ($direction, $background, $stripe-color, $stripe-width, $stripe-distance) {
+    $stripes-num: 100% / $stripe-distance;
+    $gradient: ($background 0%,);
+    @for $i from 1 through $stripes-num {
+        $a: ($background #{$i * $stripe-distance - $stripe-width/2}, $stripe-color #{$i * $stripe-distance - $stripe-width/2},
+        $stripe-color #{$i * $stripe-distance + $stripe-width/2}, $background #{$i * $stripe-distance + $stripe-width/2});
+        $gradient: join($gradient,$a,comma);
+    }
+    background: linear-gradient($direction, $gradient);
+}

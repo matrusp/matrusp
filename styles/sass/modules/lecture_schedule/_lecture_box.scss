@@ -50,6 +50,7 @@
       border: 2*$schedule-box-border-left-width solid lighten($color, 20%);
       border-left: 2*$schedule-box-border-left-width solid darken($color, 25%);
       transition: none;
+      animation: none;
     }
   }
 
@@ -57,8 +58,11 @@
     .schedule-box.color-#{$i} {
       $g: 255 * $i/5 % 255;
       $graycolor: rgb($g, $g, $g);
+      border: none;
+      font-weight: bold;
+      transition: none;
+      animation: none;
 
-      border: $schedule-box-border-left-width solid $color;
       @if $i < 5 {
         background-color: $graycolor;
         @if $g > 255/2 {
@@ -68,24 +72,24 @@
           color: white;
         }
       }
-      @else if $i < 9 {
-        background-color: $graycolor;
-        background-image: repeating-linear-gradient(-45deg, white 0%, white 5%, transparent 5%, transparent 20%);
-        span {
-          background: white;
-          color: black;
+      @else  {
+        $direction: 45deg;
+        @if $i < 9 {
+          $direction: -45deg;
         }
-      }
-      @else {
-        background: repeating-linear-gradient(45deg, white 0%, white 5%, $color 5%, $color 20%);
-        span {
-          background: white;
+
+        $stripecolor: $graycolor;
+        @if $g > 255/2 {
           color: black;
+          $stripecolor: lighten($graycolor, 5%);
         }
+        @else {
+          color: white;
+           $stripecolor: darken($graycolor, 5%)
+        }
+
+        @include striped-bg($direction, $graycolor, $stripecolor, 2%, 15%);  
       }
-      //border: 2*$schedule-box-border-left-width solid lighten($color, 20%);
-      //border-left: 2*$schedule-box-border-left-width solid darken($color, 25%);
-      transition: none;
     }
   }
 
