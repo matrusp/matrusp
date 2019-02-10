@@ -9,6 +9,9 @@ function PrintBox() {
 
   this.options = {};
 
+  this.printIconClass = this.printButtonIcon.className;
+  this.downloadIconClass = this.downloadButtonIcon.className;
+
   this.printButton.addEventListener('click',  e => {
     ui.closeDialog();
     if(this.savedPDF) {
@@ -177,8 +180,6 @@ PrintBox.prototype.generateTable = function(doc) {
 PrintBox.prototype.generatePDF = async function() {
   this.printButton.disabled = true;
   this.downloadButton.disabled = true;
-  var prevPrintIcon = this.printButtonIcon.className;
-  var prevDownloadIcon = this.downloadButtonIcon.className;
   this.printButtonIcon.className = this.downloadButtonIcon.className = 'fas fa-spinner';
 
   var pdf = new jsPDF('p','in','a4');
@@ -220,8 +221,8 @@ PrintBox.prototype.generatePDF = async function() {
   pdf = this.generateTable(pdf);
   this.savedPDF = pdf;
 
-  this.printButtonIcon.className = prevPrintIcon;
-  this.downloadButtonIcon.className = prevDownloadIcon;
+  this.printButtonIcon.className = this.printIconClass;
+  this.downloadButtonIcon.className = this.downloadIconClass;
   this.printButton.disabled = false;
   this.downloadButton.disabled = false;
 }
