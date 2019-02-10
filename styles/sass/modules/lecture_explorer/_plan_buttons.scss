@@ -109,12 +109,15 @@
       pointer-events: none;
     }
 
+    @media (hover: hover) {
     &:hover {
       color: $color-accent;
       pointer-events: initial;
     }
+    }
   }
 
+  @media(hover: hover) {
   &:hover {
     background-color: #f3f3f3;
 
@@ -122,6 +125,7 @@
       opacity: 1;
       pointer-events: initial;
     }
+  }
   }
 
   &:active {
