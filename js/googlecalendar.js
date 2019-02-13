@@ -40,30 +40,7 @@ function handleGAuthClick(event) {
 }
 
 function loadCalendarApi() {
-  gapi.client.load('calendar', 'v3', addGcalEvents);
-}
-
-function get_class_begin_date_google(classroom, schedule) {
-  var string_date = classroom.data_inicio.split("/");
-  var begin_date = new Date();
-  begin_date.setDate(parseInt(string_date[0]));
-  begin_date.setMonth(parseInt(string_date[1]) - 1);
-  begin_date.setFullYear(parseInt(string_date[2]));
-  begin_date.setDate(begin_date.getDate() + (get_week_day_number(schedule) + ( 7 - begin_date.getDay())) % 7);
-  var final_string_date = begin_date.getFullYear().toString() + "-";
-  if (begin_date.getMonth() < 10) final_string_date = final_string_date + "0" + (begin_date.getMonth() + 1).toString() + "-";
-  else final_string_date += (begin_date.getMonth() + 1).toString();
-  if (begin_date.getDate() < 10) final_string_date = final_string_date + "0" + begin_date.getDate().toString();
-  else final_string_date += begin_date.getDate().toString();
-  return final_string_date;
-}
-
-function get_schedule_start_time_google(schedule) {
-  return schedule.timeBegin + ":00";
-}
-
-function get_schedule_end_time_google(schedule) {
-  return schedule.timeEnd + ":00";
+  gapi.client.load('calendar', 'v3', addGcalCalendar);
 }
 
 function addGcalCalendar() {
@@ -71,8 +48,8 @@ function addGcalCalendar() {
    'summary': 'MatrUSP',
    });
 
-   var cal = request.execute();
-   addGcalEvents(cal.id);
+  request.execute(cal => addGcalEvents(cal.id));
+   
 }
 
 function addGcalEvents(calID) {
@@ -81,7 +58,7 @@ function addGcalEvents(calID) {
       var event = {
         'summary': 'Aula de ' + get_title(classroom),
         'start': {
-          'dateTime': schedule.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString,
+          'dateTime': schedule.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString(),
           'timeZone': 'America/Sao_Paulo'
         },
         'end': {
@@ -89,7 +66,7 @@ function addGcalEvents(calID) {
           'timeZone': 'America/Sao_Paulo'
         },
         'recurrence': [
-          `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()};`
+          `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toIcalString()}`
         ]
       };
       var request = gapi.client.calendar.events.insert({
@@ -97,8 +74,7 @@ function addGcalEvents(calID) {
        'resource': event
        });
 
-       request.execute(function (event) {
-       });
+       request.execute();
     });
   });
   window.open('https://calendar.google.com/calendar', '_blank');
