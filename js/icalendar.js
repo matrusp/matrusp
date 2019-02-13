@@ -52,51 +52,19 @@ function generate_uid(schedule) {
   return schedule.parent.parent.code + "T" + schedule.parent.code.replace(/ /g, "") + "D" + get_week_day_string(schedule) + "@" + document.location.hostname;
 }
 
-function get_class_end_date(classroom) {
-  var date = classroom.dateEnd.split("/");
-  return date[2] + date[1] + date[0];
-}
-
-function get_class_begin_date(classroom, schedule) {
-  var string_date = classroom.dateBegin.split("/");
-  var begin_date = new Date();
-  begin_date.setDate(parseInt(string_date[0]));
-  begin_date.setMonth(parseInt(string_date[1]) - 1);
-  begin_date.setFullYear(parseInt(string_date[2]));
-  begin_date.setDate(begin_date.getDate() + (get_week_day_number(schedule) + ( 7 - begin_date.getDay())) % 7);
-  var final_string_date = begin_date.getFullYear().toString();
-  if (begin_date.getMonth() < 10) final_string_date = final_string_date + "0" + (begin_date.getMonth() + 1).toString();
-  else final_string_date += (begin_date.getMonth() + 1).toString();
-  if (begin_date.getDate() < 10) final_string_date = final_string_date + "0" + begin_date.getDate().toString();
-  else final_string_date += begin_date.getDate().toString();
-  return final_string_date;
-}
-
-function get_schedule_start_time(schedule) {
-  return schedule.timeBegin.replace(/:/g, "") + "00";
-}
-
-function get_schedule_end_time(schedule) {
-  return schedule.timeEnd.replace(/:/g, "") + "00";
-}
-
-function get_title(classroom) {
-  return `${classroom.parent.name} (${classroom.parent.code})`;
-}
-
 function build_event() {
   var events_statement = "";
   state.activePlan.activeCombination.classroomGroups.map(group => group[0]).forEach(classroom => {
     classroom.schedules.forEach(schedule => {
       events_statement += "BEGIN:VEVENT\n";
-      events_statement += `DTSTART:${schedule.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString()}\n`;
-      events_statement += `DTEND:${schedule.dateBegin.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()}\n`;
-      events_statement += `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toISOString()};BYDAY=\n`;
+      events_statement += `DTSTART:${schedule.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toIcalString()}\n`;
+      events_statement += `DTEND:${schedule.dateBegin.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toIcalString()}\n`;
+      events_statement += `RRULE:FREQ=WEEKLY;UNTIL=${classroom.dateEnd.clone().add({hours: schedule.timeEnd.getHours(), minutes: schedule.timeEnd.getMinutes()}).toIcalString()};BYDAY=\n`;
       events_statement += `DTSTAMP:${Date.now()}\n`;
       events_statement += `UID:${generate_uid(schedule)}\n`;
       events_statement += "SEQUENCE:0\n";
       events_statement += "STATUS:CONFIRMED\n";
-      events_statement += `SUMMARY: Aula de ${get_title(classroom)}\n`;
+      events_statement += `SUMMARY: Aula de ${classroom.parent.name} (${classroom.parent.code})\n`;
       events_statement += `DESCRIPTION:${classroom.obs? classroom.obs.replace(/\n/,' ') : ''}\n`;
       events_statement += "TRANSP:OPAQUE\n";
       events_statement += "END:VEVENT\n";

@@ -23,6 +23,7 @@ ShareBox.prototype.addEventListeners = function() {
     'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');});
   this.mailButton.addEventListener('click', e => {window.open(`mailto:?subject=${encodeURI('Grade Horária MatrUSP')}&body=${encodeURI('Esta é minha grade horária no MatrUSP: '+ this.linkBox.value)}`)});
 
-  this.icsButton.addEventListener('click', e => {download_icalendar()});
-  this.downloadButton.addEventListener('click', e => {state.downloadFile();})
+  this.gcalButton.addEventListener('click', e => {handleGAuthClick(e); ui.closeDialog();});
+  this.icsButton.addEventListener('click', e => {download_icalendar(); ui.closeDialog();});
+  this.downloadButton.addEventListener('click', e => {state.downloadFile(); ui.closeDialog();});
 }

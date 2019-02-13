@@ -266,3 +266,9 @@ function shortenString(string) {
 
   return  string.substring(0, 11) + "..." + string.substring(string.length-10); 
 } 
+
+if(typeof Date.prototype.toIcal === "undefined") {
+	Date.prototype.toIcalString = function() {
+		return this.clone().addMinutes(this.getTimezoneOffset()).toString("yyyyMMddTHHmmssZ");
+	}
+}
