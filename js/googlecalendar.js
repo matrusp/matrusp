@@ -45,7 +45,7 @@ function loadCalendarApi() {
 
 function addGcalCalendar() {
   var request = gapi.client.calendar.calendars.insert({
-   'summary': 'MatrUSP',
+   'summary': `MatrUSP ${new Date().getFullYear()}`,
    });
 
   request.execute(cal => addGcalEvents(cal.id));
@@ -56,7 +56,7 @@ function addGcalEvents(calID) {
   state.activePlan.activeCombination.classroomGroups.map(group => group[0]).forEach(classroom => {
     classroom.schedules.forEach(schedule => {
       var event = {
-        'summary': 'Aula de ' + get_title(classroom),
+        'summary': `Aula de ${classroom.parent.name} (${classroom.parent.code})`,
         'start': {
           'dateTime': schedule.dateBegin.clone().add({hours: schedule.timeBegin.getHours(), minutes: schedule.timeBegin.getMinutes()}).toISOString(),
           'timeZone': 'America/Sao_Paulo'
