@@ -114,7 +114,7 @@ PrintBox.prototype.generateTable = function(doc) {
       if(data.row.section == "body") {
         var color = ui.colors[data.row.raw.color];
         var bgColor = color.clone().lighten(20).toRgb();
-        var textColor = color.clone().darken(30).toRgb();
+        var textColor = color.clone().darken(35).toRgb();
         switch(this.options.color) {
           case 'eco-color':
             data.doc.setFillColor(255);

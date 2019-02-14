@@ -65,7 +65,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     cursor: default;
-    background-color: $white;
+    background-color: white;
     border-radius: 0 2px 2px 2px;
     visibility: hidden;
     box-shadow: $shadow-default;
@@ -107,7 +107,7 @@
 #search-options-summary {
     margin: 2px 0px;
     user-select: none;
-    color: gray;
+    color: $textgray;
     cursor: pointer;
 
     flex: 1 0 0;

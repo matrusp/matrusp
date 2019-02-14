@@ -36,7 +36,7 @@
 
   .schedule-box.color-#{$i} {
     background-color: lighten($color, 20%);
-    color: darken($color, 30%);
+    color: darken($color, 35%);
     border-left: $schedule-box-border-left-width solid darken($color, 25%);
 
     >.timespan-mini {

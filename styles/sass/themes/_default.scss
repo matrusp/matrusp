@@ -1,15 +1,16 @@
-$white: #FEFEFE;
 $color-primary: #FFA000;
 $color-accent: #0097A7;
+$color-accent-dark: darken($color-accent, 10%);
+$textgray: #757575;
 
 /* Header */
 $header-color-primary: $color-primary;
 $header-color-secondary: #64C6D3;
 $header-color-tertiary: $color-accent;
 
-$header-color-background: $white;
+$header-color-background: white;
 
-$header-color-symbols: #FEFEFE;
+$header-color-symbols: white;
 
 $tooltip-color-background: #EAEAEA;
 $tooltip-color-text: #3D3D3D;
@@ -67,12 +68,12 @@ button {
 
     &:hover {
         background: $hover-background-default;
-        color: darken($color-accent, 10);
+        color: $color-accent;
     }
 
     &:active {
         background: $active-background-default;
-        color: darken($color-accent, 10);
+        color: $color-accent-dark;
     }
 
     &:disabled {
@@ -120,6 +121,10 @@ button {
             color: $color-accent;
             background: transparent;
         }
+
+        &:active {
+            color: $color-accent-dark;
+        }
     }
 
     &.small-button, &.close-button {
@@ -138,10 +143,14 @@ button {
 }
 
 a {
-    color: darkgray;
+    color: $textgray;
 
     &:hover {
         color: $color-accent;
+    }
+
+    &:active {
+        color: $color-accent-dark;
     }
 }
 
