@@ -35,7 +35,6 @@ function Lecture(jsonObj, parentPlan) {
     this.htmlLectureCheckbox = this.htmlElement.getElementsByClassName('lecture-info-checkbox')[0];
     this.htmlLectureArrowUp = this.htmlElement.getElementsByClassName('lecture-info-up')[0];
     this.htmlLectureArrowDown = this.htmlElement.getElementsByClassName('lecture-info-down')[0];
-    this.htmlClassroomsCheckbox = this.htmlElement.getElementsByClassName('classrooms-header-checkbox')[0];
     
     var linkedT = [];
     var linkedP = [];
@@ -153,7 +152,6 @@ Lecture.prototype.lectureSelect = function() {
   this.selected = true;
   this.htmlLectureCheckbox.checked = true;
   if (this.noClassroomsSelected()) {
-    this.htmlClassroomsCheckbox.checked = true;
     var shouldUpdate = false;
     this.updateAllClassroomsSelections(shouldUpdate);
   }
