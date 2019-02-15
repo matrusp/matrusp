@@ -291,6 +291,8 @@ State.prototype.removePlan = function(plan) {
     plan.delete();
     this.saveOnLocalStorage();
   }
+
+  ui.refreshPlanPaddles();
 }
 
 State.prototype.copyPlan = function(plan) {

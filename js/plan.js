@@ -339,7 +339,8 @@ Plan.prototype.serialize = function() {
  */
 Plan.prototype.addEventListeners = function() {
   this.html.tab.addEventListener('click', e => {state.activePlan = this;});
-  this.html.tab.addEventListener('auxclick', e => {if(e.which == 2) {state.removePlan(this); e.stopPropagation(); }});
+  this.html.tab.addEventListener('mousedown', e => {if(e.button == 1) {state.removePlan(this); e.stopPropagation(); }});
+  //this.html.tab.addEventListener('auxclick', e => {if(e.which == 2) {state.removePlan(this); e.stopPropagation(); }});
   this.html.closeButton.addEventListener('click', e => {state.removePlan(this); e.stopPropagation();});
   this.html.tab.addEventListener('dblclick', e => {this.html.tabName.disabled = false; this.html.tabName.focus();});
   this.html.tabName.addEventListener('change', this.tabNameChanged.bind(this));
