@@ -19,9 +19,10 @@
   border: $border-default;
   box-shadow: $shadow-default;
   min-width: 160px;
+  max-width: 240px;
   animation: appear .1s ease-out;
 
-  button.context-menu-item {
+  .context-menu-item {
     padding: 8px 12px;
     display: block;
     width: 100%;
@@ -46,6 +47,38 @@
 
     &:hover {
       background: $hover-background-default;
+    }
+
+    &.color-picker {
+
+      &:hover {
+        background: white;
+      }
+
+      button.color-picker-button {
+        min-width: 0;
+        width: 20px;
+        height: 20px;
+        padding: 0;
+        border: $border-default;
+        border-radius: 50%;
+        margin: 4px;
+      }
+
+      @each $color in $lecture-colors {
+        $i: index($lecture-colors, $color) - 1;
+        .color-picker-button-color-#{$i} {
+          background-color: lighten($color, 20%);
+
+          &:hover {
+            background-color: $color;
+          }
+          &.selected {
+            background-color: $color;
+            border-color: darken($color, 25%);
+          }
+        }
+      }
     }
   }
 }
