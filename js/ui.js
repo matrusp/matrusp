@@ -847,8 +847,8 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
     children: [
       {
         tag: 'button',
-        innerHTML: 'Abrir no Jupiterweb <span class="fas fa-external-link-alt"></span>',
-        class: 'context-menu-item context-divider',
+        innerHTML: 'Abrir no Jupiterweb',
+        class: 'context-menu-item context-divider context-external-link',
         onclick: e => {
                       window.open(`https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=${lecture.code}`,'_blank');
                       this.hideContextMenu(); 
