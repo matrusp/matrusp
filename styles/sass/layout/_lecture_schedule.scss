@@ -54,6 +54,10 @@
   .column-header {
     z-index: 1;
 
+    .print & {
+      visibility: hidden;
+    }
+
     button {
       color: #888;
       padding: 0;
