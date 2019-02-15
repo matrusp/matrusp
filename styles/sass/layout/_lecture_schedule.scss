@@ -31,7 +31,7 @@
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: $time-table-padding;
+  padding: 0;
   padding-bottom: 8px;
   box-sizing: border-box;
 }
@@ -41,20 +41,48 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 480px;
+  transition: flex ease .2s .2s;
 }
 
 .column.time {
   flex: 0 0 auto;
   background: white;
-  z-index: -2;
+  z-index: 0;
   position: sticky;
   left: 0;
+  .column-header {
+    z-index: 1;
 
-  & .column-content {
-  padding: 0px 4px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    button {
+      color: #888;
+      padding: 0;
+      min-width: 0;
+
+      &:hover {
+        background: transparent;
+        color: $color-accent;
+      }
+
+      &:active {
+        color: $color-accent-dark;
+      }
+
+      &.toggled {
+        color: $color-accent;
+      }
+    }
+  }
+
+  .column-content-wrapper {
+    padding: 6px 4px;
+  }
+
+  .column-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
   }
 }
 
@@ -70,13 +98,34 @@
   position: relative;
   flex: 1 0 $column-basis;
 
-  & .column-content {
+  .column-header {
+    z-index: -1;
+  }
+
+   .column-content-wrapper {
     margin: 0 $column-margin-horizontal;
   }
 }
 
+.column-content-wrapper {
+  flex: 1 0 0;
+  overflow: visible;
+  padding: 8px 0;
+  scroll-behavior: smooth;
+  position: relative;
+  min-height: 0;
+}
+
+.column-content {
+  position: relative;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transition: height ease .2s, top ease .2s;
+}
+
 .column.hidden {
-  display: none;
+  flex: 0;
 }
 
 .column-header {
@@ -86,14 +135,10 @@
   margin-bottom: 8px;
   padding-bottom: 4px;
   color: $textgray;
+  background: white;
   font-size: $lecture-schedule-font-size-header;
-}
+  overflow: hidden;
 
-
-
-.column-content {
-  flex: 1 0 0;
-  position: relative;
 }
 
 .column-bg {

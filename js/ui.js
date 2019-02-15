@@ -25,6 +25,7 @@ function UI() {
   this.courseDialog = document.getElementById('course-dialog');
   this.shareDialog = document.getElementById('share-dialog');
   this.printDialog = document.getElementById('print-dialog');
+  this.extendButton = document.getElementById('extended-time-table-button');
 
   // This comes from the SASS theme file
   //TODO: find better way to sync this
@@ -48,19 +49,40 @@ function UI() {
   for (var i = 1; i < lectureScheduleColumns.length; i++) {
     this.weekdays.push(lectureScheduleColumns[i]);
   }
-  this.timeColumn = lectureScheduleColumns[0];  
+  this.timeColumn = lectureScheduleColumns[0]; 
+
+  if(!localStorage.uiSettings)
+    localStorage.uiSettings = JSON.stringify(this.settings = {
+      extendTimeTable: false,
+      defaultTimeBegin: 6,
+      defaultTimeEnd: 24,
+    });
+  else
+    this.settings = JSON.parse(localStorage.uiSettings);
 
   new Slip(this.accordion,{minimumDistance: 10});
 
+  this.makeTimeTable();
 
   this.accordion.addEventListener('slip:beforewait',e => {
     if(e.detail.pointerType == 'mouse')
       e.preventDefault();
   });
+
   this.accordion.addEventListener('slip:beforereorder',e => {
     window.navigator.vibrate(25);
   });
+
+  this.accordion.addEventListener('slip:startreorder', e => {
+    e.target.closest('.lecture-info').classList.remove('lecture-open');
+    this.hideContextMenu();
+  });
+
+
   this.accordion.addEventListener('slip:reorder',e => {
+    if(e.detail.originalIndex == e.detail.spliceIndex)
+      return;
+
     e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
 
     var lecture = state.activePlan.lectures[e.detail.originalIndex];
@@ -91,6 +113,16 @@ function UI() {
   this.menuOverlay.addEventListener('pointerdown', e => this.hideContextMenu());
   window.addEventListener('resize', e => this.hideContextMenu());
   window.addEventListener('scroll',e => this.hideContextMenu());
+
+  this.extendButton.addEventListener('click', e => {
+    this.settings.extendTimeTable = !this.settings.extendTimeTable;
+
+    toggleClass(this.extendButton,'toggled', this.settings.extendTimeTable);
+    
+    this.updateTimeTable(null,null,this.dayEnd);
+
+    localStorage.uiSettings = JSON.stringify(this.settings);
+    });
 }
 
 // Functions
@@ -105,9 +137,9 @@ function UI() {
  *  positionEnd : <i>string</i> 
  * }</code></pre>
  */
-UI.prototype.calcPositionForTime = function(schedule) {
-  positionBegin = (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeBegin.getHours()*60 + schedule.timeBegin.getMinutes()) / 60 - this.timeBegin);
-  positionEnd = 1 - (1 / (this.timeEnd - this.timeBegin)) * ((schedule.timeEnd.getHours()*60 + schedule.timeEnd.getMinutes()) / 60 - this.timeBegin);
+UI.prototype.calcPositionForTime = function(schedule, timeBegin, timeEnd) {
+  positionBegin = (1 / (timeEnd - timeBegin)) * ((schedule.timeBegin.getHours()*60 + schedule.timeBegin.getMinutes()) / 60 - timeBegin);
+  positionEnd = 1 - (1 / (timeEnd - timeBegin)) * ((schedule.timeEnd.getHours()*60 + schedule.timeEnd.getMinutes()) / 60 - timeBegin);
 
   return {
     'positionBegin': positionBegin,
@@ -155,18 +187,22 @@ UI.prototype.createScheduleBox = function(schedule) {
   };
 
   var scheduleBox = createHtmlElementTree(scheduleBoxTreeObj);
+  
+  this.setScheduleBoxBoundaries(schedule, scheduleBox);
 
+  return scheduleBox;
+}
+
+UI.prototype.setScheduleBoxBoundaries = function(schedule, scheduleBox) {
   // if the box is too small and can only fit the lecture code inside
   if (schedule.timeEnd - schedule.timeBegin <= 3600000)
     Array.from(scheduleBox.getElementsByClassName('timespan')).forEach(timespan => timespan.classList.add('timespan-mini'));
 
-  var timePosition = this.calcPositionForTime(schedule);
+  var timePosition = this.calcPositionForTime(schedule,0,26);
   scheduleBox.style.cssText = `top: ${timePosition.positionBegin * 100 + '%'}; 
                               bottom: ${timePosition.positionEnd * 100 + '%'};`; //This is more efficient than setting top and bottom separately
 
   //scheduleBox.style.animationDelay = (schedule.timeBegin - schedule.timeBegin.clone().previous().sunday().at("0:00"))/432000000 + 0.3 + 's';
-
-  return scheduleBox;
 }
 
 
@@ -364,7 +400,7 @@ UI.prototype.createCombinationBoard = function(combination) {
     classroom.schedules.forEach(schedule => {
       var day = indexOfDay(schedule.day);
 
-      var position = this.calcPositionForTime(schedule);
+      var position = this.calcPositionForTime(schedule,this.timeBegin,this.timeEnd);
       var boxTop = position.positionBegin * 100;
       var boxHeight = 100 - position.positionEnd * 100 - boxTop;
       var boxLeft = day * (100/this.dayEnd) + 1;
@@ -437,14 +473,16 @@ UI.prototype.addLectures = function(lectures) {
   this.weekdays.forEach((weekday,i) => {weekday.appendChild(weekdayFragments[i]);});
 
   if(this.weekdays[6].childElementCount > 1) {
-    this.makeTimeTable(6,23,7);
+    this.updateTimeTable(null, null, 7);
   }
   else if(this.weekdays[5].childElementCount > 1) {
-    this.makeTimeTable(6,23,6);
+    this.updateTimeTable(null, null, 6);
   }
   else {
-    this.makeTimeTable(6,23,5);
+    this.updateTimeTable(null, null, 5);
   }
+
+  //lectures.forEach(lecture => lecture.classrooms.forEach(classroom => classroom.schedules.forEach(schedule => this.setScheduleBoxBoundaries(schedule, schedule.htmlElement))));
 }
 
 /**
@@ -479,12 +517,10 @@ UI.prototype.closeBanner = function() {
   this.banner.classList.remove('banner-open');
 }
 
-UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
-  if(timeBegin == this.timeBegin && timeEnd == this.timeEnd && dayEnd == this.dayEnd) return;
-
-  this.timeBegin = timeBegin;
-  this.timeEnd = timeEnd;
-  this.dayEnd = dayEnd;
+UI.prototype.makeTimeTable = function() {
+  var timeBegin = 0;
+  var timeEnd = 26;
+  var dayEnd = 5;
   
   this.timeColumn.innerHTML = '';
 
@@ -540,10 +576,53 @@ UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
 
   for(var i = 0; i < this.weekdays.length; i++) {
     this.weekdays[i].appendChild(i? bgDiv.cloneNode(true) : bgDiv);
-    if(i < dayEnd) {
-      this.weekdays[i].parentElement.classList.remove('hidden');
+  }
+}
+
+UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
+
+  if(!this.settings.extendTimeTable) {
+    if(state.activePlan && state.activePlan.activeCombination){
+      if(timeBegin === null) {
+        timeBegin = Math.min(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeBegin.getHours()))));
+      }
+      if(timeEnd === null) {
+        timeEnd = 1 + Math.max(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeEnd.getHours()))));
+      }
     }
-    else this.weekdays[i].parentElement.classList.add('hidden');
+  }
+    
+  if(timeBegin === null || timeBegin === undefined) {
+    timeBegin = this.settings.defaultTimeBegin;
+  }
+  if(timeEnd === null || timeEnd === undefined) {
+    timeEnd = this.settings.defaultTimeEnd;
+  }
+
+  this.timeBegin = timeBegin;
+  this.timeEnd = timeEnd;
+  this.dayEnd = dayEnd;
+
+  var scale = 27 / (timeEnd - timeBegin + 1);
+  var topOffset = (timeBegin)/27*scale;
+  //var clientHeight = this.timeColumn.parentNode.clientHeight * scale;
+
+  this.weekdays.forEach(column => {
+    column.style.top = -topOffset * 100 + '%';
+    column.style.height = scale * 100 + '%';
+  });
+
+  this.timeColumn.style.top = -topOffset * 100 + '%';
+  this.timeColumn.style.height = scale * 100 + '%';
+
+  for(var i = 0; i < this.weekdays.length; i++) {
+    if(i < dayEnd) {
+      if(hasClass(this.weekdays[i].parentElement.parentElement, 'hidden')) {
+        this.weekdays[i].offsetWidth; //This is needed to trigger a reflow so the border-width will be transitioned
+        this.weekdays[i].parentElement.parentElement.classList.remove('hidden');
+      }
+    }
+    else this.weekdays[i].parentElement.parentElement.classList.add('hidden');
   }
 
   state.activePlan.combinations.forEach(combination => {
@@ -555,7 +634,8 @@ UI.prototype.makeTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
       if(oldEl.parentNode)
         oldEl.parentNode.replaceChild(combination.htmlElement, oldEl);
     }
-  })
+  });
+
 }
 
 UI.prototype.setCredits = function(lectureCredits,workCredits) {
