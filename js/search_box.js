@@ -340,8 +340,10 @@ SearchBox.prototype.buildSummaryText = function() {
       if (this.options.department.search(/Interunidades/) > -1) {
         summaryText += ` **${this.options.department}**`;
       } else {
-        if (this.options.unit.search(/Escola Politécnica/) > -1)
+        if (this.options.unit == "Escola Politécnica")
           var unitAcronym = "Poli";
+        else if(this.options.unit == "Faculdade de Direito")
+          var unitAcronym = "Sanfran";
         else
           var unitAcronym = this.options.unit.match(/\b[A-Z]/g).join('');
 
