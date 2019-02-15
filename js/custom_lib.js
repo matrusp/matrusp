@@ -60,11 +60,11 @@ function removeClass(el, className) {
  * @param {String} className
  */
 // opcao a partir do IE 10: {var menu = document.querySelector('.menu'); menu.classList.toggle('hidden-phone');}
-function toggleClass(el, className) {
-  if (hasClass(el, className)) {
-    removeClass(el, className);
-  } else {
+function toggleClass(el, className, set) {
+  if (!hasClass(el, className) || set) {
     addClass(el, className);
+  } else {
+    removeClass(el, className);
   }
 }
 

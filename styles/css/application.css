@@ -347,7 +347,7 @@ footer .fb-page {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 0px 4px;
+  padding: 0;
   padding-bottom: 8px;
   box-sizing: border-box;
 }
@@ -358,26 +358,61 @@ footer .fb-page {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 480px;
+  transition: flex ease .2s .2s;
 }
 
-/* line 46, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 48, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column.time {
   flex: 0 0 auto;
   background: white;
-  z-index: -2;
+  z-index: 0;
   position: sticky;
   left: 0;
 }
 
-/* line 53, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 54, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column.time .column-header {
+  z-index: 1;
+}
+
+/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column.time .column-header button {
+  color: #888;
+  padding: 0;
+  min-width: 0;
+}
+
+/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column.time .column-header button:hover {
+  background: transparent;
+  color: #0097A7;
+}
+
+/* line 67, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column.time .column-header button:active {
+  color: #006974;
+}
+
+/* line 71, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column.time .column-header button.toggled {
+  color: #0097A7;
+}
+
+/* line 77, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column.time .column-content-wrapper {
+  padding: 6px 4px;
+}
+
+/* line 81, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column.time .column-content {
-  padding: 0px 4px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 }
 
-/* line 61, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .hour {
   flex: 0 0 0;
   font-size: 13px;
@@ -386,23 +421,47 @@ footer .fb-page {
   line-height: 0;
 }
 
-/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 97, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column:not(.time) {
   position: relative;
   flex: 1 0 80px;
 }
 
-/* line 73, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
-.column:not(.time) .column-content {
+/* line 101, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column:not(.time) .column-header {
+  z-index: -1;
+}
+
+/* line 105, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column:not(.time) .column-content-wrapper {
   margin: 0 4px;
 }
 
-/* line 78, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
-.column.hidden {
-  display: none;
+/* line 110, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column-content-wrapper {
+  flex: 1 0 0;
+  overflow: visible;
+  padding: 8px 0;
+  scroll-behavior: smooth;
+  position: relative;
+  min-height: 0;
 }
 
-/* line 82, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 119, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column-content {
+  position: relative;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transition: height ease .2s, top ease .2s;
+}
+
+/* line 127, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+.column.hidden {
+  flex: 0;
+}
+
+/* line 131, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-header {
   box-sizing: border-box;
   text-align: center;
@@ -410,16 +469,12 @@ footer .fb-page {
   margin-bottom: 8px;
   padding-bottom: 4px;
   color: #757575;
+  background: white;
   font-size: 14px;
+  overflow: hidden;
 }
 
-/* line 94, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
-.column-content {
-  flex: 1 0 0;
-  position: relative;
-}
-
-/* line 99, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 144, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg {
   position: absolute;
   top: 0;
@@ -430,14 +485,14 @@ footer .fb-page {
   z-index: -3;
 }
 
-/* line 108, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 153, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg {
   overflow: visible;
   width: 100%;
   height: 100%;
 }
 
-/* line 113, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 158, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg line {
   stroke: #bbb;
   stroke-width: 1px;
@@ -446,12 +501,12 @@ footer .fb-page {
   transform-origin: center;
 }
 
-/* line 120, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 165, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg line.even {
   stroke-width: 2px;
 }
 
-/* line 124, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 169, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg line.odd {
   animation-delay: 0.6s;
 }
@@ -2007,22 +2062,30 @@ footer .fb-page {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  transition: background-color .1s ease;
+  transition: background-color .1s ease, border-left-width .1s linear .3s;
   animation: appear .3s ease-out .1s backwards;
-  border-left: 2.3px solid;
+  border-left-style: solid;
+  border-left-width: 2.3px;
+  text-overflow: clip;
 }
 
-/* line 14, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 16, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+.column.hidden .schedule-box {
+  border-left-width: 0px;
+  transition-delay: 0s;
+}
+
+/* line 21, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.schedule-box-highlight {
   z-index: 1;
 }
 
-/* line 18, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 25, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.schedule-box-show {
   visibility: visible;
 }
 
-/* line 21, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 28, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.schedule-box-show:before {
   box-shadow: 2px 1px 8px 0px rgba(0, 0, 0, 0.4);
   z-index: -1;
@@ -2034,486 +2097,486 @@ footer .fb-page {
   right: 0;
 }
 
-/* line 33, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 40, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .print .schedule-box {
   animation: none;
   transition: none;
 }
 
-/* line 38, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 45, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box {
   border: 3.45px solid;
   border-left: 3.45px solid;
 }
 
-/* line 41, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 48, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box .timespan {
   margin: -3.45px;
   margin-left: -1.15px;
 }
 
-/* line 47, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 54, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box {
   border: none;
   font-weight: bold;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-0 {
   background-color: #adf0b2;
   color: #14711c;
   border-left-color: #1c9c26;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-0 > .timespan-mini {
   background-color: #adf0b2;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-0 {
   background-color: white;
   border-color: #adf0b2;
   border-left-color: #1c9c26;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-0 {
   background-color: black;
   color: white;
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-0 {
   background-color: #56e162;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-0 > .timespan-mini {
   background-color: #56e162;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-1 {
   background-color: #a1defc;
   color: #045781;
   border-left-color: #0679b2;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-1 > .timespan-mini {
   background-color: #a1defc;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-1 {
   background-color: white;
   border-color: #a1defc;
   border-left-color: #0679b2;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-1 {
   background-color: #333333;
   color: white;
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-1 {
   background-color: #3ebbf9;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-1 > .timespan-mini {
   background-color: #3ebbf9;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-2 {
   background-color: #ffc299;
   color: #803300;
   border-left-color: #b34700;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-2 > .timespan-mini {
   background-color: #ffc299;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-2 {
   background-color: white;
   border-color: #ffc299;
   border-left-color: #b34700;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-2 {
   background-color: #666666;
   color: white;
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-2 {
   background-color: #ff8533;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-2 > .timespan-mini {
   background-color: #ff8533;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-3 {
   background-color: #edc3ee;
   color: #742277;
   border-left-color: #9b2d9f;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-3 > .timespan-mini {
   background-color: #edc3ee;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-3 {
   background-color: white;
   border-color: #edc3ee;
   border-left-color: #9b2d9f;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-3 {
   background-color: #999999;
   color: black;
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-3 {
   background-color: #d474d8;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-3 > .timespan-mini {
   background-color: #d474d8;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-4 {
   background-color: #f3dd95;
   color: #65500b;
   border-left-color: #937410;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-4 > .timespan-mini {
   background-color: #f3dd95;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-4 {
   background-color: white;
   border-color: #f3dd95;
   border-left-color: #937410;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-4 {
   background-color: #cccccc;
   color: black;
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-4 {
   background-color: #e9c03a;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-4 > .timespan-mini {
   background-color: #e9c03a;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-5 {
   background-color: #dff5a3;
   color: #58730d;
   border-left-color: #7ba112;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-5 > .timespan-mini {
   background-color: #dff5a3;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-5 {
   background-color: white;
   border-color: #dff5a3;
   border-left-color: #7ba112;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-5 {
   color: white;
   background: linear-gradient(-45deg, black 0%, black 14%, black 14%, black 16%, black 16%, black 29%, black 29%, black 31%, black 31%, black 44%, black 44%, black 46%, black 46%, black 59%, black 59%, black 61%, black 61%, black 74%, black 74%, black 76%, black 76%, black 89%, black 89%, black 91%, black 91%, black 104%, black 104%, black 106%, black 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-5 {
   background-color: #bfeb47;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-5 > .timespan-mini {
   background-color: #bfeb47;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-6 {
   background-color: #9cf2ec;
   color: #0e6761;
   border-left-color: #14948c;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-6 > .timespan-mini {
   background-color: #9cf2ec;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-6 {
   background-color: white;
   border-color: #9cf2ec;
   border-left-color: #14948c;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-6 {
   color: white;
   background: linear-gradient(-45deg, #333333 0%, #333333 14%, #262626 14%, #262626 16%, #333333 16%, #333333 29%, #262626 29%, #262626 31%, #333333 31%, #333333 44%, #262626 44%, #262626 46%, #333333 46%, #333333 59%, #262626 59%, #262626 61%, #333333 61%, #333333 74%, #262626 74%, #262626 76%, #333333 76%, #333333 89%, #262626 89%, #262626 91%, #333333 91%, #333333 104%, #262626 104%, #262626 106%, #333333 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-6 {
   background-color: #43e5da;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-6 > .timespan-mini {
   background-color: #43e5da;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-7 {
   background-color: #ece7ca;
   color: #756829;
   border-left-color: #9b8a36;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-7 > .timespan-mini {
   background-color: #ece7ca;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-7 {
   background-color: white;
   border-color: #ece7ca;
   border-left-color: #9b8a36;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-7 {
   color: white;
   background: linear-gradient(-45deg, #666666 0%, #666666 14%, #595959 14%, #595959 16%, #666666 16%, #666666 29%, #595959 29%, #595959 31%, #666666 31%, #666666 44%, #595959 44%, #595959 46%, #666666 46%, #666666 59%, #595959 59%, #595959 61%, #666666 61%, #666666 74%, #595959 74%, #595959 76%, #666666 76%, #666666 89%, #595959 89%, #595959 91%, #666666 91%, #666666 104%, #595959 104%, #595959 106%, #666666 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-7 {
   background-color: #d2c47f;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-7 > .timespan-mini {
   background-color: #d2c47f;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-8 {
   background-color: #c0cbed;
   color: #213673;
   border-left-color: #2d489a;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-8 > .timespan-mini {
   background-color: #c0cbed;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-8 {
   background-color: white;
   border-color: #c0cbed;
   border-left-color: #2d489a;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-8 {
   color: black;
   background: linear-gradient(-45deg, #999999 0%, #999999 14%, #a6a6a6 14%, #a6a6a6 16%, #999999 16%, #999999 29%, #a6a6a6 29%, #a6a6a6 31%, #999999 31%, #999999 44%, #a6a6a6 44%, #a6a6a6 46%, #999999 46%, #999999 59%, #a6a6a6 59%, #a6a6a6 61%, #999999 61%, #999999 74%, #a6a6a6 74%, #a6a6a6 76%, #999999 76%, #999999 89%, #a6a6a6 89%, #a6a6a6 91%, #999999 91%, #999999 104%, #a6a6a6 104%, #a6a6a6 106%, #999999 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-8 {
   background-color: #718ad6;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-8 > .timespan-mini {
   background-color: #718ad6;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-9 {
   background-color: #f79cc9;
   color: #71093d;
   border-left-color: #a00d57;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-9 > .timespan-mini {
   background-color: #f79cc9;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-9 {
   background-color: white;
   border-color: #f79cc9;
   border-left-color: #a00d57;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-9 {
   color: black;
   background: linear-gradient(45deg, #cccccc 0%, #cccccc 14%, #d9d9d9 14%, #d9d9d9 16%, #cccccc 16%, #cccccc 29%, #d9d9d9 29%, #d9d9d9 31%, #cccccc 31%, #cccccc 44%, #d9d9d9 44%, #d9d9d9 46%, #cccccc 46%, #cccccc 59%, #d9d9d9 59%, #d9d9d9 61%, #cccccc 61%, #cccccc 74%, #d9d9d9 74%, #d9d9d9 76%, #cccccc 76%, #cccccc 89%, #d9d9d9 89%, #d9d9d9 91%, #cccccc 91%, #cccccc 104%, #d9d9d9 104%, #d9d9d9 106%, #cccccc 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-9 {
   background-color: #ef3e96;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-9 > .timespan-mini {
   background-color: #ef3e96;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-10 {
   background-color: #afdebf;
   color: #225332;
   border-left-color: #317748;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-10 > .timespan-mini {
   background-color: #afdebf;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-10 {
   background-color: white;
   border-color: #afdebf;
   border-left-color: #317748;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-10 {
   color: white;
   background: linear-gradient(45deg, black 0%, black 14%, black 14%, black 16%, black 16%, black 29%, black 29%, black 31%, black 31%, black 44%, black 44%, black 46%, black 46%, black 59%, black 59%, black 61%, black 61%, black 74%, black 74%, black 76%, black 76%, black 89%, black 89%, black 91%, black 91%, black 104%, black 104%, black 106%, black 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-10 {
   background-color: #67c185;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-10 > .timespan-mini {
   background-color: #67c185;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-11 {
   background-color: #d2bbf7;
   color: #3f1188;
   border-left-color: #5316b6;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-11 > .timespan-mini {
   background-color: #d2bbf7;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-11 {
   background-color: white;
   border-color: #d2bbf7;
   border-left-color: #5316b6;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-11 {
   color: white;
   background: linear-gradient(45deg, #333333 0%, #333333 14%, #262626 14%, #262626 16%, #333333 16%, #333333 29%, #262626 29%, #262626 31%, #333333 31%, #333333 44%, #262626 44%, #262626 46%, #333333 46%, #333333 59%, #262626 59%, #262626 61%, #333333 61%, #333333 74%, #262626 74%, #262626 76%, #333333 76%, #333333 89%, #262626 89%, #262626 91%, #333333 91%, #333333 104%, #262626 104%, #262626 106%, #333333 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-11 {
   background-color: #9660eb;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-11 > .timespan-mini {
   background-color: #9660eb;
 }
 
-/* line 57, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 64, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-12 {
   background-color: #d6c8b8;
   color: #4a3c2b;
   border-left-color: #6b563d;
 }
 
-/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 69, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box.color-12 > .timespan-mini {
   background-color: #d6c8b8;
 }
 
-/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 75, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .ecoprint .schedule-box.color-12 {
   background-color: white;
   border-color: #d6c8b8;
   border-left-color: #6b563d;
 }
 
-/* line 76, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .grayscale .schedule-box.color-12 {
   color: white;
   background: linear-gradient(45deg, #666666 0%, #666666 14%, #595959 14%, #595959 16%, #666666 16%, #666666 29%, #595959 29%, #595959 31%, #666666 31%, #666666 44%, #595959 44%, #595959 46%, #666666 46%, #666666 59%, #595959 59%, #595959 61%, #666666 61%, #666666 74%, #595959 74%, #595959 76%, #666666 76%, #666666 89%, #595959 89%, #595959 91%, #666666 91%, #666666 104%, #595959 104%, #595959 106%, #666666 106%);
 }
 
-/* line 111, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 118, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-12 {
   background-color: #b19777;
 }
 
-/* line 114, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 121, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.color-12 > .timespan-mini {
   background-color: #b19777;
 }
 
-/* line 120, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 127, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box-highlight.schedule-box-highlight-conflict {
   background-color: #f00;
   border-left-color: #800;
@@ -2522,50 +2585,54 @@ footer .fb-page {
   z-index: 1;
 }
 
-/* line 128, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 135, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .lecture-code {
   line-height: 100%;
   text-align: center;
   font-size: 14px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-/* line 134, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 143, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .timespan {
   position: absolute;
   font-weight: lighter;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-/* line 139, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 150, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .timespan-begin {
   left: 2px;
   top: 0px;
 }
 
-/* line 144, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 155, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .timespan-end {
   bottom: 0px;
   right: 3px;
 }
 
-/* line 149, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 160, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .timespan-mini {
   left: 0;
   right: 0;
   visibility: hidden;
 }
 
-/* line 155, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 166, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .timespan-mini.timespan-begin {
   top: -14px;
 }
 
-/* line 159, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 170, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .timespan-mini.timespan-end {
   bottom: -13px;
   text-align: right;
 }
 
-/* line 164, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
+/* line 175, C:/XAMPP/htdocs/matrusp/styles/sass/modules/lecture_schedule/_lecture_box.scss */
 .schedule-box:hover.schedule-box-show .timespan-mini,
 .schedule-box-highlight.schedule-box-show .timespan-mini {
   visibility: visible;
@@ -3075,6 +3142,15 @@ footer .fb-page {
   }
   to {
     transform: rotateZ(360deg);
+  }
+}
+
+@keyframes column-appear {
+  from {
+    flex: 0 0 0;
+  }
+  to {
+    flex: 1 0 80px;
   }
 }
 

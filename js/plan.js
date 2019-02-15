@@ -112,8 +112,8 @@ Plan.prototype.load = function(basePlan) {
           ), this)
         );
       else this.update();
-      if(state.activePlan == this) this.showPlan();
       this.activeCombinationIndex = basePlan.activeCombinationIndex;
+      if(state.activePlan == this) this.showPlan();
     });
   }
   else {

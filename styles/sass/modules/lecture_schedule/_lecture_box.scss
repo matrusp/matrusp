@@ -7,9 +7,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  transition: background-color .1s ease;
+  transition: background-color .1s ease, border-left-width .1s linear .3s;
   animation: appear .3s ease-out .1s backwards;
-  border-left: $schedule-box-border-left-width solid;
+  border-left-style: solid;
+  border-left-width: $schedule-box-border-left-width;
+  text-overflow: clip;
+
+  .column.hidden & {
+    border-left-width: 0px;
+    transition-delay: 0s;
+  }
 
   &.schedule-box-highlight {
     z-index: 1;
@@ -129,11 +136,15 @@
   line-height: 100%;
   text-align: center;
   font-size: 14px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .timespan {
   position: absolute;
   font-weight: lighter;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .timespan-begin {
