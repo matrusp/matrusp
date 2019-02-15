@@ -852,6 +852,41 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
                       e.preventDefault();}
       },
       {
+        tag: 'div',
+        class: 'context-menu-item context-divider color-picker',
+        children: this.colors.map((color, i) => ({
+          tag: 'button', 
+          class: 'color-picker-button color-picker-button-color-' + i + (lecture.color == i? " selected" : ''),
+          onclick: e => {
+              if(lecture.color != i) {
+                let oldcolor = lecture.color;
+                lecture.color = i;
+                lecture.parent.combinations.forEach(combination => {
+                  var oldEl = combination.htmlElement;
+                  combination.htmlElement = ui.createCombinationBoard(combination);
+                  combination.addEventListeners();
+                  if(oldEl) {
+                    combination.htmlElement.classList = oldEl.classList;
+                    if(oldEl.parentNode)
+                      oldEl.parentNode.replaceChild(combination.htmlElement, oldEl);
+                  }
+                });
+                lecture.htmlElement.classList.remove('color-'+oldcolor);
+                lecture.htmlElement.classList.add('color-'+i);
+                lecture.classrooms.forEach(classroom => classroom.schedules.forEach(schedule => {
+                  schedule.htmlElement.classList.remove('color-'+oldcolor);
+                  schedule.htmlElement.classList.add('color-'+i);
+                }));
+                lecture.parent.colors[oldcolor]--;
+                lecture.parent.colors[i]++;
+                state.saveOnLocalStorage();
+                this.hideContextMenu();
+                e.preventDefault();
+              }
+          }
+          }))
+      },
+      {
         tag: 'button',
         innerHTML: 'Remover',
         class: 'context-menu-item',
