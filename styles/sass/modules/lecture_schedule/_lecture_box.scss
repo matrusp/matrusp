@@ -9,6 +9,7 @@
   justify-content: space-around;
   transition: background-color .1s ease;
   animation: appear .3s ease-out .1s backwards;
+  border-left: $schedule-box-border-left-width solid;
 
   &.schedule-box-highlight {
     z-index: 1;
@@ -28,6 +29,25 @@
       right: 0;
     }
   }
+
+  .print & {
+    animation: none;
+    transition: none;
+  }
+
+  .ecoprint & {
+    border: 1.5*$schedule-box-border-left-width solid;
+    border-left: 1.5*$schedule-box-border-left-width solid;
+    .timespan {
+      margin: -1.5*$schedule-box-border-left-width;
+      margin-left: -0.5*$schedule-box-border-left-width;
+    }
+  }
+
+  .grayscale & {
+    border: none;
+    font-weight: bold;
+  }
 }
 
 // Same order as in lecture_explorer/_accordion.scss
@@ -37,7 +57,7 @@
   .schedule-box.color-#{$i} {
     background-color: lighten($color, 20%);
     color: darken($color, 35%);
-    border-left: $schedule-box-border-left-width solid darken($color, 25%);
+    border-left-color: darken($color, 25%);
 
     >.timespan-mini {
       background-color: lighten($color, 20%);
@@ -47,10 +67,8 @@
   .ecoprint {
     .schedule-box.color-#{$i} {
       background-color: white;
-      border: 2*$schedule-box-border-left-width solid lighten($color, 20%);
-      border-left: 2*$schedule-box-border-left-width solid darken($color, 25%);
-      transition: none;
-      animation: none;
+      border-color: lighten($color, 20%);
+      border-left-color: darken($color, 25%);
     }
   }
 
@@ -58,10 +76,7 @@
     .schedule-box.color-#{$i} {
       $g: 255 * $i/5 % 255;
       $graycolor: rgb($g, $g, $g);
-      border: none;
-      font-weight: bold;
-      transition: none;
-      animation: none;
+      
 
       @if $i < 5 {
         background-color: $graycolor;
