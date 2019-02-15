@@ -100,7 +100,7 @@ PrintBox.prototype.generateTable = function(doc) {
         cellWidth: 2
       }
     },
-    startY: 6,
+    startY: 6.6,
 
     didParseCell: data => {
       if(data.row.section == "body") {
