@@ -144,7 +144,7 @@ PrintBox.prototype.generateTable = function(doc) {
               var color = ui.colors[data.row.raw.color];
               var bgColor = color.clone().darken(20).toRgb();              
               var lightColor = color.clone().lighten(20).toRgb();
-              var borderWidth = 0.05;     
+              var borderWidth = 0.03;     
               var rowWidth = Object.values(data.row.cells).reduce((acc, cell) => acc + cell.width, 0);
 
               data.doc.setDrawColor(lightColor.r, lightColor.g, lightColor.b);
@@ -154,7 +154,9 @@ PrintBox.prototype.generateTable = function(doc) {
                 data.doc.rect(data.row.x - borderWidth/2, data.row.y - borderWidth/2, rowWidth + borderWidth, data.row.height*data.row.raw.span + borderWidth, 'S');
 
               data.doc.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-              data.doc.rect(data.row.x - borderWidth, data.row.y - borderWidth, borderWidth, data.row.height + 2 * borderWidth, 'F');
+              data.doc.rect(data.row.x - borderWidth, data.row.y, borderWidth, data.row.height, 'F');
+              data.doc.triangle(data.row.x - borderWidth, data.row.y, data.row.x, data.row.y, data.row.x - borderWidth, data.row.y - borderWidth, 'F');
+              data.doc.triangle(data.row.x - borderWidth, data.row.y + data.row.height, data.row.x, data.row.y + data.row.height, data.row.x - borderWidth, data.row.y + data.row.height + borderWidth, 'F');     
               break;
             
             case 'grayscale':
@@ -204,6 +206,7 @@ PrintBox.prototype.generatePDF = async function() {
   var canvas = await html2canvas(timeTable, {allowTaint: true, useCORS: true, scale: scale, windowWidth: 1280, windowHeight: 800, 
     onclone: clonedDoc => {
      var timeTable = clonedDoc.getElementById('time-table');
+     timeTable.classList.add('print');
      if(this.options.color == 'eco-color')
       timeTable.classList.add('ecoprint');
      else if (this.options.color == 'grayscale')
