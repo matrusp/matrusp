@@ -3033,32 +3033,42 @@ footer .fb-page {
   }
 }
 
-/* line 41, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 36, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+.context-menu .context-menu-item.context-external-link:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f35d";
+  font-size: 12px;
+  color: #757575;
+  float: right;
+}
+
+/* line 50, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item:disabled {
   color: gray;
 }
 
-/* line 44, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 53, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item:disabled:hover {
   background: white;
 }
 
-/* line 49, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 58, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.context-divider {
   border-bottom: 1px solid lightgray;
 }
 
-/* line 53, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 62, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item:hover {
   background: #e6e6e6;
 }
 
-/* line 59, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 68, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker:hover {
   background: white;
 }
 
-/* line 63, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 72, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker button.color-picker-button {
   min-width: 0;
   width: 20px;
@@ -3070,216 +3080,216 @@ footer .fb-page {
 }
 
 @media (pointer: coarse) {
-  /* line 63, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+  /* line 72, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
   .context-menu .context-menu-item.color-picker button.color-picker-button {
     width: 28px;
     height: 28px;
   }
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-0 {
   background-color: #adf0b2;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-0:hover {
   background-color: #56e162;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-0.selected {
   background-color: #56e162;
   border-color: #1c9c26;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-1 {
   background-color: #a1defc;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-1:hover {
   background-color: #3ebbf9;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-1.selected {
   background-color: #3ebbf9;
   border-color: #0679b2;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-2 {
   background-color: #ffc299;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-2:hover {
   background-color: #ff8533;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-2.selected {
   background-color: #ff8533;
   border-color: #b34700;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-3 {
   background-color: #edc3ee;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-3:hover {
   background-color: #d474d8;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-3.selected {
   background-color: #d474d8;
   border-color: #9b2d9f;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-4 {
   background-color: #f3dd95;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-4:hover {
   background-color: #e9c03a;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-4.selected {
   background-color: #e9c03a;
   border-color: #937410;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-5 {
   background-color: #dff5a3;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-5:hover {
   background-color: #bfeb47;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-5.selected {
   background-color: #bfeb47;
   border-color: #7ba112;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-6 {
   background-color: #9cf2ec;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-6:hover {
   background-color: #43e5da;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-6.selected {
   background-color: #43e5da;
   border-color: #14948c;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-7 {
   background-color: #ece7ca;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-7:hover {
   background-color: #d2c47f;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-7.selected {
   background-color: #d2c47f;
   border-color: #9b8a36;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-8 {
   background-color: #c0cbed;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-8:hover {
   background-color: #718ad6;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-8.selected {
   background-color: #718ad6;
   border-color: #2d489a;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-9 {
   background-color: #f79cc9;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-9:hover {
   background-color: #ef3e96;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-9.selected {
   background-color: #ef3e96;
   border-color: #a00d57;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-10 {
   background-color: #afdebf;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-10:hover {
   background-color: #67c185;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-10.selected {
   background-color: #67c185;
   border-color: #317748;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-11 {
   background-color: #d2bbf7;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-11:hover {
   background-color: #9660eb;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-11.selected {
   background-color: #9660eb;
   border-color: #5316b6;
 }
 
-/* line 80, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 89, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-12 {
   background-color: #d6c8b8;
 }
 
-/* line 83, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 92, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-12:hover {
   background-color: #b19777;
 }
 
-/* line 86, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
+/* line 95, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_contextmenus.scss */
 .context-menu .context-menu-item.color-picker .color-picker-button-color-12.selected {
   background-color: #b19777;
   border-color: #6b563d;
