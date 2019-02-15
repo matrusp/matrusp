@@ -400,7 +400,7 @@ UI.prototype.createCombinationBoard = function(combination) {
     classroom.schedules.forEach(schedule => {
       var day = indexOfDay(schedule.day);
 
-      var position = this.calcPositionForTime(schedule,this.timeBegin,this.timeEnd);
+      var position = this.calcPositionForTime(schedule,6,23);
       var boxTop = position.positionBegin * 100;
       var boxHeight = 100 - position.positionEnd * 100 - boxTop;
       var boxLeft = day * (100/this.dayEnd) + 1;
