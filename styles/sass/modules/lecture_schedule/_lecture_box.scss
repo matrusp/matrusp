@@ -12,6 +12,7 @@
   border-left-style: solid;
   border-left-width: $schedule-box-border-left-width;
   text-overflow: clip;
+  user-select: none;
 
   .column.hidden & {
     border-left-width: 0px;

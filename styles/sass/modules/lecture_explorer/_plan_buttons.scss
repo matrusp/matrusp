@@ -95,6 +95,10 @@
     font-size: 20px;
     color: gray;
 
+    @media (pointer: coarse) {
+      font-size: 24px;
+    }
+
     transition: opacity ease .1s, color ease .1s, background ease .1s;
 
     &:before {

@@ -708,6 +708,7 @@ UI.prototype.addContextMenu = function(menu, position) {
   this.menuOverlay.appendChild(menu);
   var menuHeight = menu.offsetHeight;
   var menuWidth = menu.offsetWidth;
+  var windowWidth = window.innerWidth;
 
   var cssText = '';
   if(position.y < window.innerHeight - menuHeight)
@@ -715,10 +716,12 @@ UI.prototype.addContextMenu = function(menu, position) {
   else
     cssText = `top: ${position.y + window.scrollY - menuHeight}px; left: ${position.x + window.scrollX}px;`;
 
-  if(position.x < window.innerWidth - menuWidth)
+  if(position.x < windowWidth - menuWidth)
     cssText += `left: ${position.x + window.scrollX}px;`;
-  else
+  else if(position.x > menuWidth)
     cssText += `left: ${position.x + window.scrollX - menuWidth}px;`;
+  else
+    cssText += `left: ${window.scrollX + (windowWidth - menuWidth)/2}px`;
 
   menu.style.cssText = cssText;
   this.menu = menu;
