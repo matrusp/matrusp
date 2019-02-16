@@ -548,7 +548,7 @@ UI.prototype.makeTimeTable = function() {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
   for(var i = timeBegin; i <= timeEnd; i++){
-    var tick = (timeEnd - timeBegin < 8 || !(i%2))? i%24 : '';
+    var tick = i%24;
     createAndAppendChild(this.timeColumn,'div',{'class':'hour', 'innerHTML': tick});
     j = i-timeBegin;
     if(tick == 12) {
@@ -623,6 +623,11 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   this.settings.timeBegin = timeBegin;
   this.settings.timeEnd = timeEnd;
   this.settings.dayEnd = dayEnd;
+
+  if(timeEnd - timeBegin < 8)
+    this.timeTable.classList.add('short');
+  else
+    this.timeTable.classList.remove('short');
 
   var scale = 27 / (timeEnd - timeBegin + 1);
   var topOffset = (timeBegin)/27*scale;

@@ -96,6 +96,11 @@
   color: $lecture-schedule-hour-color;
   text-align: right;
   line-height: 0;
+  transition: opacity ease .2s;
+
+  #time-table:not(.short) &:nth-child(2n){
+      opacity: 0;
+    }
 }
 
 .column:not(.time) {
