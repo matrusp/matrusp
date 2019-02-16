@@ -2757,7 +2757,7 @@ footer .fb-page {
 
 /* line 13, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_drop.scss */
 #drop-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -2782,16 +2782,17 @@ footer .fb-page {
 }
 
 /* line 37, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_drop.scss */
-#drop-overlay img {
+#drop-overlay .drop-icon {
   margin: 8px;
+  font-size: 32px;
 }
 
-/* line 41, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_drop.scss */
+/* line 42, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_drop.scss */
 #drop-overlay * {
   pointer-events: none;
 }
 
-/* line 45, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_drop.scss */
+/* line 46, C:/XAMPP/htdocs/matrusp/styles/sass/modules/overlay/_drop.scss */
 #drop-overlay.overlay-show ~ * {
   filter: blur(2px);
 }
