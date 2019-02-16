@@ -52,17 +52,24 @@ function UI() {
   this.timeColumn = lectureScheduleColumns[0]; 
 
   if(!localStorage.uiSettings)
-    localStorage.uiSettings = JSON.stringify(this.settings = {
-      extendTimeTable: false,
-      defaultTimeBegin: 6,
-      defaultTimeEnd: 24,
-    });
+    this.saveOnLocalStorage();
   else
     this.settings = JSON.parse(localStorage.uiSettings);
 
   new Slip(this.accordion,{minimumDistance: 10});
 
   this.makeTimeTable();
+
+  //Override updateTimeTable's check
+  let timeBegin = this.settings.timeBegin;
+  let timeEnd = this.settings.timeEnd;
+  let dayEnd = this.settings.dayEnd;
+
+  delete this.settings.timeBegin;
+  delete this.settings.timeEnd;
+  delete this.settings.dayEnd;
+
+  this.updateTimeTable(timeBegin, timeEnd, dayEnd);
 
   this.accordion.addEventListener('slip:beforewait',e => {
     if(e.detail.pointerType == 'mouse')
@@ -119,10 +126,21 @@ function UI() {
 
     toggleClass(this.extendButton,'toggled', this.settings.extendTimeTable);
     
-    this.updateTimeTable(null,null,this.dayEnd);
+    this.updateTimeTable(null,null,this.settings.dayEnd);
 
     localStorage.uiSettings = JSON.stringify(this.settings);
     });
+}
+
+UI.prototype.saveOnLocalStorage = function() {
+  if(!this.settings)
+    this.settings = {
+      extendTimeTable: false,
+      defaultTimeBegin: 6,
+      defaultTimeEnd: 24,
+    };
+
+  localStorage.uiSettings = JSON.stringify(this.settings);
 }
 
 // Functions
@@ -393,7 +411,7 @@ UI.prototype.createCombinationBoard = function(combination) {
 
   var combinationBoard = createHtmlElementTree(combinationBoardTreeObj);
   var ctx = combinationBoard.getContext('2d');
-  var columnHeight = (this.timeEnd - this.timeBegin);
+  var columnHeight = (this.settings.timeEnd - this.settings.timeBegin);
 
   var classrooms = combination.classroomGroups.map(group => group[0]);
   classrooms.forEach(classroom => {
@@ -403,11 +421,11 @@ UI.prototype.createCombinationBoard = function(combination) {
       var position = this.calcPositionForTime(schedule,6,23);
       var boxTop = position.positionBegin * 100;
       var boxHeight = 100 - position.positionEnd * 100 - boxTop;
-      var boxLeft = day * (100/this.dayEnd) + 1;
+      var boxLeft = day * (100/this.settings.dayEnd) + 1;
 
       var color = this.colors[classroom.parent.color];
       ctx.fillStyle = color.clone().lighten(10).toHslString();
-      ctx.fillRect(boxLeft * scale, boxTop * scale, ((100/this.dayEnd) - 2) * scale, boxHeight * scale);
+      ctx.fillRect(boxLeft * scale, boxTop * scale, ((100/this.settings.dayEnd) - 2) * scale, boxHeight * scale);
       ctx.fillStyle = color.clone().darken(25).toHslString();
       ctx.fillRect(boxLeft * scale, boxTop * scale, 2 * scale, boxHeight * scale);
     });
@@ -580,6 +598,9 @@ UI.prototype.makeTimeTable = function() {
 }
 
 UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
+  if(timeBegin == this.settings.timeBegin && timeEnd == this.settings.timeEnd && dayEnd == this.settings.dayEnd)
+    return;
+
 
   if(!this.settings.extendTimeTable) {
     if(state.activePlan && state.activePlan.activeCombination){
@@ -599,9 +620,9 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
     timeEnd = this.settings.defaultTimeEnd;
   }
 
-  this.timeBegin = timeBegin;
-  this.timeEnd = timeEnd;
-  this.dayEnd = dayEnd;
+  this.settings.timeBegin = timeBegin;
+  this.settings.timeEnd = timeEnd;
+  this.settings.dayEnd = dayEnd;
 
   var scale = 27 / (timeEnd - timeBegin + 1);
   var topOffset = (timeBegin)/27*scale;
@@ -625,6 +646,7 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
     else this.weekdays[i].parentElement.parentElement.classList.add('hidden');
   }
 
+  if(state.activePlan)
   state.activePlan.combinations.forEach(combination => {
     var oldEl = combination.htmlElement;
     combination.htmlElement = ui.createCombinationBoard(combination);
@@ -636,6 +658,7 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
     }
   });
 
+  this.saveOnLocalStorage();
 }
 
 UI.prototype.setCredits = function(lectureCredits,workCredits) {
@@ -667,8 +690,6 @@ UI.prototype.createPlanTab = function(plan) {
   el.childNodes[0].addEventListener('input', e => {e.target.setAttribute('size', e.target.value.length + 1)});
   return this.plans.insertBefore(el,this.newPlan);
 }
-
-
 
 UI.prototype.scrollActivePlanTabToView = function() {
   if (!state.activePlan) return;
