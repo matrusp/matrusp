@@ -118,10 +118,9 @@ State.prototype.load = function(baseState) {
     this.version = matrusp_current_state_version;
     this.clear();
 
-    if(baseState.plans.length) baseState.plans.forEach(basePlan => this.plans.push(new Plan(basePlan)));
+    if(baseState.plans.length) baseState.plans.forEach((basePlan, i) => this.plans.push(new Plan(basePlan, i == baseState.activePlanIndex)));
     else this.plans.push(new Plan());
     
-    this.activePlanIndex = baseState.activePlanIndex || 0;
 
     return true;
   }
