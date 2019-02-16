@@ -21,7 +21,7 @@ function Plan(jsonObj) {
 
   this.colors = Array(ui.colors.length).fill(0);
 
-  this.load(jsonObj);
+  this.load(jsonObj, loadAsActive);
 
   this.html = {};
   this.html.tab = ui.createPlanTab(this);
@@ -75,7 +75,7 @@ Plan.prototype = {
   },
 };
 
-Plan.prototype.load = function(basePlan) {
+Plan.prototype.load = function(basePlan, loadAsActive) {
   this.lectures = [];
   this.combinations = [];
 
@@ -113,7 +113,8 @@ Plan.prototype.load = function(basePlan) {
         );
       else this.update();
       this.activeCombinationIndex = basePlan.activeCombinationIndex;
-      if(state.activePlan == this) this.showPlan();
+      if(loadAsActive) state.activePlan = this;
+      else if(state.activePlan == this) this.showPlan();
     });
   }
   else {
