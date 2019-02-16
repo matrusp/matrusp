@@ -447,26 +447,23 @@ footer .fb-page {
   flex: 1 0 0;
   overflow: visible;
   padding: 8px 0;
-  scroll-behavior: smooth;
   position: relative;
   min-height: 0;
 }
 
-/* line 123, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 122, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-content {
   position: relative;
-  top: 0;
-  height: 100%;
   width: 100%;
   transition: height ease .2s, top ease .2s;
 }
 
-/* line 131, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 128, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column.hidden {
   flex: 0;
 }
 
-/* line 135, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 132, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-header {
   box-sizing: border-box;
   text-align: center;
@@ -479,7 +476,7 @@ footer .fb-page {
   overflow: hidden;
 }
 
-/* line 148, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 145, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg {
   position: absolute;
   top: 0;
@@ -490,14 +487,14 @@ footer .fb-page {
   z-index: -3;
 }
 
-/* line 157, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 154, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg {
   overflow: visible;
   width: 100%;
   height: 100%;
 }
 
-/* line 162, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 159, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg line {
   stroke: #bbb;
   stroke-width: 1px;
@@ -506,12 +503,12 @@ footer .fb-page {
   transform-origin: center;
 }
 
-/* line 169, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 166, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg line.even {
   stroke-width: 2px;
 }
 
-/* line 173, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
+/* line 170, C:/XAMPP/htdocs/matrusp/styles/sass/layout/_lecture_schedule.scss */
 .column-bg svg line.odd {
   animation-delay: 0.6s;
 }
