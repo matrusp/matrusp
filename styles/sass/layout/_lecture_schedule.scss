@@ -115,15 +115,12 @@
   flex: 1 0 0;
   overflow: visible;
   padding: 8px 0;
-  scroll-behavior: smooth;
   position: relative;
   min-height: 0;
 }
 
 .column-content {
   position: relative;
-  top: 0;
-  height: 100%;
   width: 100%;
   transition: height ease .2s, top ease .2s;
 }
