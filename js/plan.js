@@ -15,7 +15,7 @@
  *    ]     
  *  }
  */
-function Plan(jsonObj) {
+function Plan(jsonObj, loadAsActive) {
   this.lectures = new Array();
   this.combinations = new Array();
 
