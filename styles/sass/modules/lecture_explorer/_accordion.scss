@@ -261,7 +261,7 @@
 
   .lecture-info.color-#{$i} {
     background-color: lighten($color, 20%);
-    color: darken($color, 25%);
+    color: darken($color, 35%);
 
     &:hover {
       background-color: lighten($color, 15%);
