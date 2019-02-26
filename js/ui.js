@@ -126,7 +126,8 @@ function UI() {
 
     toggleClass(this.extendButton,'toggled', this.settings.extendTimeTable);
     
-    this.updateTimeTable(null,null,this.settings.dayEnd);
+    //this.updateTimeTable(null,null,this.settings.dayEnd);
+    this.timeTable.classList.toggle('extend');
 
     localStorage.uiSettings = JSON.stringify(this.settings);
     });
@@ -600,16 +601,13 @@ UI.prototype.makeTimeTable = function() {
 UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   if(timeBegin == this.settings.timeBegin && timeEnd == this.settings.timeEnd && dayEnd == this.settings.dayEnd)
     return;
-
-
-  if(!this.settings.extendTimeTable) {
-    if(state.activePlan && state.activePlan.activeCombination){
-      if(timeBegin === null) {
-        timeBegin = Math.min(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeBegin.getHours()))));
-      }
-      if(timeEnd === null) {
-        timeEnd = 1 + Math.max(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeEnd.getHours()))));
-      }
+ 
+  if(state.activePlan && state.activePlan.activeCombination){
+    if(timeBegin === null) {
+      timeBegin = Math.min(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeBegin.getHours()))));
+    }
+    if(timeEnd === null) {
+      timeEnd = 1 + Math.max(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeEnd.getHours()))));
     }
   }
     
@@ -633,13 +631,8 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   var topOffset = (timeBegin)/27*scale;
   //var clientHeight = this.timeColumn.parentNode.clientHeight * scale;
 
-  this.weekdays.forEach(column => {
-    column.style.top = -topOffset * 100 + '%';
-    column.style.height = scale * 100 + '%';
-  });
-
-  this.timeColumn.style.top = -topOffset * 100 + '%';
-  this.timeColumn.style.height = scale * 100 + '%';
+  this.timeTable.style.setProperty("--col-top", -topOffset * 100 + '%');
+  this.timeTable.style.setProperty("--col-height", scale * 100 + '%');
 
   for(var i = 0; i < this.weekdays.length; i++) {
     if(i < dayEnd) {
@@ -650,18 +643,6 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
     }
     else this.weekdays[i].parentElement.parentElement.classList.add('hidden');
   }
-
-  if(state.activePlan)
-  state.activePlan.combinations.forEach(combination => {
-    var oldEl = combination.htmlElement;
-    combination.htmlElement = ui.createCombinationBoard(combination);
-    combination.addEventListeners();
-    if(oldEl) {
-      combination.htmlElement.classList = oldEl.classList;
-      if(oldEl.parentNode)
-        oldEl.parentNode.replaceChild(combination.htmlElement, oldEl);
-    }
-  });
 
   this.saveOnLocalStorage();
 }

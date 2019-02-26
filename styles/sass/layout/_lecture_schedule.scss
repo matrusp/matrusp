@@ -51,8 +51,11 @@
   z-index: 0;
   position: sticky;
   left: 0;
+  width: 22px;
+
   .column-header {
     z-index: 1;
+    text-align: right;
 
     .print & {
       visibility: hidden;
@@ -78,15 +81,11 @@
     }
   }
 
-  .column-content-wrapper {
-    padding: 6px 4px;
-  }
-
   .column-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
+    position: absolute;
   }
 }
 
@@ -119,14 +118,24 @@
 .column-content-wrapper {
   flex: 1 0 0;
   overflow: visible;
-  padding: 8px 0;
   position: relative;
   min-height: 0;
 }
 
 .column-content {
-  position: relative;
+  position: absolute;
   width: 100%;
+
+  top: -31.5789%;    // Precalculated fallback values
+  height: 142.105%;  // in case css variables not supported
+  
+
+  .extend & {
+    top: var(--col-top);
+    height: var(--col-height);
+  }
+
+  will-change: height, top;
   transition: height ease .2s, top ease .2s;
 }
 
