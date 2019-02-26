@@ -38,6 +38,11 @@
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
+  background: white;
+
+  &:empty {
+    display: none;
+  }
 
   .lecture-info {
     padding: 4px 0;
