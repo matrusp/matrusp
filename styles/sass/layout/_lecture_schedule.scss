@@ -141,6 +141,7 @@
 
 .column.hidden {
   flex: 0;
+  overflow: hidden;
 
   .column-content-wrapper {
     margin: 0;
