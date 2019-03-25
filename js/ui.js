@@ -552,30 +552,26 @@ UI.prototype.makeTimeTable = function() {
     var tick = i%24;
     createAndAppendChild(this.timeColumn,'div',{'class':'hour', 'innerHTML': tick});
     j = i-timeBegin;
+    let pos = j / (timeEnd - timeBegin) * 100 + '%';
+    
     if(tick == 12) {
-      let pos = j / (timeEnd - timeBegin) * 100 + '%';
-      let pos1 = `calc(${pos} - 1.5px)`;
-
       let line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
       line.setAttribute('x1',0);
-      line.setAttribute('y1',pos1);
+      line.setAttribute('y1',pos);
       line.setAttribute('x2','100%');
-      line.setAttribute('y2',pos1);
-      line.setAttribute('class','even noon');
+      line.setAttribute('y2',pos);
+      line.setAttribute('class','even noon-outline');
       svg.appendChild(line);
-
-      let pos2 = `calc(${pos} + 1.5px)`;
+      
       line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
       line.setAttribute('x1',0);
-      line.setAttribute('y1',pos2);
+      line.setAttribute('y1',pos);
       line.setAttribute('x2','100%');
-      line.setAttribute('y2',pos2);
-      line.setAttribute('class','even noon');
+      line.setAttribute('y2',pos);
+      line.setAttribute('class','even noon-center');
       svg.appendChild(line);
     }
     else {
-      let pos = j / (timeEnd - timeBegin) * 100 + '%';
-
       let line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
       line.setAttribute('x1',0);
       line.setAttribute('y1',pos);

@@ -179,6 +179,14 @@
 
       &.even {
         stroke-width: 2px;
+
+        &.noon-center {
+          stroke: white;
+        }
+
+        &.noon-outline {
+          stroke-width: 6px;
+        }
       }
 
       &.odd {
