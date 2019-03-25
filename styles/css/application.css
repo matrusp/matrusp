@@ -406,6 +406,7 @@ footer .fb-page {
 
 .column.hidden {
   flex: 0;
+  overflow: hidden;
 }
 
 .column.hidden .column-content-wrapper {
