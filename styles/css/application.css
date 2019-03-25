@@ -408,6 +408,10 @@ footer .fb-page {
   flex: 0;
 }
 
+.column.hidden .column-content-wrapper {
+  margin: 0;
+}
+
 .column-header {
   box-sizing: border-box;
   text-align: center;

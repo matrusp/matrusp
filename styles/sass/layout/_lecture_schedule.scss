@@ -141,6 +141,10 @@
 
 .column.hidden {
   flex: 0;
+
+  .column-content-wrapper {
+    margin: 0;
+  }
 }
 
 .column-header {
