@@ -130,7 +130,7 @@
   height: 142.105%;  // in case css variables not supported
   
 
-  .extend & {
+  .fit & {
     top: var(--col-top);
     height: var(--col-height);
   }

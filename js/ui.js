@@ -25,7 +25,7 @@ function UI() {
   this.courseDialog = document.getElementById('course-dialog');
   this.shareDialog = document.getElementById('share-dialog');
   this.printDialog = document.getElementById('print-dialog');
-  this.extendButton = document.getElementById('extended-time-table-button');
+  this.fitButton = document.getElementById('fit-time-table-button');
 
   // This comes from the SASS theme file
   //TODO: find better way to sync this
@@ -121,22 +121,23 @@ function UI() {
   window.addEventListener('resize', e => this.hideContextMenu());
   window.addEventListener('scroll',e => this.hideContextMenu());
 
-  this.extendButton.addEventListener('click', e => {
-    this.settings.extendTimeTable = !this.settings.extendTimeTable;
+  this.fitButton.addEventListener('click', e => {
+    this.settings.fitTimeTable = !this.settings.fitTimeTable;
 
-    toggleClass(this.extendButton,'toggled', this.settings.extendTimeTable);
-    
-    //this.updateTimeTable(null,null,this.settings.dayEnd);
-    this.timeTable.classList.toggle('extend');
+    this.fitButton.classList.toggle('toggled', this.settings.fitTimeTable);
+    this.timeTable.classList.toggle('fit', this.settings.fitTimeTable);
 
     localStorage.uiSettings = JSON.stringify(this.settings);
     });
+
+    this.fitButton.classList.toggle('toggled', this.settings.fitTimeTable);
+    this.timeTable.classList.toggle('fit', this.settings.fitTimeTable);
 }
 
 UI.prototype.saveOnLocalStorage = function() {
   if(!this.settings)
     this.settings = {
-      extendTimeTable: false,
+      fitTimeTable: false,
       defaultTimeBegin: 6,
       defaultTimeEnd: 24,
     };

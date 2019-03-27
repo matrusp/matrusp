@@ -399,7 +399,7 @@ footer .fb-page {
   transition: height ease .2s, top ease .2s;
 }
 
-.extend .column-content {
+.fit .column-content {
   top: var(--col-top);
   height: var(--col-height);
 }
