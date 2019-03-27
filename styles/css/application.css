@@ -455,10 +455,11 @@ footer .fb-page {
 
 .column-bg svg line.even.noon-center {
   stroke: white;
+  stroke-width: 1px;
 }
 
 .column-bg svg line.even.noon-outline {
-  stroke-width: 6px;
+  stroke-width: 5px;
 }
 
 .column-bg svg line.odd {
