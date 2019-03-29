@@ -599,7 +599,7 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   if(timeBegin == this.settings.timeBegin && timeEnd == this.settings.timeEnd && dayEnd == this.settings.dayEnd)
     return;
  
-  if(state.activePlan && state.activePlan.activeCombination){
+  if(state.activePlan && state.activePlan.activeCombination && state.activePlan.activeCombination.classroomGroups.some(group => group[0].schedules.length)){
     if(timeBegin === null) {
       timeBegin = Math.min(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeBegin.getHours()))));
     }
