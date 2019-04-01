@@ -1,5 +1,8 @@
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('serviceworker.js');
+  navigator.serviceWorker.addEventListener('message', e => {
+    ui.showBanner("Uma atualização está disponível. <a href=''>Atualize a página</a> para aplicar.");
+  });
 }
 
 var dbworker = new Worker("js/dbupdate.js");
