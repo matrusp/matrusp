@@ -96,10 +96,12 @@
   text-align: right;
   line-height: 0;
   transition: opacity ease .2s;
-
-  #time-table:not(.short) &:nth-child(2n){
-      opacity: 0;
+  &:nth-child(2n) {
+    opacity: 0;
+    #time-table.short.fit & {
+      opacity: 1;
     }
+  }
 }
 
 .column:not(.time) {
