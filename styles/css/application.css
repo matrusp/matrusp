@@ -366,8 +366,12 @@ footer .fb-page {
   transition: opacity ease .2s;
 }
 
-#time-table:not(.short) .hour:nth-child(2n) {
+.hour:nth-child(2n) {
   opacity: 0;
+}
+
+#time-table.short.fit .hour:nth-child(2n) {
+  opacity: 1;
 }
 
 .column:not(.time) {
@@ -502,6 +506,7 @@ footer .fb-page {
   border: 1px solid lightgray;
   border-bottom: none;
   min-height: 0;
+  height: 100%;
 }
 
 #icons > li.icon {
