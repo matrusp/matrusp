@@ -91,6 +91,8 @@ Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
   classroom.code = `${jsonT.codigo}+${jsonP.codigo.slice(-2)}`;
   classroom.shortCode = `${jsonT.codigo.slice(-2)}+${jsonP.codigo.slice(-2)}`;
   classroom.obs = [jsonT.observacoes, jsonP.observacoes].filter(el => el).join('\n');
+  classroom.vacancies = {total: {total: 0, subscribed: 0, pending: 0, enrolled: 0}};
+  
   if (jsonT.horario) {
     classroom.addTeachers([].concat.apply([], jsonT.horario.map(x => x.professores)))
     for (var i = 0; i < jsonT.horario.length; i++) {
@@ -103,6 +105,35 @@ Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
       classroom.schedules.push(new Schedule(jsonP.horario[i], classroom));
     }
   }
+
+  for(vacancyType in jsonT.vagas) {
+      vacancy = {
+        total: jsonT.vagas[vacancyType].vagas,
+        subscribed: jsonT.vagas[vacancyType].inscritos,
+        pending: jsonT.vagas[vacancyType].pendentes,
+        enrolled: jsonT.vagas[vacancyType].matriculados,
+        groups: {}
+      };
+
+      for(vacancyGroup in jsonT.vagas[vacancyType].grupos) {
+        group = jsonT.vagas[vacancyType].grupos[vacancyGroup];
+        vacancy.groups[vacancyGroup] = {
+          total: group.vagas,
+          subscribed: group.inscritos,
+          pending: group.pendentes,
+          enrolled: group.matriculados,
+          groups: {}
+        }
+      }
+
+      classroom.vacancies[vacancyType] = vacancy;
+
+      classroom.vacancies.total.total += vacancy.total;
+      classroom.vacancies.total.subscribed += vacancy.subscribed;
+      classroom.vacancies.total.pending += vacancy.pending;
+      classroom.vacancies.total.enrolled += vacancy.enrolled;
+    }
+
   classroom.htmlElement = ui.createClassroomInfo(classroom, parentLecture.code);
   if (classroom.selected) {
     addClass(classroom.htmlElement, 'classroom-selected');
