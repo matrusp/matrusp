@@ -92,7 +92,7 @@ Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
   classroom.shortCode = `${jsonT.codigo.slice(-2)}+${jsonP.codigo.slice(-2)}`;
   classroom.obs = [jsonT.observacoes, jsonP.observacoes].filter(el => el).join('\n');
   classroom.vacancies = {total: {total: 0, subscribed: 0, pending: 0, enrolled: 0}};
-  
+
   if (jsonT.horario) {
     classroom.addTeachers([].concat.apply([], jsonT.horario.map(x => x.professores)))
     for (var i = 0; i < jsonT.horario.length; i++) {
@@ -286,6 +286,10 @@ Classroom.prototype.showOnHover = function() {
   if (lecture.activeClassrooms.length) {
     lecture.activeClassrooms[0].hideBox();
   }
+
+  if(lecture.activeClassrooms.indexOf(this) == -1) {
+    ui.timeTable.classList.toggle('fit', false);
+  }
   this.checkAndSetConflict();
   this.showBox();
   addClass(this.htmlElement, 'classroom-highlight');
@@ -306,6 +310,8 @@ Classroom.prototype.hideOnHoverOut = function() {
   if (!lecture.selected) {
     lecture.animationLoopShowEachClassroom();
   }
+
+  ui.timeTable.classList.toggle('fit', ui.settings.fitTimeTable);
 }
 
 /**
