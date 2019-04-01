@@ -95,7 +95,7 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
 
       lecture.classrooms.forEach(classroom => {
         if (baseLecture.classrooms && baseLecture.classrooms.indexOf(classroom.code) == -1)
-          classroom.toggleClassroomSelection();
+          classroom.selected = !classroom.selected;
       });
       return lecture;
     });
