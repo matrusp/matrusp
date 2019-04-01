@@ -15,6 +15,8 @@ self.NCDirs = [
   "/data/.+" //Identificadores baixados não mostrarão mensagem de atualização
 ].map(dir => new RegExp(`^${self.location.origin}.+${dir}$`));
 
+self.addEventListener('install', e => {self.skipWaiting(); }) // Ativar o SW imediatamente
+
 self.addEventListener('fetch', e => {
   // Responder a um fetch com uma resposta do cache(se o diretório estiver na lista)
   if(self.CURDirs.some(dir => dir.test(e.request.url))) {
