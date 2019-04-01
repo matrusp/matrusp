@@ -63,6 +63,7 @@ Plan.prototype = {
       }
     } 
     else ui.setCredits(0,0);
+    ui.updateTimeTable(null,null,5);
     state.saveOnLocalStorage();
   },
 
