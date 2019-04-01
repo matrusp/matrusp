@@ -299,8 +299,8 @@ Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
 /**
  *
  */
-Classroom.prototype.toggleClassroomOpen = function() {
-  toggleClass(this.htmlElement, 'classroom-open');
+Classroom.prototype.toggleClassroomOpen = function(val) {
+  toggleClass(this.htmlElement, 'classroom-open', val);
 }
 
 Classroom.prototype.conflictsWith = function(classroom) {
