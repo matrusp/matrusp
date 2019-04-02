@@ -28,6 +28,7 @@ function Classroom(jsonObj, parentLecture) {
   this.vacancies = {total: {total: 0, subscribed: 0, pending: 0, enrolled: 0}};
   this.selected = true;
   if (jsonObj) {
+    //Get info from json
     this.dateBegin = Date.parse(jsonObj.inicio);
     this.dateEnd = Date.parse(jsonObj.fim);
     this.code = jsonObj.codigo;
@@ -35,9 +36,12 @@ function Classroom(jsonObj, parentLecture) {
     this.obs = jsonObj.observacoes || '';
     this.selected = jsonObj.selected === undefined? true : jsonObj.selected;
     if (jsonObj.horario) {
+      //get teachers
       this.addTeachers([].concat.apply([], jsonObj.horario.map(x => x.professores)))
       this.schedules = jsonObj.horario.filter(horario => horario.inicio && horario.fim && horario.dia).map(horario => new Schedule(horario, this));
     }
+    
+    //Vacancy mapping
     for(vacancyType in jsonObj.vagas) {
       vacancy = {
         total: jsonObj.vagas[vacancyType].vagas,
@@ -86,6 +90,8 @@ function Classroom(jsonObj, parentLecture) {
  */
 Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
   var classroom = new Classroom(null, parentLecture);
+
+  //Get data from JSONs
   classroom.dateBegin = Date.parse(jsonT.inicio);
   classroom.dateEnd = Date.parse(jsonT.fim);
   classroom.code = `${jsonT.codigo}+${jsonP.codigo.slice(-2)}`;
@@ -94,18 +100,21 @@ Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
   classroom.vacancies = {total: {total: 0, subscribed: 0, pending: 0, enrolled: 0}};
 
   if (jsonT.horario) {
+    //Get teachers
     classroom.addTeachers([].concat.apply([], jsonT.horario.map(x => x.professores)))
     for (var i = 0; i < jsonT.horario.length; i++) {
       classroom.schedules.push(new Schedule(jsonT.horario[i], classroom));
     }
   }
   if (jsonP.horario) {
+    //Get teachers
     classroom.addTeachers([].concat.apply([], jsonP.horario.map(x => x.professores)))
     for (var i = 0; i < jsonP.horario.length; i++) {
       classroom.schedules.push(new Schedule(jsonP.horario[i], classroom));
     }
   }
 
+  //Vacancy mapping
   for(vacancyType in jsonT.vagas) {
       vacancy = {
         total: jsonT.vagas[vacancyType].vagas,

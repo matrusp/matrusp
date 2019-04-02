@@ -4,7 +4,7 @@
  * @constructor
  */
 function CourseBox() {
-
+  //Element declarations
   this.dialog = document.getElementById('course-dialog');
   this.closeButton = document.getElementById('course-window-close');
   this.campusSelect = document.getElementById('course-campus-select');
@@ -15,7 +15,8 @@ function CourseBox() {
   this.acceptButton = document.getElementById('course-accept-button');
   this.optativeCheck = document.getElementById('course-optative-check');
 
-  this.populateCampusSelect().then(() => this.campusChanged());
+  //Populate the course box
+  this.populateCampusSelect().then(() => this.campusChanged()); 
 
   this.optativeCheck.addEventListener('change', e => {
     [...this.dialog.getElementsByClassName('course-lecture-optative')].forEach(opt => {
@@ -26,21 +27,25 @@ function CourseBox() {
     })
   });
 
+  //Event listeners
   this.campusSelect.addEventListener('change', e => { this.campusChanged(); });
   this.unitSelect.addEventListener('change', e => { this.unitChanged(); });
   this.courseSelect.addEventListener('change', async e => { this.courseChanged(); });
   this.periodSelect.addEventListener('change', e => this.periodChanged(e));
 
+  //Add lectures when acceptButton is clicked
   this.acceptButton.addEventListener('click', e => {
     var lecturePromises = this.selectedCourse.periodos[this.periodSelect.value].map(async lectureInfo => {
       var baseLecture = {code: lectureInfo.codigo, selected: (lectureInfo.tipo == 'obrigatoria' || this.optativeCheck.checked)};
-      if(['noturno','diurno','matutino','vespertino'].indexOf(this.selectedCourse.periodo) == -1) return baseLecture;
+      if(['noturno','diurno','matutino','vespertino'].indexOf(this.selectedCourse.periodo) == -1) return baseLecture; //Fallback for course timeframe info
 
+      //Get lectures from DB
       var lecture = await matruspDB.lectures.get(lectureInfo.codigo);
       if(!lecture) return baseLecture;
 
       var classrooms = [];
 
+      //Select only the classrooms with timeframe compatible with the course
       switch(this.selectedCourse.periodo){
           case 'diurno':
             classrooms = lecture.turmas.filter(turma => 
@@ -64,6 +69,8 @@ function CourseBox() {
       return baseLecture;
     });
     Promise.all(lecturePromises).then(lectures => {
+
+      //Criar um novo plano com as disciplinas validas
       lectures.filter(el => el);
 
       var planData = {"name": `${this.courseSelect.options[this.courseSelect.selectedIndex].innerHTML} - ${this.periodSelect.value}º período`,"lectures": lectures};
@@ -160,28 +167,33 @@ CourseBox.prototype.populatePeriodSelect = async function(course) {
   this.periodSelect.appendChild(fragment);
 }
 
+// Listen to change in the campus dropdown
 CourseBox.prototype.campusChanged = async function(e) {
   await this.populateUnitSelect(this.campusSelect.value);
   return this.unitChanged(e);
 }
 
+// Listen to change in the unit dropdown
 CourseBox.prototype.unitChanged = async function(e) {
   await this.populateCourseSelect(this.unitSelect.value);
   return this.courseChanged(e);
 }
 
+// Listen to change in the course dropdown
 CourseBox.prototype.courseChanged = async function(e) {
   this.selectedCourse = await matruspDB.courses.get(this.courseSelect.value);
   await this.populatePeriodSelect(await matruspDB.courses.get(this.courseSelect.value));
   return this.periodChanged(e);
 }
 
+// Listen to change in the period dropdown
 CourseBox.prototype.periodChanged = async function(e) {
     if(!this.selectedCourse || !this.periodSelect.value) {
         this.lectureList.innerHTML = '';
         return;
     }
 
+    //Get and append the selected period lectures in the box
     var fragment = document.createDocumentFragment();
     createAndAppendChild(fragment, 'div', {
       'innerHTML': 'Obrigatórias',
@@ -200,6 +212,8 @@ CourseBox.prototype.periodChanged = async function(e) {
 
 CourseBox.prototype.appendLectures = async function(parent, lectures) {
   var fragment = document.createDocumentFragment();
+
+  //Await for the lecture info from the DB and create a div for each, then append
   return await Promise.all(lectures.map(async lectureInfo => {
     var lecture = await matruspDB.lectures.get(lectureInfo.codigo);
     if(lecture)
@@ -216,6 +230,7 @@ CourseBox.prototype.appendLectures = async function(parent, lectures) {
         parent.appendChild(fragment);
       }
       else {
+        //Fallback in case no lectures are available
         createAndAppendChild(fragment, 'div', {
           'class': 'course-no-lectures',
           'innerHTML': 'Nenhuma disciplina deste tipo'
