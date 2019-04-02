@@ -24,13 +24,26 @@ dbworker.onmessage = e => {
   }
 }
 
-if (window.location.hash.substr(1)) {
-  ui.loadStateFromServer(window.location.hash.substr(1));
-  history.pushState('', document.title, window.location.pathname);
-} 
-else if (localStorage.getItem('state'))
-  state.load(JSON.parse(localStorage.getItem('state')));
-else state.load();
+var params = new URLSearchParams(this.location.search);
+try{
+  if(params && params.has("data")) {
+    state.load(JSON.parse(atob(params.get("data"))));
+  }
+  else if(params && params.has("id")) {
+    state.loadFromServer(params.get("id"));
+  }
+  else if (localStorage.getItem('state'))
+    state.load(JSON.parse(localStorage.getItem('state')));
+  else state.load();
+  
+  history.replaceState(history.state, "MatrUSP", this.location.pathname);
+}
+catch(e) {
+  ui.showBanner("Ocorreu um erro e não foi possível carregar sua grade.", 2000);
+  if (localStorage.getItem('state'))
+    state.load(JSON.parse(localStorage.getItem('state')));
+  else state.load();
+}
 
 state.saveOnLocalStorage();
 

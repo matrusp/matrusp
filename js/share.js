@@ -16,12 +16,24 @@ function ShareBox() {
   this.addEventListeners();
 }
 
+ShareBox.prototype.open = function() {
+  ui.openShareDialog();
+
+  var params = new URLSearchParams();
+  if(state.identifier)
+    params.append("id",state.identifier);
+  else
+    params.append("data",btoa(state.toJSON()));
+    
+  this.linkBox.value = location.toString() + '?' + params.toString();
+}
+
 ShareBox.prototype.addEventListeners = function() {
   this.clipboardButton.addEventListener('click', e => {navigator.clipboard.writeText(this.linkBox.value)});
-  this.whatsappButton.addEventListener('click', e => {window.open(`http://api.whatsapp.com/send?text=${encodeURI('Esta é minha grade horária no MatrUSP: '+ this.linkBox.value)}`,'_blank')});
-  this.facebookButton.addEventListener('click', e => {window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURI(this.linkBox.value)}`, '',
-    'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');});
-  this.mailButton.addEventListener('click', e => {window.open(`mailto:?subject=${encodeURI('Grade Horária MatrUSP')}&body=${encodeURI('Esta é minha grade horária no MatrUSP: '+ this.linkBox.value)}`)});
+  this.whatsappButton.addEventListener('click', e => {window.open(`http://api.whatsapp.com/send?text=${encodeURIComponent('Esta é minha grade horária no MatrUSP: '+ this.linkBox.value)}`,'_blank')});
+  this.facebookButton.addEventListener('click', e => {window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkBox.value)}`, '',
+    'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=600');});
+  this.mailButton.addEventListener('click', e => {location.href = `mailto:?subject=${encodeURI('Grade Horária MatrUSP')}&body=${encodeURIComponent('Esta é minha grade horária no MatrUSP: '+ this.linkBox.value)}`});
 
   this.gcalButton.addEventListener('click', e => {handleGAuthClick(e); ui.closeDialog();});
   this.icsButton.addEventListener('click', e => {download_icalendar(); ui.closeDialog();});
