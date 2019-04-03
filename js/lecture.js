@@ -141,7 +141,7 @@ Lecture.prototype.updateClassroomsCheckbox = function() {
  *
  */
 Lecture.prototype.toggleLectureOpen = function() {
-  toggleClass(this.htmlElement, 'lecture-open');
+  this.htmlElement.classList.toggle('lecture-open');
 }
 
 /**
@@ -281,7 +281,7 @@ Lecture.prototype.showNextClassroom = function() {
   var currentClassroomIndex = 0;
   for (var i = 0; i < this.classrooms.length; i++) {
     var classroomHtmlBoxExample = this.classrooms[i].schedules[0].htmlElement;
-    if (hasClass(classroomHtmlBoxExample, 'schedule-box-show')) {
+    if (classroomHtmlBoxExample.classList.contains( 'schedule-box-show')) {
       this.classrooms[i].hideBox();
       this.classrooms[i].unsetConflict();
       currentClassroomIndex = i;

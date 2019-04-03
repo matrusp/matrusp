@@ -74,7 +74,7 @@ function Classroom(jsonObj, parentLecture) {
 
     this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
     if (this.selected) {
-      addClass(this.htmlElement, 'classroom-selected');
+      this.htmlElement.classList.add('classroom-selected');
     }
     
     this.addEventListeners();
@@ -145,7 +145,7 @@ Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
 
   classroom.htmlElement = ui.createClassroomInfo(classroom, parentLecture.code);
   if (classroom.selected) {
-    addClass(classroom.htmlElement, 'classroom-selected');
+    classroom.htmlElement.classList.add('classroom-selected');
   }
   classroom.addEventListeners();
   return classroom;

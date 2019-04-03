@@ -281,7 +281,7 @@ Plan.prototype.computeCombinations = function() {
 }
 
 Plan.prototype.showPlan = function() {
-  addClass(this.html.tab, 'plan-active');
+  this.html.tab.classList.add('plan-active');
 
   ui.addLectures(this.lectures);
   ui.addCombinations(this.combinations);
@@ -293,7 +293,7 @@ Plan.prototype.showPlan = function() {
 Plan.prototype.hidePlan = function() {
   if(state.activePlan != this) return;
 
-  removeClass(this.html.tab, 'plan-active');
+  this.html.tab.classList.remove('plan-active');
   
   ui.removeLectures(this.lectures);
   ui.removeCombinations(this.combinations);

@@ -61,14 +61,14 @@ Combination.prototype.getSimilarityScore = function(otherCombination) {
  *
  */
 Combination.prototype.setHighlight = function() {
-  addClass(this.htmlElement, 'combination-highlight');
+  this.htmlElement.classList.add('combination-highlight');
 };
 
 /**
  *
  */
 Combination.prototype.unsetHighlight = function() {
-  removeClass(this.htmlElement, 'combination-highlight');
+  this.htmlElement.classList.remove('combination-highlight');
 };
 
 /**
