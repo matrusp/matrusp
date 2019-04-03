@@ -201,7 +201,7 @@ Classroom.prototype.delete = function() {
  */
 Classroom.prototype.addClassInSchedules = function(className) {
   for (var i = 0; i < this.schedules.length; i++) {
-    addClass(this.schedules[i].htmlElement, className);
+    this.schedules[i].htmlElement.classList.add(className);
   }
 };
 
@@ -210,7 +210,7 @@ Classroom.prototype.addClassInSchedules = function(className) {
  */
 Classroom.prototype.removeClassInSchedules = function(className) {
   for (var i = 0; i < this.schedules.length; i++) {
-    removeClass(this.schedules[i].htmlElement, className);
+    this.schedules[i].htmlElement.classList.remove(className);
   }
 };
 
@@ -218,14 +218,14 @@ Classroom.prototype.removeClassInSchedules = function(className) {
  *
  */
 Classroom.prototype.setActive = function() {
-  addClass(this.htmlElement, 'classroom-active');
+  this.htmlElement.classList.add('classroom-active');
 }
 
 /**
  *
  */
 Classroom.prototype.unsetActive = function() {
-  removeClass(this.htmlElement, 'classroom-active');
+  this.htmlElement.classList.remove('classroom-active');
 }
 
 
@@ -263,10 +263,10 @@ Classroom.prototype.checkAndSetConflict = function() {
           if (this.schedules[j].conflictsWith(lecturesClassroom[i].schedules[k])) {
             // This schedule (one of many for this classroom) conflicts with some other
             // schedule from an active classroom. Set conflict highlight.
-            addClass(this.schedules[j].htmlElement, 'schedule-box-highlight-conflict');
+            this.schedules[j].htmlElement.classList.add('schedule-box-highlight-conflict');
             if (conflictNotSet) {
               conflictNotSet = false;
-              addClass(this.htmlElement, 'classroom-conflict');
+              this.htmlElement.classList.add('classroom-conflict');
             }
           }
         }
@@ -301,7 +301,7 @@ Classroom.prototype.showOnHover = function() {
   }
   this.checkAndSetConflict();
   this.showBox();
-  addClass(this.htmlElement, 'classroom-highlight');
+  this.htmlElement.classList.add('classroom-highlight');
 }
 
 /**
@@ -309,7 +309,7 @@ Classroom.prototype.showOnHover = function() {
  */
 Classroom.prototype.hideOnHoverOut = function() {
   var lecture = this.parent;
-  removeClass(this.htmlElement, 'classroom-highlight');
+  this.htmlElement.classList.remove('classroom-highlight');
   this.hideBox();
   this.removeClassInSchedules('schedule-box-highlight-conflict');
   if (lecture.activeClassrooms.length) {
@@ -327,7 +327,7 @@ Classroom.prototype.hideOnHoverOut = function() {
  * @param {Boolean} [shouldUpdate=true] - enables parent lecture and current plan's update
  */
 Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
-  toggleClass(this.htmlElement, 'classroom-selected');
+  this.htmlElement.classList.toggle( 'classroom-selected');
   this.selected = !this.selected;
 
   // These two lines are relevant when this function is called by effect of
@@ -346,7 +346,7 @@ Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
  *
  */
 Classroom.prototype.toggleClassroomOpen = function(val) {
-  toggleClass(this.htmlElement, 'classroom-open', val);
+  this.htmlElement.classList.toggle( 'classroom-open', val);
 }
 
 Classroom.prototype.conflictsWith = function(classroom) {
