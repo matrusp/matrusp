@@ -87,7 +87,7 @@ SearchBox.prototype.addLectures = function(lectures) {
       return function() {
         addClass(serachResultLectureInfo, 'search-result-selected');
         if (this.selectedLectureIndex != -1 && serachResultLectureInfo != suggestionLectures[this.selectedLectureIndex]) {
-          removeClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
+          suggestionLectures[this.selectedLectureIndex].classList.remove('search-result-selected');
         }
         this.heightSoFar = 0;
         for (var i = 0; i <= iterator; i++) {
@@ -99,7 +99,7 @@ SearchBox.prototype.addLectures = function(lectures) {
 
     var deselectLectureCallback = function(serachResultLectureInfo) {
       return function() {
-        removeClass(serachResultLectureInfo, 'search-result-selected');
+        serachResultLectureInfo.classList.remove('search-result-selected');
       }
     }
 
@@ -151,7 +151,7 @@ SearchBox.prototype.eventKey = function(e) {
         return;
       }
       if (this.selectedLectureIndex > 0) {
-        removeClass(suggestionLectures[this.selectedLectureIndex - 1], 'search-result-selected');
+        suggestionLectures[this.selectedLectureIndex - 1].classList.remove('search-result-selected');
       }
       addClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
 
@@ -175,7 +175,7 @@ SearchBox.prototype.eventKey = function(e) {
         return;
       }
       if (this.selectedLectureIndex < this.lecturesSuggestionList.length) {
-        removeClass(suggestionLectures[this.selectedLectureIndex + 1], 'search-result-selected');
+        suggestionLectures[this.selectedLectureIndex + 1].classList.remove('search-result-selected');
       }
       addClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
 

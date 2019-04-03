@@ -633,7 +633,7 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
 
   for(var i = 0; i < this.weekdays.length; i++) {
     if(i < dayEnd) {
-      if(hasClass(this.weekdays[i].parentElement.parentElement, 'hidden')) {
+      if(this.weekdays[i].parentElement.parentElement.classList.contains( 'hidden')) {
         this.weekdays[i].offsetWidth; //This is needed to trigger a reflow so the border-width will be transitioned
         this.weekdays[i].parentElement.parentElement.classList.remove('hidden');
       }
