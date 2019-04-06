@@ -408,7 +408,7 @@ window['Slip'] = (function(){
                 }
                 var originalIndex = findIndex(this.target, nodes);
                 var mouseOutsideTimer;
-                var zero = this.target.node.offsetTop + this.target.height/2;
+                var zero = this.target.node.offsetTop;// + this.target.height/2;
                 var otherNodes = [];
                 for(var i=0; i < nodes.length; i++) {
                     if (nodes[i].nodeType != 1 || nodes[i] === this.target.node) continue;
@@ -417,7 +417,7 @@ window['Slip'] = (function(){
                     otherNodes.push({
                         node: nodes[i],
                         baseTransform: getTransform(nodes[i]),
-                        pos: t + (t < zero ? nodes[i].offsetHeight : 0) - zero,
+                        pos: t + nodes[i].offsetHeight/2
                     });
                 }
 
@@ -443,12 +443,14 @@ window['Slip'] = (function(){
                     this.target.node.style[transformJSPropertyName] = 'translate(0,' + move.y + 'px) ' + hwTopLayerMagicStyle + this.target.baseTransform.value;
 
                     var height = this.target.height;
+                    var top = this.target.node.offsetTop;
+                    var bottom = top + height;
                     otherNodes.forEach(function(o){
                         var off = 0;
-                        if (o.pos < 0 && move.y < 0 && o.pos > move.y) {
+                        if (o.pos - top < 0 && move.y < 0 && o.pos > move.y + top) {
                             off = height;
                         }
-                        else if (o.pos > 0 && move.y > 0 && o.pos < move.y) {
+                        else if (o.pos - top > 0 && move.y > 0 && o.pos < move.y + bottom) {
                             off = -height;
                         }
                         // FIXME: should change accelerated/non-accelerated state lazily
@@ -498,16 +500,20 @@ window['Slip'] = (function(){
                     onEnd: function() {
                         var move = this.getTotalMovement();
                         var i, spliceIndex;
+                        var height = this.target.height;
+                        var top = this.target.node.offsetTop;
+                        var bottom = top + height;
+                        
                         if (move.y < 0) {
                             for (i=0; i < otherNodes.length; i++) {
-                                if (otherNodes[i].pos > move.y) {
+                                if (otherNodes[i].pos > move.y + top) {
                                     break;
                                 }
                             }
                             spliceIndex = i;
                         } else {
                             for (i=otherNodes.length-1; i >= 0; i--) {
-                                if (otherNodes[i].pos < move.y) {
+                                if (otherNodes[i].pos < move.y + bottom) {
                                     break;
                                 }
                             }
