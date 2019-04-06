@@ -216,65 +216,6 @@ SearchBox.prototype.eventKey = function(e) {
   }
 }
 
-SearchBox.prototype.compareID = function(lectureA, lectureB) {
-  if (lectureA.classroomCode > lectureB.classroomCode) {
-    return 1;
-  }
-  if (lectureA.classroomCode < lectureB.classroomCode) {
-    return -1;
-  }
-  return 0;
-}
-
-SearchBox.prototype.testFunctionCompareID = function(lectureA, lectureB) {
-  var actual = this.compareID(lectureA, lectureB);
-  var expected;
-  if (lectureA.classroomCode > lectureB.classroomCode) expected = 1;
-  if (lectureA.classroomCode < lectureB.classroomCode) expected = -1;
-  else expected = 0;
-
-  if (actual != expected) return false;
-  else return true;
-}
-
-SearchBox.prototype.aggregateBySchedule = function(classrooms) {
-  for (var i = 0; i < classrooms.length; i++) {
-    var schedule1 = classrooms[i].schedules;
-    for (var k = i + 1; k < classrooms.length; k++) {
-      var schedule2 = classrooms[k].schedules;
-
-      if (schedule1.length != schedule2.length) continue;
-
-      var equal = 1;
-      for (var j = 0; j < schedule1.length; j++) {
-        if (schedule1[j].day != schedule2[j].day ||
-          schedule1[j].timeBegin != schedule2[j].timeBegin ||
-          schedule1[j].timeEnd != schedule2[j].timeEnd) {
-          equal = 0;
-          break
-        }
-      }
-
-      if (equal) {
-        classrooms[i].classroomCode.push(classrooms[k].classroomCode[0]);
-        for (var j = 0; j < classrooms[k].teachers.length; j++) {
-          classrooms[i].teachers.push(classrooms[k].teachers[j]);
-        }
-        var teste = classrooms.splice(k, 1);
-        k--;
-      }
-    }
-  }
-}
-
-SearchBox.prototype.aggregateAndSortLectures = function(lecture) {
-  lecture.classrooms.sort(this.compareID);
-  for (var i = 0; i < lecture.classrooms.length; i++) {
-    lecture.classrooms[i].teachers.sort();
-  }
-  this.aggregateBySchedule(lecture.classrooms);
-}
-
 /**
  * Add lecture to the active plan
  */
