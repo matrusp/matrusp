@@ -354,7 +354,8 @@ UI.prototype.createLectureInfo = function(lecture) {
           },
           {
             tag: 'div',
-            class: 'lecture-info-delete fas fa-times'
+            class: 'lecture-info-delete',
+            innerHTML: '&times;'
           }
         ]
       },
