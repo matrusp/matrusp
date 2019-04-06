@@ -902,7 +902,8 @@ footer .fb-page {
   padding: 8px;
   position: relative;
   opacity: .5;
-  font-size: 16px;
+  font-size: 26px;
+  line-height: 12px;
 }
 
 #accordion .lecture-info .lecture-info-header .lecture-info-delete > img {
