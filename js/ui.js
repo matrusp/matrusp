@@ -99,7 +99,7 @@ function UI() {
   });
 
   this.accordion.addEventListener('slip:swipe', e => {
-    state.activePlan.lectures[e.detail.originalIndex].delete();
+    state.activePlan.removeLecture(state.activePlan.lectures[e.detail.originalIndex]);
   });
 
   this.newPlan.addEventListener('click',e => {var plan = state.addPlan(); state.activePlan = plan; this.plans.scrollLeft = this.plans.scrollWidth; });
