@@ -349,13 +349,12 @@ UI.prototype.createLectureInfo = function(lecture) {
             class: 'lecture-info-name',
             innerHTML: lecture.name
           },
+          { tag: 'div',
+            class: 'lecture-info-handle fas fa-grip-vertical'
+          },
           {
             tag: 'div',
-            class: 'lecture-info-delete',
-            children: [{
-              tag: 'img',
-              src: 'images/ic_close.png'
-            }]
+            class: 'lecture-info-delete fas fa-times'
           }
         ]
       },

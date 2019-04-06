@@ -77,8 +77,11 @@
           grid-row: 1/3;
           grid-column: 3;
 
-          width: $width-lecture-delete;
+          padding: 8px;
           position: relative;
+
+          opacity: .5;
+          font-size: 16px;
 
           >img {
             @include center-block-horizontally();
@@ -87,6 +90,15 @@
             width: $width-icon-delete;
             opacity: 0.3;
           }
+        }
+
+        .lecture-info-handle {
+           grid-row: 1/3;
+           grid-column: 4;
+
+           opacity: .3;
+           margin: 4px;
+           padding-right: 4px;
         }
 
         .lecture-info-code {
