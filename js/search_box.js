@@ -85,7 +85,7 @@ SearchBox.prototype.addLectures = function(lectures) {
 
     var selectLectureCallback = function(iterator, serachResultLectureInfo) {
       return function() {
-        addClass(serachResultLectureInfo, 'search-result-selected');
+        serachResultLectureInfo.classList.add('search-result-selected');
         if (this.selectedLectureIndex != -1 && serachResultLectureInfo != suggestionLectures[this.selectedLectureIndex]) {
           suggestionLectures[this.selectedLectureIndex].classList.remove('search-result-selected');
         }
@@ -153,7 +153,7 @@ SearchBox.prototype.eventKey = function(e) {
       if (this.selectedLectureIndex > 0) {
         suggestionLectures[this.selectedLectureIndex - 1].classList.remove('search-result-selected');
       }
-      addClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
+      suggestionLectures[this.selectedLectureIndex].classList.add('search-result-selected');
 
       if (this.heightSoFar < sizeOfSearchResultBox) {
         if (this.heightSoFar + suggestionLectures[this.selectedLectureIndex].offsetHeight < sizeOfSearchResultBox) {
@@ -177,7 +177,7 @@ SearchBox.prototype.eventKey = function(e) {
       if (this.selectedLectureIndex < this.lecturesSuggestionList.length) {
         suggestionLectures[this.selectedLectureIndex + 1].classList.remove('search-result-selected');
       }
-      addClass(suggestionLectures[this.selectedLectureIndex], 'search-result-selected');
+      suggestionLectures[this.selectedLectureIndex].classList.add('search-result-selected');
 
       if (this.heightSoFar > 26) { //26 is the minimum height of a suggested lecture
         if (this.heightSoFar - suggestionLectures[this.selectedLectureIndex].offsetHeight > 26) {
