@@ -87,15 +87,14 @@ function UI() {
 
 
   this.accordion.addEventListener('slip:reorder',e => {
-    if(e.detail.originalIndex == e.detail.spliceIndex)
-      return;
-
     e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
 
-    var lecture = state.activePlan.lectures[e.detail.originalIndex];
-    state.activePlan.lectures.splice(e.detail.originalIndex, 1);
-    state.activePlan.lectures.splice(e.detail.spliceIndex, 0, lecture);
-    state.activePlan.update();
+    if(e.detail.originalIndex != e.detail.spliceIndex) {
+      var lecture = state.activePlan.lectures[e.detail.originalIndex];
+      state.activePlan.lectures.splice(e.detail.originalIndex, 1);
+      state.activePlan.lectures.splice(e.detail.spliceIndex, 0, lecture);
+      state.activePlan.update();
+    }
   });
 
   this.accordion.addEventListener('slip:swipe', e => {
