@@ -326,14 +326,18 @@ Classroom.prototype.hideOnHoverOut = function() {
 /**
  * @param {Boolean} [shouldUpdate=true] - enables parent lecture and current plan's update
  */
-Classroom.prototype.toggleClassroomSelection = function(shouldUpdate) {
-  this.htmlElement.classList.toggle( 'classroom-selected');
-  this.selected = !this.selected;
+Classroom.prototype.toggleClassroomSelection = function(value, shouldUpdate) {
+  if(value === undefined || value === null) {
+    value = !this.selected;
+  }
+
+  this.htmlElement.classList.toggle('classroom-selected', value);
+  this.selected = value;
 
   // These two lines are relevant when this function is called by effect of
   // toggling selection of all classrooms.
   var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
-  checkbox.checked = this.selected;
+  checkbox.checked = value;
 
   // creates a 'true' default value for 'shouldUpdate'
   shouldUpdate = (typeof shouldUpdate !== 'undefined') ? shouldUpdate : true;
@@ -370,5 +374,5 @@ Classroom.prototype.addEventListeners = function() {
   this.htmlElement.addEventListener('click', e => { this.toggleClassroomOpen(); e.stopPropagation(); });
 
   var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
-  checkbox.addEventListener('click', e => {this.toggleClassroomSelection(true); e.stopPropagation();} );
+  checkbox.addEventListener('click', e => {this.toggleClassroomSelection(null, true); e.stopPropagation();} );
 };

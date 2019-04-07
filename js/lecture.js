@@ -70,7 +70,6 @@ function Lecture(jsonObj, parentPlan) {
     });
 
     this.appendHTMLChildren();
-    this.updateClassroomsCheckbox();
     this.addEventListeners();
   }
 }
@@ -130,12 +129,6 @@ Lecture.prototype.noClassroomsSelected = function() {
   return this.numberOfClassroomsSelected() == 0;
 }
 
-/**
- *
- */
-Lecture.prototype.updateClassroomsCheckbox = function() {
-  //this.htmlClassroomsCheckbox.checked = this.allClassroomsSelected();
-}
 
 /**
  *
@@ -151,10 +144,6 @@ Lecture.prototype.lectureSelect = function() {
   this.stopAnimationLoop();
   this.selected = true;
   this.htmlLectureCheckbox.checked = true;
-  if (this.noClassroomsSelected()) {
-    var shouldUpdate = false;
-    this.updateAllClassroomsSelections(shouldUpdate);
-  }
 }
 
 /**
@@ -199,24 +188,6 @@ Lecture.prototype.delete = function() {
     this.classrooms[i].delete();
   }
   this.htmlElement.remove();
-}
-
-/**
- *
- */
-Lecture.prototype.updateAllClassroomsSelections = function(shouldUpdate) {
-  for (var i = 0; i < this.classrooms.length; i++) {
-    if (this.classrooms[i].selected != this.htmlClassroomsCheckbox.checked) {
-      var shouldUpdateFurther = false;
-      this.classrooms[i].toggleClassroomSelection(shouldUpdateFurther);
-    }
-  }
-
-  // creates a 'true' default value for 'shouldUpdate'
-  shouldUpdate = (typeof shouldUpdate !== 'undefined') ? shouldUpdate : true;
-  if (shouldUpdate) {
-    this.update();
-  }
 }
 
 /**
@@ -377,8 +348,6 @@ Lecture.prototype.addEventListeners = function() {
   lectureHeaderDelete.addEventListener('click', e => { this.parent.removeLecture(this); e.stopPropagation(); });
 
   this.htmlLectureCheckbox.addEventListener('click', e => { this.toggleLectureSelection(); e.stopPropagation(); });
-
-  //this.htmlClassroomsCheckbox.addEventListener('click', this.updateAllClassroomsSelections.bind(this));
 };
 
 Lecture.prototype.safeCopy = function () {
