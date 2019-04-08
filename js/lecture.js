@@ -152,6 +152,8 @@ Lecture.prototype.lectureSelect = function() {
 Lecture.prototype.lectureUnselect = function() {
   this.selected = false;
   this.htmlLectureCheckbox.checked = false;
+
+  this.classrooms.forEach(classroom => classroom.toggleClassroomSelection(false,false));
 }
 
 /**
@@ -346,7 +348,11 @@ Lecture.prototype.addEventListeners = function() {
   var lectureHeaderDelete = this.htmlElement.getElementsByClassName('lecture-info-delete')[0];
   lectureHeaderDelete.addEventListener('click', e => { this.parent.removeLecture(this); e.stopPropagation(); });
 
-  this.htmlLectureCheckbox.addEventListener('click', e => { this.toggleLectureSelection(); e.stopPropagation(); });
+  this.htmlLectureCheckbox.addEventListener('click', e => {   
+    this.classrooms.forEach(classroom => classroom.toggleClassroomSelection(e.target.checked,false));
+    this.toggleLectureSelection();
+    e.stopPropagation(); 
+  });
 };
 
 Lecture.prototype.safeCopy = function () {
