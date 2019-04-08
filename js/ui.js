@@ -937,6 +937,44 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
   this.addContextMenu(menu, pos);
 }
 
+UI.prototype.createClassroomContextMenu = function(classroom, pos) {
+  var menu = createHtmlElementTree({
+    tag: 'div',
+    class: 'context-menu',
+    children: [
+      {
+        tag: 'button',
+        innerHTML: 'Abrir no Jupiterweb',
+        class: 'context-menu-item context-divider context-external-link',
+        onclick: e => {
+                      window.open(`https://uspdigital.usp.br/jupiterweb/obterTurma?sgldis=${classroom.parent.code}&codtur=${classroom.code}`,'_blank');
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      },
+      {
+        tag: 'button',
+        innerHTML: classroom.selected? 'Deselecionar' : 'Selecionar',
+        class: 'context-menu-item',
+        onclick: e => {
+                      classroom.toggleClassroomSelection(null,true);
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      },
+      {
+        tag: 'button',
+        innerHTML: 'Selecionar apenas esta',
+        class: 'context-menu-item',
+        onclick: e => {
+                      classroom.parent.classrooms.forEach(c => c.toggleClassroomSelection(c == classroom, false));
+                      classroom.parent.update();
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      }
+    ]
+  });
+  this.addContextMenu(menu, pos);
+}
+
 UI.prototype.openCourseDialog = function() {
   this.dialogOverlay.classList.add('show');
   this.courseDialog.classList.add('show');
