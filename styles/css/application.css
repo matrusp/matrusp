@@ -900,11 +900,12 @@ footer .fb-page {
 #accordion .lecture-info .lecture-info-header .lecture-info-delete {
   grid-row: 1/3;
   grid-column: 3;
+  width: 24px;
   padding: 4px;
   position: relative;
   opacity: .5;
   font-size: 26px;
-  line-height: 0;
+  line-height: 16px;
   transition: color ease .1s, opacity ease .1s;
 }
 
@@ -927,7 +928,6 @@ footer .fb-page {
   grid-column: 4;
   opacity: .3;
   margin: 4px;
-  padding-right: 4px;
 }
 
 #accordion .lecture-info .lecture-info-header .lecture-info-handle:before {
