@@ -354,7 +354,8 @@ UI.prototype.createLectureInfo = function(lecture) {
           {
             tag: 'div',
             class: 'lecture-info-delete',
-            innerHTML: '&times;'
+            innerHTML: '&times;',
+            title: 'Remover disciplina'
           }
         ]
       },

@@ -50,6 +50,8 @@
     user-select: none;
     cursor: default;
 
+    transition: background-color ease .1s, opacity ease .1s, color ease .1s;
+
     &.slip-reordering {
       box-shadow: $shadow-default;
     }
@@ -77,11 +79,14 @@
           grid-row: 1/3;
           grid-column: 3;
 
-          padding: 8px;
+          padding: 4px;
           position: relative;
 
           opacity: .5;
-          font-size: 16px;
+          font-size: 26px;
+          line-height: 0;
+
+          transition: color ease .1s, opacity ease .1s;
 
           >img {
             @include center-block-horizontally();
@@ -99,6 +104,11 @@
            opacity: .3;
            margin: 4px;
            padding-right: 4px;
+
+           &:before {
+             line-height: 0;
+             vertical-align: middle;
+           }
         }
 
         .lecture-info-code {
@@ -147,6 +157,8 @@
 
       .classroom-info {
          padding: 4px 0;
+
+         transition: background-color ease .1s;
 
         .classroom-info-header {
           display: flex;
@@ -276,7 +288,7 @@
 @each $color in $lecture-colors {
   $i: index($lecture-colors, $color) - 1;
 
-  .lecture-info.color-#{$i} {
+  #accordion .lecture-info.color-#{$i} {
     background-color: lighten($color, 20%);
     color: darken($color, 35%);
 
@@ -291,11 +303,12 @@
     .lecture-info-header {
       .lecture-info-delete {
         &:hover {
-          background-color: lighten($color, 5%);
+          opacity: 1;
         }
 
         &:active {
-          background-color: $color;
+          color: darken($color, 45%);
+          opacity: 1;
         }
       }
     }
