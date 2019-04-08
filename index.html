@@ -99,6 +99,9 @@
 	</button>
 	<button class="fas fa-print header-button" id="pdf" title="Imprimir" onclick='printBox.open();'>
 	</button>
+	<button class="fas fa-upload header-button" id="upload" title="Carregar arquivo de grade" onclick='document.getElementById("upload-input").click()'>
+	</button>
+	<input id="upload-input" type="file" style="display: none" accept=".matrusp,application/json">
     </div>
     </div>
     <div id="loading-bar"></div>
@@ -202,11 +205,6 @@
 					<div class="credit-wrapper"><span id="lecture-credits">0</span>Créditos<br />Aula</div>
 					<div class="credit-wrapper"><span id="work-credits">0</span>Créditos<br />Trabalho</div>
 				</div>
-				<label id="upload-button">
-					<div id="upload-name"> Upload de Grade </div>
-					<img src="images/ic_upload.png">
-					<input id="upload-input" type="file" accept=".matrusp,application/json">
-				</label>
 			</div>
 		</div>
     </div>
