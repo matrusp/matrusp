@@ -8,7 +8,6 @@ function uploadFile(file) {
           ui.showBanner("Não foi possível abrir o arquivo. Verifique se é um arquivo do MatrUSP.",2000);
           return false;
         }
-        document.getElementById('upload-name').innerHTML = shortenString(file.name);
         state.load(jsonObj);
       }
       catch(e) {
