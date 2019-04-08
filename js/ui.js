@@ -286,15 +286,12 @@ UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
       {
         tag: 'div',
         class: 'classroom-info-schedules',
-        children: classroom.schedules.length? classroom.schedules.map(schedule => ({
-          tag: 'div',
-          class: 'classroom-info-schedule',
-          innerHTML: `${schedule.day} ${schedule.timeBegin.toString('HH:mm')} - ${schedule.timeEnd.toString('HH:mm')}`
-        })) : [{
+        children: classroom.schedules.length? this.buildClassroomScheduleSummary(classroom) :
+        [{
           tag: 'div',
           class: 'classroom-info-schedule',
           innerHTML: 'Sem horário definido'
-          }]
+        }]
       },
       {
         tag: 'table',
@@ -399,6 +396,25 @@ UI.prototype.createLectureInfo = function(lecture) {
 
   var lectureInfo = createHtmlElementTree(lectureInfoTreeObj);
   return lectureInfo;
+}
+
+UI.prototype.buildClassroomScheduleSummary = function(classroom) {
+  var days = {};
+  var eltree = [];
+  classroom.schedules.forEach(schedule => {
+          if(!days[schedule.day]) days[schedule.day] = [];
+          days[schedule.day].push([schedule.timeBegin, schedule.timeEnd]);
+          
+  });
+  for(var day in days) {
+    days[day].sort((a,b) => a - b);
+    eltree.push({
+      tag: 'div',
+      class: 'classroom-info-schedule',
+      innerHTML: `${day} ${days[day].map(s => `${s[0].toString('HH:mm')} - ${s[1].toString('HH:mm')}`).join(', ')}`,
+    });
+  }
+  return eltree;
 }
 
 UI.prototype.createCombinationBoard = function(combination) {
