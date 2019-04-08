@@ -204,7 +204,6 @@ Lecture.prototype.update = function(classroomUpdated) {
     // to be considered on the combinations.)
     this.lectureSelect();
   }
-  this.updateClassroomsCheckbox();
   this.parent.update(classroomUpdated);
 }
 
