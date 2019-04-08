@@ -373,6 +373,8 @@ Classroom.prototype.addEventListeners = function() {
 
   this.htmlElement.addEventListener('click', e => { this.toggleClassroomOpen(); e.stopPropagation(); });
 
+  this.htmlElement.addEventListener('contextmenu', e => {ui.createClassroomContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault(); e.stopPropagation();});
+
   var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
   checkbox.addEventListener('click', e => {this.toggleClassroomSelection(null, true); e.stopPropagation();} );
 };
