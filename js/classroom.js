@@ -379,6 +379,8 @@ Classroom.prototype.addEventListeners = function() {
 
   this.htmlElement.addEventListener('click', e => { this.toggleClassroomOpen(); e.stopPropagation(); });
 
+  this.htmlElement.addEventListener('animationend', e => this.htmlElement.classList.remove('classroom-blink'));
+
   this.htmlElement.addEventListener('contextmenu', e => {ui.createClassroomContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault(); e.stopPropagation();});
 
   var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
