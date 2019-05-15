@@ -943,7 +943,7 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
       },
       {
         tag: 'button',
-        innerHTML: 'Remover',
+        innerHTML: 'Remover disciplina',
         class: 'context-menu-item',
         onclick: e => {lecture.delete(); 
                       this.hideContextMenu(); 
@@ -970,7 +970,7 @@ UI.prototype.createClassroomContextMenu = function(classroom, pos) {
       },
       {
         tag: 'button',
-        innerHTML: classroom.selected? 'Deselecionar' : 'Selecionar',
+        innerHTML: classroom.selected? 'Deselecionar turma' : 'Selecionar turma',
         class: 'context-menu-item',
         onclick: e => {
                       classroom.toggleClassroomSelection(null,true);
@@ -979,11 +979,20 @@ UI.prototype.createClassroomContextMenu = function(classroom, pos) {
       },
       {
         tag: 'button',
-        innerHTML: 'Selecionar apenas esta',
-        class: 'context-menu-item',
+        innerHTML: 'Selecionar apenas esta turma',
+        class: 'context-menu-item context-divider',
         onclick: e => {
                       classroom.parent.classrooms.forEach(c => c.toggleClassroomSelection(c == classroom, false));
                       classroom.parent.update();
+                      this.hideContextMenu(); 
+                      e.preventDefault();}
+      },
+      {
+        tag: 'button',
+        innerHTML: 'Remover disciplina',
+        class: 'context-menu-item',
+        onclick: e => {
+                      classroom.parent.delete(); 
                       this.hideContextMenu(); 
                       e.preventDefault();}
       }
