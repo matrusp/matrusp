@@ -360,6 +360,12 @@ Classroom.prototype.conflictsWith = function(classroom) {
                                       classroomSchedule.conflictsWith(schedule)));
 }
 
+Classroom.prototype.blink = function() {
+  this.htmlElement.classList.remove('classroom-blink');
+  this.htmlElement.offsetHeight;
+  this.htmlElement.classList.add('classroom-blink');
+}
+
 /**
  * This function adds event listeners to 'mouseenter', 'mouseleave' and 'click'
  *

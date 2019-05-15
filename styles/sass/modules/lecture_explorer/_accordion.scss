@@ -312,6 +312,7 @@
         }
       }
     }
+
     .classroom-highlight {
       background-color: $color;
     }
@@ -319,6 +320,16 @@
       background-color: #f00;
       color: black;
       opacity: 0.8;
+    }
+    
+    @keyframes classroom-blink-#{$i} {
+      0% {background-color: $color; }
+      25% {background-color: $color;}
+      100% {background-color: lighten($color, 20%); }
+    }
+
+    .classroom-info.classroom-blink {
+      animation: classroom-blink-#{$i} 1s ease-out;
     }
   }
 }
