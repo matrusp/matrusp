@@ -325,7 +325,7 @@
     @keyframes classroom-blink-#{$i} {
       0% {background-color: $color; }
       25% {background-color: $color;}
-      100% {background-color: lighten($color, 20%); }
+      100% {background-color: initial; }
     }
 
     .classroom-info.classroom-blink {
