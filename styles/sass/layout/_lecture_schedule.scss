@@ -61,22 +61,33 @@
       visibility: hidden;
     }
 
-    button {
+    #fit-time-table-button {
       color: #888;
       padding: 0;
+      padding-right: 4px;
       min-width: 0;
-
-      &:hover {
-        background: transparent;
-        color: $color-accent;
-      }
 
       &:active {
         color: $color-accent-dark;
       }
 
       &.toggled {
+        color: $color-accent-dark;
+      }
+
+      &:hover {
+        background: transparent;
         color: $color-accent;
+      }
+
+      #fit-time-table-button-arrow {
+        margin: -3px;
+        text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+        transform: translateX(1px);
+      }
+
+      #fit-time-table-button-clock {
+        transform: scaleX(-1);
       }
     }
   }

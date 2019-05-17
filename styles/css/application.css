@@ -331,23 +331,34 @@ footer .fb-page {
   visibility: hidden;
 }
 
-.column.time .column-header button {
+.column.time .column-header #fit-time-table-button {
   color: #888;
   padding: 0;
+  padding-right: 4px;
   min-width: 0;
 }
 
-.column.time .column-header button:hover {
+.column.time .column-header #fit-time-table-button:active {
+  color: #006974;
+}
+
+.column.time .column-header #fit-time-table-button.toggled {
+  color: #006974;
+}
+
+.column.time .column-header #fit-time-table-button:hover {
   background: transparent;
   color: #0097A7;
 }
 
-.column.time .column-header button:active {
-  color: #006974;
+.column.time .column-header #fit-time-table-button #fit-time-table-button-arrow {
+  margin: -3px;
+  text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+  transform: translateX(1px);
 }
 
-.column.time .column-header button.toggled {
-  color: #0097A7;
+.column.time .column-header #fit-time-table-button #fit-time-table-button-clock {
+  transform: scaleX(-1);
 }
 
 .column.time .column-content {
