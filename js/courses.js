@@ -15,9 +15,6 @@ function CourseBox() {
   this.acceptButton = document.getElementById('course-accept-button');
   this.optativeCheck = document.getElementById('course-optative-check');
 
-  //Populate the course box
-  this.populateCampusSelect().then(() => this.campusChanged()); 
-
   this.optativeCheck.addEventListener('change', e => {
     [...this.dialog.getElementsByClassName('course-lecture-optative')].forEach(opt => {
       if(this.optativeCheck.checked)
@@ -80,6 +77,13 @@ function CourseBox() {
     });
     ui.closeDialog();
   });
+}
+
+CourseBox.prototype.open = function() {
+  if(!this.campusSelect.value)
+    //Populate the course box
+    this.populateCampusSelect().then(() => this.campusChanged()); 
+    ui.openCourseDialog();
 }
 
 /**
