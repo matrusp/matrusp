@@ -90,11 +90,21 @@ function UI() {
     e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
 
     if(e.detail.originalIndex != e.detail.spliceIndex) {
-      var lecture = state.activePlan.lectures[e.detail.originalIndex];
-      state.activePlan.lectures.splice(e.detail.originalIndex, 1);
+      var lecture = state.activePlan.lectures.splice(e.detail.originalIndex, 1)[0];
       state.activePlan.lectures.splice(e.detail.spliceIndex, 0, lecture);
       state.activePlan.update();
     }
+
+    var plan = state.activePlan;
+
+    state.undoStackPush(() => {
+      state.activePlan = plan;
+      plan.showPlan();
+
+      var lecture = plan.lectures.splice(e.detail.spliceIndex, 1)[0];
+      plan.lectures.splice(e.detail.originalIndex, 0, lecture);
+      plan.update();
+    });
   });
 
   this.accordion.addEventListener('slip:swipe', e => {

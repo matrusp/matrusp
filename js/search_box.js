@@ -236,11 +236,13 @@ SearchBox.prototype.addToPlan = function(lecture) {
       turma.horario.some(horario => parseInt(horario.inicio.substring(0,2)) > 17) && this.options.timeframes.indexOf('noturno') > -1
     );
 
-  lecture = state.activePlan.addLecture(lecture);
+  state.activePlan.addLecture(lecture);
+  
+  var plan = state.activePlan;
   state.undoStackPush(() => {
-    state.activePlan = lecture.parent;
-    lecture.parent.showPlan();
-    lecture.parent.removeLecture(lecture);
+    state.activePlan = plan;
+    plan.showPlan();
+    plan.removeLecture(plan.lectures[plan.lectures.length-1], true);
   });
   this.searchBox.value = '';
 }
