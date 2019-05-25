@@ -24,9 +24,16 @@ function Combination(classroomGroups, plan) {
     this.lectureCredits += classroomGroup[0].parent.lectureCredits;
     this.workCredits += classroomGroup[0].parent.workCredits;
   });
+}
 
-  this.htmlElement = ui.createCombinationBoard(this);
-  this.addEventListeners();
+Combination.prototype = {
+  get htmlElement() {
+    if(!this._htmlElement) {
+      this._htmlElement = ui.createCombinationBoard(this);
+      this.addEventListeners();
+    }
+    return this._htmlElement;
+  }
 }
 
 /**
