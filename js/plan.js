@@ -229,8 +229,11 @@ Plan.prototype.addLecture = function(lecture) {
 }
 
 Plan.prototype.removeLecture = function(lecture) {
-  var lectureData = lecture.serialize();
   var lectureIndex = this.lectures.indexOf(lecture);
+  if(lectureIndex == -1)
+    return;
+  
+  var lectureData = lecture.serialize();
   state.undoStackPush(async () => {
     state.activePlan = this;
     this.showPlan();
