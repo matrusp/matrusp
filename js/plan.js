@@ -82,23 +82,7 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
 
   if (basePlan) {
     this.name = basePlan.name || "Plano " + (state.plans.length + 1);
-    var lecturePromises = basePlan.lectures.map(async baseLecture => {
-      var lectureInfo = await matruspDB.lectures.get(baseLecture.code);
-      if (!lectureInfo) lectureInfo = await fetch(`db/${baseLecture.code}.json`).then(response => response.ok ? response.json() : null);
-      if (!lectureInfo) return;
-      
-      lectureInfo.color = baseLecture.color !== undefined ? baseLecture.color : this.colors.indexOf(Math.min(... this.colors));
-      this.colors[lectureInfo.color]++;
-
-      lectureInfo.selected = baseLecture.selected;
-
-      var lecture = new Lecture(lectureInfo, this);
-
-      lecture.classrooms.forEach(classroom => {
-          classroom.toggleClassroomSelection(!(baseLecture.classrooms && baseLecture.classrooms.indexOf(classroom.code) == -1), false);
-      });
-      return lecture;
-    });
+    var lecturePromises = basePlan.lectures.map(baseLecture => Lecture.load(baseLecture, this));
     Promise.all(lecturePromises).then(lectures => {
       lectures = lectures.filter(el => el);
       this.lectures = lectures;
@@ -240,13 +224,25 @@ Plan.prototype.addLecture = function(lecture) {
   
   if(this == state.activePlan)
       ui.addLectures([lecture]);
+
+  return lecture;
 }
 
 Plan.prototype.removeLecture = function(lecture) {
-  lecture.delete();
-  this.lectures.splice(this.lectures.indexOf(lecture),1);
-  this.colors[lecture.color]--;
+  var lectureData = lecture.serialize();
+  var lectureIndex = this.lectures.indexOf(lecture);
+  state.undoStackPush(async () => {
+    state.activePlan = this;
+    this.showPlan();
+    this.lectures.splice(lectureIndex, 0, await Lecture.load(lectureData, this));
+    this.update();
+  });
 
+  ui.showBanner(`Disciplina '${lecture.name}' removida. <a onclick="state.undo()">Desfazer</a>`, 1500);
+
+  lecture.delete();
+  this.lectures.splice(lectureIndex,1);
+  this.colors[lecture.color]--;
   this.update();
 }
 
@@ -310,20 +306,7 @@ Plan.prototype.serialize = function() {
   planData.activeCombinationIndex = this.activeCombinationIndex;
   planData.name = this.name;
   planData.colors = this.colors;
-  planData.lectures = this.lectures.map(lecture => {
-    var lectureData = {};
-    lectureData.code = lecture.code;
-    lectureData.color = lecture.color;
-    lectureData.selected = lecture.selected;
-    lectureData.classrooms = [];
-
-    lecture.classrooms.forEach(classroom => {
-      if (classroom.selected)
-        lectureData.classrooms.push(classroom.code);
-    });
-
-    return lectureData;
-  });
+  planData.lectures = this.lectures.map(lecture => lecture.serialize());
 
   //Sometimes combinations length will explode to insane amounts
   //Keep this in check so we don't exceed the quota for localStorage

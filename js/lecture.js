@@ -74,6 +74,26 @@ function Lecture(jsonObj, parentPlan) {
   }
 }
 
+Lecture.load = async function(baseLecture,parentPlan) {
+  var lectureInfo = await matruspDB.lectures.get(baseLecture.code);
+  if (!lectureInfo) lectureInfo = await fetch(`db/${baseLecture.code}.json`).then(response => response.ok ? response.json() : null);
+  if (!lectureInfo) return;
+
+  lectureInfo.color = baseLecture.color !== undefined ? baseLecture.color : this.colors.indexOf(Math.min(... this.colors));
+  if(parentPlan) {
+    parentPlan.colors[lectureInfo.color]++;
+  }
+
+  lectureInfo.selected = baseLecture.selected;
+
+  var lecture = new Lecture(lectureInfo, parentPlan);
+
+  lecture.classrooms.forEach(classroom => {
+      classroom.toggleClassroomSelection(!(baseLecture.classrooms && baseLecture.classrooms.indexOf(classroom.code) == -1), false);
+  });
+  return lecture;
+}
+
 Lecture.prototype = {
   get available() {
     return this._available;
@@ -331,6 +351,20 @@ Lecture.prototype.open = function() {
 
 Lecture.prototype.close = function() {
   this.htmlElement.classList.remove('lecture-open');
+}
+
+Lecture.prototype.serialize = function() {
+    var lectureData = {};
+    lectureData.code = this.code;
+    lectureData.color = this.color;
+    lectureData.selected = this.selected;
+    lectureData.classrooms = [];
+
+    this.classrooms.forEach(classroom => {
+      if (classroom.selected)
+        lectureData.classrooms.push(classroom.code);
+    });
+    return lectureData;
 }
 
 

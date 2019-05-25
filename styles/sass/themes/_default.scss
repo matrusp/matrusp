@@ -108,6 +108,11 @@ button {
             color: $color-accent;
             background: transparent;
         }
+
+        &:disabled {
+            color: white;
+            opacity: .6;
+        }
     }
 
     &.fas, &.fab, &.far {
@@ -124,6 +129,11 @@ button {
 
         &:active {
             color: $color-accent-dark;
+        }
+
+        &:disabled {
+            color: white;
+            opacity: .6;
         }
     }
 
@@ -144,6 +154,7 @@ button {
 
 a {
     color: $textgray;
+    text-decoration: underline;
 
     &:hover {
         color: $color-accent;
