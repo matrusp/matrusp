@@ -239,9 +239,7 @@ SearchBox.prototype.addToPlan = function(lecture) {
   state.activePlan.addLecture(lecture);
   
   var plan = state.activePlan;
-  state.undoStackPush(() => {
-    state.activePlan = plan;
-    plan.showPlan();
+  plan.undoStackPush(() => {
     plan.removeLecture(plan.lectures[plan.lectures.length-1], true);
   });
   this.searchBox.value = '';

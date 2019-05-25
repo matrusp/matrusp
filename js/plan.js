@@ -19,6 +19,8 @@ function Plan(jsonObj, loadAsActive) {
   this.lectures = new Array();
   this.combinations = new Array();
 
+  this.undoStack = [];
+
   this.colors = Array(ui.colors.length).fill(0);
 
   this.load(jsonObj, loadAsActive);
@@ -108,6 +110,7 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
 
 Plan.prototype.delete = function() {
   this.hidePlan();
+  this.undoStack = [];
 
   this.html.tab.parentNode.removeChild(this.html.tab);
 }
@@ -235,9 +238,7 @@ Plan.prototype.removeLecture = function(lecture, preventUndoPush) {
 
   if(!preventUndoPush) {
     var lectureData = lecture.serialize();
-    state.undoStackPush(async () => {
-      state.activePlan = this;
-      this.showPlan();
+    this.undoStackPush(async () => {
       this.lectures.splice(lectureIndex, 0, await Lecture.load(lectureData, this));
       this.update();
     });
@@ -288,6 +289,8 @@ Plan.prototype.showPlan = function() {
   if(this.activeCombination)
     ui.setCredits(this.activeCombination.lectureCredits, this.activeCombination.workCredits);
   else ui.setCredits(0,0);
+
+  ui.undoButton.disabled = !this.undoStack.length;
 }
 
 Plan.prototype.hidePlan = function() {
@@ -321,6 +324,21 @@ Plan.prototype.serialize = function() {
     );
 
   return planData;
+}
+
+Plan.prototype.undoStackPush = function(action) {
+  this.undoStack.push(action);
+  ui.undoButton.disabled = false;
+}
+
+Plan.prototype.undo = function() {
+  if(!this.undoStack.length)
+    return;
+
+  this.undoStack.pop()();
+
+  if(!this.undoStack.length)
+    ui.undoButton.disabled = true;
 }
 
 /**

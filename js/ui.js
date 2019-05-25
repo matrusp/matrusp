@@ -26,6 +26,7 @@ function UI() {
   this.shareDialog = document.getElementById('share-dialog');
   this.printDialog = document.getElementById('print-dialog');
   this.fitButton = document.getElementById('fit-time-table-button');
+  this.undoButton = document.getElementById('undo');
 
   // This comes from the SASS theme file
   //TODO: find better way to sync this
@@ -97,10 +98,7 @@ function UI() {
 
     var plan = state.activePlan;
 
-    state.undoStackPush(() => {
-      state.activePlan = plan;
-      plan.showPlan();
-
+    plan.undoStackPush(() => {
       var lecture = plan.lectures.splice(e.detail.spliceIndex, 1)[0];
       plan.lectures.splice(e.detail.originalIndex, 0, lecture);
       plan.update();
@@ -144,7 +142,7 @@ function UI() {
 
     document.addEventListener('keyup', e => {
       if(e.keyCode == 90 && e.ctrlKey)
-        state.undo();
+        state.activePlan.undo();
     });
 }
 
