@@ -79,7 +79,7 @@ Lecture.load = async function(baseLecture,parentPlan) {
   if (!lectureInfo) lectureInfo = await fetch(`db/${baseLecture.code}.json`).then(response => response.ok ? response.json() : null);
   if (!lectureInfo) return;
 
-  lectureInfo.color = baseLecture.color !== undefined ? baseLecture.color : this.colors.indexOf(Math.min(... this.colors));
+  lectureInfo.color = baseLecture.color !== undefined ? baseLecture.color : parentPlan.colors.indexOf(Math.min(... parentPlan.colors));
   if(parentPlan) {
     parentPlan.colors[lectureInfo.color]++;
   }
