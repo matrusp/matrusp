@@ -164,20 +164,6 @@ Plan.prototype.closestCombination = function(oldActiveCombination) {
 }
 
 /**
- *
- */
-Plan.prototype.nextCombination = function() {
-  this.activeCombinationIndex = (this.activeCombinationIndex + 1) % this.combinations.length;
-};
-
-/**
- *
- */
-Plan.prototype.previousCombination = function() {
-  this.activeCombinationIndex = ((this.activeCombinationIndex - 1) + this.combinations.length) % this.combinations.length;
-};
-
-/**
  * Adds a lecture to this plan.
  *
  * @param {Lecture} lecture
@@ -215,7 +201,7 @@ Plan.prototype.addLecture = function(lecture) {
 
     this.combinations = lectureCombinations.map(combination => new Combination(combination, this));
     if(this == state.activePlan) {
-      ui.addCombinations(this.combinations);
+      ui.showCombinations(this.combinations);
     }
 
     this.activeCombination = this.closestCombination(this.activeCombination) || this.combinations[0];
@@ -285,7 +271,10 @@ Plan.prototype.showPlan = function() {
   this.html.tab.classList.add('plan-active');
 
   ui.addLectures(this.lectures);
-  ui.addCombinations(this.combinations);
+  ui.showCombinations(this.combinations);
+
+  ui.scrollActiveCombinationToView();
+  
   if(this.activeCombination)
     ui.setCredits(this.activeCombination.lectureCredits, this.activeCombination.workCredits);
   else ui.setCredits(0,0);
@@ -299,7 +288,7 @@ Plan.prototype.hidePlan = function() {
   this.html.tab.classList.remove('plan-active');
   
   ui.removeLectures(this.lectures);
-  ui.removeCombinations(this.combinations);
+  ui.clearCombinations();
 }
 
 

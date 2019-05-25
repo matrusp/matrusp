@@ -44,6 +44,8 @@ function UI() {
                   tinycolor("hsl(263, 78%, 65%)"),
                   tinycolor("hsl(33, 27%, 58%)")];
 
+  this.combinationTrackPageSize = 10;
+
   this.weekdays = [];    
   var lectureScheduleColumns = this.timeTable.getElementsByClassName('column-content');
   // Ignores i == 0 because it's the time column
@@ -120,6 +122,17 @@ function UI() {
 
   this.combinationPaddleLeft.addEventListener('click', e => {this.combinationTrack.scrollLeft -= 240});
   this.combinationPaddleRight.addEventListener('click', e => {this.combinationTrack.scrollLeft += 240});
+
+  this.combinationTrack.addEventListener('scroll', e => {
+    if(this.combinationTrack.scrollLeft > 300 * this.combinationTrackPageSize) {
+      this.nextCombinationPage();
+      console.log(this.combinationTrack.scrollLeft);
+    }
+
+    if(this.combinationTrack.scrollLeft < 100 * this.combinationTrackPageSize) {
+      this.previousCombinationPage();
+    }
+  })
 
 
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
@@ -465,22 +478,89 @@ UI.prototype.createCombinationBoard = function(combination) {
   return combinationBoard;
 }
 
-UI.prototype.addCombinations = function(combinations) {
-  var fragment = document.createDocumentFragment();
-  combinations.forEach(combination => fragment.appendChild(combination.htmlElement));
-  this.combinationTrack.appendChild(fragment);
+UI.prototype.showCombinations = function(combinations) {
+  this.combinations = combinations;
+
+  this.combinationTrackStart = undefined;
+  this.combinationTrackEnd = undefined;
+
+  this.setCombinationPage(0);
 }
 
-UI.prototype.removeCombinations = function(combinations) {
-  combinations.forEach(combination => combination.htmlElement.remove());
+UI.prototype.nextCombinationPage = function() {
+  if(this.combinationTrackEnd == this.combinations.length)
+    return;
+  
+  var pageSize = Math.min(this.combinations.length - this.combinationTrackEnd, this.combinationTrackPageSize);
+
+  var fragment = document.createDocumentFragment();
+  for(i = 0; i < pageSize; i++) {
+    fragment.appendChild(this.combinations[this.combinationTrackEnd + i].htmlElement);
+    this.combinationTrack.removeChild(this.combinations[this.combinationTrackStart + i].htmlElement);
+  }
+  this.combinationTrack.appendChild(fragment);
+
+  this.combinationTrackStart += pageSize;
+  this.combinationTrackEnd += pageSize;
+
+  this.combinationTrack.scrollLeft -= 100 * pageSize;
+}
+
+UI.prototype.setCombinationPage = function(pageIndex) {
+  if(pageIndex < 0 || pageIndex > this.combinations.length / this.combinationTrackPageSize || pageIndex == this.combinationTrackStart/this.combinationTrackPageSize)
+    return;
+
+  pageIndex = Math.floor(pageIndex);
+
+  this.combinationTrackStart = pageIndex * this.combinationTrackPageSize;
+  this.combinationTrackEnd = Math.min(this.combinationTrackStart + 4 * this.combinationTrackPageSize, this.combinations.length);
+
+  this.combinationTrack.innerHTML = "";
+
+  var fragment = document.createDocumentFragment();
+  for(i = this.combinationTrackStart; i < this.combinationTrackEnd; i++) {
+    fragment.appendChild(this.combinations[i].htmlElement);
+  }
+  this.combinationTrack.appendChild(fragment);
+
+  this.combinationTrack.scrollLeft = 0;
+}
+
+UI.prototype.previousCombinationPage = function() {
+  if(this.combinationTrackStart == 0)
+    return;
+
+  var pageSize = Math.min(this.combinationTrackStart, this.combinationTrackPageSize);
+
+  var fragment = document.createDocumentFragment();
+  for(i = 0; i < pageSize; i++) {
+    fragment.appendChild(this.combinations[this.combinationTrackStart - pageSize + i].htmlElement);
+    this.combinationTrack.removeChild(this.combinations[this.combinationTrackEnd - 1 - i].htmlElement);
+  }
+  this.combinationTrack.insertBefore(fragment, this.combinations[this.combinationTrackStart].htmlElement);
+
+  this.combinationTrackStart -= pageSize;
+  this.combinationTrackEnd -= pageSize;
+
+  this.combinationTrack.scrollLeft += 100 * pageSize;
+}
+
+UI.prototype.clearCombinations = function() {
+  this.combinationTrack.innerHTML = "";
 }
 
 UI.prototype.scrollActiveCombinationToView = function() {
   if (!state.activePlan || !state.activePlan.activeCombination) return;
+  
   this.scrollCombinationToView(state.activePlan.activeCombination);
 }
 
 UI.prototype.scrollCombinationToView = function(combination) {
+  var i = combination.parent.combinations.indexOf(combination);
+
+  if(i > this.combinationTrackEnd || i < this.combinationTrackStart)
+    this.setCombinationPage(i/this.combinationTrackPageSize);
+
   var offsetLeft = combination.htmlElement.offsetLeft;
 
   if(this.combinationTrack.scrollLeft > offsetLeft) {
@@ -494,8 +574,6 @@ UI.prototype.scrollCombinationToView = function(combination) {
     this.combinationTrack.scrollLeft = offsetLeft + boardWidth - railWidth;
     return;
   }
-
-  this.refreshPlanPaddles();
 }
 
 /**
