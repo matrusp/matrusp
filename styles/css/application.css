@@ -80,6 +80,11 @@ button.header-button:hover {
   background: transparent;
 }
 
+button.header-button:disabled {
+  color: white;
+  opacity: .6;
+}
+
 button.fas, button.fab, button.far {
   font-size: 18px;
   color: white;
@@ -95,6 +100,11 @@ button.fas:hover, button.fab:hover, button.far:hover {
 
 button.fas:active, button.fab:active, button.far:active {
   color: #006974;
+}
+
+button.fas:disabled, button.fab:disabled, button.far:disabled {
+  color: white;
+  opacity: .6;
 }
 
 button.small-button, button.close-button {
@@ -113,6 +123,7 @@ button.inline-button {
 
 a {
   color: #757575;
+  text-decoration: underline;
 }
 
 a:hover {
@@ -613,6 +624,11 @@ footer .fb-page {
 
 #icons > li.icon:first-child {
   margin-left: 0;
+}
+
+#icons .header-button-separator {
+  display: inline-block;
+  width: 20px;
 }
 
 #save-controller {

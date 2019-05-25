@@ -131,6 +131,11 @@ function UI() {
 
     this.fitButton.classList.toggle('toggled', this.settings.fitTimeTable);
     this.timeTable.classList.toggle('fit', this.settings.fitTimeTable);
+
+    document.addEventListener('keyup', e => {
+      if(e.keyCode == 90 && e.ctrlKey)
+        state.undo();
+    });
 }
 
 UI.prototype.saveOnLocalStorage = function() {
