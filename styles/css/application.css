@@ -2061,8 +2061,7 @@ footer .fb-page {
   position: absolute;
   width: 100%;
   box-sizing: border-box;
-  visibility: hidden;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
@@ -2084,7 +2083,7 @@ footer .fb-page {
 }
 
 .schedule-box.schedule-box-show {
-  visibility: visible;
+  display: flex;
 }
 
 .schedule-box.schedule-box-show:before {
