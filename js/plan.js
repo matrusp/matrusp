@@ -228,20 +228,22 @@ Plan.prototype.addLecture = function(lecture) {
   return lecture;
 }
 
-Plan.prototype.removeLecture = function(lecture) {
+Plan.prototype.removeLecture = function(lecture, preventUndoPush) {
   var lectureIndex = this.lectures.indexOf(lecture);
   if(lectureIndex == -1)
     return;
-  
-  var lectureData = lecture.serialize();
-  state.undoStackPush(async () => {
-    state.activePlan = this;
-    this.showPlan();
-    this.lectures.splice(lectureIndex, 0, await Lecture.load(lectureData, this));
-    this.update();
-  });
 
-  ui.showBanner(`Disciplina '${lecture.name}' removida. <a onclick="state.undo()">Desfazer</a>`, 1500);
+  if(!preventUndoPush) {
+    var lectureData = lecture.serialize();
+    state.undoStackPush(async () => {
+      state.activePlan = this;
+      this.showPlan();
+      this.lectures.splice(lectureIndex, 0, await Lecture.load(lectureData, this));
+      this.update();
+    });
+
+    ui.showBanner(`Disciplina '${lecture.name}' removida. <a onclick="state.undo()">Desfazer</a>`, 1500);
+  }
 
   lecture.delete();
   this.lectures.splice(lectureIndex,1);
