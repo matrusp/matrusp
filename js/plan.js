@@ -265,6 +265,10 @@ Plan.prototype.computeCombinations = function() {
     }
   });
   this.combinations = combinations.map(combination => new Combination(combination, this));
+
+  if(combinations.length > 200) {
+    ui.showBanner(`Mais de ${(combinations.length % 100) * 100} combinações encontradas. Tente remover algumas turmas para facilitar sua escolha`, 5000);
+  }
 }
 
 Plan.prototype.showPlan = function() {
