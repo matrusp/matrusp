@@ -16,12 +16,10 @@
 function State() {
   this.plans = [];
   this.removedPlans = [];
-  this.undoStack = [];
 
   this.html = {
     upload: document.getElementById('upload-input'),
-    download: document.getElementById('download'),
-    undo: document.getElementById('undo')
+    download: document.getElementById('download')
   }
   this.addEventListeners();
 
@@ -299,19 +297,4 @@ State.prototype.removePlan = function(plan) {
 
 State.prototype.copyPlan = function(plan) {
   return this.addPlan(plan.serialize());
-}
-
-State.prototype.undoStackPush = function(action) {
-  this.undoStack.push(action);
-  this.html.undo.disabled = false;
-}
-
-State.prototype.undo = function() {
-  if(!this.undoStack.length)
-    return;
-
-  this.undoStack.pop()();
-
-  if(!this.undoStack.length)
-    this.html.undo.disabled = true;
 }
