@@ -33,8 +33,6 @@ function Lecture(jsonObj, parentPlan) {
     this.selected = jsonObj.selected;
     this.htmlElement = ui.createLectureInfo(this);
     this.htmlLectureCheckbox = this.htmlElement.getElementsByClassName('lecture-info-checkbox')[0];
-    this.htmlLectureArrowUp = this.htmlElement.getElementsByClassName('lecture-info-up')[0];
-    this.htmlLectureArrowDown = this.htmlElement.getElementsByClassName('lecture-info-down')[0];
     
     var linkedT = [];
     var linkedP = [];
