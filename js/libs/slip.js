@@ -758,6 +758,7 @@ window['Slip'] = (function(){
                 origScrollTop: scrollContainer.scrollTop,
                 origScrollHeight: scrollContainer.scrollHeight,
                 baseTransform: getTransform(targetNode),
+                basePos: targetNode.offsetTop,
             };
             return true;
         },
@@ -896,6 +897,8 @@ window['Slip'] = (function(){
             // save, because this.target/container could change during animation
             target = target || this.target;
 
+            target.node.style[transformJSPropertyName] = target.node.style[transformJSPropertyName] + ` translateY(${target.basePos - target.node.offsetTop}px)`;
+            target.node.clientHeight; //trigger reflow
             target.node.style[transitionJSPropertyName] = transformCSSPropertyName + ' 0.1s ease-out';
             target.node.style[transformJSPropertyName] = 'translate(0,0) ' + hwLayerMagicStyle + target.baseTransform.value;
             setTimeout(function(){
