@@ -81,6 +81,7 @@ Plan.prototype = {
 Plan.prototype.load = function(basePlan, loadAsActive) {
   this.lectures = [];
   this.combinations = [];
+  this.initiated = false;
 
   if (basePlan) {
     this.name = basePlan.name || "Plano " + (state.plans.length + 1);
@@ -89,11 +90,8 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
       lectures = lectures.filter(el => el);
       this.lectures = lectures;
 
-      this.update();
-      
       this.activeCombinationIndex = basePlan.activeCombinationIndex;
       if(loadAsActive) state.activePlan = this;
-      else if(state.activePlan == this) this.showPlan();
     });
   }
   else {
@@ -128,7 +126,12 @@ Plan.prototype.update = function() {
 
   this.computeCombinations();
   this.activeCombination = this.closestCombination(oldActiveCombination) || this.combinations[0];
-  if(state.activePlan == this) this.showPlan();
+  if(state.activePlan == this) {
+    ui.showCombinations(this.combinations);
+    ui.refreshAccordion();
+  }
+
+  this.initiated = true;
 };
 
 /**
@@ -266,6 +269,10 @@ Plan.prototype.computeCombinations = function() {
 
 Plan.prototype.showPlan = function() {
   this.html.tab.classList.add('plan-active');
+
+  if(!this.initiated) {
+    this.update();
+  }
 
   ui.addLectures(this.lectures);
   ui.showCombinations(this.combinations);
