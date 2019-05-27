@@ -84,6 +84,9 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
   this.lectures = [];
   this.combinations = [];
   this.initiated = false;
+  this.loaded = false;
+
+  this.basePlan = basePlan;
 
   if (basePlan) {
     this.name = basePlan.name || "Plano " + (state.plans.length + 1);
@@ -91,6 +94,9 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
     Promise.all(lecturePromises).then(lectures => {
       lectures = lectures.filter(el => el);
       this.lectures = lectures;
+
+      this.loaded = true;
+      delete this.basePlan;
 
       this.activeCombinationIndex = basePlan.activeCombinationIndex;
       if(this == state.activePlan) {
@@ -328,6 +334,10 @@ Plan.prototype.tabNameChanged = function(e) {
 }
 
 Plan.prototype.serialize = function() {
+  if(!this.loaded) {
+    return this.basePlan;
+  }
+  
   var planData = {};
   planData.activeCombinationIndex = this.activeCombinationIndex;
   planData.name = this.name;
