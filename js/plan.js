@@ -30,6 +30,8 @@ function Plan(jsonObj, loadAsActive) {
   this.html.closeButton = this.html.tab.getElementsByClassName('plan-tab-close')[0];
   this.html.tabName = this.html.tab.getElementsByClassName('plan-tab-name')[0];
 
+  if(loadAsActive) state.activePlan = this;
+
   this.addEventListeners();
 }
 
@@ -91,7 +93,10 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
       this.lectures = lectures;
 
       this.activeCombinationIndex = basePlan.activeCombinationIndex;
-      if(loadAsActive) state.activePlan = this;
+      if(this == state.activePlan) {
+        ui.addLectures(lectures);
+        this.update();
+      }
     });
   }
   else {
@@ -224,6 +229,7 @@ Plan.prototype.removeLecture = function(lecture, preventUndoPush) {
     var lectureData = lecture.serialize();
     this.undoStackPush(async () => {
       this.lectures.splice(lectureIndex, 0, await Lecture.load(lectureData, this));
+      ui.addLectures([this.lectures[lectureIndex]]);
       this.update();
     });
 
@@ -236,9 +242,82 @@ Plan.prototype.removeLecture = function(lecture, preventUndoPush) {
   this.update();
 }
 
-Plan.prototype.computeCombinations = function() {
-  var combinations = [];
-  this.lectures.forEach(lecture => {
+Plan.prototype.moveLecture = function(sourceIndex, targetIndex) {
+  if(sourceIndex == targetIndex)
+    return;
+
+  var lecture = this.lectures[sourceIndex];
+
+  if(lecture.available && lecture.selected) {
+    var firstUnavailableIndex = this.lectures.findIndex(l => !l.available);
+
+    if(targetIndex < sourceIndex || firstUnavailableIndex == -1 || firstUnavailableIndex > targetIndex) {
+      var sourceIndexComb = this.activeCombination.classroomGroups.findIndex(cg => cg[0].parent == lecture);
+      var targetIndexComb = this.activeCombination.classroomGroups.findIndex(cg => cg[0].parent == this.lectures[targetIndex]);
+
+      var activeCombIndex = this.activeCombinationIndex;
+
+      var newCombinations = this.combinations.map(comb => comb.classroomGroups);
+      newCombinations.forEach(comb => { var cg = comb.splice(sourceIndexComb,1)[0]; comb.splice(targetIndexComb, 0, cg);});
+
+      var lecture = this.lectures.splice(sourceIndex, 1)[0];
+      this.lectures.splice(targetIndex, 0, lecture);
+
+      this.combinations = newCombinations.map(comb => new Combination(comb, this));
+      ui.showCombinations(this.combinations);
+      this.activeCombinationIndex = activeCombIndex;
+    }
+    else {
+      var combinations = this.combinations.map(comb => comb.classroomGroups.slice(0, firstUnavailableIndex));
+
+      var lecture = this.lectures.splice(sourceIndex, 1)[0];
+      this.lectures.splice(targetIndex, 0, lecture);
+
+      this.lectures.slice(firstUnavailableIndex-1).forEach(lecture => {combinations = getLectureCombinations(lecture, combinations) || combinations});
+
+      var activeCombIndex = this.activeCombinationIndex;
+      this.combinations = combinations.map(combination => new Combination(combination, this));
+      ui.showCombinations(this.combinations);
+      this.activeCombinationIndex = activeCombIndex;
+    }
+  } 
+
+  else if(targetIndex < sourceIndex) {
+    lecture.selected = true;
+
+    var targetIndexComb = this.activeCombination.classroomGroups.findIndex(cg => cg[0].parent == this.lectures[targetIndex]);
+
+    var combinations = this.combinations.map(comb => comb.classroomGroups.slice(0, targetIndexComb));
+    var lectureCombinations = getLectureCombinations(lecture, combinations);
+
+    var lecture = this.lectures.splice(sourceIndex, 1)[0];
+    this.lectures.splice(targetIndex, 0, lecture);
+      
+    if(lectureCombinations) {
+      combinations = lectureCombinations;
+      this.lectures.slice(targetIndex + 1).forEach(lecture => {combinations = getLectureCombinations(lecture, combinations) || combinations});
+      
+      var activeCombIndex = this.activeCombinationIndex;
+      this.combinations = combinations.map(combination => new Combination(combination, this));
+      ui.showCombinations(this.combinations);
+      this.activeCombinationIndex = activeCombIndex;
+    }
+  } 
+
+  else {
+    var lecture = this.lectures.splice(sourceIndex, 1)[0];
+    this.lectures.splice(targetIndex, 0, lecture);
+  }
+
+  state.saveOnLocalStorage();
+
+  //var lecture = this.lectures.splice(sourceIndex, 1)[0];
+  //this.lectures.splice(targetIndex, 0, lecture);
+
+  this.update();
+}
+
+function getLectureCombinations (lecture, combinations) {
     var lectureCombinations = [];
     if(!lecture.selected) return;
 
@@ -256,12 +335,17 @@ Plan.prototype.computeCombinations = function() {
       });
     });
     if(lectureCombinations.length) {
-      combinations = lectureCombinations;
       lecture.available = true;
+      return lectureCombinations;
     } else {
       lecture.available = false;
+      return;
     }
-  });
+}
+
+Plan.prototype.computeCombinations = function() {
+  var combinations = [];
+  this.lectures.forEach(lecture => {combinations = getLectureCombinations(lecture, combinations) || combinations});
   this.combinations = combinations.map(combination => new Combination(combination, this));
 
   if(combinations.length > 200) {

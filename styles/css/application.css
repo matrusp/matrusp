@@ -1137,6 +1137,10 @@ footer .fb-page {
   background-color: #81e98a;
 }
 
+#accordion .lecture-info.color-0.lecture-unavailable {
+  color: rgba(20, 113, 28, 0.4);
+}
+
 #accordion .lecture-info.color-0 .lecture-info-header .lecture-info-delete:hover {
   opacity: 1;
 }
@@ -1183,6 +1187,10 @@ footer .fb-page {
 
 #accordion .lecture-info.color-1:active {
   background-color: #70ccfb;
+}
+
+#accordion .lecture-info.color-1.lecture-unavailable {
+  color: rgba(4, 87, 129, 0.4);
 }
 
 #accordion .lecture-info.color-1 .lecture-info-header .lecture-info-delete:hover {
@@ -1233,6 +1241,10 @@ footer .fb-page {
   background-color: #ffa366;
 }
 
+#accordion .lecture-info.color-2.lecture-unavailable {
+  color: rgba(128, 51, 0, 0.4);
+}
+
 #accordion .lecture-info.color-2 .lecture-info-header .lecture-info-delete:hover {
   opacity: 1;
 }
@@ -1279,6 +1291,10 @@ footer .fb-page {
 
 #accordion .lecture-info.color-3:active {
   background-color: #e19ce3;
+}
+
+#accordion .lecture-info.color-3.lecture-unavailable {
+  color: rgba(116, 34, 119, 0.4);
 }
 
 #accordion .lecture-info.color-3 .lecture-info-header .lecture-info-delete:hover {
@@ -1329,6 +1345,10 @@ footer .fb-page {
   background-color: #eecf68;
 }
 
+#accordion .lecture-info.color-4.lecture-unavailable {
+  color: rgba(101, 80, 11, 0.4);
+}
+
 #accordion .lecture-info.color-4 .lecture-info-header .lecture-info-delete:hover {
   opacity: 1;
 }
@@ -1375,6 +1395,10 @@ footer .fb-page {
 
 #accordion .lecture-info.color-5:active {
   background-color: #cff075;
+}
+
+#accordion .lecture-info.color-5.lecture-unavailable {
+  color: rgba(88, 115, 13, 0.4);
 }
 
 #accordion .lecture-info.color-5 .lecture-info-header .lecture-info-delete:hover {
@@ -1425,6 +1449,10 @@ footer .fb-page {
   background-color: #6febe3;
 }
 
+#accordion .lecture-info.color-6.lecture-unavailable {
+  color: rgba(14, 103, 97, 0.4);
+}
+
 #accordion .lecture-info.color-6 .lecture-info-header .lecture-info-delete:hover {
   opacity: 1;
 }
@@ -1471,6 +1499,10 @@ footer .fb-page {
 
 #accordion .lecture-info.color-7:active {
   background-color: #dfd5a4;
+}
+
+#accordion .lecture-info.color-7.lecture-unavailable {
+  color: rgba(117, 104, 41, 0.4);
 }
 
 #accordion .lecture-info.color-7 .lecture-info-header .lecture-info-delete:hover {
@@ -1521,6 +1553,10 @@ footer .fb-page {
   background-color: #98aae1;
 }
 
+#accordion .lecture-info.color-8.lecture-unavailable {
+  color: rgba(33, 54, 115, 0.4);
+}
+
 #accordion .lecture-info.color-8 .lecture-info-header .lecture-info-delete:hover {
   opacity: 1;
 }
@@ -1567,6 +1603,10 @@ footer .fb-page {
 
 #accordion .lecture-info.color-9:active {
   background-color: #f36db0;
+}
+
+#accordion .lecture-info.color-9.lecture-unavailable {
+  color: rgba(113, 9, 61, 0.4);
 }
 
 #accordion .lecture-info.color-9 .lecture-info-header .lecture-info-delete:hover {
@@ -1617,6 +1657,10 @@ footer .fb-page {
   background-color: #8bd0a2;
 }
 
+#accordion .lecture-info.color-10.lecture-unavailable {
+  color: rgba(34, 83, 50, 0.4);
+}
+
 #accordion .lecture-info.color-10 .lecture-info-header .lecture-info-delete:hover {
   opacity: 1;
 }
@@ -1665,6 +1709,10 @@ footer .fb-page {
   background-color: #b48ef1;
 }
 
+#accordion .lecture-info.color-11.lecture-unavailable {
+  color: rgba(63, 17, 136, 0.4);
+}
+
 #accordion .lecture-info.color-11 .lecture-info-header .lecture-info-delete:hover {
   opacity: 1;
 }
@@ -1711,6 +1759,10 @@ footer .fb-page {
 
 #accordion .lecture-info.color-12:active {
   background-color: #c3b097;
+}
+
+#accordion .lecture-info.color-12.lecture-unavailable {
+  color: rgba(74, 60, 43, 0.4);
 }
 
 #accordion .lecture-info.color-12 .lecture-info-header .lecture-info-delete:hover {

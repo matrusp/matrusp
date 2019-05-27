@@ -1,5 +1,7 @@
 var CACHE_NAME = "Matrusp";
 
+self.recentFetches = [];
+
 //Lista de diretórios que obedecem o padrão Cache-Update-Refresh.
 //Endereços não presentes nessas listas serão buscados da rede sempre
 self.CURDirs = [
@@ -45,24 +47,29 @@ function cacheUpdateRefresh(request) {
 
     // Se o pedido for encontrado em cache, fazer um pedido para a rede e colocar em cache, mas retornar a resposta do cache
     //  antes que ele seja concluido. Enviar o ETag da resposta salva para evitar baixar conteúdo repetido.
-    fetch(request.url, {method: 'GET', headers: {'If-None-Match': response.headers.get("ETag").replace('-gzip','')}}).then(async newresponse => {
+    var promise = fetch(request.url, {method: 'GET', headers: {'If-None-Match': response.headers.get("ETag").replace('-gzip','')}}).then(async newresponse => {
       if(newresponse.ok) {
         cache = await self.caches.open(CACHE_NAME);
         cache.put(request,newresponse);
         sendRefreshMessage();
       }
     }).catch(e => {});
+    self.recentFetches.push(promise);
     return response;
   }));
 }
 
 function sendRefreshMessage() {
   //Esperar 1s para enviar a mensagem ao cliente, para evitar que seja enviada antes de a UI estar carregada
+  //Verificar se após 1s ainda existe algum fetch pendente, e esperar
   if(self.refreshTimeout) clearTimeout(self.refreshTimeout);
   self.refreshTimeout = setTimeout(() => self.clients.matchAll().then(clients => {
-    clients.forEach(client => {
-      client.postMessage('refresh');
+    Promise.all(self.recentFetches).then(() => {
+      clients.forEach(client => {
+        client.postMessage('refresh');
+      });
     });
+    self.recentFetches = [];
   }),1000);
 }
 

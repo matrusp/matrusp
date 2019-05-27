@@ -301,6 +301,10 @@
       background-color: lighten($color, 10%);
     }
 
+    &.lecture-unavailable {
+      color: rgba(darken($color, 35%), .4);
+    }
+
     .lecture-info-header {
       .lecture-info-delete {
         &:hover {

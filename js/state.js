@@ -257,8 +257,8 @@ State.prototype.saveOnLocalStorage = function(stateData) {
   }
 }
 
-State.prototype.addPlan = function(planData) {
-  var plan = new Plan(planData);
+State.prototype.addPlan = function(planData, asActivePlan) {
+  var plan = new Plan(planData, asActivePlan);
   this.plans.push(plan);
   this.saveOnLocalStorage();
   return plan;
