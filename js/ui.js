@@ -81,16 +81,12 @@ function UI() {
 
   this.accordion.addEventListener('slip:beforereorder',e => {
     window.navigator.vibrate(25);
-  });
-
-  this.accordion.addEventListener('slip:startreorder', e => {
     e.target.closest('.lecture-info').classList.remove('lecture-open');
     this.hideContextMenu();
   });
 
-
   this.accordion.addEventListener('slip:reorder',e => {
-    e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
+    //e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
 
     if(e.detail.originalIndex != e.detail.spliceIndex) {
       var lecture = state.activePlan.lectures.splice(e.detail.originalIndex, 1)[0];
