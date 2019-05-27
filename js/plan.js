@@ -89,15 +89,8 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
       lectures = lectures.filter(el => el);
       this.lectures = lectures;
 
-      if(basePlan.combinations)
-        this.combinations = basePlan.combinations.map(baseCombination => new Combination(
-          baseCombination.map(baseGroup => 
-            this.lectures.find(lecture => lecture.code == baseGroup.lecture).classrooms.filter(classroom => 
-              baseGroup.classrooms.find(baseClassroom => classroom.code == baseClassroom)
-            )
-          ), this)
-        );
-      else this.update();
+      this.update();
+      
       this.activeCombinationIndex = basePlan.activeCombinationIndex;
       if(loadAsActive) state.activePlan = this;
       else if(state.activePlan == this) this.showPlan();
@@ -308,13 +301,6 @@ Plan.prototype.serialize = function() {
   planData.name = this.name;
   planData.colors = this.colors;
   planData.lectures = this.lectures.map(lecture => lecture.serialize());
-
-  //Sometimes combinations length will explode to insane amounts
-  //Keep this in check so we don't exceed the quota for localStorage
-  if(this.combinations.length < 50)
-    planData.combinations = this.combinations.map(combination => 
-      combination.classroomGroups.map(group => ({'lecture': group[0].parent.code, 'classrooms': group.map(classroom => classroom.code)}))
-    );
 
   return planData;
 }
