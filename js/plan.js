@@ -210,6 +210,8 @@ Plan.prototype.addLecture = function(lecture) {
   if(this == state.activePlan)
       ui.addLectures([lecture]);
 
+  state.saveOnLocalStorage();
+
   return lecture;
 }
 
