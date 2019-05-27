@@ -248,71 +248,10 @@ Plan.prototype.moveLecture = function(sourceIndex, targetIndex) {
 
   var lecture = this.lectures[sourceIndex];
 
-  if(lecture.available && lecture.selected) {
-    var firstUnavailableIndex = this.lectures.findIndex(l => !l.available);
-
-    if(targetIndex < sourceIndex || firstUnavailableIndex == -1 || firstUnavailableIndex > targetIndex) {
-      var sourceIndexComb = this.activeCombination.classroomGroups.findIndex(cg => cg[0].parent == lecture);
-      var targetIndexComb = this.activeCombination.classroomGroups.findIndex(cg => cg[0].parent == this.lectures[targetIndex]);
-
-      var activeCombIndex = this.activeCombinationIndex;
-
-      var newCombinations = this.combinations.map(comb => comb.classroomGroups);
-      newCombinations.forEach(comb => { var cg = comb.splice(sourceIndexComb,1)[0]; comb.splice(targetIndexComb, 0, cg);});
-
-      var lecture = this.lectures.splice(sourceIndex, 1)[0];
-      this.lectures.splice(targetIndex, 0, lecture);
-
-      this.combinations = newCombinations.map(comb => new Combination(comb, this));
-      ui.showCombinations(this.combinations);
-      this.activeCombinationIndex = activeCombIndex;
-    }
-    else {
-      var combinations = this.combinations.map(comb => comb.classroomGroups.slice(0, firstUnavailableIndex));
-
-      var lecture = this.lectures.splice(sourceIndex, 1)[0];
-      this.lectures.splice(targetIndex, 0, lecture);
-
-      this.lectures.slice(firstUnavailableIndex-1).forEach(lecture => {combinations = getLectureCombinations(lecture, combinations) || combinations});
-
-      var activeCombIndex = this.activeCombinationIndex;
-      this.combinations = combinations.map(combination => new Combination(combination, this));
-      ui.showCombinations(this.combinations);
-      this.activeCombinationIndex = activeCombIndex;
-    }
-  } 
-
-  else if(targetIndex < sourceIndex) {
-    lecture.selected = true;
-
-    var targetIndexComb = this.activeCombination.classroomGroups.findIndex(cg => cg[0].parent == this.lectures[targetIndex]);
-
-    var combinations = this.combinations.map(comb => comb.classroomGroups.slice(0, targetIndexComb));
-    var lectureCombinations = getLectureCombinations(lecture, combinations);
-
-    var lecture = this.lectures.splice(sourceIndex, 1)[0];
-    this.lectures.splice(targetIndex, 0, lecture);
-      
-    if(lectureCombinations) {
-      combinations = lectureCombinations;
-      this.lectures.slice(targetIndex + 1).forEach(lecture => {combinations = getLectureCombinations(lecture, combinations) || combinations});
-      
-      var activeCombIndex = this.activeCombinationIndex;
-      this.combinations = combinations.map(combination => new Combination(combination, this));
-      ui.showCombinations(this.combinations);
-      this.activeCombinationIndex = activeCombIndex;
-    }
-  } 
-
-  else {
-    var lecture = this.lectures.splice(sourceIndex, 1)[0];
-    this.lectures.splice(targetIndex, 0, lecture);
-  }
+  var lecture = this.lectures.splice(sourceIndex, 1)[0];
+  this.lectures.splice(targetIndex, 0, lecture);
 
   state.saveOnLocalStorage();
-
-  //var lecture = this.lectures.splice(sourceIndex, 1)[0];
-  //this.lectures.splice(targetIndex, 0, lecture);
 
   this.update();
 }
