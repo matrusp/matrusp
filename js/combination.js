@@ -40,8 +40,8 @@ Combination.prototype = {
  *
  */
 Combination.prototype.delete = function() {
-  if(this.htmlElement && this.htmlElement.parentNode)
-    this.htmlElement.parentNode.removeChild(this.htmlElement);
+  if(this._htmlElement && this._htmlElement.parentNode)
+    this._htmlElement.parentNode.removeChild(this.htmlElement);
 
   // All htmlElements removed, now remove itself from the plan and
   // update it.
