@@ -106,6 +106,8 @@ Lecture.prototype = {
       this.htmlLectureCheckbox.disabled = true;
       this.htmlElement.classList.add('lecture-unavailable');
     }
+
+    this._available = val;
   }
 }
 
