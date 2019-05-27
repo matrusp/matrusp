@@ -44,7 +44,7 @@ Schedule.prototype.delete = function() {
 Schedule.prototype.addEventListeners = function() {
   this.htmlElement.addEventListener('contextmenu', e => {ui.createLectureContextMenu(this.parent.parent, {x: e.clientX, y: e.clientY}); e.preventDefault();});
 
-  this.htmlElement.addEventListener('click', e => {this.parent.parent.open(); this.parent.toggleClassroomOpen(true); this.parent.blink(); });
+  this.htmlElement.addEventListener('click', e => {this.parent.parent.open(); this.parent.toggleClassroomOpen(true); this.parent.htmlElement.scrollIntoView(false); this.parent.blink(); });
 
   this.htmlElement.addEventListener('mouseenter', e => this.parent.parent.setHighlight());
   this.htmlElement.addEventListener('mouseleave', e => this.parent.parent.unsetHighlight());
