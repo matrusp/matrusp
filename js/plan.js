@@ -229,7 +229,7 @@ Plan.prototype.removeLecture = function(lecture, preventUndoPush) {
       this.update();
     });
 
-    ui.showBanner(`Disciplina '${lecture.name}' removida. <a onclick="state.undo()">Desfazer</a>`, 1500);
+    ui.showBanner(`Disciplina '${lecture.name}' removida. <a onclick="state.activePlan.undo()">Desfazer</a>`, 1500);
   }
 
   lecture.delete();
