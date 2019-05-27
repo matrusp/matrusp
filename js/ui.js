@@ -86,20 +86,14 @@ function UI() {
   });
 
   this.accordion.addEventListener('slip:reorder',e => {
-    //e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
-
-    if(e.detail.originalIndex != e.detail.spliceIndex) {
-      var lecture = state.activePlan.lectures.splice(e.detail.originalIndex, 1)[0];
-      state.activePlan.lectures.splice(e.detail.spliceIndex, 0, lecture);
-      state.activePlan.update();
-    }
+    e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
 
     var plan = state.activePlan;
 
+    plan.moveLecture(e.detail.originalIndex, e.detail.spliceIndex);
+
     plan.undoStackPush(() => {
-      var lecture = plan.lectures.splice(e.detail.spliceIndex, 1)[0];
-      plan.lectures.splice(e.detail.originalIndex, 0, lecture);
-      plan.update();
+      plan.moveLecture(e.detail.spliceIndex, e.detail.originalIndex);
     });
   });
 
@@ -570,6 +564,11 @@ UI.prototype.scrollCombinationToView = function(combination) {
     this.combinationTrack.scrollLeft = offsetLeft + boardWidth - railWidth;
     return;
   }
+}
+
+UI.prototype.refreshAccordion = function() {
+  this.accordion.innerHTML = "";
+  state.activePlan.lectures.forEach(lecture => this.accordion.appendChild(lecture.htmlElement));
 }
 
 /**

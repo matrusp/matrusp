@@ -71,9 +71,8 @@ function CourseBox() {
       lectures.filter(el => el);
 
       var planData = {"name": `${this.courseSelect.options[this.courseSelect.selectedIndex].innerHTML} - ${this.periodSelect.value}º período`,"lectures": lectures};
-      var plan = state.addPlan(planData);
       if(!state.activePlan.lectures.length) state.removePlan(state.activePlan);
-      state.activePlan = plan;
+      var plan = state.addPlan(planData, true);
     });
     ui.closeDialog();
   });
