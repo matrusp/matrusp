@@ -326,7 +326,6 @@ footer .fb-page {
 
 .column.time {
   flex: 0 0 auto;
-  background: white;
   z-index: 0;
   position: sticky;
   left: 0;
@@ -384,8 +383,9 @@ footer .fb-page {
   font-size: 13px;
   color: gray;
   text-align: right;
-  line-height: 0;
+  line-height: 4px;
   transition: opacity ease .2s;
+  background-color: white;
 }
 
 .hour:nth-child(2n) {
