@@ -45,6 +45,9 @@ function UI() {
                   tinycolor("hsl(140 ,42%, 58%)"),
                   tinycolor("hsl(263, 78%, 65%)"),
                   tinycolor("hsl(33, 27%, 58%)")];
+  
+  this.darkColors = this.colors.map(color => color.clone().darken(25));
+  this.lightColors = this.colors.map(color => color.clone().lighten(10));
 
   this.combinationTrackPageSize = 10;
 
@@ -461,10 +464,9 @@ UI.prototype.createCombinationBoard = function(combination) {
       var boxHeight = 100 - position.positionEnd * 100 - boxTop;
       var boxLeft = day * (100/this.settings.dayEnd) + 1;
 
-      var color = this.colors[classroom.parent.color];
-      ctx.fillStyle = color.clone().lighten(10).toHslString();
+      ctx.fillStyle = this.lightColors[classroom.parent.color].toHslString();
       ctx.fillRect(boxLeft * scale, boxTop * scale, ((100/this.settings.dayEnd) - 2) * scale, boxHeight * scale);
-      ctx.fillStyle = color.clone().darken(25).toHslString();
+      ctx.fillStyle = this.darkColors[classroom.parent.color].toHslString();
       ctx.fillRect(boxLeft * scale, boxTop * scale, 2 * scale, boxHeight * scale);
     });
   });
@@ -751,7 +753,7 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
 }
 
 UI.prototype.setCredits = function(lectureCredits,workCredits) {
-    this.lectureCredits.innerHTML =lectureCredits;
+    this.lectureCredits.innerHTML = lectureCredits;
     this.workCredits.innerHTML = workCredits;
 }
 
@@ -787,13 +789,15 @@ UI.prototype.scrollActivePlanTabToView = function() {
 
 UI.prototype.scrollPlanToView = function(plan) {
   var offsetLeft = plan.html.tab.offsetLeft;
+
+  var tabWidth = plan.html.tab.clientWidth;
+  var railWidth = this.plans.clientWidth;
+
   if(this.plans.scrollLeft > offsetLeft) {
     this.plans.scrollLeft = offsetLeft;
     return;
   }
 
-  var tabWidth = plan.html.tab.clientWidth;
-  var railWidth = this.plans.clientWidth;
   if(this.plans.scrollLeft + railWidth < offsetLeft + tabWidth) {
     this.plans.scrollLeft = offsetLeft + tabWidth - railWidth;
     return;
@@ -803,8 +807,9 @@ UI.prototype.scrollPlanToView = function(plan) {
 }
 
 UI.prototype.refreshPlanPaddles = function() {
-  this.planPaddleLeft.style.visibility = this.plans.scrollLeft ? 'visible' : 'hidden';
   var maxScroll = this.plans.scrollWidth - this.plans.clientWidth;
+
+  this.planPaddleLeft.style.visibility = this.plans.scrollLeft ? 'visible' : 'hidden';
   this.planPaddleRight.style.visibility = maxScroll > 0 && this.plans.scrollLeft < maxScroll ? 'visible' : 'hidden';
 }
 
