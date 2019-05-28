@@ -47,8 +47,6 @@
 
 .column.time {
   flex: 0 0 auto;
-  z-index: 0;
-  position: sticky;
   left: 0;
   width: 22px;
 
@@ -104,9 +102,10 @@
   font-size: $lecture-schedule-font-size-hour;
   color: $lecture-schedule-hour-color;
   text-align: right;
-  line-height: 4px;
+  line-height: 0;
+  vertical-align: middle;
   transition: opacity ease .2s;
-  background-color: white;
+
   &:nth-child(2n) {
     opacity: 0;
     #time-table.short.fit & {
