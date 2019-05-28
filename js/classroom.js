@@ -29,8 +29,8 @@ function Classroom(jsonObj, parentLecture) {
   this.selected = true;
   if (jsonObj) {
     //Get info from json
-    this.dateBegin = Date.parse(jsonObj.inicio);
-    this.dateEnd = Date.parse(jsonObj.fim);
+    this.dateBegin = Date.parse(jsonObj.inicio,"dd/MM/yyyy");
+    this.dateEnd = Date.parse(jsonObj.fim,"dd/MM/yyyy");
     this.code = jsonObj.codigo;
     this.shortCode = this.code.slice(-2);
     this.obs = jsonObj.observacoes || '';
