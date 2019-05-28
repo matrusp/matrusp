@@ -22,11 +22,17 @@ function Schedule(jsonObj, parentClassroom) {
     this.dateBegin = parentClassroom.dateBegin.getDay() == dayIndex ? parentClassroom.dateBegin.clone() : parentClassroom.dateBegin.clone().moveToDayOfWeek(dayIndex);
     this.timeBegin = Date.parse(jsonObj.inicio);
     this.timeEnd = Date.parse(jsonObj.fim);
-    // parentClassroom.parent is this schedule's Lecture ancestor
-    var lectureCode = parentClassroom.parent.code;
-    this.htmlElement = ui.createScheduleBox(this, lectureCode);
 
     this.addEventListeners();
+  }
+}
+
+Schedule.prototype = {
+  get htmlElement() {
+    if(!this._htmlElement) {
+      this._htmlElement = ui.createScheduleBox(this);
+    }
+    return this._htmlElement
   }
 }
 
