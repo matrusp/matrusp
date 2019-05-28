@@ -27,6 +27,8 @@ function UI() {
   this.printDialog = document.getElementById('print-dialog');
   this.fitButton = document.getElementById('fit-time-table-button');
   this.undoButton = document.getElementById('undo');
+  this.header = document.getElementById('header');
+  this.headerIcons = document.getElementById('icons');
 
   // This comes from the SASS theme file
   //TODO: find better way to sync this
@@ -122,8 +124,10 @@ function UI() {
     if(this.combinationTrack.scrollLeft < 100 * this.combinationTrackPageSize) {
       this.previousCombinationPage();
     }
-  })
+  });
 
+  window.addEventListener('resize', e => this.header.style.top = -this.headerIcons.offsetTop + 'px');
+  this.header.style.top = -this.headerIcons.offsetTop + 'px';
 
   document.getElementById('msg-banner-close').addEventListener('click', () => this.closeBanner());
 

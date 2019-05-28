@@ -18,7 +18,8 @@
 
 header {
     // defining a position here to work with children positions
-    position: relative;
+    position: sticky;
+    top: 0;
     width: 100%;
     user-select: none;
 	z-index: 1;
@@ -31,7 +32,6 @@ header {
 		align-items: center;
 		background: linear-gradient(to top, darken($header-color-primary, 10%) 10px, $header-color-primary 10px, $header-color-primary 100%);
 		padding-bottom: $header-bottom-line;
-		padding-top: 4px;
 		box-shadow: $shadow-default;
 		z-index: 1;
 	}
