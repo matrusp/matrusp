@@ -980,8 +980,10 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
                 let oldcolor = lecture.color;
                 lecture.color = i;
                 lecture.parent.combinations.forEach(combination => {
-                  var oldEl = combination.htmlElement;
-                  combination.htmlElement = ui.createCombinationBoard(combination);
+                  var oldEl = combination._htmlElement;
+                  if(!oldEl) return;
+                  
+                  combination._htmlElement = ui.createCombinationBoard(combination);
                   combination.addEventListeners();
                   if(oldEl) {
                     combination.htmlElement.classList = oldEl.classList;
@@ -989,6 +991,7 @@ UI.prototype.createLectureContextMenu = function(lecture, pos) {
                       oldEl.parentNode.replaceChild(combination.htmlElement, oldEl);
                   }
                 });
+
                 lecture.htmlElement.classList.remove('color-'+oldcolor);
                 lecture.htmlElement.classList.add('color-'+i);
                 lecture.classrooms.forEach(classroom => classroom.schedules.forEach(schedule => {
