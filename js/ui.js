@@ -269,7 +269,7 @@ UI.prototype.setScheduleBoxBoundaries = function(schedule, scheduleBox) {
  * @param {String} lectureCode
  * @return {div}
  */
-UI.prototype.createClassroomInfo = function(classroom, lectureCode) {
+UI.prototype.createClassroomInfo = function(classroom) {
   var classroomInfoTreeObj = {
     tag: 'div',
     class: 'classroom-info',

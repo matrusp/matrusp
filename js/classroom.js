@@ -69,15 +69,6 @@ function Classroom(jsonObj, parentLecture) {
       this.vacancies.total.pending += vacancy.pending;
       this.vacancies.total.enrolled += vacancy.enrolled;
     }
-
-
-
-    this.htmlElement = ui.createClassroomInfo(this, parentLecture.code);
-    if (this.selected) {
-      this.htmlElement.classList.add('classroom-selected');
-    }
-    
-    this.addEventListeners();
   }
 }
 
@@ -143,12 +134,20 @@ Classroom.fromLinked = function(jsonT, jsonP, parentLecture) {
       classroom.vacancies.total.enrolled += vacancy.enrolled;
     }
 
-  classroom.htmlElement = ui.createClassroomInfo(classroom, parentLecture.code);
-  if (classroom.selected) {
-    classroom.htmlElement.classList.add('classroom-selected');
-  }
-  classroom.addEventListeners();
   return classroom;
+}
+
+Classroom.prototype = {
+  get htmlElement() {
+    if(!this._htmlElement) {
+      this._htmlElement = ui.createClassroomInfo(this);
+      if (this.selected) {
+        this.htmlElement.classList.add('classroom-selected');
+      }
+      this.addEventListeners();
+    }
+    return this._htmlElement
+  }
 }
 
 /**
@@ -331,13 +330,13 @@ Classroom.prototype.toggleClassroomSelection = function(value, shouldUpdate) {
     value = !this.selected;
   }
 
-  this.htmlElement.classList.toggle('classroom-selected', value);
+  if(this._htmlElement) {
+    var checkbox = this._htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
+    checkbox.checked = value;
+    this._htmlElement.classList.toggle('classroom-selected', value);
+  }
+  
   this.selected = value;
-
-  // These two lines are relevant when this function is called by effect of
-  // toggling selection of all classrooms.
-  var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
-  checkbox.checked = value;
 
   // creates a 'true' default value for 'shouldUpdate'
   shouldUpdate = (typeof shouldUpdate !== 'undefined') ? shouldUpdate : true;
@@ -374,15 +373,15 @@ Classroom.prototype.blink = function() {
  * @see Classroom#toggleClassroomSelection
  */
 Classroom.prototype.addEventListeners = function() {
-  this.htmlElement.addEventListener('mouseenter', this.showOnHover.bind(this));
-  this.htmlElement.addEventListener('mouseleave', this.hideOnHoverOut.bind(this));
+  this._htmlElement.addEventListener('mouseenter', this.showOnHover.bind(this));
+  this._htmlElement.addEventListener('mouseleave', this.hideOnHoverOut.bind(this));
 
-  this.htmlElement.addEventListener('click', e => { this.toggleClassroomOpen(); e.stopPropagation(); });
+  this._htmlElement.addEventListener('click', e => { this.toggleClassroomOpen(); e.stopPropagation(); });
 
-  this.htmlElement.addEventListener('animationend', e => this.htmlElement.classList.remove('classroom-blink'));
+  this._htmlElement.addEventListener('animationend', e => this.htmlElement.classList.remove('classroom-blink'));
 
-  this.htmlElement.addEventListener('contextmenu', e => {ui.createClassroomContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault(); e.stopPropagation();});
+  this._htmlElement.addEventListener('contextmenu', e => {ui.createClassroomContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault(); e.stopPropagation();});
 
-  var checkbox = this.htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
+  var checkbox = this._htmlElement.getElementsByClassName('classroom-info-checkbox')[0];
   checkbox.addEventListener('click', e => {this.toggleClassroomSelection(null, true); e.stopPropagation();} );
 };
