@@ -31,8 +31,6 @@ function Lecture(jsonObj, parentPlan) {
     this.campus = jsonObj.campus;
     this.color = jsonObj.color;
     this.selected = jsonObj.selected;
-    this.htmlElement = ui.createLectureInfo(this);
-    this.htmlLectureCheckbox = this.htmlElement.getElementsByClassName('lecture-info-checkbox')[0];
     
     var linkedT = [];
     var linkedP = [];
@@ -66,9 +64,6 @@ function Lecture(jsonObj, parentPlan) {
         if(group) group.push(classroom);
         else this.groupedClassrooms.push([classroom]);
     });
-
-    this.appendHTMLChildren();
-    this.addEventListeners();
   }
 }
 
@@ -108,7 +103,23 @@ Lecture.prototype = {
     }
 
     this._available = val;
-  }
+  },
+
+  get htmlElement() {
+    if(!this._htmlElement) {
+      this._htmlElement = ui.createLectureInfo(this);  
+      this.appendHTMLChildren();
+      this.addEventListeners();
+    }
+    return this._htmlElement
+  },
+  
+  get htmlLectureCheckbox() {
+    if(!this._htmlLectureCheckbox) {
+      this._htmlLectureCheckbox = this.htmlElement.getElementsByClassName('lecture-info-checkbox')[0];
+    }
+    return this._htmlLectureCheckbox;
+  },
 }
 
 /**
@@ -116,7 +127,7 @@ Lecture.prototype = {
  */
 Lecture.prototype.appendHTMLChildren = function() {
   // this.htmlElement.children[1] is equivalent (30.jul.16)
-  var classroomsDiv = this.htmlElement.getElementsByClassName('lecture-classrooms')[0];
+  var classroomsDiv = this._htmlElement.getElementsByClassName('lecture-classrooms')[0];
   for (var i = 0; i < this.classrooms.length; i++) {
     classroomsDiv.appendChild(this.classrooms[i].htmlElement);
   }
@@ -372,14 +383,14 @@ Lecture.prototype.serialize = function() {
  *
  */
 Lecture.prototype.addEventListeners = function() {
-  this.htmlElement.addEventListener('mouseenter', this.setHighlight.bind(this));
-  this.htmlElement.addEventListener('mouseleave', this.unsetHighlight.bind(this));
-  this.htmlElement.addEventListener('contextmenu', e => {ui.createLectureContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault();});
+  this._htmlElement.addEventListener('mouseenter', this.setHighlight.bind(this));
+  this._htmlElement.addEventListener('mouseleave', this.unsetHighlight.bind(this));
+  this._htmlElement.addEventListener('contextmenu', e => {ui.createLectureContextMenu(this, {x: e.clientX, y: e.clientY}); e.preventDefault();});
 
-  var lectureHeader = this.htmlElement.getElementsByClassName('lecture-info-header')[0];
-  this.htmlElement.addEventListener('click', e => { this.toggleLectureOpen(); });
+  var lectureHeader = this._htmlElement.getElementsByClassName('lecture-info-header')[0];
+  this._htmlElement.addEventListener('click', e => { this.toggleLectureOpen(); });
   
-  var lectureHeaderDelete = this.htmlElement.getElementsByClassName('lecture-info-delete')[0];
+  var lectureHeaderDelete = this._htmlElement.getElementsByClassName('lecture-info-delete')[0];
   lectureHeaderDelete.addEventListener('click', e => { this.parent.removeLecture(this); e.stopPropagation(); });
 
   this.htmlLectureCheckbox.addEventListener('click', e => {   
