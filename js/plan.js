@@ -136,11 +136,11 @@ Plan.prototype.update = function() {
   }
 
   this.computeCombinations();
-  this.activeCombination = this.closestCombination(oldActiveCombination) || this.combinations[0];
   if(state.activePlan == this) {
     ui.showCombinations(this.combinations);
     ui.refreshAccordion();
   }
+  this.activeCombination = this.closestCombination(oldActiveCombination) || this.combinations[0];
 
   this.initiated = true;
 };
