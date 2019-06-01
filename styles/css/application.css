@@ -143,6 +143,10 @@ a:active {
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: none;
+}
+
 html, body {
   min-width: 0;
 }
