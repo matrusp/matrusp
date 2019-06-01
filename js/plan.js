@@ -142,6 +142,8 @@ Plan.prototype.update = function() {
   }
   this.activeCombination = this.closestCombination(oldActiveCombination) || this.combinations[0];
 
+  ui.updateTimeTable();
+
   this.initiated = true;
 };
 
