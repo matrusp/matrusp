@@ -121,7 +121,6 @@ function UI() {
   this.combinationTrack.addEventListener('scroll', e => {
     if(this.combinationTrack.scrollLeft > 300 * this.combinationTrackPageSize) {
       this.nextCombinationPage();
-      console.log(this.combinationTrack.scrollLeft);
     }
 
     if(this.combinationTrack.scrollLeft < 100 * this.combinationTrackPageSize) {
