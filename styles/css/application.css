@@ -207,6 +207,10 @@ header #loading-bar {
   z-index: 2;
 }
 
+#logo-wrapper {
+  order: 1;
+}
+
 #logo,
 #icons {
   height: 40px;
@@ -240,30 +244,32 @@ header #loading-bar {
   display: inline-block;
   float: right;
   flex: 0 0 auto;
+  order: 3;
 }
 
-#icalendar:focus {
-  pointer-events: none;
+#save-controller {
+  display: inline-block;
+  flex: 0 0 auto;
+  order: 1;
 }
 
-#icalendar:focus .onclick-menu-content {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+#save-controller #user-identifier:disabled {
+  display: inline-block;
+  color: white;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  text-align: right;
 }
 
-.onclick-menu-content {
-  position: absolute;
-  z-index: 1000;
-  top: calc(100%);
-  width: 100px;
-  opacity: 0;
-  visibility: hidden;
-  transition: visibility 0.5s;
-}
-
-*:focus {
-  outline: 0;
+@media only screen and (max-width: 720px) {
+  #logo-wrapper {
+    order: 2;
+  }
+  #save-controller {
+    flex: 0 0 100%;
+    text-align: center;
+  }
 }
 
 footer {
@@ -537,20 +543,6 @@ footer .fb-page {
 #icons button {
   vertical-align: middle;
   height: 100%;
-}
-
-#save-controller {
-  display: inline-block;
-  flex: 0 0 auto;
-}
-
-#save-controller #user-identifier:disabled {
-  display: inline-block;
-  color: white;
-  font-size: 14px;
-  background: transparent;
-  border: none;
-  text-align: right;
 }
 
 #msg-banner {
