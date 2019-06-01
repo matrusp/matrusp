@@ -599,17 +599,7 @@ UI.prototype.addLectures = function(lectures) {
   this.accordion.appendChild(accordionFragment);
   this.weekdays.forEach((weekday,i) => {weekday.appendChild(weekdayFragments[i]);});
 
-  if(this.weekdays[6].childElementCount > 1) {
-    this.updateTimeTable(null, null, 7);
-  }
-  else if(this.weekdays[5].childElementCount > 1) {
-    this.updateTimeTable(null, null, 6);
-  }
-  else {
-    this.updateTimeTable(null, null, 5);
-  }
-
-  //lectures.forEach(lecture => lecture.classrooms.forEach(classroom => classroom.schedules.forEach(schedule => this.setScheduleBoxBoundaries(schedule, schedule.htmlElement))));
+  this.updateTimeTable();
 }
 
 /**
@@ -702,15 +692,15 @@ UI.prototype.makeTimeTable = function() {
   }
 }
 
-UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
+UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd) {
   if(timeBegin == this.settings.timeBegin && timeEnd == this.settings.timeEnd && dayEnd == this.settings.dayEnd)
     return;
  
   if(state.activePlan && state.activePlan.activeCombination && state.activePlan.activeCombination.classroomGroups.some(group => group[0].schedules.length)){
-    if(timeBegin === null) {
+    if(timeBegin === null || timeBegin === undefined) {
       timeBegin = Math.min(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeBegin.getHours()))));
     }
-    if(timeEnd === null) {
+    if(timeEnd === null || timeEnd === undefined) {
       timeEnd = 1 + Math.max(...[].concat(...state.activePlan.activeCombination.classroomGroups.map(classroomGroup => classroomGroup[0].schedules.map(schedule => schedule.timeEnd.getHours()))));
     }
   }
@@ -721,6 +711,21 @@ UI.prototype.updateTimeTable = function(timeBegin, timeEnd, dayEnd = 5) {
   if(timeEnd === null || timeEnd === undefined) {
     timeEnd = this.settings.defaultTimeEnd;
   }
+
+  if(dayEnd === null || dayEnd === undefined) {
+    if(this.weekdays[6].childElementCount > 1) {
+      dayEnd = 7;
+    }
+    else if(this.weekdays[5].childElementCount > 1) {
+      dayEnd = 6;
+    }
+    else {
+      dayEnd = 5;
+    }
+  }
+
+  if(timeBegin == this.settings.timeBegin && timeEnd == this.settings.timeEnd && dayEnd == this.settings.dayEnd)
+    return;
 
   this.settings.timeBegin = timeBegin;
   this.settings.timeEnd = timeEnd;
