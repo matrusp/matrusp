@@ -340,7 +340,7 @@ Lecture.prototype.setHighlight = function() {
     this.classrooms[i].addClassInSchedules('schedule-box-highlight');
   }
 
-  if (!this.selected) {
+  if (!this.selected || !this.available) {
     this.animationLoopShowEachClassroom();
   }
 };
@@ -350,7 +350,7 @@ Lecture.prototype.unsetHighlight = function() {
     this.classrooms[i].removeClassInSchedules('schedule-box-highlight');
   }
 
-  if (!this.selected) {
+  if (!this.selected || !this.available) {
     this.stopAnimationLoop();
   }
 };
