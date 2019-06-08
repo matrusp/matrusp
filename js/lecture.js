@@ -333,6 +333,9 @@ Lecture.prototype.stopAnimationLoop = function() {
     this.classrooms[i].hideBox();
     this.classrooms[i].unsetConflict();
   }
+  
+  if(this.activeClassrooms.length)
+    this.activeClassrooms[0].showBox();
 }
 
 Lecture.prototype.setHighlight = function() {
