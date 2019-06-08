@@ -350,9 +350,7 @@ Lecture.prototype.unsetHighlight = function() {
     this.classrooms[i].removeClassInSchedules('schedule-box-highlight');
   }
 
-  if (!this.selected || !this.available) {
-    this.stopAnimationLoop();
-  }
+  this.stopAnimationLoop();
 };
 
 Lecture.prototype.open = function() {
