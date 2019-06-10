@@ -106,6 +106,7 @@ Plan.prototype.load = function(basePlan, loadAsActive) {
     });
   }
   else {
+    this.loaded = true;
     this.name = "Plano " + (state.plans.length + 1);
   }
 };
