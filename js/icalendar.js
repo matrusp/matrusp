@@ -46,6 +46,12 @@ function get_week_day_number(schedule) {
   if (schedule.day == 'sab') return 6;
 }
 
+
+function get_week_day_and_time(schedule) {
+  // formato: -<dia da semana>-<HH:MM>Z-<HH:MM>Z
+  return `-${get_week_day_string(schedule)}-${schedule.timeBegin.toISOString().slice(11, 16)}Z-${schedule.timeEnd.toISOString().slice(11, 16)}Z`;
+}
+
 function get_utc_current_date_and_time() {
   // ISO: YYYY-MM-DDTHH:mm:ss.sssZ
   // returned: YYYYMMDDTHHmmssZ
@@ -53,7 +59,8 @@ function get_utc_current_date_and_time() {
 }
 
 function generate_uid(schedule) {
-  return schedule.parent.parent.code + "T" + schedule.parent.code.replace(/ /g, "") + "D" + get_week_day_string(schedule) + "@" + document.location.hostname;
+  // formato: <disciplina>-T<turma>-<dia da semana>-<HH:MM>Z-<HH:MM>Z@<host>
+  return schedule.parent.parent.code + "-T" + schedule.parent.code.replace(/ /g, "") + get_week_day_and_time(schedule) + "@" + document.location.hostname;
 }
 
 function build_event() {
